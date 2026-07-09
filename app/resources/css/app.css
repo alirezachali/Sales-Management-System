@@ -1,11 +1,96 @@
-@import 'tailwindcss';
+@import "@tabler/core/dist/css/tabler.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+body {
+    font-family: 'Vazirmatn', sans-serif;
+}
+
+:root {
+    --woxilon-dark: #111111;
+    --woxilon-accent: #f5a623;
+    --woxilon-accent-hover: #ffb938;
+}
+
+
+/* فونت */
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+}
+
+
+/* Sidebar */
+
+.navbar-vertical {
+
+    background: var(--woxilon-dark);
+
+}
+
+
+.navbar-brand {
+
+    color: var(--woxilon-accent) !important;
+
+    font-weight: 800;
+
+    font-size: 24px;
+
+}
+
+
+/* لینک های منو */
+
+.nav-link {
+
+    color: #d1d5db !important;
+
+    border-radius: 8px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.nav-link:hover {
+
+    background: rgba(245,166,35,.15);
+
+    color: var(--woxilon-accent) !important;
+
+}
+
+
+/* آیکون ها */
+
+.nav-link-icon {
+
+    color: var(--woxilon-accent);
+
+}
+
+
+/* دکمه اصلی */
+
+.btn-primary {
+
+    background: var(--woxilon-accent);
+
+    border-color: var(--woxilon-accent);
+
+    color: #111;
+
+}
+
+
+.btn-primary:hover {
+
+    background: var(--woxilon-accent-hover);
+
+    border-color: var(--woxilon-accent-hover);
+
+    color: #111;
+
 }
