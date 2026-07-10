@@ -7,6 +7,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>
         @yield('title', 'سیستم مدیریت فروش')
     </title>
@@ -66,7 +68,7 @@
 
                     <li class="nav-item">
 
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('pos.index') }}">
 
                             <span class="nav-link-icon">
                                 <i class="bi bi-cart"></i>
@@ -160,7 +162,7 @@
 
 </div>
 
-
+@stack('scripts')
 </body>
 
 </html>

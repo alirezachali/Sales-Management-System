@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,3 +42,17 @@ Route::post(
     [ProductController::class,'storeSale']
 )
 ->name('products.sale.store');
+
+
+Route::get('/pos', [SaleController::class,'index'])
+    ->name('pos.index');
+
+
+Route::get('/pos/product', [SaleController::class, 'findProduct'])
+    ->name('pos.product');    
+
+
+Route::post(
+    '/pos/checkout',
+    [SaleController::class, 'checkout']
+)->name('pos.checkout');    
