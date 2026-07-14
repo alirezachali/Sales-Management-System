@@ -48,7 +48,11 @@ class SaleController extends Controller
 
     public function checkout(Request $request)
     {
-        $sale = $this->saleService->checkout($request->cart);
+        $sale = $this->saleService->checkout(
+            $request->cart,
+            $request->discount ?? 0,
+            $request->payment_type ?? 'cash'
+        );
 
         return response()->json([
             'success' => true,

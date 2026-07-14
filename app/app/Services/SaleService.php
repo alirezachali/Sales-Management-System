@@ -20,24 +20,36 @@ class SaleService
         $this->calculator = $calculator;
     }
 
-    public function checkout(array $cart)
+    public function checkout(
+    array $cart,
+    float $discount = 0,
+    string $paymentType = 'cash'
+    )
     {
         return DB::transaction(function () use ($cart) {
 
             $total = $this->calculator->total($cart);
 
+            $discount = 0;
+            $finalPrice = $total - $discount;
+
             $sale = Sale::create([
-                'total_amount' => $total,
+                'invoice_number' => 'INV-' . now()->format('YmdHis'),
+                'user_id'        => auth()->id() ?? 1,
+                'total_price'    => $total,
+                'discount'       => $discount,
+                'final_price'    => $finalPrice,
+                'payment_type'   => 'cash',
             ]);
 
             foreach ($cart as $item) {
 
                 SaleItem::create([
-                    'sale_id'    => $sale->id,
-                    'product_id' => $item['id'],
-                    'quantity'   => $item['quantity'],
-                    'price'      => $item['price'],
-                    'total'      => $item['price'] * $item['quantity'],
+                    'sale_id'     => $sale->id,
+                    'product_id'  => $item['id'],
+                    'quantity'    => $item['quantity'],
+                    'unit_price'  => $item['price'],
+                    'line_total'  => $item['price'] * $item['quantity'],
                 ]);
 
                 $product = Product::findOrFail($item['id']);

@@ -24,12 +24,11 @@
 
                 </label>
 
-                <input
-                    id="barcode"
-                    class="form-control form-control-lg"
-                    placeholder="بارکد را اسکن کنید"
-                    autocomplete="off"
-                    autofocus>
+                <input id="barcode"
+                       class="form-control form-control-lg"
+                       placeholder="بارکد را اسکن کنید"
+                       autocomplete="off"
+                       autofocus>
 
             </div>
 
@@ -80,118 +79,114 @@
 
          <div class="mt-3 text-end">
 
-            <button
-                id="checkout-btn"
-                class="btn btn-success btn-lg">
+            <button id="checkout-btn"
+                    class="btn btn-success btn-lg">
 
-                ثبت فروش
+                    ثبت فروش
 
             </button>
 
         </div>
 
         <div class="modal fade" id="paymentModal" tabindex="-1">
-    <div class="modal-dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            پرداخت فاکتور
+                        </h5>
 
-        <div class="modal-content">
+                        <button class="btn-close" data-bs-dismiss="modal">
+                        </button>
 
-            <div class="modal-header">
+                    </div>
 
-                <h5 class="modal-title">
-                    پرداخت فاکتور
-                </h5>
+                    <div class="modal-body">
 
-                <button
-                    class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
+                        <div class="mb-3">
 
-            </div>
+                            <label>جمع کل</label>
+                            <input
+                                id="totalPrice"
+                                class="form-control"
+                                readonly>
 
-            <div class="modal-body">
+                        </div>
 
-                <div class="mb-3">
+                        <div class="mb-3">
 
-                    <label>جمع کل</label>
+                            <label>تخفیف</label>
+                            <input
+                                id="discount"
+                                type="number"
+                                class="form-control"
+                                value="0">
 
-                    <input
-                        id="totalPrice"
-                        class="form-control"
-                        readonly>
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>مبلغ نهایی</label>
+                            <input
+                                id="finalPrice"
+                                class="form-control"
+                                readonly>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>مبلغ دریافتی</label>
+                            <input
+                                id="paidAmount"
+                                type="number"
+                                class="form-control">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label>باقی‌مانده</label>
+                            <input
+                                id="changeAmount"
+                                class="form-control"
+                                readonly>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+
+                                انصراف
+
+                        </button>
+
+                        <button
+                            class="btn btn-success"
+                            id="confirmSale">
+
+                                ثبت فروش
+
+                        </button>
+
+                    </div>
 
                 </div>
-
-                <div class="mb-3">
-
-                    <label>تخفیف</label>
-
-                    <input
-                        id="discount"
-                        type="number"
-                        class="form-control"
-                        value="0">
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label>مبلغ نهایی</label>
-
-                    <input
-                        id="finalPrice"
-                        class="form-control"
-                        readonly>
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label>مبلغ دریافتی</label>
-
-                    <input
-                        id="paidAmount"
-                        type="number"
-                        class="form-control">
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label>باقی‌مانده</label>
-
-                    <input
-                        id="changeAmount"
-                        class="form-control"
-                        readonly>
-
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
-
-                    انصراف
-
-                </button>
-
-                <button
-                    class="btn btn-success"
-                    id="confirmSale">
-
-                    ثبت فروش
-
-                </button>
 
             </div>
 
         </div>
 
-    </div>
-</div>
+        <div id="success-alert" 
+             class="alert alert-success d-none position-fixed top-0 end-0 m-3 shadow" 
+             style="z-index:9999">
+
+            ✅ فروش با موفقیت ثبت شد.
 
         </div>
 
@@ -286,8 +281,6 @@ function renderCart() {
 
 
 
-
-
 function removeItem(id)
 {
     cart = cart.filter(item => item.id != id);
@@ -379,21 +372,11 @@ this.focus();
 
 
 
-
-
-
-
-
-
-
-
 const modal = new bootstrap.Modal(
     document.getElementById('paymentModal')
 );
 
-document
-.getElementById('checkout-btn')
-.addEventListener('click', function () {
+document.getElementById('checkout-btn').addEventListener('click', function () {
 
     const total = calculateTotal();
 
@@ -406,6 +389,49 @@ document
 });
 
 
+document.getElementById('confirmSale').addEventListener('click', function () {
+
+    fetch('/pos/checkout', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({
+        cart: cart,
+        discount: Number(document.getElementById('discount').value),
+        payment_type: 'cash'
+    })
+    })
+    .then(async response => {
+
+        console.log('STATUS:', response.status);
+        const text = await response.text();
+        console.log(text);
+
+        const success = document.getElementById('success-alert');
+
+        success.classList.remove('d-none');
+
+        setTimeout(() => {
+        success.classList.add('d-none');
+        },3000);
+
+        cart = [];
+        renderCart();
+
+        modal.hide();
+
+        document.getElementById('barcode').focus();
+
+    })
+    .catch(error => {
+
+    console.error(error);
+
+    });
+
+});
 
 
 
