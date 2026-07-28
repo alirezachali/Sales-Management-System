@@ -1,11 +1,12 @@
 
+
 @extends('layouts.app')
 
 @section('title', 'مدیریت محصولات')
 
 @section('content')
 
-<div class="row row-cards mb-4">
+<div class="row row-cards mb-4 bg-dark">
 
 
     <div class="col-sm-6 col-lg-3">

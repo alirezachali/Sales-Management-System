@@ -4,7 +4,7 @@
 
         <div class="card border-0 shadow-sm mb-4">
 
-            <div class="card-header bg-light">
+            <div class="card-header">
 
                 <strong>
                     <i class="bi bi-shop"></i>
@@ -143,7 +143,7 @@
 
         <div class="card shadow-sm border-0 mb-4">
 
-            <div class="card-header bg-light">
+            <div class="card-header">
 
                 <strong>
 
@@ -181,7 +181,7 @@
 
         <div class="card shadow-sm border-0">
 
-            <div class="card-header bg-light">
+            <div class="card-header">
 
                 <strong>
 

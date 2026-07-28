@@ -75,9 +75,9 @@
 
             <div class="table-responsive">
 
-                <table class="table table-hover table-bordered align-middle text-center">
+                <table class="table table-hover align-middle text-center">
 
-                    <thead class="table-light">
+                    <thead class="table">
 
                     <tr>
 
@@ -115,17 +115,39 @@
 
                             <td>
 
-                                {{ $category->description }}
+                                @if($category->description)
+
+                                    {{ $category->description }}
+
+                                @else
+
+                                    <span class="text-muted">
+                                        ---
+                                    </span>
+
+                                @endif
 
                             </td>
 
                             <td>
 
-                                <span class="badge bg-primary">
+                                @if($category->products_count)
 
-                                    {{ $category->products_count }}
+                                    <span class="badge bg-primary">
 
-                                </span>
+                                        {{ $category->products_count }}
+
+                                    </span>
+
+                                @else
+
+                                    <span class="badge bg-secondary">
+
+                                        0
+
+                                    </span>
+
+                                @endif
 
                             </td>
 
@@ -155,7 +177,9 @@
 
                             <td>
 
-                               <button type="button"
+                                <div class="btn-group">
+                                
+                                <button type="button"
                                        class="btn btn-sm btn-primary btn-edit"
                                        data-id="{{ $category->id }}"
                                        data-name="{{ $category->name }}"
@@ -174,6 +198,8 @@
                                     <i class="bi bi-trash"></i>
 
                                 </button>
+                                
+                                </div>
 
                             </td>
 

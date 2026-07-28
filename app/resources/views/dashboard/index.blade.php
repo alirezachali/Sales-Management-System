@@ -5,9 +5,9 @@
 
 @section('content')
 
-<div class="container">
+<div class="container bg-dark">
 
-    <h2 class="mb-4">
+    <h2 class="mb-4 bg-dark">
 
         داشبورد مدیریت
 

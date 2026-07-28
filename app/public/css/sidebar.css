@@ -10,7 +10,7 @@
 
     min-height:calc(100vh - 65px);
 
-    background:#1e293b;
+    background:#3a3a3b;
 
     color:white;
 
@@ -54,17 +54,17 @@
 
 .sidebar-menu a:hover{
 
-    background:#334155;
+    background:#f8f9fa;
 
-    color:white;
+    color:rgb(7, 7, 7);
 
 }
 
 .sidebar-menu a.active{
 
-    background:#2563eb;
+    background:#ebb135;
 
-    color:white;
+    color:rgb(10, 10, 10);
 
 }
 
@@ -79,8 +79,6 @@
     flex:1;
 
     padding:25px;
-
-    background:#f8fafc;
 
     min-height:calc(100vh - 65px);
 

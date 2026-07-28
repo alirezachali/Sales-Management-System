@@ -1,6 +1,6 @@
 <div class="card border-0 shadow-sm">
 
-    <div class="card-header bg-light">
+    <div class="card-header">
 
         <strong>
 

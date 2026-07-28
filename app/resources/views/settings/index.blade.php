@@ -8,7 +8,7 @@
 
     <div class="card shadow-sm border-0">
 
-        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex justify-content-between align-items-center">
 
             <div>
                 <h4 class="mb-0">
