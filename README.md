@@ -30,6 +30,37 @@
 ![picture alt](/ScreenShot/Setting-Backup.png "")
 ---
 
+### How to install on the local system
+
+> Requisites
+* MySQL Server
+* PHP
+* Composer
+* Laravel
+* NPM
 
 
+> install
+* First, clone the project on your system
+```bash
+git clone https://github.com/alirezachali/Sales-Management-System.git
+```
+* Change the path to the project folder
+```bash
+cd Sales-Management-System
+```
+> Run
+* run migration command
+```bash
+php artisan migrate
+```
+* run server
+```bash
+php artisan serve
+```
+* open the new terminal and run command
+```bash
+npm run dev
+```
 
+* Now open `127.0.0.1:8000/dashboard` in the browser
