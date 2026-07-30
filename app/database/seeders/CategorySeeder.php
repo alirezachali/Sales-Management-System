@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Category;
 
 class CategorySeeder extends Seeder
 {
@@ -12,6 +13,52 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Category::factory()->count(8)->create();
+        Category::insert([
+            [
+                'name' => 'نوشیدنی',
+                'description' => '',
+                'is_active' => '1'
+            ],
+            [
+                'name' => 'تنقلات',
+                'description' => '',
+                'is_active' => '1'
+            ],
+            [
+                'name' => 'لبنیات',
+                'description' => '',
+                'is_active' => '1'
+            ],
+            [
+                'name' => 'خشکبار',
+                'description' => '',
+                'is_active' => '1'
+            ],
+            [
+                'name' => 'مواد پروتئینی',
+                'description' => '',
+                'is_active' => '1'
+            ],
+            [
+                'name' => 'مواد شوینده',
+                'description' => '',
+                'is_active' => '1'
+            ],
+            [
+                'name' => 'بهداشتی و آرایشی',
+                'description' => '',
+                'is_active' => '1'
+            ],
+            [
+                'name' => 'حبوبات',
+                'description' => '',
+                'is_active' => '1'
+            ],
+            [
+                'name' => 'کنسرو و غذای آماده',
+                'description' => '',
+                'is_active' => '1'
+            ]
+            ]);
     }
 }
