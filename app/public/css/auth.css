@@ -31,8 +31,7 @@ body{
 
     font-family:Vazirmatn,sans-serif;
 
-    background:
-        radial-gradient(circle at top,#23395d 0%,#0f172a 45%,#020617 100%);
+    background:radial-gradient(circle at top,#1a1919 0%,#171718 45%,#06070c 100%);
 
     color:var(--text);
 
@@ -59,7 +58,9 @@ body{
 
 .login-card{
 
-    width:430px;
+    width:500px;
+
+    height: 100%;
 
     max-width:100%;
 
@@ -67,7 +68,7 @@ body{
 
     border-radius:22px;
 
-    background:rgba(255,255,255,.08);
+    background:rgba(88, 87, 87, 0.096);
 
     backdrop-filter:blur(18px);
 
@@ -81,9 +82,9 @@ body{
 
 .login-logo{
 
-    width:90px;
+    width:120px;
 
-    height:90px;
+    height:120px;
 
     object-fit:contain;
 

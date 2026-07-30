@@ -17,6 +17,20 @@
 
 @endif
 
+@if(session('error'))
+
+<div class="alert alert-danger alert-dismissible fade show">
+
+    {{ session('error') }}
+
+    <button
+        class="btn-close"
+        data-bs-dismiss="alert"></button>
+
+</div>
+
+@endif
+
 
 <!-- Header -->
 <div class="page-header d-flex justify-content-between align-items-center mb-4">
@@ -138,7 +152,11 @@
                                 </button>
 
                                 <!-- Delete User Button -->
-                                <button class="btn btn-sm btn-danger">
+                                <button class="btn btn-sm btn-danger deleteUserBtn"
+                                        data-id="{{ $user->id }}"
+                                        data-name="{{ $user->name }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteUserModal">
 
                                     <i class="bi bi-trash"></i>
 
@@ -617,6 +635,76 @@
 <!-- End Change Password User Modal -->
 
 
+<!-- Start Delete User Modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <form
+            id="deleteUserForm"
+            method="POST"
+            class="modal-content">
+
+            @csrf
+            @method('DELETE')
+
+            <div class="modal-header bg-danger text-white">
+
+                <h5 class="modal-title">
+
+                    حذف کاربر
+
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"></button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p>
+
+                    آیا از حذف کاربر
+
+                    <strong id="deleteUserName"></strong>
+
+                    اطمینان دارید؟
+
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    انصراف
+
+                </button>
+
+                <button
+                    class="btn btn-danger">
+
+                    حذف
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<!-- End Delete User Modal -->
+
+
 @endsection
 
 
@@ -688,5 +776,25 @@ document.querySelectorAll('.changePasswordBtn').forEach(button=>{
 });
 </script>
 <!-- End Change Password User Modal Script -->
+
+<!-- Start Delete User Modal Script -->
+<script>
+document.querySelectorAll('.deleteUserBtn').forEach(button=>{
+
+    button.addEventListener('click',function(){
+
+        document.getElementById('deleteUserName').textContent=this.dataset.name;
+
+        document.getElementById('deleteUserForm').action='/users/'+this.dataset.id;
+
+        new bootstrap.Modal(
+            document.getElementById('deleteUserModal')
+        ).show();
+
+    });
+
+});
+</script>
+<!-- End Delete User Modal Script -->
 
 @endpush

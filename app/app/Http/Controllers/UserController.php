@@ -88,9 +88,23 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        if ($user->id === auth()->id()) {
+
+        return back()->with(
+            'error',
+            'امکان حذف کاربر وارد شده وجود ندارد.'
+        );
+
+    }
+
+    $user->delete();
+
+    return back()->with(
+        'success',
+        'کاربر با موفقیت حذف شد.'
+    );
     }
 
     public function updatePassword(Request $request, User $user)
