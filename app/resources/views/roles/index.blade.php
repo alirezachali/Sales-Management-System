@@ -119,6 +119,10 @@
                                     <i class="bi bi-trash"></i>
                                 </button>
 
+                                <a href="{{ route('roles.permissions',$role) }}" class="btn btn-sm btn-info">
+                                    <i class="bi bi-shield-lock"></i>
+                                </a>
+
                             </td>
 
                         </tr>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\PermissionGroup;
+use App\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -88,4 +90,30 @@ class RoleController extends Controller
 
         return redirect()->route('roles.index')->with('success', 'نقش با موفقیت حذف شد.');
     }
+
+    public function permissions(Role $role)
+{
+    $role->load('permissions');
+
+    $groups = PermissionGroup::with('permissions')
+                ->orderBy('sort_order')
+                ->get();
+
+    return view(
+        'roles.permissions',
+        compact('role','groups')
+    );
+}
+
+
+public function syncPermissions(Request $request, Role $role)
+{
+    $permissionIds = $request->input('permissions', []);
+
+    $role->permissions()->sync($permissionIds);
+
+    return redirect()
+        ->route('roles.permissions', $role)
+        ->with('success', 'مجوزهای نقش با موفقیت ذخیره شدند.');
+}
 }

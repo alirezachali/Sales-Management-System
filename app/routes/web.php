@@ -80,6 +80,10 @@ Route::middleware('auth')->group(function () {
     /* Role */
     Route::resource('roles', RoleController::class)->except('show');
 
+    /* Permission */
+    Route::get('/roles/{role}/permissions', [RoleController::class,'permissions'])->name('roles.permissions');
+    Route::post('/roles/{role}/permissions', [RoleController::class,'syncPermissions'])->name('roles.permissions.sync');
+
     
 });
 
