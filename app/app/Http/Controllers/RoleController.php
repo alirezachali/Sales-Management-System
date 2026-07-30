@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Role;
 
 class RoleController extends Controller
 {
@@ -11,11 +12,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $users = User::with('role')->latest()->paginate(15);
-
-        $roles = Role::orderBy('name')->get();
-
-        return view('users.index', compact('users','roles'));
+        $roles = Role::latest()->paginate(15);
 
         return view('roles.index', compact('roles'));
     }
@@ -33,7 +30,15 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $data = $request->validate([
+            'display_name' => 'required|max:255',
+            'name' => 'required|unique:roles,name',
+            'description' => 'nullable|max:500',
+        ]);
+
+        Role::create($data);
+
+        return redirect()->route('roles.index')->with('success', 'نقش با موفقیت ایجاد شد.');
     }
 
     /**
@@ -55,16 +60,32 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        $data = $request->validate([
+            'display_name' => 'required|max:255',
+            'name' => 'required|unique:roles,name,' . $role->id,
+            'description' => 'nullable|max:500',
+        ]);
+
+        $role->update($data);
+
+        return redirect()->route('roles.index')->with('success', 'نقش با موفقیت ویرایش شد.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Role $role)
     {
-        //
+        if ($role->users()->exists()) {
+
+            return redirect()->route('roles.index')->with('error', 'این نقش به یک یا چند کاربر اختصاص داده شده و قابل حذف نیست.');
+
+        }
+
+        $role->delete();
+
+        return redirect()->route('roles.index')->with('success', 'نقش با موفقیت حذف شد.');
     }
 }
