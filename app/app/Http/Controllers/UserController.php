@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 
 class UserController extends Controller
 {
@@ -12,9 +13,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::latest()->paginate(15);
+        $users = User::with('role')->latest()->paginate(15);
 
-        return view('users.index', compact('users'));
+        $roles = Role::orderBy('name')->get();
+
+        return view('users.index', compact('users', 'roles'));
     }
 
     /**
@@ -35,6 +38,7 @@ class UserController extends Controller
             'username' => 'required|string|max:100|unique:users',
             'email' => 'nullable|email|unique:users',
             'phone' => 'nullable|string|max:20',
+            'role_id' => 'required|exists:roles,id',
             'password' => 'required|confirmed|min:6',
         ]);
 
@@ -48,7 +52,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
         //
     }
@@ -56,7 +60,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
         //
     }
@@ -64,7 +68,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
         $data = $request->validate([
 
@@ -75,6 +79,8 @@ class UserController extends Controller
             'email' => 'nullable|email|unique:users,email,' . $user->id,
 
             'phone' => 'nullable|max:20',
+
+            'role_id' => 'required|exists:roles,id',
 
         ]);
 

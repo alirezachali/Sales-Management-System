@@ -79,6 +79,8 @@
 
                         <th>وضعیت</th>
 
+                        <th>نقش</th>
+
                         <th>آخرین ورود</th>
 
                         <th width="180">عملیات</th>
@@ -114,6 +116,12 @@
                                     </span>
 
                                 @endif
+
+                            </td>
+
+                            <td>
+
+                                {{ $user->role?->display_name ?? '-' }}
 
                             </td>
 
@@ -278,6 +286,36 @@
                             name="username"
                             required
                             value="{{ old('username') }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            نقش
+
+                        </label>
+
+                        <select name="role_id" class="form-select" required>
+
+                            <option value="">
+
+                                انتخاب نقش
+
+                            </option>
+
+                            @foreach($roles as $role)
+
+                            <option value="{{ $role->id }}">
+
+                                {{ $role->display_name }}
+
+                            </option>
+
+                            @endforeach
+
+                        </select>
 
                     </div>
 
@@ -458,6 +496,36 @@
                             id="edit_username"
                             name="username"
                             class="form-control">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            نقش
+
+                        </label>
+
+                        <select name="role_id" class="form-select" required>
+
+                            <option value="">
+
+                                انتخاب نقش
+
+                            </option>
+
+                            @foreach($roles as $role)
+
+                            <option value="{{ $role->id }}">
+
+                                {{ $role->display_name }}
+
+                            </option>
+
+                            @endforeach
+
+                        </select>
 
                     </div>
 

@@ -44,6 +44,13 @@
             </a>
         </li>
 
+        <li>
+            <a href="{{ route('roles.index') }}" class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                <i class="bi bi-shield-lock"></i>
+                <span>نقش‌ ها</span>
+            </a>
+        </li>
+
     </ul>
 
 </aside>

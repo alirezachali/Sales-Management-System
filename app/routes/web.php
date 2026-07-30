@@ -76,6 +76,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->except('show');
     Route::put('/users/{user}/password', [UserController::class,'updatePassword'])->name('users.password');
 
+    /* Role */
+    Route::resource('roles', RoleController::class)->except('show');
+
+    
 });
 
 
