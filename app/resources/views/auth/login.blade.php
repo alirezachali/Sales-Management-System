@@ -57,13 +57,12 @@
 
                 </span>
 
-                <input
-                    type="text"
-                    name="username"
-                    class="form-control"
-                    autocomplete="username"
-                    autofocus
-                    required>
+                <input type="text"
+                       name="username"
+                       class="form-control"
+                       autocomplete="username"
+                       autofocus
+                       required>
 
             </div>
 
@@ -85,18 +84,16 @@
 
                 </span>
 
-                <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    class="form-control"
-                    autocomplete="current-password"
-                    required>
+                <input id="password"
+                       type="password"
+                       name="password"
+                       class="form-control"
+                       autocomplete="current-password"
+                       required>
 
-                <button
-                    type="button"
-                    class="btn btn-outline-secondary"
-                    id="togglePassword">
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        id="togglePassword">
 
                     <i class="bi bi-eye"></i>
 
@@ -110,15 +107,12 @@
 
             <div class="form-check">
 
-                <input
-                    class="form-check-input"
-                    type="checkbox"
-                    name="remember"
-                    id="remember">
+                <input class="form-check-input"
+                       type="checkbox"
+                       name="remember"
+                       id="remember">
 
-                <label
-                    class="form-check-label"
-                    for="remember">
+                <label class="form-check-label" for="remember">
 
                     مرا به خاطر بسپار
 
@@ -128,8 +122,7 @@
 
         </div>
 
-        <button
-            class="btn btn-primary w-100 login-btn">
+        <button class="btn btn-primary w-100 login-btn">
 
             ورود به سیستم
 
