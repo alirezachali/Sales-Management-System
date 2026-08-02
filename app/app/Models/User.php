@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Role;
 
 class User extends Authenticatable
 {
@@ -21,8 +23,14 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
+        'phone',
         'password',
+        'role_id',
+        'is_active',
+        'last_login_at',
+        'remember_token',
     ];
 
     /**
@@ -45,7 +53,14 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_login_at' => 'datetime',
+            'is_active' => 'boolean',
         ];
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
     }
 
     public function sales(): HasMany
@@ -57,4 +72,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(StockMovement::class);
     }
+
+    
 }
