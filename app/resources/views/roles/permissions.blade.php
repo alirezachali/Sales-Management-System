@@ -10,15 +10,9 @@
 
         <h3 class="mb-1">
 
-            مجوزهای نقش
+       مجوز های : <span class="badge bg-success"> {{ $role->display_name }} </span>
 
         </h3>
-
-        <p class="text-muted mb-0">
-
-            {{ $role->name }}
-
-        </p>
 
     </div>
 
@@ -48,6 +42,7 @@
 
         <strong>
 
+            <i class="bi {{ $group->icon }}"></i>
             {{ $group->name }}
 
         </strong>

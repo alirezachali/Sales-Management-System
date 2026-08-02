@@ -10,8 +10,10 @@ use App\Models\PermissionGroup;
 class PermissionSeeder extends Seeder
 {
     public function run(): void
+
     {
         $modules = [
+
 
             [
                 'name' => 'داشبورد',
@@ -708,35 +710,40 @@ class PermissionSeeder extends Seeder
                     ],
                 ],
             ],
+
+
         ];
 
-        foreach ($modules as $groupName => $permissions) {
 
-            $group = PermissionGroup::create([
+        foreach ($modules as $module) {
 
-                'name' => $groupName,
+            $group = PermissionGroup::updateOrCreate(
+                [
+                    'name' => $module['name'],
+                ],
+                [
+                    'icon' => $module['icon'],
+                    'sort_order' => $module['sort_order'],
+                ]
+            );
 
-            ]);
-
-            foreach ($permissions as $permission) {
+            foreach ($module['permissions'] as $permission) {
 
                 Permission::updateOrCreate(
-
                     [
                         'name' => $permission['name'],
                     ],
-
                     [
                         'permission_group_id' => $group->id,
-
                         'display_name' => $permission['display_name'],
-
-                        'description' => null,
                     ]
                 );
-
             }
-
         }
+
     }
 }
+
+
+
+        
