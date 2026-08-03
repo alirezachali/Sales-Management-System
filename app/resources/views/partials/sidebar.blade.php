@@ -51,6 +51,13 @@
             </a>
         </li>
 
+        <li>
+            <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }}">
+                <i class="bi bi-people"></i>
+                <span>مشتریان</span>
+            </a>
+        </li>
+
     </ul>
 
 </aside>

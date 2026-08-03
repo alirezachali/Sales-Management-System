@@ -10,6 +10,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerRoleController;
 
 
 
@@ -77,13 +79,18 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->except('show');
     Route::put('/users/{user}/password', [UserController::class,'updatePassword'])->name('users.password');
 
-    /* Role */
+    /* User Role */
     Route::resource('roles', RoleController::class)->except('show');
 
-    /* Permission */
+    /* User Role Permission */
     Route::get('/roles/{role}/permissions', [RoleController::class,'permissions'])->name('roles.permissions');
     Route::post('/roles/{role}/permissions', [RoleController::class,'syncPermissions'])->name('roles.permissions.sync');
 
+    /* Customer */
+    Route::resource('customers', CustomerController::class);
+
+    /* Customer Role */
+    Route::resource('customer-roles', CustomerRoleController::class);
     
 });
 
