@@ -20,13 +20,13 @@ class CustomerSeeder extends Seeder
 
                 'last_name' => 'زرتشت',
 
-                'mobile' => '09171502525',
+                'mobile' => '09171502501',
 
-                'phone' => '07165325588',
+                'phone' => '07165325501',
 
                 'national_code' => '2520154845',
 
-                'birth_date' => '',
+                'birth_date' => NULL,
 
                 'gender' => 'male',
 
@@ -44,7 +44,7 @@ class CustomerSeeder extends Seeder
 
                 'total_purchase_amount' => '0',
 
-                'last_purchase_at' => '',
+                'last_purchase_at' => NULL,
 
                 'notes' => 'test note',
 
@@ -56,13 +56,13 @@ class CustomerSeeder extends Seeder
 
                 'last_name' => 'ایران زاده',
 
-                'mobile' => '09171502525',
+                'mobile' => '09171502502',
 
-                'phone' => '07165325588',
+                'phone' => '07165325502',
 
                 'national_code' => '2520154815',
 
-                'birth_date' => '',
+                'birth_date' => NULL,
 
                 'gender' => 'male',
 
@@ -80,7 +80,7 @@ class CustomerSeeder extends Seeder
 
                 'total_purchase_amount' => '0',
 
-                'last_purchase_at' => '',
+                'last_purchase_at' => NULL,
 
                 'notes' => 'test note',
 
@@ -92,13 +92,13 @@ class CustomerSeeder extends Seeder
 
                 'last_name' => 'وطن دوست',
 
-                'mobile' => '09171502525',
+                'mobile' => '09171502503',
 
-                'phone' => '07165325588',
+                'phone' => '0716532558803',
 
                 'national_code' => '2520154818',
 
-                'birth_date' => '',
+                'birth_date' => NULL,
 
                 'gender' => 'male',
 
@@ -116,7 +116,7 @@ class CustomerSeeder extends Seeder
 
                 'total_purchase_amount' => '0',
 
-                'last_purchase_at' => '',
+                'last_purchase_at' => NULL,
 
                 'notes' => 'test note',
 
@@ -128,13 +128,13 @@ class CustomerSeeder extends Seeder
 
                 'last_name' => 'یزدان پناه',
 
-                'mobile' => '09171502525',
+                'mobile' => '09171502504',
 
-                'phone' => '07165325588',
+                'phone' => '07165325504',
 
                 'national_code' => '2520154885',
 
-                'birth_date' => '',
+                'birth_date' => NULL,
 
                 'gender' => 'male',
 
@@ -152,7 +152,7 @@ class CustomerSeeder extends Seeder
 
                 'total_purchase_amount' => '0',
 
-                'last_purchase_at' => '',
+                'last_purchase_at' => NULL,
 
                 'notes' => 'test note',
 
@@ -164,13 +164,13 @@ class CustomerSeeder extends Seeder
 
                 'last_name' => 'آریایی',
 
-                'mobile' => '09171502525',
+                'mobile' => '09171502505',
 
-                'phone' => '07165325588',
+                'phone' => '07165325505',
 
                 'national_code' => '2520154855',
 
-                'birth_date' => '',
+                'birth_date' => NULL,
 
                 'gender' => 'male',
 
@@ -188,7 +188,7 @@ class CustomerSeeder extends Seeder
 
                 'total_purchase_amount' => '0',
 
-                'last_purchase_at' => '',
+                'last_purchase_at' => NULL,
 
                 'notes' => 'test note',
 
@@ -200,13 +200,13 @@ class CustomerSeeder extends Seeder
 
                 'last_name' => 'آرین فر',
 
-                'mobile' => '09171502525',
+                'mobile' => '09171502506',
 
-                'phone' => '07165325588',
+                'phone' => '07165325506',
 
                 'national_code' => '2520154835',
 
-                'birth_date' => '',
+                'birth_date' => NULL,
 
                 'gender' => 'male',
 
@@ -224,7 +224,7 @@ class CustomerSeeder extends Seeder
 
                 'total_purchase_amount' => '0',
 
-                'last_purchase_at' => '',
+                'last_purchase_at' => NULL,
 
                 'notes' => 'test note',
 
