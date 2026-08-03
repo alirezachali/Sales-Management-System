@@ -4,27 +4,44 @@
 
 @section('content')
 
-
-<!-- Success Notification -->
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show">
-    {{ session('success') }}
-    <button class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
-
-<!-- Error Notification -->
-@if(session('error'))
-<div class="alert alert-danger alert-dismissible fade show">
-    {{ session('error') }}
-    <button class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
-
-
-
 <!-- Start Role Page Header -->
 <div class="page-header d-flex justify-content-between align-items-center mb-4">
+
+
+<!-- Success Alert Section -->
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+        <i class="bi bi-check-circle-fill me-2"></i>
+
+        {{ session('success') }}
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                title="یستن"></button>
+
+    </div>
+@endif
+
+<!-- Error Alert Section -->
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+        {{ session('error') }}
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                title="یستن"></button>
+
+    </div>
+@endif
+
+
+
 
     <div>
         <h3 class="mb-1">
@@ -37,7 +54,9 @@
     <!-- Add New Role Button  -->
     <button class="btn btn-primary"
             data-bs-toggle="modal"
-            data-bs-target="#createRoleModal">
+            data-bs-target="#createRoleModal"
+            title="برای افزودن نقش جدید به سیستم کلیک کنید">
+
         <i class="bi bi-plus-circle"></i>
             افزودن نقش جدید
     </button>
@@ -45,19 +64,19 @@
 </div>
 <!-- End Role Page Header -->
 
-<!-- Start Role Table -->
 <div class="card shadow-sm">
 
     <div class="card-body p-0">
 
         <div class="table-responsive">
 
+            <!-- Start Role Table -->        
             <table class="table table-hover align-middle mb-0">
 
                 <!-- Role Table Head -->
                 <thead>
                     <tr>
-                        <th width="70">#</th>
+                        <th width="70">ردیف</th>
                         <th>نام نقش</th>
                         <th>شناسه</th>
                         <th>توضیحات</th>
@@ -66,7 +85,7 @@
                     </tr>
                 </thead>
 
-                <!-- Role Table Body -->
+                <!-- Start Role Table Body -->
                 <tbody>
 
                     @forelse($roles as $role)
@@ -104,7 +123,8 @@
                                         data-name="{{ $role->name }}"
                                         data-description="{{ $role->description }}"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#editRoleModal">
+                                        data-bs-target="#editRoleModal"
+                                        title="برای ویرانش این نقش کلیک کنید">
 
                                     <i class="bi bi-pencil"></i>
                                 </button>
@@ -114,19 +134,25 @@
                                         data-id="{{ $role->id }}"
                                         data-name="{{ $role->name }}"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#deleteRoleModal">
+                                        data-bs-target="#deleteRoleModal"
+                                        title="برای حذف این نقش کلیک کنید">
 
                                     <i class="bi bi-trash"></i>
                                 </button>
 
-                                <a href="{{ route('roles.permissions',$role) }}" class="btn btn-sm btn-info">
-                                    <i class="bi bi-shield-lock"></i>
+                                <!-- Edit Permissions for Role Button -->
+                                <a href="{{ route('roles.permissions',$role) }}" 
+                                   class="btn btn-sm btn-info"
+                                   title="برای ویرایش مجوز های این نقش کلیک کنید">
+                                   
+                                   <i class="bi bi-shield-lock"></i>
                                 </a>
 
                             </td>
 
                         </tr>
 
+                    <!-- اگر اطلاعاتی در دیتابیس وجود نداشت اطلاعات زیر را نمایش میدهد -->
                     @empty
                         <tr>
                             <td colspan="6" class="text-center py-5">
@@ -136,15 +162,15 @@
                     @endforelse
 
                 </tbody>
+                <!-- End Role Table Body -->
 
             </table>
+            <!-- End Role Table -->
 
         </div>
-
     </div>
-
 </div>
-<!-- End Role Table -->
+
 
 <div class="mt-3">
 

@@ -1,10 +1,17 @@
+{{-- ===========================
+      EDIT MODAL
+============================ --}}
+
 <div class="modal fade" id="editCustomerModal" tabindex="-1">
 
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
 
-        <form id="editCustomerForm" action="{{ route('customers.store') }}" method="POST">
+        <form
+            id="editCustomerForm"
+            method="POST">
 
             @csrf
+
             @method('PUT')
 
             <div class="modal-content glass-card">
@@ -13,13 +20,14 @@
 
                     <h5 class="modal-title">
 
-                        <i class="bi bi-person-plus"></i>
-
                         ویرایش مشتری
 
                     </h5>
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"></button>
 
                 </div>
 
@@ -29,57 +37,80 @@
 
                         <div class="col-md-6">
 
-                            <label class="form-label">نام</label>
+                            <label>
 
-                            <input type="text"
-                                   class="form-control"
-                                   name="first_name"
-                                   required>
+                                نام
 
-                        </div>
+                            </label>
 
-                        <div class="col-md-6">
-
-                            <label class="form-label">نام خانوادگی</label>
-
-                            <input type="text"
-                                   class="form-control"
-                                   name="last_name"
-                                   required>
+                            <input
+                                id="edit_first_name"
+                                name="first_name"
+                                class="form-control">
 
                         </div>
 
                         <div class="col-md-6">
 
-                            <label class="form-label">موبایل</label>
+                            <label>
 
-                            <input type="text"
-                                   class="form-control"
-                                   name="mobile"
-                                   required>
+                                نام خانوادگی
 
-                        </div>
+                            </label>
 
-                        <div class="col-md-6">
-
-                            <label class="form-label">تلفن</label>
-
-                            <input type="text"
-                                   class="form-control"
-                                   name="phone">
+                            <input
+                                id="edit_last_name"
+                                name="last_name"
+                                class="form-control">
 
                         </div>
 
                         <div class="col-md-6">
 
-                            <label class="form-label">نقش مشتری</label>
+                            <label>
 
-                            <select name="customer_role_id" class="form-select">
+                                موبایل
+
+                            </label>
+
+                            <input
+                                id="edit_mobile"
+                                name="mobile"
+                                class="form-control">
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label>
+
+                                تلفن
+
+                            </label>
+
+                            <input
+                                id="edit_phone"
+                                name="phone"
+                                class="form-control">
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label>
+
+                                نقش
+
+                            </label>
+
+                            <select
+                                id="edit_customer_role_id"
+                                name="customer_role_id"
+                                class="form-select">
 
                                 @foreach($roles as $role)
 
-                                    <option value="{{ $role->id }}"
-                                        {{ $role->is_default ? 'selected' : '' }}>
+                                    <option value="{{ $role->id }}">
 
                                         {{ $role->name }}
 
@@ -93,13 +124,28 @@
 
                         <div class="col-md-6">
 
-                            <label class="form-label">وضعیت</label>
+                            <label>
 
-                            <select name="is_active" class="form-select">
+                                وضعیت
 
-                                <option value="1">فعال</option>
+                            </label>
 
-                                <option value="0">غیرفعال</option>
+                            <select
+                                id="edit_is_active"
+                                name="is_active"
+                                class="form-select">
+
+                                <option value="1">
+
+                                    فعال
+
+                                </option>
+
+                                <option value="0">
+
+                                    غیرفعال
+
+                                </option>
 
                             </select>
 
@@ -107,11 +153,17 @@
 
                         <div class="col-12">
 
-                            <label class="form-label">توضیحات</label>
+                            <label>
 
-                            <textarea class="form-control"
-                                      rows="3"
-                                      name="notes"></textarea>
+                                توضیحات
+
+                            </label>
+
+                            <textarea
+                                id="edit_notes"
+                                name="notes"
+                                rows="3"
+                                class="form-control"></textarea>
 
                         </div>
 
@@ -121,20 +173,19 @@
 
                 <div class="modal-footer">
 
-                    <button type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
 
                         انصراف
 
                     </button>
 
-                    <button type="submit"
-                            class="btn btn-primary">
+                    <button
+                        class="btn btn-warning">
 
-                        <i class="bi bi-check-circle"></i>
-
-                        ذخیره
+                        ذخیره تغییرات
 
                     </button>
 

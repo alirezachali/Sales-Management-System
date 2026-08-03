@@ -3,6 +3,14 @@
 
 @section('title', 'مدیریت دسته‌بندی محصولات')
 
+@section('content')
+
+<div class="container">
+
+    <div class="card dashboard-card">
+
+
+    <!-- Success Alert Section -->
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
 
@@ -12,11 +20,13 @@
 
         <button type="button"
                 class="btn-close"
-                data-bs-dismiss="alert"></button>
+                data-bs-dismiss="alert"
+                title="یستن"></button>
 
     </div>
 @endif
 
+<!-- Error Alert Section -->
 @if(session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
 
@@ -26,16 +36,13 @@
 
         <button type="button"
                 class="btn-close"
-                data-bs-dismiss="alert"></button>
+                data-bs-dismiss="alert"
+                title="یستن"></button>
 
     </div>
 @endif
 
-@section('content')
 
-<div class="container">
-
-    <div class="card dashboard-card">
 
         <div class="card-header d-flex justify-content-between align-items-center">
 

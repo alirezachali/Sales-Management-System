@@ -1,6 +1,11 @@
+
+{{-- ===========================
+      CREATE MODAL
+============================ --}}
+
 <div class="modal fade" id="createCustomerModal" tabindex="-1">
 
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
 
         <form action="{{ route('customers.store') }}" method="POST">
 
@@ -12,13 +17,15 @@
 
                     <h5 class="modal-title">
 
-                        <i class="bi bi-person-plus"></i>
+                        <i class="bi bi-person-plus-fill"></i>
 
                         افزودن مشتری
 
                     </h5>
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"></button>
 
                 </div>
 
@@ -28,56 +35,78 @@
 
                         <div class="col-md-6">
 
-                            <label class="form-label">نام</label>
+                            <label class="form-label">
+
+                                نام
+
+                            </label>
 
                             <input type="text"
-                                   class="form-control"
                                    name="first_name"
+                                   class="form-control"
                                    required>
 
                         </div>
 
                         <div class="col-md-6">
 
-                            <label class="form-label">نام خانوادگی</label>
+                            <label class="form-label">
+
+                                نام خانوادگی
+
+                            </label>
 
                             <input type="text"
-                                   class="form-control"
                                    name="last_name"
+                                   class="form-control"
                                    required>
 
                         </div>
 
                         <div class="col-md-6">
 
-                            <label class="form-label">موبایل</label>
+                            <label class="form-label">
+
+                                موبایل
+
+                            </label>
 
                             <input type="text"
-                                   class="form-control"
                                    name="mobile"
-                                   required>
+                                   class="form-control">
 
                         </div>
 
                         <div class="col-md-6">
 
-                            <label class="form-label">تلفن</label>
+                            <label class="form-label">
+
+                                تلفن
+
+                            </label>
 
                             <input type="text"
-                                   class="form-control"
-                                   name="phone">
+                                   name="phone"
+                                   class="form-control">
 
                         </div>
 
                         <div class="col-md-6">
 
-                            <label class="form-label">نقش مشتری</label>
+                            <label class="form-label">
 
-                            <select name="customer_role_id" class="form-select">
+                                نقش مشتری
+
+                            </label>
+
+                            <select
+                                class="form-select"
+                                name="customer_role_id">
 
                                 @foreach($roles as $role)
 
-                                    <option value="{{ $role->id }}"
+                                    <option
+                                        value="{{ $role->id }}"
                                         {{ $role->is_default ? 'selected' : '' }}>
 
                                         {{ $role->name }}
@@ -92,13 +121,27 @@
 
                         <div class="col-md-6">
 
-                            <label class="form-label">وضعیت</label>
+                            <label class="form-label">
 
-                            <select name="is_active" class="form-select">
+                                وضعیت
 
-                                <option value="1">فعال</option>
+                            </label>
 
-                                <option value="0">غیرفعال</option>
+                            <select
+                                class="form-select"
+                                name="is_active">
+
+                                <option value="1">
+
+                                    فعال
+
+                                </option>
+
+                                <option value="0">
+
+                                    غیرفعال
+
+                                </option>
 
                             </select>
 
@@ -106,11 +149,16 @@
 
                         <div class="col-12">
 
-                            <label class="form-label">توضیحات</label>
+                            <label class="form-label">
 
-                            <textarea class="form-control"
-                                      rows="3"
-                                      name="notes"></textarea>
+                                توضیحات
+
+                            </label>
+
+                            <textarea
+                                class="form-control"
+                                rows="3"
+                                name="notes"></textarea>
 
                         </div>
 
@@ -120,18 +168,17 @@
 
                 <div class="modal-footer">
 
-                    <button type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
 
                         انصراف
 
                     </button>
 
-                    <button type="submit"
-                            class="btn btn-primary">
-
-                        <i class="bi bi-check-circle"></i>
+                    <button
+                        class="btn btn-primary">
 
                         ذخیره
 

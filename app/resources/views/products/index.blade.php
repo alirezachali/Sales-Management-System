@@ -9,6 +9,39 @@
 <div class="row row-cards mb-4 bg-dark">
 
 
+<!-- Success Alert Section -->
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+
+        <i class="bi bi-check-circle-fill me-2"></i>
+
+        {{ session('success') }}
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                title="یستن"></button>
+
+    </div>
+@endif
+
+<!-- Error Alert Section -->
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+        {{ session('error') }}
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                title="یستن"></button>
+
+    </div>
+@endif
+
+
     <div class="col-sm-6 col-lg-3">
 
         <div class="card">
@@ -212,13 +245,18 @@
 
         </h4>
 
-        <a href="{{ route('products.create') }}" 
+        <!-- <a href="{{ route('products.create') }}" 
            class="btn btn-primary"
            title="افزودن کالای جدید به لیست">
-
             افزودن کالا
+        </a> -->
 
-        </a>
+        <button class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#createUserModal"
+                title="افزودن مشتری جدید به سیستم">>
+            افزودن کالا جدید
+        </button>
 
     </div>
 
@@ -343,5 +381,7 @@
     </div>
 
 </div>
+
+@include('products.modals.create')
 
 @endsection

@@ -4,69 +4,73 @@
 
 @section('content')
 
+<!-- Users Card Header -->
+<div class="page-header d-flex justify-content-between align-items-center mb-4">
 
+
+
+<!-- Success Alert Section -->
 @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
 
-    <div class="alert alert-success alert-dismissible fade show">
+        <i class="bi bi-check-circle-fill me-2"></i>
 
         {{ session('success') }}
 
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                title="یستن"></button>
 
     </div>
-
 @endif
 
+<!-- Error Alert Section -->
 @if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
 
-<div class="alert alert-danger alert-dismissible fade show">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
 
-    {{ session('error') }}
+        {{ session('error') }}
 
-    <button
-        class="btn-close"
-        data-bs-dismiss="alert"></button>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                title="یستن"></button>
 
-</div>
-
+    </div>
 @endif
 
 
-<!-- Header -->
-<div class="page-header d-flex justify-content-between align-items-center mb-4">
+
 
     <div>
-
         <h3 class="mb-1">مدیریت کاربران</h3>
-
-        <p class="text-muted mb-0">
-            مدیریت کاربران سیستم
-        </p>
-
+        <p class="text-muted mb-0">مدیریت کاربران سیستم</p>
     </div>
 
-    <button
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#createUserModal">
+    <button class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#createUserModal"
+            title="برای افزودن کاربر جدید به سیستم کلیک کنید">
 
         <i class="bi bi-plus-circle"></i>
-
         کاربر جدید
-
     </button>
 
 </div>
 
-<!-- User Table -->
+<!-- Users Card Body -->
 <div class="card shadow-sm">
 
     <div class="card-body p-0">
 
         <div class="table-responsive">
 
+            <!-- Users Table -->
             <table class="table table-hover align-middle mb-0">
 
+                <!-- Start Users Table Head -->
                 <thead>
 
                     <tr>
@@ -88,7 +92,9 @@
                     </tr>
 
                 </thead>
+                <!-- End Users Table Head -->
 
+                <!-- Start Users Table Body -->
                 <tbody>
 
                     @forelse($users as $user)
@@ -102,33 +108,23 @@
                             <td>{{ $user->username }}</td>
 
                             <td>
-
                                 @if($user->is_active)
-
                                     <span class="badge bg-success">
                                         فعال
                                     </span>
-
                                 @else
-
                                     <span class="badge bg-danger">
                                         غیرفعال
                                     </span>
-
                                 @endif
-
                             </td>
 
                             <td>
-
                                 {{ $user->role?->display_name ?? '-' }}
-
                             </td>
 
                             <td>
-
                                 {{ $user->last_login_at?->format('Y/m/d H:i') ?? '-' }}
-
                             </td>
 
                             <td>
@@ -142,10 +138,10 @@
                                         data-phone="{{ $user->phone }}"
                                         data-active="{{ $user->is_active }}"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#editUserModal">
+                                        data-bs-target="#editUserModal"
+                                        title="برای ویرایش این کاربر کلیک کنید">
 
                                     <i class="bi bi-pencil"></i>
-
                                 </button>
 
                                 <!-- Change Password User Button -->
@@ -153,10 +149,10 @@
                                         data-id="{{ $user->id }}"
                                         data-name="{{ $user->name }}"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#changePasswordModal">
+                                        data-bs-target="#changePasswordModal"
+                                        title="برای تغییر کلمه عبور این کاربر کلیک کنید">
 
                                     <i class="bi bi-key"></i>
-
                                 </button>
 
                                 <!-- Delete User Button -->
@@ -164,10 +160,10 @@
                                         data-id="{{ $user->id }}"
                                         data-name="{{ $user->name }}"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#deleteUserModal">
+                                        data-bs-target="#deleteUserModal"
+                                        title="برای حذف این کاربر کلیک کنید">
 
                                     <i class="bi bi-trash"></i>
-
                                 </button>
 
                             </td>
@@ -189,13 +185,13 @@
                     @endforelse
 
                 </tbody>
+                <!-- End Users Table Body -->
 
             </table>
+            <!-- End Users Table -->
 
         </div>
-
     </div>
-
 </div>
 
 
@@ -206,571 +202,13 @@
 </div>
 
 
-<!-- Start Add User Modal -->
-<div class="modal fade" id="createUserModal" tabindex="-1" aria-hidden="true">
 
-    <div class="modal-dialog modal-lg">
+<!-- include External Modals File -->
+@include('users.modals.changepassword')
+@include('users.modals.create')
+@include('users.modals.delete')
+@include('users.modals.edit')
 
-        @if ($errors->any())
-
-            <div class="alert alert-danger">
-
-                <ul class="mb-0">
-
-                    @foreach ($errors->all() as $error)
-
-                        <li>{{ $error }}</li>
-
-                    @endforeach
-
-                </ul>
-
-            </div>
-
-        @endif
-
-        <form
-            action="{{ route('users.store') }}"
-            method="POST"
-            class="modal-content">
-
-            @csrf
-
-            <div class="modal-header">
-
-                <h5 class="modal-title">
-
-                    افزودن کاربر جدید
-
-                </h5>
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"></button>
-
-            </div>
-
-            <div class="modal-body">
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            نام و نام خانوادگی
-
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="name"
-                            required
-                            value="{{ old('name') }}">
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            نام کاربری
-
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="username"
-                            required
-                            value="{{ old('username') }}">
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            نقش
-
-                        </label>
-
-                        <select name="role_id" class="form-select" required>
-
-                            <option value="">
-
-                                انتخاب نقش
-
-                            </option>
-
-                            @foreach($roles as $role)
-
-                            <option value="{{ $role->id }}">
-
-                                {{ $role->display_name }}
-
-                            </option>
-
-                            @endforeach
-
-                        </select>
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            ایمیل
-
-                        </label>
-
-                        <input
-                            type="email"
-                            class="form-control"
-                            name="email"
-                            value="{{ old('email') }}">
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            موبایل
-
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="phone"
-                            value="{{ old('phone') }}">
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            رمز عبور
-
-                        </label>
-
-                        <input
-                            type="password"
-                            class="form-control"
-                            name="password"
-                            required>
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            تکرار رمز عبور
-
-                        </label>
-
-                        <input
-                            type="password"
-                            class="form-control"
-                            name="password_confirmation"
-                            required>
-
-                    </div>
-
-                    <div class="col-md-12">
-
-                        <div class="form-check form-switch">
-
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                name="is_active"
-                                value="1"
-                                checked
-                                value="{{ old('is_active', true) ? 'checked' : '' }}">
-
-                            <label class="form-check-label">
-
-                                کاربر فعال باشد
-
-                            </label>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
-
-                    انصراف
-
-                </button>
-
-                <button
-                    type="submit"
-                    class="btn btn-primary">
-
-                    ذخیره
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-<!-- End Add User Modal -->
-
-<!-- Start Edit User Modal -->
-<div class="modal fade" id="editUserModal" tabindex="-1">
-
-    <div class="modal-dialog modal-lg">
-
-        <form
-            id="editUserForm"
-            method="POST"
-            class="modal-content">
-
-            @csrf
-            @method('PUT')
-
-            <div class="modal-header">
-
-                <h5 class="modal-title">
-
-                    ویرایش کاربر
-
-                </h5>
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"></button>
-
-            </div>
-
-            <div class="modal-body">
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            نام
-
-                        </label>
-
-                        <input
-                            id="edit_name"
-                            name="name"
-                            class="form-control">
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            نام کاربری
-
-                        </label>
-
-                        <input
-                            id="edit_username"
-                            name="username"
-                            class="form-control">
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            نقش
-
-                        </label>
-
-                        <select name="role_id" class="form-select" required>
-
-                            <option value="">
-
-                                انتخاب نقش
-
-                            </option>
-
-                            @foreach($roles as $role)
-
-                            <option value="{{ $role->id }}">
-
-                                {{ $role->display_name }}
-
-                            </option>
-
-                            @endforeach
-
-                        </select>
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            ایمیل
-
-                        </label>
-
-                        <input
-                            id="edit_email"
-                            name="email"
-                            class="form-control">
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label">
-
-                            موبایل
-
-                        </label>
-
-                        <input
-                            id="edit_phone"
-                            name="phone"
-                            class="form-control">
-
-                    </div>
-
-                    <div class="col-12">
-
-                        <div class="form-check form-switch">
-
-                            <input
-                                id="edit_active"
-                                type="checkbox"
-                                class="form-check-input"
-                                name="is_active"
-                                value="1">
-
-                            <label class="form-check-label">
-
-                                کاربر فعال باشد
-
-                            </label>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button
-                    class="btn btn-primary">
-
-                    ذخیره تغییرات
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-<!-- End Edit User Modal -->
-
-
-<!-- Start Change Password User Modal -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1">
-
-    <div class="modal-dialog">
-
-        <form
-            id="changePasswordForm"
-            method="POST"
-            class="modal-content">
-
-            @csrf
-            @method('PUT')
-
-            <div class="modal-header">
-
-                <h5 class="modal-title">
-
-                    تغییر رمز عبور
-
-                </h5>
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"></button>
-
-            </div>
-
-            <div class="modal-body">
-
-                <p class="text-muted">
-
-                    تغییر رمز عبور کاربر
-
-                    <strong id="passwordUserName"></strong>
-
-                </p>
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        رمز عبور جدید
-
-                    </label>
-
-                    <input
-                        type="password"
-                        name="password"
-                        class="form-control"
-                        required>
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-
-                        تکرار رمز عبور
-
-                    </label>
-
-                    <input
-                        type="password"
-                        name="password_confirmation"
-                        class="form-control"
-                        required>
-
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
-
-                    انصراف
-
-                </button>
-
-                <button
-                    class="btn btn-primary">
-
-                    ذخیره
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-<!-- End Change Password User Modal -->
-
-
-<!-- Start Delete User Modal -->
-<div class="modal fade" id="deleteUserModal" tabindex="-1">
-
-    <div class="modal-dialog">
-
-        <form
-            id="deleteUserForm"
-            method="POST"
-            class="modal-content">
-
-            @csrf
-            @method('DELETE')
-
-            <div class="modal-header bg-danger text-white">
-
-                <h5 class="modal-title">
-
-                    حذف کاربر
-
-                </h5>
-
-                <button
-                    type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="modal"></button>
-
-            </div>
-
-            <div class="modal-body">
-
-                <p>
-
-                    آیا از حذف کاربر
-
-                    <strong id="deleteUserName"></strong>
-
-                    اطمینان دارید؟
-
-                </p>
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-bs-dismiss="modal">
-
-                    انصراف
-
-                </button>
-
-                <button
-                    class="btn btn-danger">
-
-                    حذف
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-<!-- End Delete User Modal -->
 
 
 @endsection
@@ -855,9 +293,9 @@ document.querySelectorAll('.deleteUserBtn').forEach(button=>{
 
         document.getElementById('deleteUserForm').action='/users/'+this.dataset.id;
 
-        new bootstrap.Modal(
-            document.getElementById('deleteUserModal')
-        ).show();
+        const modal = document.getElementById('deleteUserModal');
+
+        bootstrap.Modal.getOrCreateInstance(modal).show();
 
     });
 
