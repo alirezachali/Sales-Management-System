@@ -9,7 +9,7 @@ use App\Models\CustomerRole;
 class CustomerController extends Controller
 {
     
-    public function index(Request $request)
+    public function index(Request $request, Customer $customer)
     {
         $customers = Customer::with('role')
         ->when($request->search, function ($query) use ($request) {
@@ -26,13 +26,13 @@ class CustomerController extends Controller
         ->latest()
         ->paginate(15);
 
-    $roles = CustomerRole::orderBy('sort_order')->get();
+        $roles = CustomerRole::orderBy('sort_order')->get();
 
-    return view('customers.index', compact('customers', 'roles'));
+        return view('customers.index', compact('customers', 'roles'));
     }
 
     
-    public function store(Request $request)
+    public function store(Request $request, Customer $customer)
     {
         $validated = $request->validate([
 
@@ -55,8 +55,8 @@ class CustomerController extends Controller
         Customer::create($validated);
 
         return redirect()
-            ->route('customers.index')
-            ->with('success', 'مشتری با موفقیت ثبت شد.');
+               ->route('customers.index')
+               ->with('success', 'مشتری با موفقیت ثبت شد.');
     }
 
    
@@ -66,7 +66,7 @@ class CustomerController extends Controller
     }
 
     
-    public function update(Request $request, string $id)
+    public function update(Request $request, Customer $customer)
     {
         $validated = $request->validate([
 

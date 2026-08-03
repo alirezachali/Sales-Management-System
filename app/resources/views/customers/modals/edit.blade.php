@@ -6,9 +6,7 @@
 
     <div class="modal-dialog modal-xl modal-dialog-centered">
 
-        <form
-            id="editCustomerForm"
-            method="POST">
+        <form id="editCustomerForm" method="POST">
 
             @csrf
 
@@ -19,18 +17,14 @@
                 <div class="modal-header">
 
                     <h5 class="modal-title">
-
                         ویرایش مشتری
-
                     </h5>
 
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" title="بستن"></button>
 
                 </div>
 
+                <!-- Modal Body -->
                 <div class="modal-body">
 
                     <div class="row g-3">
@@ -38,15 +32,12 @@
                         <div class="col-md-6">
 
                             <label>
-
                                 نام
-
                             </label>
 
-                            <input
-                                id="edit_first_name"
-                                name="first_name"
-                                class="form-control">
+                            <input id="edit_first_name"
+                                   name="first_name"
+                                   class="form-control">
 
                         </div>
 

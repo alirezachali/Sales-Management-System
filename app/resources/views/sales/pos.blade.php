@@ -19,7 +19,7 @@
 
             <!--  -->
             <div class="mb-3">
-                <label class="form-label">
+                <label class="form-label" for="barcode">
                     بارکد کالا
                 </label>
 
@@ -87,23 +87,23 @@
                     <!-- Modal Body -->
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label>جمع کل</label>
+                            <label for="totalPrice">جمع کل</label>
                             <input id="totalPrice" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
-                            <label>تخفیف</label>
+                            <label for="discount">تخفیف</label>
                             <input id="discount" type="number" class="form-control" value="0">
                         </div>
                         <div class="mb-3">
-                            <label>مبلغ نهایی</label>
+                            <label for="finalPrice">مبلغ نهایی</label>
                             <input id="finalPrice" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
-                            <label>مبلغ دریافتی</label>
+                            <label for="paidAmount">مبلغ دریافتی</label>
                             <input id="paidAmount" type="number" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label>باقی‌مانده</label>
+                            <label for="changeAmount">باقی‌مانده</label>
                             <input id="changeAmount" class="form-control" readonly>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
 </div>
 
 
-
+@endsection
 @section('scripts')
 <script>
 
@@ -278,7 +278,7 @@ const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
 
 document.getElementById('checkout-btn').addEventListener('click', function () {
 
-    // const total = calculateTotal();
+    const total = calculateTotal();
     document.getElementById('totalPrice').value = total.toLocaleString();
     document.getElementById('finalPrice').value = total.toLocaleString();
     modal.show();
@@ -331,4 +331,3 @@ document.getElementById('confirmSale').addEventListener('click', function () {
 
 
 </script>
-@endsection

@@ -10,32 +10,24 @@
 <!-- Success Alert Section -->
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-
         <i class="bi bi-check-circle-fill me-2"></i>
-
         {{ session('success') }}
-
         <button type="button"
                 class="btn-close"
                 data-bs-dismiss="alert"
-                title="یستن"></button>
-
+                title="بستن"></button>
     </div>
 @endif
 
 <!-- Error Alert Section -->
 @if(session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-
         <i class="bi bi-exclamation-triangle-fill me-2"></i>
-
         {{ session('error') }}
-
         <button type="button"
                 class="btn-close"
                 data-bs-dismiss="alert"
-                title="یستن"></button>
-
+                title="بستن"></button>
     </div>
 @endif
 
@@ -232,6 +224,8 @@
                                         data-role="{{ $customer->customer_role_id }}"
                                         data-active="{{ $customer->is_active }}"
                                         data-notes="{{ $customer->notes }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editCustomerModal"
                                         title="برای ویرایش این مشتری کلیک کنید">
 
                                     <i class="bi bi-pencil"></i>
@@ -240,6 +234,8 @@
                                 <!-- Delete Customer Button -->
                                 <button class="btn btn-sm btn-danger deleteCustomer"
                                         data-id="{{ $customer->id }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteCustomerModal"
                                         title="برای حذف این مشتری کلیک کنید">
 
                                     <i class="bi bi-trash"></i>
@@ -286,8 +282,9 @@
 
 @section('scripts')
 
-<script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+<script>
 $(document).ready(function () {
 
     // ==========================
