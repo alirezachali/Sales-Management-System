@@ -169,7 +169,7 @@
 
                 <div class="col-md-2">
 
-                    <button class="btn btn-primary w-100">
+                    <button class="btn btn-primary w-100" title="جستجو کنید">
 
                         <i class="bi bi-search"></i>
 
@@ -184,7 +184,8 @@
                 <div class="col-md-2">
 
                     <a href="{{ route('products.index') }}"
-                       class="btn btn-outline-secondary w-100">
+                       class="btn btn-outline-secondary w-100"
+                       title="پاک کردن فیلترهای جستجو">
 
                         پاک کردن
 
@@ -211,7 +212,9 @@
 
         </h4>
 
-        <a href="{{ route('products.create') }}" class="btn btn-primary">
+        <a href="{{ route('products.create') }}" 
+           class="btn btn-primary"
+           title="افزودن کالای جدید به لیست">
 
             افزودن کالا
 
@@ -265,16 +268,21 @@
 
                     <td>
 
+                            <!-- دکمه ویرایش کالا -->
                             <a href="{{ route('products.edit',$product) }}"
-                                class="btn btn-sm btn-outline-primary">
+                               class="btn btn-sm btn-outline-primary"
+                               title="ویرایش بارکد و نام کالا">
                                 <i class="bi bi-pencil"></i>
                             </a>
 
+                            <!-- دکمه مشاهده لیست ورود و خروج این کالا به انبار -->
                             <a href="{{ route('products.stock',$product) }}"
-                                class="btn btn-sm btn-outline-warning">
+                               class="btn btn-sm btn-outline-warning"
+                               title="مشاهده سوابق ورود و خروج این کالا به انبار">
                                 <i class="bi bi-boxes"></i>
                             </a>
 
+                            <!-- -->
                             <form action="{{ route('products.destroy',$product) }}"
                                   method="POST"
                                   class="d-inline">
@@ -283,19 +291,24 @@
 
                             @method('DELETE')
 
-                            <button
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('حذف شود؟')">
+                            <!-- دکمه حذف کالا-->
+                            <button class="btn btn-danger btn-sm"
+                                    onclick="return confirm('حذف شود؟')"
+                                    title="حذف این کالا">
                                 حذف
                             </button>
 
+                            <!-- دکمه ورود کالا به انبار-->
                             <a href="{{ route('products.stock.create',$product) }}"
-                                class="btn btn-sm btn-outline-success">
+                               class="btn btn-sm btn-outline-success"
+                               title="ورود این کالا به انبار">
                                 <i class="bi bi-plus-circle"></i>
                             </a>
 
+                            <!-- دکمه خروج کالا از انبار-->
                             <a href="{{ route('products.sale.create',$product) }}"
-                                class="btn btn-sm btn-outline-danger">
+                               class="btn btn-sm btn-outline-danger"
+                               title="خروج این کالا از انبار">
                                 <i class="bi bi-dash-circle"></i>
                             </a>
 

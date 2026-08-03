@@ -44,7 +44,7 @@
                 مدیریت دسته‌بندی محصولات
             </h4>
 
-            <button class="btn btn-success" id="btnAddCategory">
+            <button class="btn btn-success" id="btnAddCategory" title="افزودن دسته بندی جدید">
                 <i class="bi bi-plus-circle"></i>
                 افزودن دسته‌بندی
             </button>
@@ -75,155 +75,133 @@
 
             <div class="table-responsive">
 
+                <!-- جدول لیست دسته بندی ها -->
                 <table class="table table-hover align-middle text-center">
 
                     <thead class="table">
 
-                    <tr>
+                        <tr>
 
-                        <th width="70">ردیف</th>
+                            <th width="70">ردیف</th>
 
-                        <th>نام دسته‌بندی</th>
+                            <th>نام دسته‌بندی</th>
 
-                        <th>توضیحات</th>
+                            <th>توضیحات</th>
 
-                        <th width="140">تعداد کالا</th>
+                            <th width="140">تعداد کالا</th>
 
-                        <th width="180">تاریخ ایجاد</th>
+                            <th width="180">تاریخ ایجاد</th>
 
-                        <th>وضعیت</th>
+                            <th>وضعیت</th>
 
-                        <th width="140">عملیات</th>
+                            <th width="140">عملیات</th>
 
-                    </tr>
+                        </tr>
 
                     </thead>
 
                     <tbody>
 
+                    <!-- شروع حلقه -->
                     @forelse($categories as $category)
 
                         <tr>
 
+                            <!-- ستون ردیف -->
                             <td>
                                 {{ $loop->iteration + (($categories->currentPage()-1) * $categories->perPage()) }}
                             </td>
 
+                            <!-- ستون نام دسته بندی -->
                             <td class="text-start">
                                 {{ $category->name }}
                             </td>
 
+                            <!-- ستون وضعیت -->
                             <td>
-
                                 @if($category->description)
-
                                     {{ $category->description }}
-
                                 @else
-
-                                    <span class="text-muted">
-                                        ---
-                                    </span>
-
+                                    <span class="text-muted">---</span>
                                 @endif
-
                             </td>
 
+                            <!-- ستون تعداد کالا -->
                             <td>
-
                                 @if($category->products_count)
-
                                     <span class="badge bg-primary">
-
                                         {{ $category->products_count }}
-
                                     </span>
-
                                 @else
-
                                     <span class="badge bg-secondary">
-
                                         0
-
                                     </span>
-
                                 @endif
-
                             </td>
 
+                            <!-- ستون تاریخ ایجاد -->
                             <td>
-
-                                {{ $category->created_at->format('Y/m/d') }}
-
+                                {{ $category->created_at }}
                             </td>
 
+                            <!-- ستون وضعیت -->
                             <td>
-
                                 @if($category->is_active)
-
                                     <span class="badge bg-success">
                                         فعال
                                     </span>
-
                                @else
-
                                    <span class="badge bg-danger">
                                        غیرفعال
                                     </span>
-
                                 @endif
-
                             </td>
 
+                            <!-- ستون عملیات -->
                             <td>
-
                                 <div class="btn-group">
-                                
+
+                                <!-- دکمه ویرایش دسته بندی -->
                                 <button type="button"
                                        class="btn btn-sm btn-primary btn-edit"
                                        data-id="{{ $category->id }}"
                                        data-name="{{ $category->name }}"
                                        data-description="{{ $category->description }}"
-                                       data-active="{{ $category->is_active }}">
+                                       data-active="{{ $category->is_active }}"
+                                       title="ویرایش این دسته بندی">
 
                                     <i class="bi bi-pencil-square"></i>
-
                                 </button>
 
+                                <!-- دکمه حذف دسته بندی -->
                                 <button type="button"
                                         class="btn btn-sm btn-danger btn-delete"
                                         data-id="{{ $category->id }}"
-                                        data-name="{{ $category->name }}">
+                                        data-name="{{ $category->name }}"
+                                        title="حذف کردن این دسته بندی">
 
                                     <i class="bi bi-trash"></i>
 
                                 </button>
                                 
                                 </div>
-
                             </td>
 
                         </tr>
 
-                    @empty
-
+                        <!-- اگر اطلاعاتی در دیتابیس برای نمایش وجود نداشته باشد. اطلاعات زیر را نمایش میدهد -->
+                        @empty
                         <tr>
-
                             <td colspan="5" class="py-5">
-
                                 <i class="bi bi-inbox fs-1 text-secondary"></i>
-
                                 <div class="mt-3">
-
                                     هنوز هیچ دسته‌بندی ثبت نشده است.
-
                                 </div>
-
                             </td>
-
                         </tr>
 
                     @endforelse
+                    <!-- پایان حلقه -->
 
                     </tbody>
 
@@ -231,6 +209,7 @@
 
             </div>
 
+            <!--  -->
             <div class="mt-4 d-flex justify-content-center">
 
                 {{ $categories->links() }}
@@ -243,97 +222,69 @@
 
 </div>
 
+<!-- include External Modals File -->
 @include('categories.modals.create')
-
 @include('categories.modals.edit')
-
 @include('categories.modals.delete')
+
 
 @endsection
 
-@section('scripts')
 
+<!-- Start Scripts Section -->
+@section('scripts')
 <script>
 
-document.addEventListener('DOMContentLoaded', function () {
+    // Start Modals Script
+    document.addEventListener('DOMContentLoaded', function () {
 
-    const createModal = new bootstrap.Modal(
-        document.getElementById('createCategoryModal')
-    );
-
-    document.getElementById('btnAddCategory')
-        .addEventListener('click', function () {
+        // Start Create Modal
+        const createModal = new bootstrap.Modal(document.getElementById('createCategoryModal'));
+        document.getElementById('btnAddCategory').addEventListener('click', function () {
 
             document.getElementById('createCategoryForm').reset();
-
             createModal.show();
 
         });
+        // End Create Modal
 
 
+        // Start Edit Modal
+        const editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+        document.querySelectorAll('.btn-edit').forEach(btn => {
 
-     const editModal = new bootstrap.Modal(
-    document.getElementById('editCategoryModal')
-);
+            btn.addEventListener('click', function () {
 
-document.querySelectorAll('.btn-edit').forEach(btn => {
+                document.getElementById('edit_id').value = this.dataset.id;
+                document.getElementById('editCategoryForm').action = '/categories/' + this.dataset.id;
+                document.getElementById('edit_name').value = this.dataset.name;
+                document.getElementById('edit_description').value = this.dataset.description ?? '';
+                document.getElementById('edit_is_active').checked = this.dataset.active == 1;
+                editModal.show();
 
-    btn.addEventListener('click', function () {
-
-        document.getElementById('edit_id').value =
-            this.dataset.id;
-
-
-        document.getElementById('editCategoryForm').action =
-            '/categories/' + this.dataset.id;
-
-
-        document.getElementById('edit_name').value =
-            this.dataset.name;
-
-        document.getElementById('edit_description').value =
-            this.dataset.description ?? '';
-
-        document.getElementById('edit_is_active').checked =
-            this.dataset.active == 1;
-
-        editModal.show();
-
-    });
-
-});
+            });
+        });
+        // End Edit Modal 
 
 
+        // Start Delete Modal
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteCategoryModal'));
+        document.querySelectorAll('.btn-delete').forEach(btn => {
 
-const deleteModal = new bootstrap.Modal(
-    document.getElementById('deleteCategoryModal')
-);
+            btn.addEventListener('click', function () {
 
-document.querySelectorAll('.btn-delete').forEach(btn => {
+                document.getElementById('delete_id').value = this.dataset.id;
+                document.getElementById('deleteCategoryForm').action = '/categories/' + this.dataset.id;
+                document.getElementById('delete_category_name').innerText = this.dataset.name;
+                deleteModal.show();
 
-    btn.addEventListener('click', function () {
+            });
 
-        document.getElementById('delete_id').value =
-            this.dataset.id;
-
-        document.getElementById('deleteCategoryForm').action =
-        '/categories/' + this.dataset.id;
-
-
-        document.getElementById('delete_category_name').innerText =
-            this.dataset.name;
-
-        deleteModal.show();
+        });
+        // End Delete Modal
 
     });
-
-});   
-
-});
-
-
-
-
+    // End Modals Script 
 
 </script>
 
