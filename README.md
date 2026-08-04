@@ -13,7 +13,7 @@
 > Dashboard
 ![picture alt](/ScreenShot/Dashboard.png "Dashboard Page")
 
-> Products List
+> Database
 ![picture alt](/ScreenShot/database.png "Products List")
 
 ---
