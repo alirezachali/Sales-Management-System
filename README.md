@@ -14,20 +14,8 @@
 ![picture alt](/ScreenShot/Dashboard.png "Dashboard Page")
 
 > Products List
-![picture alt](/ScreenShot/Products.png "Products List")
+![picture alt](/ScreenShot/database.png "Products List")
 
-> Categories
-![picture alt](/ScreenShot/Categories.png "Categories")
-
-> POS Page
-![picture alt](/ScreenShot/POS.png "")
-
-> Setting
-![picture alt](/ScreenShot/Setting-Store.png "")
-![picture alt](/ScreenShot/Setting-Sales.png "")
-![picture alt](/ScreenShot/Setting-Print.png "")
-![picture alt](/ScreenShot/Setting-System.png "")
-![picture alt](/ScreenShot/Setting-Backup.png "")
 ---
 
 ### How to install on the local system
