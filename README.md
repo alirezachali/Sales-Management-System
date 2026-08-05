@@ -14,7 +14,7 @@
 ![picture alt](/ScreenShot/Dashboard.png "Dashboard Page")
 
 > Database
-![picture alt](/ScreenShot/database.png "Products List")
+![picture alt](/ScreenShot/database.png "Database")
 
 ---
 
@@ -28,16 +28,13 @@
 * NPM
 
 
-> install
+> Run in Localhost
 * First, clone the project on your system
 ```bash
 git clone https://github.com/alirezachali/Sales-Management-System.git
+cd Sales-Management-System/app
 ```
-* Change the path to the project folder
-```bash
-cd Sales-Management-System
-```
-> Run
+
 * run migration command
 ```bash
 php artisan migrate
