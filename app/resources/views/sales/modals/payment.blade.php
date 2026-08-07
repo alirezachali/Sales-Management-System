@@ -1,11 +1,10 @@
 <!-- Payment Modal -->
-<div
-    class="modal fade"
-    id="paymentModal"
-    tabindex="-1"
-    aria-labelledby="paymentModalLabel"
-    aria-hidden="true"
->
+<div class="modal fade"
+     id="paymentModal"
+     tabindex="-1"
+     aria-labelledby="paymentModalLabel"
+     aria-hidden="true"
+     data-bs-theme="dark">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg">
 

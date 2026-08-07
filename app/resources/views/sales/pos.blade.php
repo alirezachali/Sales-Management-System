@@ -339,20 +339,137 @@ function decrease(id)
     renderCart();
 }
 
-// توابع مربوط به دکمه ثبت فروش و فرستادن اطلاعات سبد خرید به بک اند
-document
-    .getElementById('checkout-btn')
-    .addEventListener('click', checkout);
+// کدهای مربوط به دکمه ثبت فروش و بازکردن مودال پرداخت
+const checkoutButton = document.getElementById('checkout-btn');
 
-async function checkout() {
+const paymentModalElement = document.getElementById('paymentModal');
+
+const paymentModal = new bootstrap.Modal(paymentModalElement);
+
+checkoutButton.addEventListener('click', function () {
 
     if (cart.length === 0) {
         alert('سبد خرید خالی است.');
         return;
     }
 
-    const customerId =
-        document.getElementById('customer-id').value || null;
+    preparePaymentModal();
+
+    paymentModal.show();
+});
+
+
+// 
+function preparePaymentModal()
+{
+    const total = calculateTotal();
+
+    const customerName =
+        document.getElementById('customer-search').value.trim();
+
+    document.getElementById('payment-total').textContent =
+        formatMoney(total) + ' تومان';
+
+    document.getElementById('payment-customer-name').textContent =
+        customerName || 'مشتری عمومی';
+
+    const paidAmount = document.getElementById('paid-amount');
+
+    paidAmount.value = total;
+
+    calculatePaymentResult();
+
+    document.getElementById('payment-error')
+        .classList.add('d-none');
+}
+
+
+// تابع مربوط به فرمت مبلغ
+function formatMoney(amount)
+{
+    return Number(amount).toLocaleString('fa-IR');
+}
+
+
+// تابع محاسبه مبلغ دریافتی از مشتری
+const paidAmountInput =
+    document.getElementById('paid-amount');
+
+paidAmountInput.addEventListener(
+    'input',
+    calculatePaymentResult
+);
+
+function calculatePaymentResult()
+{
+    const total = calculateTotal();
+
+    const paidAmount =
+        Number(paidAmountInput.value) || 0;
+
+    const remaining =
+        Math.max(total - paidAmount, 0);
+
+    const change =
+        Math.max(paidAmount - total, 0);
+
+    document.getElementById('payment-remaining').textContent =
+        formatMoney(remaining) + ' تومان';
+
+    document.getElementById('payment-change').textContent =
+        formatMoney(change) + ' تومان';
+}
+
+
+
+// تابع مربوط به پرداخت به روش نسیه یا قرضی
+const paymentTypeInputs =
+    document.querySelectorAll(
+        'input[name="payment_type"]'
+    );
+
+paymentTypeInputs.forEach(input => {
+
+    input.addEventListener('change', function () {
+
+        const paidAmount =
+            document.getElementById('paid-amount');
+
+        if (this.value === 'credit') {
+
+            paidAmount.value = 0;
+            paidAmount.disabled = true;
+
+        } else {
+
+            paidAmount.disabled = false;
+
+            if (!paidAmount.value) {
+                paidAmount.value = calculateTotal();
+            }
+        }
+
+        calculatePaymentResult();
+    });
+
+});
+
+
+
+// اجرای تابع فرستادن اطلاعات به بک اند توسط دکمه موجود در مودال پرداخت
+document
+    .getElementById('confirm-checkout-btn')
+    .addEventListener('click', checkout);
+
+
+// تابع مربوط به فرستادن اطلاعات سبدخرید به بک اند
+async function checkout() {
+
+    const paymentType =
+    document.querySelector(
+        'input[name="payment_type"]:checked'
+    ).value;
+
 
     const payload = {
         cart: cart.map(item => ({
@@ -363,9 +480,9 @@ async function checkout() {
 
         discount: 0,
 
-        payment_type: 'cash',
+        payment_type: paymentType,
 
-        customer_id: customerId,
+        customer_id: document.getElementById('customer-id').value || null,
     };
 
     console.log('Checkout payload:', payload);
