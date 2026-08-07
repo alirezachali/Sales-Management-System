@@ -34,18 +34,79 @@
 git clone https://github.com/alirezachali/Sales-Management-System.git
 cd Sales-Management-System/app
 ```
+---
+* install Laravel Requisites Package
+```bash
+composer install
+```
+---
 
-* run migration command
-```bash
-php artisan migrate
+* Copy .env.example file and Paste and rename to`.env`
+
+> Linux
+> ```bash
+> cp .env.example .env
+
+> Windows
+> ```batch
+> copy .env.example .env
+
+* Config MySql in `.env` File
 ```
-* run server
-```bash
-php artisan serve
+DB_CONNECTION=mysql
+ DB_HOST=127.0.0.1
+ DB_PORT=3306
+ DB_DATABASE=laravel
+ DB_USERNAME=root
+ DB_PASSWORD=
 ```
-* open the new terminal and run command
+
+```bash
+php artisan key:generate
+```
+---
+
+
+* run migration command 
+```bash
+php artisan migrate --seed
+```
+
+```bash
+php artisan storage:link
+```
+---
+
+* install and Build NPM
+```bash
+npm install
+
+npm run build
+```
+---
+
+* Make This Folders If Not Exist
+```bash
+mkdir storage\framework\cache
+mkdir storage\framework\cache\data
+mkdir storage\framework\sessions
+mkdir storage\framework\views
+mkdir storage\framework\testing
+mkdir storage\logs
+```
+---
+
+* Run Project
 ```bash
 npm run dev
+
+php artisan serve
 ```
 
-* Now open `127.0.0.1:8000/dashboard` in the browser
+* Open `127.0.0.1:8000/` in browser
+
+* Login With 
+```
+Username => admin
+Password => 123456
+```
