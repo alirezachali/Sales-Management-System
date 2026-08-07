@@ -31,6 +31,32 @@
                        autofocus>
             </div>
 
+
+            <!-- Customer Selection -->
+            <div class="mb-3 position-relative">
+
+                <label class="form-label" for="customer-search">
+                    مشتری
+                </label>
+
+                <input id="customer-search"
+                       type="text"
+                       class="form-control"
+                       placeholder="نام یا شماره موبایل مشتری را جستجو کنید..."
+                       autocomplete="off">
+
+                <input type="hidden"
+                       id="customer-id"
+                       value="">
+
+                <div id="customer-results"
+                     class="list-group position-absolute w-100 shadow d-none"
+                     style="z-index: 1050;">
+                </div>
+                
+            </div>
+
+
             <!--  -->
             <table class="table table-bordered">
 

@@ -5,36 +5,28 @@ namespace App\Services;
 use App\Models\Product;
 use App\Models\StockMovement;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\Business\InsufficientStockException;
 
 class StockService
 {
+    // کم کردن موجودی کالا
     public function remove(
         Product $product,
         float $quantity,
         string $description = 'فروش کالا'
-    )
-    {
-        DB::transaction(function () use (
-            $product,
-            $quantity,
-            $description
-        ) {
+    ): void {
 
-            $product->decrement('stock', $quantity);
+        $this->ensureAvailable($product, $quantity);
 
-            StockMovement::create([
+        $product->decrement('stock', $quantity);
 
-                'product_id' => $product->id,
-
-                'type' => 'sale',
-
-                'quantity' => $quantity,
-
-                'description' => $description,
-
-            ]);
-
-        });
+        // ثبت کاهش موجودی در دیتابیس
+        StockMovement::create([
+            'product_id'  => $product->id,
+            'type'        => 'sale',
+            'quantity'    => $quantity,
+            'description' => $description,
+        ]);
     }
 
     public function add(
@@ -66,6 +58,19 @@ class StockService
             ]);
 
         });
+
+    }
+    
+    // چک کردن موجودی کالا
+    public function ensureAvailable(
+        Product $product,
+        float $quantity
+    ): void {
+
+        // اگر موجودی کالا صفر بود
+        if ($product->stock < $quantity) {
+            throw new InsufficientStockException($product);
+        }
 
     }
 

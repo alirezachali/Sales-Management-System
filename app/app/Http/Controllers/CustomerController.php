@@ -11,20 +11,13 @@ class CustomerController extends Controller
     
     public function index(Request $request, Customer $customer)
     {
-        $customers = Customer::with('role')
-        ->when($request->search, function ($query) use ($request) {
-
-            $query->where(function ($q) use ($request) {
-
-                $q->where('first_name', 'like', "%{$request->search}%")
-                    ->orWhere('last_name', 'like', "%{$request->search}%")
-                    ->orWhere('mobile', 'like', "%{$request->search}%");
-
-            });
-
-        })
-        ->latest()
-        ->paginate(15);
+        
+        $customers = Customer::query()
+            ->with('role')
+            ->search($request->search)
+            ->latest()
+            ->paginate(15);
+    
 
         $roles = CustomerRole::orderBy('sort_order')->get();
 
@@ -59,12 +52,6 @@ class CustomerController extends Controller
                ->with('success', 'مشتری با موفقیت ثبت شد.');
     }
 
-   
-    public function show(string $id)
-    {
-        //
-    }
-
     
     public function update(Request $request, Customer $customer)
     {
@@ -94,7 +81,7 @@ class CustomerController extends Controller
     }
 
   
-    public function destroy(string $id)
+    public function destroy(Customer $customer)
     {
         $customer->delete();
 
@@ -103,21 +90,25 @@ class CustomerController extends Controller
             ->with('success', 'مشتری حذف شد.');
     }
 
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // برای جستجوی مشتری در صندوق فروش
+    public function search(Request $request)
     {
-        //
-    }
+        $customers = Customer::query()
+            ->active()
+            ->search($request->search)
+            ->limit(10)
+            ->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'customers' => $customers->map(function ($customer) {
+                return [
+                    'id' => $customer->id,
+                    'name' => $customer->full_name,
+                    'mobile' => $customer->mobile,
+                ];
+            }),
+        ]);
     }
+    
 }

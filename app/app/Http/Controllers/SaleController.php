@@ -9,9 +9,19 @@ use Illuminate\Http\Request;
 use App\Models\StockMovement;
 use Illuminate\Support\Facades\DB;
 use App\Services\SaleService;
+use App\Http\Requests\Sale\CheckoutRequest;
+use Illuminate\Http\JsonResponse;
+
 
 class SaleController extends Controller
 {
+
+    public function __construct(SaleService $saleService)
+    {
+        $this->saleService = $saleService;
+    }
+
+
     public function index()
     {
         return view('sales.pos');
@@ -46,27 +56,26 @@ class SaleController extends Controller
         ]);
     }
 
-    public function checkout(Request $request)
+    public function checkout(CheckoutRequest $request): JsonResponse
     {
+        $data = $request->validated();
+
         $sale = $this->saleService->checkout(
-            $request->cart,
-            $request->discount ?? 0,
-            $request->payment_type ?? 'cash'
+            $data['cart'],
+            $data['discount'] ?? 0,
+            $data['payment_type'],
+            $data['customer_id'] ?? null,
         );
 
         return response()->json([
             'success' => true,
-            'sale_id' => $sale->id
+            'sale_id' => $sale->id,
         ]);
     }
 
     private SaleService $saleService;
 
-    public function __construct(SaleService $saleService)
-    {
-        $this->saleService = $saleService;
-    }
-
+    
 
     public function invoice(\App\Models\Sale $sale)
     {
@@ -78,4 +87,3 @@ class SaleController extends Controller
         return view('sales.invoice', compact('sale'));
     }
 }
-

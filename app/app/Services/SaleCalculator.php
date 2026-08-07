@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Collection;
 use DomainException;
 
+
 class SaleCalculator
 {
     public function total(array $cart, Collection $products): float

@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
+use App\Models\Sale;
+use App\Models\CustomerRole;
+
 
 class Customer extends Model
 {
@@ -46,6 +49,7 @@ class Customer extends Model
 
     ];
 
+    
     // Start Accessor methoods >>
 
     // (نام + نام خانوادگی = نام کامل) خروجی این متد نام کامل مشتری است
@@ -188,10 +192,16 @@ class Customer extends Model
     }
 
     
-    // تعریف رابطه میان مدل مشتری با مدل نقش_مشتری
+    // تعریف رابطه میان این مدل با مدل نقش مشتری
     public function role()
     {
         return $this->belongsTo(CustomerRole::class,'customer_role_id');
+    }
+
+    // تعریف رابطه میان این مدل با مدل فروش
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
     }
 
 
