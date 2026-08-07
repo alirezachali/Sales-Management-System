@@ -9,21 +9,20 @@
 
     <div class="card">
 
-        <!--  -->
+        <!-- بخش هدر صفحه صندوق فروش -->
         <div class="card-header">
             <h2>🛒 صندوق فروش</h2>
         </div>
 
-        <!--  -->
+        <!-- بخش بدنه صفحه صندوق فروش -->
         <div class="card-body">
 
-            <!--  -->
+            <!-- بخش ورود بارکد محصولات -->
             <div class="mb-3">
                 <label class="form-label" for="barcode">
                     بارکد کالا
                 </label>
 
-                <!-- فیلد ورود بارکد کالا -->
                 <input id="barcode"
                        class="form-control form-control-lg"
                        placeholder="بارکد را اسکن کنید"
@@ -32,7 +31,7 @@
             </div>
 
 
-            <!-- Customer Selection -->
+            <!-- بخش انتخاب مشتری -->
             <div class="mb-3 position-relative">
 
                 <label class="form-label" for="customer-search">
@@ -53,14 +52,14 @@
                      class="list-group position-absolute w-100 shadow d-none"
                      style="z-index: 1050;">
                 </div>
-                
+
             </div>
 
 
-            <!--  -->
+            <!-- شروع کدهای جدول آیتم های سبد خرید -->
             <table class="table table-bordered">
 
-                <!--  -->
+                <!-- هدر جدول -->
                 <thead>
                     <tr>
                         <th>کالا</th>
@@ -71,12 +70,13 @@
                     </tr>
                 </thead>
 
-                <!--  -->
+                <!-- بدنه جدول -->
                 <tbody id="cart-body"></tbody>
 
             </table>
+            <!-- پایان کدهای جدول آیتم های سبد خرید -->
 
-            <!--  -->
+            <!-- بخش نمایش جمع کل مبلغ سبدخرید -->
             <div class="text-end">
                 <h2>
                     جمع کل:
@@ -87,75 +87,14 @@
                 </h2>
             </div>
 
-            <!--  -->
+            <!-- دکمه ثبت فروش -->
             <div class="mt-3 text-end">
-                <button id="checkout-btn" class="btn btn-success btn-lg"
-                        data-bs-toggle="modal"
-                        data-bs-target="#paymentModal">
+                <button id="checkout-btn" class="btn btn-success btn-lg">
                     ثبت فروش
                 </button>
             </div>
 
 
-        <!-- Start Payment Modal -->
-        <div class="modal fade" id="paymentModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h5 class="modal-title">
-                            پرداخت فاکتور
-                        </h5>
-                        <button class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <!-- Modal Body -->
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="totalPrice">جمع کل</label>
-                            <input id="totalPrice" class="form-control" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="discount">تخفیف</label>
-                            <input id="discount" type="number" class="form-control" value="0">
-                        </div>
-                        <div class="mb-3">
-                            <label for="finalPrice">مبلغ نهایی</label>
-                            <input id="finalPrice" class="form-control" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="paidAmount">مبلغ دریافتی</label>
-                            <input id="paidAmount" type="number" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="changeAmount">باقی‌مانده</label>
-                            <input id="changeAmount" class="form-control" readonly>
-                        </div>
-                    </div>
-
-                    <!-- Modal Footer  -->
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">
-                                انصراف
-                        </button>
-                        <button class="btn btn-success" id="confirmSale">
-                                ثبت فروش
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-        <!-- End Payment Modal -->
-
-        <!--  -->
-        <div id="success-alert" 
-             class="alert alert-success d-none position-fixed top-0 end-0 m-3 shadow" 
-             style="z-index:9999">
-            ✅ فروش با موفقیت ثبت شد.
-        </div>
 
     </div>
 
@@ -166,9 +105,113 @@
 @section('scripts')
 <script>
 
-let cart = [];
+document.addEventListener('DOMContentLoaded', function () {
+       
+    // شروع کدهای مربوط به جستجوی مشتری
+    const customerSearch = document.getElementById('customer-search');
+    const customerResults = document.getElementById('customer-results');
+
+    let customerSearchTimeout = null;
+
+    customerSearch.addEventListener('input', function () {
+        const search = this.value.trim();
+
+        clearTimeout(customerSearchTimeout);
+
+        if (search.length < 2) {
+            customerResults.innerHTML = '';
+            customerResults.classList.add('d-none');
+            return;
+        }
+
+        customerSearchTimeout = setTimeout(() => {
+            searchCustomers(search);
+        }, 300);
+    });
+
+    async function searchCustomers(search) {
+        try {
+            const response = await fetch(
+                `/customers/search?search=${encodeURIComponent(search)}`,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error('Customer search failed.');
+            }
+
+            const data = await response.json();
+
+            renderCustomerResults(data.customers);
+
+        } catch (error) {
+            console.error(error);
+
+            customerResults.innerHTML = '';
+            customerResults.classList.add('d-none');
+        }
+    }
+
+    function renderCustomerResults(customers) {
+        customerResults.innerHTML = '';
+
+        if (!customers.length) {
+            customerResults.innerHTML = `
+                <div class="list-group-item text-muted">
+                    مشتری‌ای پیدا نشد.
+                </div>
+            `;
+
+            customerResults.classList.remove('d-none');
+
+            return;
+        }
+
+        customers.forEach(customer => {
+            const item = document.createElement('button');
+
+            item.type = 'button';
+            item.className = 'list-group-item list-group-item-action';
+
+            item.innerHTML = `
+                <div class="fw-bold">${customer.name}</div>
+                <small class="text-muted">${customer.mobile ?? ''}</small>
+            `;
+
+            item.addEventListener('click', function () {
+                selectCustomer(customer);
+            });
+
+            customerResults.appendChild(item);
+        });
+
+    function selectCustomer(customer) {
+        const customerSearch = document.getElementById('customer-search');
+        const customerId = document.getElementById('customer-id');
+        const customerResults = document.getElementById('customer-results');
+
+        customerSearch.value = customer.name;
+        customerId.value = customer.id;
+
+        customerResults.innerHTML = '';
+        customerResults.classList.add('d-none');
+
+        console.log('Selected customer:', customer);
+    }
+
+        customerResults.classList.remove('d-none');
+    }
+    // پایان کدهای مربوط به جستجوی مشتری
 
 
+    // تعریف آرایه برای ذخیره آیتم های سبد خرید
+    let cart = [];
+
+// تابع حساب کردن قیمت محصول نسبت به تعداد آن
 function calculateTotal()
 {
     return cart.reduce((sum, item) => {
@@ -178,7 +221,7 @@ function calculateTotal()
     }, 0);
 }
 
-
+// تابع اضافه کردن محصولات به جدول سبد خرید
 function renderCart() {
 
     let tbody = document.getElementById('cart-body');
@@ -225,6 +268,7 @@ function renderCart() {
 
 }
 
+// گرفتن اطلاعات محصولات از بک اند
 const barcode = document.getElementById('barcode');
 
 barcode.addEventListener('keydown', function (e) {
@@ -267,14 +311,14 @@ this.focus();
 
 
 
-// 
+// تابع حذف محصول از سبد خرید
 function removeItem(id)
 {
     cart = cart.filter(item => item.id != id);
     renderCart();
 }
 
-//
+// تابع افزایش تعداد محصول
 function increase(id)
 {
     let item = cart.find(x => x.id == id);
@@ -282,7 +326,7 @@ function increase(id)
     renderCart();
 }
 
-// 
+// تابع کاهش تعداد محصول
 function decrease(id)
 {
     let item = cart.find(x => x.id == id);
@@ -296,62 +340,83 @@ function decrease(id)
     renderCart();
 }
 
+// توابع مربوط به دکمه ثبت فروش و فرستادن اطلاعات سبد خرید به بک اند
+document
+    .getElementById('checkout-btn')
+    .addEventListener('click', checkout);
 
+async function checkout() {
 
+    if (cart.length === 0) {
+        alert('سبد خرید خالی است.');
+        return;
+    }
 
+    const customerId =
+        document.getElementById('customer-id').value || null;
 
-const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
+    const payload = {
+        cart: cart.map(item => ({
+            id: item.id,
+            quantity: item.quantity,
+            price: item.price,
+        })),
 
-document.getElementById('checkout-btn').addEventListener('click', function () {
+        discount: 0,
 
-    const total = calculateTotal();
-    document.getElementById('totalPrice').value = total.toLocaleString();
-    document.getElementById('finalPrice').value = total.toLocaleString();
-    modal.show();
+        payment_type: 'cash',
 
-});
+        customer_id: customerId,
+    };
 
+    console.log('Checkout payload:', payload);
 
-document.getElementById('confirmSale').addEventListener('click', function () {
+    try {
 
-    fetch('/pos/checkout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({
-            cart: cart,
-            discount: Number(document.getElementById('discount').value),
-            payment_type: 'cash'
-        })
-    })
+        const response = await fetch('/pos/checkout', {
 
-    .then(async response => {
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute('content'),
+            },
+
+            body: JSON.stringify(payload),
+
+        });
 
         const data = await response.json();
 
-        console.log(data);
-
-        if (!data.success) {
-            alert('ثبت فروش انجام نشد');
-            return;
+        if (!response.ok) {
+            throw new Error(
+                data.message ?? 'ثبت فروش انجام نشد.'
+            );
         }
 
-        const success = document.getElementById('success-alert');
-        success.classList.remove('d-none');
-        setTimeout(() => {success.classList.add('d-none');}, 3000);
+        console.log('Checkout successful:', data);
 
+        alert('فروش با موفقیت ثبت شد.');
 
-        window.open('/invoice/' + data.sale_id, '_blank');
         cart = [];
+
         renderCart();
-        modal.hide();
-        document.getElementById('barcode').focus();
 
-    })
+        document.getElementById('customer-search').value = '';
+        document.getElementById('customer-id').value = '';
 
-    .catch(error => {console.error(error);});
+    } catch (error) {
+
+        console.error('Checkout error:', error);
+
+        alert(error.message);
+    }
+}
+
+
 
 });
 

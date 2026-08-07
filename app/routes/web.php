@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pos/product', [SaleController::class, 'findProduct'])->name('pos.product');
        
     Route::post('/pos/checkout', [SaleController::class, 'checkout'])->name('pos.checkout');
+    
 
     
     /* invoice */
