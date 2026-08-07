@@ -21,16 +21,26 @@ class SaleService
     }
 
     public function checkout(
-    array $cart,
-    float $discount = 0,
-    string $paymentType = 'cash'
-    )
-    {
-        return DB::transaction(function () use ($cart) {
+        array $cart,
+        float $discount = 0,
+        string $paymentType = 'cash'
+    ){
+        return DB::transaction(function () use ($cart, $discount, $paymentType) {
 
-            $total = $this->calculator->total($cart);
+            $productIds = collect($cart)
+                ->pluck('id')
+                ->unique();
 
-            $discount = 0;
+            $products = Product::query()
+                ->whereIn('id', $productIds)
+                ->get()
+                ->keyBy('id');
+        
+            $total = $this->calculator->total(
+                $cart,
+                $products
+            );
+
             $finalPrice = $total - $discount;
 
             $sale = Sale::create([
@@ -39,24 +49,37 @@ class SaleService
                 'total_price'    => $total,
                 'discount'       => $discount,
                 'final_price'    => $finalPrice,
-                'payment_type'   => 'cash',
+                'payment_type'   => $paymentType,
             ]);
 
             foreach ($cart as $item) {
 
+                $product = $products->get($item['id']);
+
+                $price = $product->sell_price;
+
+                $quantity = (int) $item['quantity'];
+
                 SaleItem::create([
-                    'sale_id'     => $sale->id,
-                    'product_id'  => $item['id'],
-                    'quantity'    => $item['quantity'],
-                    'unit_price'  => $item['price'],
-                    'line_total'  => $item['price'] * $item['quantity'],
+                    'sale_id'    => $sale->id,
+                    'product_id' => $product->id,
+                    'quantity'   => $quantity,
+                    'unit_price' => $price,
+                    'line_total' => $price * $quantity,
                 ]);
 
-                $product = Product::findOrFail($item['id']);
+                if ($product->stock < $quantity) {
+                    throw new DomainException(
+                    "موجودی {$product->name} کافی نیست."
+                    );
+                }
+
+                
+
 
                 $this->stockService->remove(
                     $product,
-                    $item['quantity'],
+                    $quantity,
                     'فروش کالا'
                 );
             }
