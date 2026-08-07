@@ -94,12 +94,11 @@
                 </button>
             </div>
 
-
-
     </div>
-
 </div>
 
+<!-- اینپورت کردن مودال پرداخت -->
+@include('sales.modals.payment')
 
 @endsection
 @section('scripts')
