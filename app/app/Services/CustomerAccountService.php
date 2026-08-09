@@ -21,4 +21,34 @@ class CustomerAccountService
             'description' => $description,
         ]);
     }
+
+    public function balance(int $customerId): float
+    {
+        $transactions = CustomerAccountTransaction::where(
+            'customer_id',
+            $customerId
+        )->get();
+
+        $balance = 0;
+
+        foreach ($transactions as $transaction) {
+            if ($transaction->type === 'sale') {
+                $balance += (float) $transaction->amount;
+            }
+
+            if ($transaction->type === 'payment') {
+                $balance -= (float) $transaction->amount;
+            }
+
+            if ($transaction->type === 'refund') {
+                $balance -= (float) $transaction->amount;
+            }
+
+            if ($transaction->type === 'adjustment') {
+                $balance += (float) $transaction->amount;
+            }
+        }
+
+        return $balance;
+    }
 }
