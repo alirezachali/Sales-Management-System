@@ -7,19 +7,23 @@ use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
+use App\Services\CustomerAccountService;
 use Illuminate\Support\Facades\DB;
 
 class SaleService
 {
     private StockService $stockService;
     private SaleCalculator $calculator;
+    private CustomerAccountService $customerAccountService;
 
     public function __construct(
         StockService $stockService,
-        SaleCalculator $calculator
+        SaleCalculator $calculator,
+        CustomerAccountService $customerAccountService,
     ) {
         $this->stockService = $stockService;
         $this->calculator = $calculator;
+        $this->customerAccountService = $customerAccountService;
     }
 
     public function checkout(
@@ -51,6 +55,32 @@ class SaleService
 
             $finalPrice = $total - $discount;
 
+            if ($finalPrice < 0) {
+                throw new \InvalidArgumentException(
+                    'مبلغ نهایی فروش نمی‌تواند منفی باشد.'
+                );
+            }
+
+            if ($paymentType === 'credit') {
+                if ($customerId === null) {
+                    throw new \InvalidArgumentException(
+                        'برای فروش نسیه باید مشتری انتخاب شده باشد.'
+                    );
+                }
+
+                if ($paidAmount != 0) {
+                    throw new \InvalidArgumentException(
+                        'در فروش نسیه مبلغ پرداختی باید صفر باشد.'
+                    );
+                }
+            } else {
+                if ($paidAmount < $finalPrice) {
+                    throw new \InvalidArgumentException(
+                        'مبلغ پرداختی کمتر از مبلغ نهایی فروش است.'
+                    );
+                }
+            }
+
             $sale = Sale::create([
                 'invoice_number' => 'INV-' . now()->format('YmdHis'),
                 'user_id' => auth()->id() ?? 1,
@@ -61,11 +91,20 @@ class SaleService
                 'payment_type' => $paymentType,
             ]);
 
-            Payment::create([
-                'sale_id' => $sale->id,
-                'payment_type' => $paymentType,
-                'amount' => $paidAmount,
-            ]);
+            if ($paymentType !== 'credit') {
+                Payment::create([
+                    'sale_id' => $sale->id,
+                    'payment_type' => $paymentType,
+                    'amount' => $paidAmount,
+                ]);
+            }
+
+            if ($paymentType === 'credit') {
+                $this->customerAccountService->addDebt(
+                    $sale,
+                    $finalPrice
+                );
+            }
 
             foreach ($cart as $item) {
                 $product = $products->get($item['id']);

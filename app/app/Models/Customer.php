@@ -2,61 +2,43 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Carbon\Carbon;
-use App\Models\Sale;
+use App\Models\CustomerAccountTransaction;
 use App\Models\CustomerRole;
-
+use App\Models\Sale;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
     protected $fillable = [
-
         'first_name',
-
         'last_name',
-
         'mobile',
-
         'phone',
-
         'national_code',
-
         'birth_date',
-
         'gender',
-
         'province',
-
         'city',
-
         'postal_code',
-
         'address',
-
         'customer_role_id',
-
         'purchase_count',
-
         'total_purchase_amount',
-
         'last_purchase_at',
-
         'notes',
-
         'is_active',
-
     ];
 
-    
     // Start Accessor methoods >>
 
     // (نام + نام خانوادگی = نام کامل) خروجی این متد نام کامل مشتری است
     protected function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn () => trim($this->first_name . ' ' . $this->last_name),
+            get: fn() => trim($this->first_name . ' ' . $this->last_name),
         );
     }
 
@@ -64,7 +46,7 @@ class Customer extends Model
     protected function initials(): Attribute
     {
         return Attribute::make(
-            get: fn () => mb_substr($this->first_name,0,1). mb_substr($this->last_name,0,1),
+            get: fn() => mb_substr($this->first_name, 0, 1) . mb_substr($this->last_name, 0, 1),
         );
     }
 
@@ -78,10 +60,10 @@ class Customer extends Model
     public function scopeSearch($query, $search)
     {
         return $query->where(function ($q) use ($search) {
-
-            $q->where('first_name','like',"%{$search}%")
-              ->orWhere('last_name','like',"%{$search}%")
-              ->orWhere('mobile','like',"%{$search}%");
+            $q
+                ->where('first_name', 'like', "%{$search}%")
+                ->orWhere('last_name', 'like', "%{$search}%")
+                ->orWhere('mobile', 'like', "%{$search}%");
         });
     }
 
@@ -89,24 +71,16 @@ class Customer extends Model
     protected function fullAddress(): Attribute
     {
         return Attribute::make(
-
             get: function () {
-
                 return collect([
-
                     $this->province,
                     $this->city,
                     $this->address,
                     $this->postal_code,
-
                 ])
-
-                ->filter()
-
-                ->implode(' - ');
-
+                    ->filter()
+                    ->implode(' - ');
             }
-
         );
     }
 
@@ -114,17 +88,11 @@ class Customer extends Model
     protected function nameWithMobile(): Attribute
     {
         return Attribute::make(
-
-            get: fn () =>
-
+            get: fn() =>
                 $this->full_name
-
-                .' ('
-
-                .$this->mobile
-
-                .')'
-
+                . ' ('
+                . $this->mobile
+                . ')'
         );
     }
 
@@ -132,15 +100,10 @@ class Customer extends Model
     protected function statusText(): Attribute
     {
         return Attribute::make(
-
-            get: fn () =>
-
+            get: fn() =>
                 $this->is_active
-
                     ? 'فعال'
-
                     : 'غیرفعال'
-
         );
     }
 
@@ -148,54 +111,40 @@ class Customer extends Model
     protected function statusColor(): Attribute
     {
         return Attribute::make(
-
-            get: fn () =>
-
+            get: fn() =>
                 $this->is_active
-
                     ? 'success'
-
                     : 'danger'
-
         );
     }
 
-    // این متد سن مشتری را با استفاده از تاریخ تولد محاسبه و برمیگرداند 
+    // این متد سن مشتری را با استفاده از تاریخ تولد محاسبه و برمیگرداند
     protected function age(): Attribute
     {
         return Attribute::make(
-
-            get: fn () =>
-
+            get: fn() =>
                 $this->birth_date
-
                     ? Carbon::parse($this->birth_date)->age
-
                     : null
         );
     }
 
     // End Accessor methoods //
 
-
-
     // این متد هر بار که اجرا میشود اگر آن روز تولد مشتری باشد مقدار (درست) را برمیگرداند
     public function hasBirthdayToday(): bool
     {
         if (!$this->birth_date) {
-
             return false;
-
         }
 
         return Carbon::parse($this->birth_date)->isBirthday();
     }
 
-    
     // تعریف رابطه میان این مدل با مدل نقش مشتری
     public function role()
     {
-        return $this->belongsTo(CustomerRole::class,'customer_role_id');
+        return $this->belongsTo(CustomerRole::class, 'customer_role_id');
     }
 
     // تعریف رابطه میان این مدل با مدل فروش
@@ -204,5 +153,9 @@ class Customer extends Model
         return $this->hasMany(Sale::class);
     }
 
-
+    // تعریف رابطه میان این مدل با مدل تراکنش های حساب مشتری
+    public function accountTransactions(): HasMany
+    {
+        return $this->hasMany(CustomerAccountTransaction::class);
+    }
 }

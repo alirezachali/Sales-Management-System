@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Customer;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Customer;
-
+use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'invoice_number',
         'user_id',
+        'customer_id',
         'total_price',
         'discount',
         'final_price',
@@ -42,13 +43,11 @@ class Sale extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function customer()
+    public function customer(): BelongsTo
     {
         // تعریف رابطه این مدل با مدل مشتری
         return $this->belongsTo(Customer::class);
     }
-
-    
 
     public function payments(): HasMany
     {
