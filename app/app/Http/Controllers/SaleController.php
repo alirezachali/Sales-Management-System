@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Sale\CheckoutRequest;
+use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
-use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Models\StockMovement;
-use Illuminate\Support\Facades\DB;
 use App\Services\SaleService;
-use App\Http\Requests\Sale\CheckoutRequest;
 use Illuminate\Http\JsonResponse;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
-
     public function __construct(SaleService $saleService)
     {
         $this->saleService = $saleService;
     }
-
 
     public function index()
     {
@@ -65,6 +62,7 @@ class SaleController extends Controller
             $data['discount'] ?? 0,
             $data['payment_type'],
             $data['customer_id'] ?? null,
+            $data['paid_amount'],
         );
 
         return response()->json([
@@ -74,8 +72,6 @@ class SaleController extends Controller
     }
 
     private SaleService $saleService;
-
-    
 
     public function invoice(\App\Models\Sale $sale)
     {

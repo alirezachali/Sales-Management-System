@@ -47,4 +47,12 @@ class Sale extends Model
         // تعریف رابطه این مدل با مدل مشتری
         return $this->belongsTo(Customer::class);
     }
+
+    
+
+    public function payments(): HasMany
+    {
+        // تعریف رابطه میان این مدل با مدل پرداخت
+        return $this->hasMany(Payment::class);
+    }
 }

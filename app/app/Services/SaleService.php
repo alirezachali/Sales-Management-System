@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
+use App\Exceptions\Business\ProductNotFoundException;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use Illuminate\Support\Facades\DB;
-use App\Exceptions\Business\ProductNotFoundException;
-
 
 class SaleService
 {
@@ -17,27 +17,25 @@ class SaleService
     public function __construct(
         StockService $stockService,
         SaleCalculator $calculator
-    )
-    {
+    ) {
         $this->stockService = $stockService;
         $this->calculator = $calculator;
     }
-
 
     public function checkout(
         array $cart,
         float $discount = 0,
         string $paymentType = 'cash',
         ?int $customerId = null,
-    ): sale
-    {
+        float $paidAmount = 0,
+    ): Sale {
         return DB::transaction(function () use (
             $cart,
             $discount,
             $paymentType,
             $customerId,
+            $paidAmount,
         ) {
-
             $productIds = collect($cart)
                 ->pluck('id')
                 ->unique()
@@ -48,23 +46,28 @@ class SaleService
                 ->lockForUpdate()
                 ->get()
                 ->keyBy('id');
-        
+
             $total = $this->calculator->total($cart, $products);
 
             $finalPrice = $total - $discount;
 
             $sale = Sale::create([
                 'invoice_number' => 'INV-' . now()->format('YmdHis'),
-                'user_id'        => auth()->id() ?? 1,
-                'customer_id'    => $customerId,
-                'total_price'    => $total,
-                'discount'       => $discount,
-                'final_price'    => $finalPrice,
-                'payment_type'   => $paymentType,
+                'user_id' => auth()->id() ?? 1,
+                'customer_id' => $customerId,
+                'total_price' => $total,
+                'discount' => $discount,
+                'final_price' => $finalPrice,
+                'payment_type' => $paymentType,
+            ]);
+
+            Payment::create([
+                'sale_id' => $sale->id,
+                'payment_type' => $paymentType,
+                'amount' => $paidAmount,
             ]);
 
             foreach ($cart as $item) {
-
                 $product = $products->get($item['id']);
 
                 // اکر کالا وجود نداشته باشد
@@ -84,12 +87,12 @@ class SaleService
                     $product,
                     $quantity
                 );
-                
+
                 // ساخت آیتم فروش
                 SaleItem::create([
-                    'sale_id'    => $sale->id,
+                    'sale_id' => $sale->id,
                     'product_id' => $product->id,
-                    'quantity'   => $quantity,
+                    'quantity' => $quantity,
                     'unit_price' => $price,
                     'line_total' => $lineTotal,
                 ]);

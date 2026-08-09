@@ -16,25 +16,21 @@ class CheckoutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
             'cart' => [
                 'required',
                 'array',
                 'min:1'
             ],
-
             'cart.*.id' => [
                 'required',
                 'integer',
                 'exists:products,id',
             ],
-
             'cart.*.quantity' => [
                 'required',
                 'integer',
                 'min:1',
             ],
-
             'discount' => [
                 'nullable',
                 'numeric',
@@ -43,7 +39,12 @@ class CheckoutRequest extends FormRequest
             // روش پرداخت حتما باید انتخاب شود
             'payment_type' => [
                 'required',
-                Rule::in(['cash']),
+                Rule::in(['cash', 'card', 'credit']),
+            ],
+            'paid_amount' => [
+                'required',
+                'numeric',
+                'min:0',
             ],
             // مشتری اگر انتخاب نشد مشکلی نیست. ولی اگر انتخاب شد حتما میبایست داخل جدول مشتریها وجود داشته باشد
             'customer_id' => [
