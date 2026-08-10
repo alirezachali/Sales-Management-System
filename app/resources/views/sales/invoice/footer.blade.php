@@ -2,38 +2,34 @@
 
     <div class="line"></div>
 
-    <div>
-
-        🌹 از خرید شما سپاسگزاریم 🌹
-
-    </div>
+    @if (!empty($settings['receipt_footer']))
+        <div>
+            {{ $settings['receipt_footer'] }}
+        </div>
+    @endif
 
     <br>
 
     <div>
-
         لطفاً فاکتور خود را تا زمان تعویض کالا نگهداری نمایید.
-
     </div>
 
-    <br>
+    @if (!empty($settings['website']))
+        <br>
+
+        <div>
+            {{ $settings['website'] }}
+        </div>
+    @endif
+
+    @if (!empty($settings['phone']) && ($settings['print_phone'] ?? 0))
+        <div>
+            {{ $settings['phone'] }}
+        </div>
+    @endif
 
     <div>
-
-        www.yourstore.com
-
-    </div>
-
-    <div>
-
-        021-12345678
-
-    </div>
-
-    <div>
-
         نسخه نرم افزار : 1.0
-
     </div>
 
 </div>

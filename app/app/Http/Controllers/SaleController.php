@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Sale\CheckoutRequest;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\StockMovement;
 use App\Services\SaleService;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\InvoiceService;
+use App\Http\Requests\Sale\CheckoutRequest;
 
 class SaleController extends Controller
 {
-    public function __construct(SaleService $saleService)
-    {
+    public function __construct(
+        SaleService $saleService,
+        InvoiceService $invoiceService
+    ) {
         $this->saleService = $saleService;
+        $this->invoiceService = $invoiceService;
     }
 
     public function index()
@@ -73,13 +77,19 @@ class SaleController extends Controller
 
     private SaleService $saleService;
 
-    public function invoice(\App\Models\Sale $sale)
+    private InvoiceService $invoiceService;
+
+    public function invoice(Sale $sale)
     {
         $sale->load([
             'items.product',
-            'user'
+            'user',
+            'customer',
+            'payments',
         ]);
 
-        return view('sales.invoice', compact('sale'));
+        $data = $this->invoiceService->data($sale);
+
+        return view('sales.invoice', $data);
     }
 }

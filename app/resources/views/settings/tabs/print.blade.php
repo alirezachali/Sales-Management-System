@@ -21,31 +21,17 @@
 
                 </label>
 
-                <select
-                    class="form-select"
-                    name="paper_size">
+                <select class="form-select" name="paper_size">
 
-                    <option
-                        value="58"
-                        @selected(($settings['paper_size'] ?? '80')=='58')>
+                    <option value="58" @selected(($settings['paper_size'] ?? '80') == '58')>
 
-                        58 میلی متر
+                        58 میلی‌متر
 
                     </option>
 
-                    <option
-                        value="80"
-                        @selected(($settings['paper_size'] ?? '80')=='80')>
+                    <option value="80" @selected(($settings['paper_size'] ?? '80') == '80')>
 
-                        80 میلی متر
-
-                    </option>
-
-                    <option
-                        value="A4"
-                        @selected(($settings['paper_size'] ?? '')=='A4')>
-
-                        A4
+                        80 میلی‌متر
 
                     </option>
 
@@ -63,10 +49,7 @@
 
                 </label>
 
-                <input
-                    type="number"
-                    class="form-control"
-                    name="print_copies"
+                <input type="number" class="form-control" name="print_copies"
                     value="{{ $settings['print_copies'] ?? 1 }}">
 
             </div>
@@ -81,21 +64,15 @@
 
                 </label>
 
-                <select
-                    class="form-select"
-                    name="auto_print">
+                <select class="form-select" name="auto_print">
 
-                    <option
-                        value="1"
-                        @selected(($settings['auto_print'] ?? 0)==1)>
+                    <option value="1" @selected(($settings['auto_print'] ?? 0) == 1)>
 
                         فعال
 
                     </option>
 
-                    <option
-                        value="0"
-                        @selected(($settings['auto_print'] ?? 0)==0)>
+                    <option value="0" @selected(($settings['auto_print'] ?? 0) == 0)>
 
                         غیرفعال
 
@@ -121,12 +98,8 @@
 
                     <input type="hidden" name="print_logo" value="0">
 
-                    <input
-                        class="form-check-input"
-                        type="checkbox"
-                        name="print_logo"
-                        value="1"
-                        @checked(($settings['print_logo'] ?? 1)==1)>
+                    <input class="form-check-input" type="checkbox" name="print_logo" value="1"
+                        @checked(($settings['print_logo'] ?? 1) == 1)>
 
                     <label class="form-check-label">
 
@@ -146,12 +119,8 @@
 
                     <input type="hidden" name="print_address" value="0">
 
-                    <input
-                        class="form-check-input"
-                        type="checkbox"
-                        name="print_address"
-                        value="1"
-                        @checked(($settings['print_address'] ?? 1)==1)>
+                    <input class="form-check-input" type="checkbox" name="print_address" value="1"
+                        @checked(($settings['print_address'] ?? 1) == 1)>
 
                     <label class="form-check-label">
 
@@ -171,12 +140,8 @@
 
                     <input type="hidden" name="print_phone" value="0">
 
-                    <input
-                        class="form-check-input"
-                        type="checkbox"
-                        name="print_phone"
-                        value="1"
-                        @checked(($settings['print_phone'] ?? 1)==1)>
+                    <input class="form-check-input" type="checkbox" name="print_phone" value="1"
+                        @checked(($settings['print_phone'] ?? 1) == 1)>
 
                     <label class="form-check-label">
 
@@ -196,12 +161,8 @@
 
                     <input type="hidden" name="print_barcode" value="0">
 
-                    <input
-                        class="form-check-input"
-                        type="checkbox"
-                        name="print_barcode"
-                        value="1"
-                        @checked(($settings['print_barcode'] ?? 0)==1)>
+                    <input class="form-check-input" type="checkbox" name="print_barcode" value="1"
+                        @checked(($settings['print_barcode'] ?? 0) == 1)>
 
                     <label class="form-check-label">
 
@@ -220,13 +181,9 @@
                 <div class="form-check form-switch">
 
                     <input type="hidden" name="print_qrcode" value="0">
-                    
-                    <input
-                        class="form-check-input"
-                        type="checkbox"
-                        name="print_qrcode"
-                        value="1"
-                        @checked(($settings['print_qrcode'] ?? 0)==1)>
+
+                    <input class="form-check-input" type="checkbox" name="print_qrcode" value="1"
+                        @checked(($settings['print_qrcode'] ?? 0) == 1)>
 
                     <label class="form-check-label">
 
@@ -246,12 +203,8 @@
 
                     <input type="hidden" name="print_datetime" value="0">
 
-                    <input
-                        class="form-check-input"
-                        type="checkbox"
-                        name="print_datetime"
-                        value="1"
-                        @checked(($settings['print_datetime'] ?? 1)==1)>
+                    <input class="form-check-input" type="checkbox" name="print_datetime" value="1"
+                        @checked(($settings['print_datetime'] ?? 1) == 1)>
 
                     <label class="form-check-label">
 
@@ -281,10 +234,7 @@
 
                 </label>
 
-                <textarea
-                    class="form-control"
-                    rows="4"
-                    name="receipt_footer">{{ $settings['receipt_footer'] ?? 'از خرید شما سپاسگزاریم' }}</textarea>
+                <textarea class="form-control" rows="4" name="receipt_footer">{{ $settings['receipt_footer'] ?? 'از خرید شما سپاسگزاریم' }}</textarea>
 
             </div>
 
