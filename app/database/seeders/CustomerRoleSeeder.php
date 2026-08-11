@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\CustomerRole;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CustomerRoleSeeder extends Seeder
@@ -11,7 +11,6 @@ class CustomerRoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-
             [
                 'name' => 'مشتری جدید',
                 'icon' => 'bi-person-plus',
@@ -22,7 +21,6 @@ class CustomerRoleSeeder extends Seeder
                 'min_purchase_amount' => 0,
                 'is_default' => true,
             ],
-
             [
                 'name' => 'مشتری عادی',
                 'icon' => 'bi-person',
@@ -33,7 +31,6 @@ class CustomerRoleSeeder extends Seeder
                 'min_purchase_amount' => 0,
                 'is_default' => false,
             ],
-
             [
                 'name' => 'مشتری وفادار',
                 'icon' => 'bi-stars',
@@ -44,7 +41,6 @@ class CustomerRoleSeeder extends Seeder
                 'min_purchase_amount' => 0,
                 'is_default' => false,
             ],
-
             [
                 'name' => 'مشتری ویژه',
                 'icon' => 'bi-award',
@@ -55,7 +51,6 @@ class CustomerRoleSeeder extends Seeder
                 'min_purchase_amount' => 0,
                 'is_default' => false,
             ],
-
             [
                 'name' => 'مشتری VIP',
                 'icon' => 'bi-gem',
@@ -66,19 +61,13 @@ class CustomerRoleSeeder extends Seeder
                 'min_purchase_amount' => 0,
                 'is_default' => false,
             ],
-
         ];
 
         foreach ($roles as $role) {
-
             CustomerRole::updateOrCreate(
-
                 ['name' => $role['name']],
-
                 $role
-
             );
-
         }
     }
 }

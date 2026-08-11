@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
+use App\Models\Product;
 use App\Models\StockMovement;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-
 
 class ProductController extends Controller
 {
@@ -20,29 +19,21 @@ class ProductController extends Controller
         $query = Product::with('category');
 
         if ($request->search) {
-
-        $query->where(function ($q) use ($request) {
-
-            $q->where('name', 'like', '%' . $request->search . '%')
-              ->orWhere('barcode', 'like', '%' . $request->search . '%');
-
-        });
-
-    }
-
+            $query->where(function ($q) use ($request) {
+                $q
+                    ->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('barcode', 'like', '%' . $request->search . '%');
+            });
+        }
 
         if ($request->category_id) {
-
-        $query->where('category_id', $request->category_id);
-
-    }
-
+            $query->where('category_id', $request->category_id);
+        }
 
         $products = $query
             ->latest()
             ->paginate(20)
             ->withQueryString();
-
 
         $totalProducts = Product::count();
 
@@ -52,9 +43,7 @@ class ProductController extends Controller
 
         $lowStockProducts = Product::where('stock', '<=', 5)->count();
 
-
         $categories = \App\Models\Category::all();
-
 
         return view('products.index', compact(
             'products',
@@ -83,30 +72,20 @@ class ProductController extends Controller
     {
         $data = $request->validated();
 
-
         $product = Product::create($data);
 
-
         if ($product->stock > 0) {
-
             StockMovement::create([
-
                 'product_id' => $product->id,
-
                 'type' => 'initial',
-
                 'quantity' => $product->stock,
-
                 'description' => 'موجودی اولیه کالا',
-
             ]);
-
         }
-
 
         return redirect()
             ->route('products.index')
-            ->with('success','کالا با موفقیت ثبت شد');
+            ->with('success', 'کالا با موفقیت ثبت شد');
     }
 
     /**
@@ -130,28 +109,21 @@ class ProductController extends Controller
         ));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
+        $data = $request->validated();
 
-        $data = $request->validate([
+        dd([
+            'product_id' => $product->id,
+            'data' => $data,
+            'before' => $product->toArray(),
+        ]);
 
-        'barcode' => 'required|max:50',
+        $product->update($data);
 
-        'name' => 'required|max:255',
-
-    ]);
-
-
-    $product->update($data);
-
-
-    return redirect()
-        ->route('products.index')
-        ->with('success','کالا با موفقیت ویرایش شد');
-
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'کالا با موفقیت ویرایش شد');
     }
 
     /**
@@ -164,12 +136,10 @@ class ProductController extends Controller
 
     public function stock(Product $product)
     {
-
         $movements = $product
             ->stockMovements()
             ->latest()
             ->paginate(20);
-
 
         return view(
             'products.stock',
@@ -178,68 +148,44 @@ class ProductController extends Controller
                 'movements'
             )
         );
+    }
 
-   }
-
-   public function createStock(Product $product)
-   {
-
+    public function createStock(Product $product)
+    {
         return view(
             'products.stock-create',
             compact('product')
         );
-
     }
 
     public function storeStock(Request $request, Product $product)
     {
-
         $data = $request->validate([
-
-            'quantity'=>'required|numeric|min:0.001',
-
-            'description'=>'nullable|string'
-
+            'quantity' => 'required|numeric|min:0.001',
+            'description' => 'nullable|string'
         ]);
 
-
-
         DB::transaction(function () use ($data, $product) {
-
-
             $product->increment(
                 'stock',
                 $data['quantity']
             );
 
-
-
             StockMovement::create([
-
-                'product_id'=>$product->id,
-
-                'type'=>'purchase',
-
-                'quantity'=>$data['quantity'],
-
-                'description'=>$data['description']
+                'product_id' => $product->id,
+                'type' => 'purchase',
+                'quantity' => $data['quantity'],
+                'description' => $data['description']
                     ?? 'ورود کالا از خرید'
-
             ]);
-
         });
 
-
-
         return redirect()
-
-            ->route('products.stock',$product)
-
+            ->route('products.stock', $product)
             ->with(
-            'success',
-            'ورود کالا با موفقیت ثبت شد'
+                'success',
+                'ورود کالا با موفقیت ثبت شد'
             );
-
     }
 
     public function createSale(Product $product)
@@ -252,68 +198,39 @@ class ProductController extends Controller
 
     public function storeSale(Request $request, Product $product)
     {
-
         $data = $request->validate([
-
-            'quantity'=>'required|numeric|min:0.001',
-
-            'description'=>'nullable|string'
-
+            'quantity' => 'required|numeric|min:0.001',
+            'description' => 'nullable|string'
         ]);
 
-
-
-        if($product->stock < $data['quantity']) {
-
-
+        if ($product->stock < $data['quantity']) {
             return back()
                 ->with(
                     'error',
                     'موجودی کالا کافی نیست'
                 );
-
-
         }
 
-
-
-        DB::transaction(function () use ($data,$product) {
-
-
-
+        DB::transaction(function () use ($data, $product) {
             $product->decrement(
                 'stock',
                 $data['quantity']
-           );
-
-
+            );
 
             StockMovement::create([
-
-                'product_id'=>$product->id,
-
-                'type'=>'sale',
-
-                'quantity'=>$data['quantity'],
-
-                'description'=>$data['description']
+                'product_id' => $product->id,
+                'type' => 'sale',
+                'quantity' => $data['quantity'],
+                'description' => $data['description']
                     ?? 'فروش کالا'
-
             ]);
-
-
         });
 
-
-
         return redirect()
-
-            ->route('products.stock',$product)
-
+            ->route('products.stock', $product)
             ->with(
                 'success',
                 'خروج کالا ثبت شد'
             );
-
     }
 }

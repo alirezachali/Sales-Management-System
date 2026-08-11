@@ -1,8 +1,6 @@
 <aside class="sidebar" id="sidebar">
-
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
-
         <!-- داشبورد -->
         <li>
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
@@ -10,7 +8,6 @@
                 <span>داشبورد</span>
             </a>
         </li>
-
         <!-- محصولات -->
         <li>
             <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
@@ -18,7 +15,6 @@
                 <span>محصولات</span>
             </a>
         </li>
-
         <!-- دسته بندی ها -->
         <li>
             <a href="{{ route('categories.index') }}" class="{{ request()->routeIs('categories.*') ? 'active' : '' }}">
@@ -26,7 +22,6 @@
                 <span>دسته‌بندی ها</span>
             </a>
         </li>
-
         <!-- صندوق فروش -->
         <li>
             <a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}">
@@ -34,7 +29,6 @@
                 <span>صندوق فروش</span>
             </a>
         </li>
-
         <!-- تنظیمات -->
         <li>
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
@@ -42,7 +36,6 @@
                 <span>تنظیمات</span>
             </a>
         </li>
-
         <!-- کاربران -->
         <li>
             <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }}">
@@ -50,7 +43,6 @@
                 <span>کاربران</span>
             </a>
         </li>
-
         <!-- نقش های کاربران -->
         <li>
             <a href="{{ route('roles.index') }}" class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
@@ -58,7 +50,6 @@
                 <span>نقش‌ های کاربران</span>
             </a>
         </li>
-
         <!-- مشتریان -->
         <li>
             <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }}">
@@ -66,7 +57,5 @@
                 <span>مشتریان</span>
             </a>
         </li>
-
     </ul>
-
 </aside>

@@ -2,15 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Category;
 
 class CategorySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         Category::insert([
@@ -59,6 +56,6 @@ class CategorySeeder extends Seeder
                 'description' => '',
                 'is_active' => '1'
             ]
-            ]);
+        ]);
     }
 }

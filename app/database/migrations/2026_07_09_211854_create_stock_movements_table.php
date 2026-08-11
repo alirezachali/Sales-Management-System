@@ -4,33 +4,28 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('product_id')
+            $table
+                ->foreignId('product_id')
                 ->constrained()
                 ->cascadeOnDelete();
 
             $table->enum('type', [
-               'initial',
-               'purchase',
-               'sale',
-               'return',
-               'adjust'
+                'initial',
+                'purchase',
+                'sale',
+                'return',
+                'adjust'
             ]);
 
             $table->decimal('quantity', 12, 3);
-
             $table->text('description')->nullable();
-
-            $table->foreignId('user_id')
+            $table
+                ->foreignId('user_id')
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
@@ -39,9 +34,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('stock_movements');

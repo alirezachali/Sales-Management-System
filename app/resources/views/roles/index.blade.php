@@ -1,47 +1,33 @@
 @extends('layouts.app')
-
 @section('title', 'مدیریت نقش‌ها')
-
 @section('content')
 
 <!-- Start Role Page Header -->
 <div class="page-header d-flex justify-content-between align-items-center mb-4">
 
-
 <!-- Success Alert Section -->
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-
         <i class="bi bi-check-circle-fill me-2"></i>
-
         {{ session('success') }}
-
         <button type="button"
                 class="btn-close"
                 data-bs-dismiss="alert"
                 title="یستن"></button>
-
     </div>
 @endif
 
 <!-- Error Alert Section -->
 @if(session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-
         <i class="bi bi-exclamation-triangle-fill me-2"></i>
-
         {{ session('error') }}
-
         <button type="button"
                 class="btn-close"
                 data-bs-dismiss="alert"
                 title="یستن"></button>
-
     </div>
 @endif
-
-
-
 
     <div>
         <h3 class="mb-1">
@@ -56,18 +42,14 @@
             data-bs-toggle="modal"
             data-bs-target="#createRoleModal"
             title="برای افزودن نقش جدید به سیستم کلیک کنید">
-
         <i class="bi bi-plus-circle"></i>
             افزودن نقش جدید
     </button>
-
 </div>
 <!-- End Role Page Header -->
 
 <div class="card shadow-sm">
-
     <div class="card-body p-0">
-
         <div class="table-responsive">
 
             <!-- Start Role Table -->        
@@ -87,34 +69,27 @@
 
                 <!-- Start Role Table Body -->
                 <tbody>
-
                     @forelse($roles as $role)
-
                         <tr>
                             <td>
                                 {{ $loop->iteration + ($roles->currentPage()-1) * $roles->perPage() }}
                             </td>
-
                             <td>
                                 {{ $role->display_name }}
                             </td>
-
                             <td>
                                 <span class="badge bg-secondary">
                                     {{ $role->name }}
                                 </span>
                             </td>
-
                             <td>
                                 {{ $role->description }}
                             </td>
-
                             <td>
                                 <span class="badge bg-info">
                                     {{ $role->users()->count() }}
                                 </span>
                             </td>
-
                             <td>
                                 <!-- Edit Role Button -->
                                 <button class="btn btn-sm btn-warning editRoleBtn"
@@ -125,7 +100,6 @@
                                         data-bs-toggle="modal"
                                         data-bs-target="#editRoleModal"
                                         title="برای ویرانش این نقش کلیک کنید">
-
                                     <i class="bi bi-pencil"></i>
                                 </button>
 
@@ -136,7 +110,6 @@
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteRoleModal"
                                         title="برای حذف این نقش کلیک کنید">
-
                                     <i class="bi bi-trash"></i>
                                 </button>
 
@@ -144,12 +117,9 @@
                                 <a href="{{ route('roles.permissions',$role) }}" 
                                    class="btn btn-sm btn-info"
                                    title="برای ویرایش مجوز های این نقش کلیک کنید">
-                                   
                                    <i class="bi bi-shield-lock"></i>
                                 </a>
-
                             </td>
-
                         </tr>
 
                     <!-- اگر اطلاعاتی در دیتابیس وجود نداشت اطلاعات زیر را نمایش میدهد -->
@@ -160,232 +130,33 @@
                             </td>
                         </tr>
                     @endforelse
-
                 </tbody>
                 <!-- End Role Table Body -->
-
             </table>
             <!-- End Role Table -->
-
         </div>
     </div>
 </div>
 
-
-<div class="mt-3">
-
-    {{ $roles->links() }}
-
-</div>
-
-<!-- Start Add New Role Modal -->
-<div class="modal fade" id="createRoleModal" tabindex="-1">
-
-    <div class="modal-dialog">
-
-        <form action="{{ route('roles.store') }}" method="POST" class="modal-content">
-
-            @csrf
-
-            <div class="modal-header">
-
-                <h5 class="modal-title">
-                    نقش جدید
-                </h5>
-
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-
-            </div>
-
-            <div class="modal-body">
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        نام نقش
-                    </label>
-
-                    <input type="text" name="display_name" class="form-control" required>
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        شناسه (عنوان نقش به انگلیسی و حروف کوچک)
-                    </label>
-
-                    <input type="text" name="name" class="form-control" required>
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        توضیحات
-                    </label>
-
-                    <textarea name="description" class="form-control" rows="3"></textarea>
-
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    انصراف
-                </button>
-
-                <button class="btn btn-primary">
-                    ذخیره
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-<!-- End Add New Role Modal -->
-
-<!-- Start Edit Role Modal -->
-<div class="modal fade" id="editRoleModal" tabindex="-1">
-
-    <div class="modal-dialog">
-
-        <form id="editRoleForm" method="POST" class="modal-content">
-
-            @csrf
-            @method('PUT')
-
-            <div class="modal-header">
-
-                <h5 class="modal-title">
-                    ویرایش نقش
-                </h5>
-
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-
-            </div>
-
-            <div class="modal-body">
-
-                <div class="mb-3">
-                    <label class="form-label">
-                        نام نقش
-                    </label>
-                    <input id="edit_name" name="display_name" class="form-control">
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">
-                        شناسه
-                    </label>
-                    <input id="edit_slug" name="name" class="form-control">
-
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">
-                        توضیحات
-                    </label>
-                    <textarea id="edit_description" name="description" class="form-control" rows="3"></textarea>
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    انصراف
-                </button>
-
-                <button class="btn btn-primary">
-                    ذخیره تغییرات
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-<!-- End Edit Role Modal -->
-
-<!-- Start Delete Role Modal -->
-<div class="modal fade" id="deleteRoleModal" tabindex="-1">
-
-    <div class="modal-dialog">
-
-        <form id="deleteRoleForm" method="POST" class="modal-content">
-
-            @csrf
-            @method('DELETE')
-
-            <div class="modal-header bg-danger text-white">
-
-                <h5 class="modal-title">
-                    حذف نقش
-                </h5>
-
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-
-            </div>
-
-            <div class="modal-body">
-
-                <p>
-                    آیا از حذف نقش
-                    <strong id="deleteRoleName"></strong>
-                    اطمینان دارید؟
-                </p>
-
-            </div>
-
-            <div class="modal-footer">
-
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    انصراف
-                </button>
-
-                <button class="btn btn-danger">
-                    حذف
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-<!-- End Delete Role Modal -->
+<div class="mt-3">{{ $roles->links() }}</div>
+
+@include('roles.modals.create')
+@include('roles.modals.edit')
+@include('roles.modals.delete')
 
 @endsection
 
 @push('scripts')
-
 <!-- Start Edit Role Modal Script -->
 <script>
 document.querySelectorAll('.editRoleBtn').forEach(button=>{
-
     button.addEventListener('click',function(){
-
         document.getElementById('edit_name').value=this.dataset.display_name;
-
         document.getElementById('edit_slug').value=this.dataset.name;
-
         document.getElementById('edit_description').value=this.dataset.description;
-
         document.getElementById('editRoleForm').action='/roles/'+this.dataset.id;
-
         bootstrap.Modal.getOrCreateInstance(document.getElementById('editRoleModal')).show();
-
     });
-
 });
 </script>
 <!-- End Edit Role Modal Script -->
@@ -393,25 +164,13 @@ document.querySelectorAll('.editRoleBtn').forEach(button=>{
 <!-- Start Delete Role Modal Script -->
 <script>
 document.querySelectorAll('.deleteRoleBtn').forEach(button=>{
-
     button.addEventListener('click',function(){
-
         document.getElementById('deleteRoleName').textContent=this.dataset.name;
-
         document.getElementById('deleteRoleForm').action='/roles/'+this.dataset.id;
-
-        bootstrap.Modal
-            .getOrCreateInstance(
-                document.getElementById('deleteRoleModal')
-            )
-            .show();
-
+        bootstrap.Modal.getOrCreateInstance(
+                document.getElementById('deleteRoleModal')).show();
     });
-
 });
 </script>
 <!-- End Delete Role Modal Script -->
-
-
-
 @endpush

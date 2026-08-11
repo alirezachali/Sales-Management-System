@@ -1,6 +1,5 @@
 @import "@tabler/core/dist/css/tabler.min.css";
 @import "bootstrap-icons/font/bootstrap-icons.css";
-
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
 
 body {
@@ -13,84 +12,48 @@ body {
     --woxilon-accent-hover: #ffb938;
 }
 
-
 /* فونت */
-
 body {
     font-family: 'Vazirmatn', sans-serif;
 }
 
-
 /* Sidebar */
-
 .navbar-vertical {
-
     background: var(--woxilon-dark);
-
 }
-
 
 .navbar-brand {
-
     color: var(--woxilon-accent) !important;
-
     font-weight: 800;
-
     font-size: 24px;
-
 }
-
 
 /* لینک های منو */
-
 .nav-link {
-
     color: #d1d5db !important;
-
     border-radius: 8px;
-
     margin-bottom: 5px;
-
 }
-
 
 .nav-link:hover {
-
-    background: rgba(245,166,35,.15);
-
+    background: rgba(245, 166, 35, .15);
     color: var(--woxilon-accent) !important;
-
 }
-
 
 /* آیکون ها */
-
 .nav-link-icon {
-
     color: var(--woxilon-accent);
-
 }
-
 
 /* دکمه اصلی */
-
 .btn-primary {
-
     background: var(--woxilon-accent);
-
     border-color: var(--woxilon-accent);
-
     color: #111;
-
 }
 
-
 .btn-primary:hover {
-
     background: var(--woxilon-accent-hover);
-
     border-color: var(--woxilon-accent-hover);
-
     color: #111;
-
 }

@@ -1,39 +1,24 @@
 .top-navbar{
-
     background:#3d3d3c;
-
     color:#fff;
-
     min-height:65px;
-
     box-shadow:0 2px 15px rgba(0,0,0,.08);
-
 }
 
 .top-navbar .navbar-brand{
-
     color:#fff;
-
     font-size:20px;
-
 }
 
 .top-navbar .navbar-brand:hover{
-
     color:#fff;
-
 }
 
 .top-navbar span{
-
     color:#fff;
-
     font-size:15px;
-
 }
 
 .top-navbar .btn-light{
-
     border-radius:10px;
-
 }

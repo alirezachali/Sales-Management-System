@@ -24,22 +24,20 @@
 
     <span>
         @switch($sale->payment_type)
-
             @case('cash')
                 نقدی
-                @break
+            @break
 
             @case('card')
                 کارت
-                @break
+            @break
 
             @case('mixed')
                 ترکیبی
-                @break
+            @break
 
             @default
                 {{ $sale->payment_type }}
-
         @endswitch
     </span>
 </div>
