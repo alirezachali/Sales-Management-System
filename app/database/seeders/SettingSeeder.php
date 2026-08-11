@@ -33,6 +33,7 @@ class SettingSeeder extends Seeder
             'store_phone_in_invoice' => '1',  
             'invoice_footer_text' => 'از خرید شما سپاسگزاریم',
             'qrcode_in_invoice' => '1',
+            'barcode_internal_prefix' => '200000', 
         ];
 
         foreach ($settings as $key => $value) {

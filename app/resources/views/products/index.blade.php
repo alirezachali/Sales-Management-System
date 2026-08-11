@@ -169,30 +169,42 @@
                                     data-active="{{ $product->is_active }}" title="ویرایش کالا">
                                     <i class="bi bi-pencil"></i>
                                 </button>
+
+                                <!-- دکمه چاپ لیبل محصول -->
+                                <button type="button" class="btn btn-sm btn-outline-primary print-label-btn"
+                                    data-id="{{ $product->id }}" title="چاپ لیبل">
+                                    <i class="bi bi-printer"></i>
+                                </button>
+
                                 <!-- دکمه مشاهده لیست ورود و خروج این کالا به انبار -->
                                 <a href="{{ route('products.stock', $product) }}" class="btn btn-sm btn-outline-warning"
                                     title="مشاهده سوابق ورود و خروج این کالا به انبار">
                                     <i class="bi bi-boxes"></i>
                                 </a>
+
                                 <!-- -->
                                 <form action="{{ route('products.destroy', $product) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
+
                                     <!-- دکمه حذف کالا-->
                                     <button class="btn btn-danger btn-sm" onclick="return confirm('حذف شود؟')"
                                         title="حذف این کالا">
                                         حذف
                                     </button>
+
                                     <!-- دکمه ورود کالا به انبار-->
                                     <a href="{{ route('products.stock.create', $product) }}"
                                         class="btn btn-sm btn-outline-success" title="ورود این کالا به انبار">
                                         <i class="bi bi-plus-circle"></i>
                                     </a>
+
                                     <!-- دکمه خروج کالا از انبار-->
                                     <a href="{{ route('products.sale.create', $product) }}"
                                         class="btn btn-sm btn-outline-danger" title="خروج این کالا از انبار">
                                         <i class="bi bi-dash-circle"></i>
                                     </a>
+
                                 </form>
                             </td>
                         </tr>
@@ -214,6 +226,7 @@
 
     @include('products.modals.create')
     @include('products.modals.edit')
+    @include('products.modals.label')
 
     @if ($errors->any() && old('_form') === 'create')
         <script>
@@ -248,8 +261,75 @@
     @endif
 
     <script>
-        // اسکریپت فرستادن اطلاعات محصول همراه با دکمه ویرایش به مودال ویرایش محصول
         document.addEventListener('DOMContentLoaded', function() {
+            let currentLabelTemplate = '';
+
+            // باز کردن مودال چاپ لیبل
+            document.querySelectorAll('.print-label-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    let productId = this.dataset.id;
+
+                    fetch(`/products/${productId}/label`)
+                        .then(response => response.json())
+                        .then(data => {
+                            currentLabelTemplate = `
+
+                                <div class="label-print-area">
+
+                                    <div class="label-name">
+                                        ${data.name}
+                                    </div>
+
+                                    <div class="label-price">
+                                        ${Number(data.price).toLocaleString()} تومان
+                                    </div>
+
+                                    <div class="label-barcode">
+                                        ${data.barcode_svg}
+                                    </div>
+
+                                    <div class="label-code">
+                                        ${data.barcode}
+                                    </div>
+
+                                </div>
+                            `;
+
+                            document.getElementById('label-container').innerHTML = currentLabelTemplate;
+                            let modal = new bootstrap.Modal(document.getElementById('labelModal'));
+                            modal.show();
+                        });
+                });
+
+            });
+
+            // چاپ لیبل
+            document.getElementById('print-label-btn').addEventListener('click', function() {
+                    let quantity = parseInt(document.getElementById('label_quantity').value);
+
+                    if (!quantity || quantity < 1) {
+                        quantity = 1;
+                    }
+
+                    let container = document.getElementById('label-container');
+                    let output = '';
+
+                    for (let i = 0; i < quantity; i++) {
+                        output += currentLabelTemplate;
+                    }
+
+                    container.innerHTML = output;
+                    window.print();
+                });
+
+            // ریست کردن Preview هنگام بسته شدن Modal
+            document.getElementById('labelModal')
+                .addEventListener('hidden.bs.modal', function() {
+                    document.getElementById('label-container').innerHTML = '';
+                    currentLabelTemplate = '';
+                });
+
+            // اسکریپت فرستادن اطلاعات محصول همراه با دکمه ویرایش به مودال ویرایش محصول
             const editButtons = document.querySelectorAll('.edit-product-btn');
             editButtons.forEach(function(button) {
                 button.addEventListener('click', function() {
@@ -266,6 +346,19 @@
                     form.action = `/products/${id}`;
                 });
             });
+
+            // اسکریبت مربوط به دکمه تولید بارکد داخلی در مودال و فرم افزودن محصول جدید
+            document.getElementById('generateBarcodeBtn')
+                ?.addEventListener('click', function() {
+                    fetch("{{ route('products.generate.barcode') }}")
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                document.getElementById('barcode').value = data.barcode;
+                            }
+                        });
+                });
+
         });
     </script>
 @endsection
