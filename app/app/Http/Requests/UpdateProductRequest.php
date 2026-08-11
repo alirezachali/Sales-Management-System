@@ -22,42 +22,30 @@ class UpdateProductRequest extends FormRequest
                 'max:50',
                 Rule::unique('products', 'barcode')->ignore($this->route('product')),
             ],
-
             'name' => [
                 'required',
                 'string',
                 'max:255',
             ],
-
             'category_id' => [
                 'nullable',
                 'exists:categories,id',
             ],
-
             'buy_price' => [
                 'required',
                 'numeric',
                 'min:0',
             ],
-
             'sell_price' => [
                 'required',
                 'numeric',
                 'min:0',
             ],
-
-            'stock' => [
-                'required',
-                'numeric',
-                'min:0',
-            ],
-
             'unit' => [
                 'required',
                 'string',
                 'max:20',
             ],
-
             'is_active' => [
                 'required',
                 'boolean',

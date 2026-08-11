@@ -7,6 +7,9 @@
             @csrf
             @method('PUT')
 
+            <input type="hidden" name="_form" value="edit">
+            <input type="hidden" name="edit_product_id" id="edit_product_id">
+
             <div class="modal-content glass-card">
 
                 <div class="modal-header">
@@ -82,7 +85,7 @@
                                 </option>
 
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">
+                                    <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
@@ -148,15 +151,15 @@
                             <select name="unit" id="edit_unit"
                                 class="form-select @error('unit') is-invalid @enderror">
 
-                                <option value="عدد">
+                                <option value="عدد" @selected(old('unit') === 'عدد')>
                                     عدد
                                 </option>
 
-                                <option value="کیلوگرم">
+                                <option value="کیلوگرم" @selected(old('unit') === 'کیلوگرم')>
                                     کیلوگرم
                                 </option>
 
-                                <option value="لیتر">
+                                <option value="لیتر" @selected(old('unit') === 'لیتر')>
                                     لیتر
                                 </option>
 
@@ -181,11 +184,11 @@
                             <select name="is_active" id="edit_is_active"
                                 class="form-select @error('is_active') is-invalid @enderror">
 
-                                <option value="1">
+                                <option value="1" @selected(old('is_active') == '1')>
                                     فعال
                                 </option>
 
-                                <option value="0">
+                                <option value="0" @selected(old('is_active') == '0')>
                                     غیرفعال
                                 </option>
 

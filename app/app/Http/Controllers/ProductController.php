@@ -112,26 +112,11 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         $data = $request->validated();
-
-        dd([
-            'product_id' => $product->id,
-            'data' => $data,
-            'before' => $product->toArray(),
-        ]);
-
         $product->update($data);
 
         return redirect()
             ->route('products.index')
             ->with('success', 'کالا با موفقیت ویرایش شد');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 
     public function stock(Product $product)

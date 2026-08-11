@@ -1,10 +1,12 @@
-<div class="modal fade" id="createUserModal" tabindex="-1">
+<div class="modal fade" id="createProductModal" tabindex="-1">
 
     <div class="modal-dialog modal-xl modal-dialog-centered">
 
         <form method="POST" action="{{ route('products.store') }}">
 
             @csrf
+
+            <input type="hidden" name="_form" value="create">
 
             <div class="modal-content glass-card">
 
@@ -33,10 +35,9 @@
                                 بارکد
                             </label>
 
-                            <input type="text"
-                                   name="barcode"
-                                   class="form-control @error('barcode') is-invalid @enderror"
-                                   value="{{ old('barcode') }}">
+                            <input type="text" name="barcode"
+                                class="form-control @error('barcode') is-invalid @enderror"
+                                value="{{ old('barcode') }}">
 
                             @error('barcode')
                                 <div class="invalid-feedback">
@@ -52,10 +53,8 @@
                                 نام کالا
                             </label>
 
-                            <input type="text"
-                                   name="name"
-                                   class="form-control @error('name') is-invalid @enderror"
-                                   value="{{ old('name') }}">
+                            <input type="text" name="name"
+                                class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
 
                             @error('name')
                                 <div class="invalid-feedback">
@@ -78,15 +77,12 @@
                                     انتخاب کنید
                                 </option>
 
-                                @foreach($categories as $category)
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>
 
-                                <option value="{{ $category->id }}"
-                                        @selected(old('category_id') == $category->id)>
+                                        {{ $category->name }}
 
-                                    {{ $category->name }}
-
-                                </option>
-
+                                    </option>
                                 @endforeach
 
                             </select>
@@ -99,10 +95,8 @@
                                 قیمت خرید
                             </label>
 
-                            <input type="number"
-                                   name="buy_price"
-                                   class="form-control"
-                                   value="{{ old('buy_price',0) }}">
+                            <input type="number" name="buy_price" class="form-control"
+                                value="{{ old('buy_price', 0) }}">
 
                         </div>
 
@@ -112,10 +106,8 @@
                                 قیمت فروش
                             </label>
 
-                            <input type="number"
-                                   name="sell_price"
-                                   class="form-control"
-                                   value="{{ old('sell_price',0) }}">
+                            <input type="number" name="sell_price" class="form-control"
+                                value="{{ old('sell_price', 0) }}">
 
                         </div>
 
@@ -127,11 +119,8 @@
                                 موجودی اولیه
                             </label>
 
-                            <input type="number"
-                                   step="0.001"
-                                   name="stock"
-                                   class="form-control"
-                                   value="{{ old('stock',0) }}">
+                            <input type="number" step="0.001" name="stock" class="form-control"
+                                value="{{ old('stock', 0) }}">
 
                         </div>
 
@@ -192,10 +181,11 @@
                     <button class="btn btn-primary" title="ذخیره کالا در سیستم">
 
                         <i class="bi bi-save"></i>
-                            ذخیره کالا
+                        ذخیره کالا
                     </button>
 
-                    <a href="{{ route('products.index') }}" class="btn btn-secondary" title="انصراف و بازگشت به صفحه قبلی">
+                    <a href="{{ route('products.index') }}" class="btn btn-secondary"
+                        title="انصراف و بازگشت به صفحه قبلی">
                         بازگشت
                     </a>
 
