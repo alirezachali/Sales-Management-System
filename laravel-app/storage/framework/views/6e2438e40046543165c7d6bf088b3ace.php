@@ -1,34 +1,35 @@
 <nav class="navbar navbar-expand-lg top-navbar">
     <div class="container-fluid">
-        <!-- List Button -->
+        <!-- دکمه منو همبرگری -->
         <button class="btn me-3" id="toggleSidebar">
             <i class="bi bi-list"></i>
         </button>
-        <!-- Brand Logo & Name -->
+        
         <a class="navbar-brand d-flex align-items-center" href="<?php echo e(route('dashboard')); ?>">
+            <!-- لوگو فروشگاه -->
             <img src="<?php echo e(storeLogo()); ?>" alt="Logo" height="45">
-            <!-- Store Name -->
+            <!-- نام فروشگاه -->
             <span class="ms-2 fw-bold">
                 <?php echo e(setting('store_name', '')); ?>
 
             </span>
         </a>
         <div class="ms-auto d-flex align-items-center">
-            <!-- Live Clock -->
+            <!-- ساعت -->
             <span class="me-4" id="liveClock"></span>
             <?php if(auth()->guard()->check()): ?>
-                <!-- User Name & Profile icon -->
+                
                 <span class="me-4">
-                    <!-- Profile icon -->
+                    <!-- تصویر پروفایل -->
                     <i class="bi bi-person-circle"></i>
-                    <!-- User name -->
+                    <!-- نام کاربر -->
                     <?php echo e(auth()->user()->name); ?>
 
                 </span>
-                <!-- Logout Request Form -->
+                
                 <form action="<?php echo e(route('logout')); ?>" method="POST">
                     <?php echo csrf_field(); ?>
-                    <!-- Logout Button -->
+                    <!-- دکمه خروج از سیستم -->
                     <button class="btn btn-danger btn-sm">
                         <i class="bi bi-box-arrow-right"></i>
                         خروج
