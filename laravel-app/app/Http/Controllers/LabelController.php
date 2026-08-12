@@ -13,7 +13,6 @@ class LabelController extends Controller
     ) {
     }
 
-
     public function show(Product $product)
     {
 

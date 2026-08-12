@@ -9,14 +9,18 @@ class BarcodeService
 {
     public function __construct(
         private SettingService $settingService
-    ) {
-    }
+    ) {}
 
     public function generate(): string
     {
         $prefix = $this->settingService->get(
-            'barcode_internal_prefix',
+            'barcode_prefix',
             '200000'
+        );
+
+        $length = (int) $this->settingService->get(
+            'barcode_length',
+            12
         );
 
         $prefix = preg_replace('/\D/', '', (string) $prefix);
@@ -26,14 +30,18 @@ class BarcodeService
         }
 
         do {
+            $randomLength = $length - strlen($prefix);
+
+            if ($randomLength < 1) {
+                $randomLength = 6;
+            }
 
             $barcode = $prefix . str_pad(
-                random_int(0, 999999),
-                6,
+                random_int(0, (10 ** $randomLength) - 1),
+                $randomLength,
                 '0',
                 STR_PAD_LEFT
             );
-
         } while (
             Product::where('barcode', $barcode)->exists()
         );
