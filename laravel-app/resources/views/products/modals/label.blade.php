@@ -14,8 +14,11 @@
             <div class="modal-body">
 
                 <div class="d-flex justify-content-center label-cart">
-                    <div id="label-container" class="d-flex flex-wrap justify-content-center gap-2">
-
+                    <div id="label-container" class="d-flex flex-wrap justify-content-center gap-2"
+                        style="
+                            --label-width: {{ $settings['label_width'] ?? 50 }}mm;
+                            --label-height: {{ $settings['label_height'] ?? 30 }}mm;
+                        ">
                     </div>
                 </div>
 

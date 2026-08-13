@@ -262,65 +262,136 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            let currentLabelTemplate = '';
+           let currentLabelTemplate = '';
 
-            // باز کردن مودال چاپ لیبل
-            document.querySelectorAll('.print-label-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    let productId = this.dataset.id;
+// باز کردن مودال چاپ لیبل
+document.querySelectorAll('.print-label-btn').forEach(button => {
 
-                    fetch(`/products/${productId}/label`)
-                        .then(response => response.json())
-                        .then(data => {
-                            currentLabelTemplate = `
+    button.addEventListener('click', function() {
 
-                                <div class="label-print-area">
+        let productId = this.dataset.id;
 
-                                    <div class="label-name">
-                                        ${data.name}
-                                    </div>
+        fetch(`/products/${productId}/label`)
+            .then(response => {
 
-                                    <div class="label-price">
-                                        ${Number(data.price).toLocaleString()} تومان
-                                    </div>
+                if (!response.ok) {
+                    throw new Error('خطا در دریافت اطلاعات لیبل');
+                }
 
-                                    <div class="label-barcode">
-                                        ${data.barcode_svg}
-                                    </div>
+                return response.json();
 
-                                    <div class="label-code">
-                                        ${data.barcode}
-                                    </div>
+            })
+            .then(data => {
 
-                                </div>
-                            `;
+                // نام کالا
+                let labelName = '';
 
-                            document.getElementById('label-container').innerHTML = currentLabelTemplate;
-                            let modal = new bootstrap.Modal(document.getElementById('labelModal'));
-                            modal.show();
-                        });
-                });
+                if (data.label_show_name) {
+                    labelName = `
+                        <div class="label-name">
+                            ${data.name}
+                        </div>
+                    `;
+                }
+
+
+                // قیمت
+                let labelPrice = '';
+
+                if (data.label_show_price) {
+                    labelPrice = `
+                        <div class="label-price">
+                            ${Number(data.price).toLocaleString()} تومان
+                        </div>
+                    `;
+                }
+
+
+                // بارکد میله‌ای
+                let labelBarcode = '';
+
+                if (data.label_show_barcode) {
+                    labelBarcode = `
+                        <div class="label-barcode">
+                            ${data.barcode_svg}
+                        </div>
+                    `;
+                }
+
+
+                // شماره بارکد
+                let labelCode = '';
+
+                if (data.label_show_code) {
+                    labelCode = `
+                        <div class="label-code">
+                            ${data.barcode}
+                        </div>
+                    `;
+                }
+
+
+                // ساخت Template اصلی
+                currentLabelTemplate = `
+
+                    <div class="label-print-area"
+                         style="
+                             width: ${data.label_width}mm;
+                             height: ${data.label_height}mm;
+                         ">
+
+                        ${labelName}
+
+                        ${labelPrice}
+
+                        ${labelBarcode}
+
+                        ${labelCode}
+
+                    </div>
+
+                `;
+
+
+                document.getElementById('label-container').innerHTML =
+                    currentLabelTemplate;
+
+
+                let modal = new bootstrap.Modal(
+                    document.getElementById('labelModal')
+                );
+
+                modal.show();
+
+            })
+            .catch(error => {
+
+                console.error('Label Error:', error);
 
             });
 
+    });
+
+});
+
             // چاپ لیبل
             document.getElementById('print-label-btn').addEventListener('click', function() {
-                    let quantity = parseInt(document.getElementById('label_quantity').value);
+                let quantity = parseInt(document.getElementById('label_quantity').value);
 
-                    if (!quantity || quantity < 1) {
-                        quantity = 1;
-                    }
+                if (!quantity || quantity < 1) {
+                    quantity = 1;
+                }
 
-                    let container = document.getElementById('label-container');
-                    let output = '';
+                let container = document.getElementById('label-container');
+                let output = '';
 
-                    for (let i = 0; i < quantity; i++) {
-                        output += currentLabelTemplate;
-                    }
+                for (let i = 0; i < quantity; i++) {
+                    output += currentLabelTemplate;
+                }
 
-                    container.innerHTML = output;
-                    window.print();
-                });
+                container.innerHTML = output;
+                window.print();
+            });
 
             // ریست کردن Preview هنگام بسته شدن Modal
             document.getElementById('labelModal')
