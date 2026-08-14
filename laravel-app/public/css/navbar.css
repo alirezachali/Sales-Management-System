@@ -22,3 +22,152 @@
 .top-navbar .btn-light{
     border-radius:10px;
 }
+/* ==========================
+   User Menu
+========================== */
+
+.user-menu {
+    position: relative;
+}
+
+
+/* دکمه کاربر */
+
+.user-menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    color: #fff !important;
+
+    border: none;
+
+    background: transparent;
+
+    padding: 5px;
+
+    border-radius: 10px;
+}
+
+
+.user-menu-toggle:hover,
+.user-menu-toggle:focus {
+    
+    color: rgba(255, 255, 255, 0.08) !important;
+
+    box-shadow: none;
+}
+
+
+/* آیکن پروفایل */
+
+.user-avatar {
+    font-size: 50px;
+
+    line-height: 1;
+
+    color: #fff;
+}
+
+
+/* نام کاربر */
+
+.user-name {
+    font-size: 15px !important;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* فلش Bootstrap */
+
+.user-menu-toggle::after {
+    margin-right: 4px;
+}
+
+.user-menu-toggle:hover {
+    color: #e69317;
+}
+
+
+/* منوی بازشونده */
+
+.user-dropdown {
+    min-width: 190px;
+
+    margin-top: 10px !important;
+
+    padding: 8px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+}
+
+
+/* آیتم‌ها */
+
+.user-dropdown .dropdown-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    direction: rtl;
+
+    text-align: right;
+}
+
+
+/* آیکن آیتم‌ها */
+
+.user-dropdown .dropdown-item i {
+    font-size: 17px;
+
+    width: 22px;
+
+    text-align: center;
+}
+
+
+/* هاور */
+
+.user-dropdown .dropdown-item:hover {
+    background-color: #e6c017;
+}
+
+
+/* خروج */
+
+.user-dropdown .logout-item {
+    width: 100%;
+
+    border: none;
+
+    background: transparent;
+
+    color: #ec051d;
+
+    cursor: pointer;
+}
+
+
+.user-dropdown .logout-item:hover {
+    background-color: #f03939;
+}
+
+/* ساعت و تاریخ*/
+.date-time {
+    font-size: xx-large;
+}

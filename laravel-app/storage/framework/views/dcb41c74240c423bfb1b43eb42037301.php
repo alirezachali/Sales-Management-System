@@ -14,6 +14,7 @@
     <link href="<?php echo e(asset('css/app.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/sidebar.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/navbar.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('css/footer.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/pos.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/label-print.css')); ?>" rel="stylesheet">
     <!-- Bootstrap CDN CSS -->

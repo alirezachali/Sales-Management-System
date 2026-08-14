@@ -1,18 +1,22 @@
-.page-header{
-    border-bottom:1px solid #e5e7eb;
-    padding-bottom:15px;
-    margin-bottom:30px;
+body {
+    padding-bottom: 42px;
 }
 
-.page-header h2{
-    margin:0;
-    font-weight:bold;
+.page-header {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
 }
 
-.breadcrumb{
-    margin-bottom:8px;
+.page-header h2 {
+    margin: 0;
+    font-weight: bold;
 }
 
-.breadcrumb a{
-    text-decoration:none;
+.breadcrumb {
+    margin-bottom: 8px;
+}
+
+.breadcrumb a {
+    text-decoration: none;
 }

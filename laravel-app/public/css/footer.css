@@ -1,0 +1,53 @@
+/* ==========================
+   Application Footer
+========================== */
+
+.app-footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: 42px;
+    background: #bbbbba;
+    color: #111111;
+    z-index: 1030;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.footer-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    direction: rtl;
+}
+
+.footer-datetime {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    white-space: nowrap;
+}
+
+.footer-date {
+    font-weight: 500;
+}
+
+.footer-clock {
+    font-weight: 500;
+    direction: ltr;
+    font-variant-numeric: tabular-nums;
+}
+
+.footer-separator {
+    opacity: 0.45;
+}
+
+.footer-info {
+    font-size: 17px;
+    white-space: nowrap;
+    font-weight: 500;
+}

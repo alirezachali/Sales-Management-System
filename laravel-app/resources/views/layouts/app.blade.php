@@ -14,6 +14,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/footer.css') }}" rel="stylesheet">
     <link href="{{ asset('css/pos.css') }}" rel="stylesheet">
     <link href="{{ asset('css/label-print.css') }}" rel="stylesheet">
     <!-- Bootstrap CDN CSS -->

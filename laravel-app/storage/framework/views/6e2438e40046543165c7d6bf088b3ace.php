@@ -4,7 +4,7 @@
         <button class="btn me-3" id="toggleSidebar">
             <i class="bi bi-list"></i>
         </button>
-        
+
         <a class="navbar-brand d-flex align-items-center" href="<?php echo e(route('dashboard')); ?>">
             <!-- لوگو فروشگاه -->
             <img src="<?php echo e(storeLogo()); ?>" alt="Logo" height="45">
@@ -14,28 +14,99 @@
 
             </span>
         </a>
-        <div class="ms-auto d-flex align-items-center">
-            <!-- ساعت -->
-            <span class="me-4" id="liveClock"></span>
+        
             <?php if(auth()->guard()->check()): ?>
-                
-                <span class="me-4">
-                    <!-- تصویر پروفایل -->
-                    <i class="bi bi-person-circle"></i>
-                    <!-- نام کاربر -->
-                    <?php echo e(auth()->user()->name); ?>
 
-                </span>
-                
-                <form action="<?php echo e(route('logout')); ?>" method="POST">
-                    <?php echo csrf_field(); ?>
-                    <!-- دکمه خروج از سیستم -->
-                    <button class="btn btn-danger btn-sm">
-                        <i class="bi bi-box-arrow-right"></i>
-                        خروج
+                <div class="dropdown user-menu">
+
+                    <button class="btn user-menu-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle user-avatar"></i>
                     </button>
-                </form>
+
+
+
+                    <ul class="dropdown-menu dropdown-menu-end user-dropdown">
+
+                        <p class="user-name">
+                            <?php echo e(auth()->user()->name); ?>
+
+                        </p>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <!-- پروفایل -->
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-person"></i>
+                                <span>پروفایل</span>
+                            </a>
+                        </li>
+
+
+                        <!-- تنظیمات -->
+                        <li>
+                            <a class="dropdown-item" href="<?php echo e(route('settings.index')); ?>">
+                                <i class="bi bi-gear"></i>
+                                <span>تنظیمات</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="<?php echo e(route('settings.index')); ?>">
+                                <i class="bi bi-gear"></i>
+                                <span>'گزینه سوم'</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="<?php echo e(route('settings.index')); ?>">
+                                <i class="bi bi-gear"></i>
+                                <span>گزینه چهارم</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="<?php echo e(route('settings.index')); ?>">
+                                <i class="bi bi-gear"></i>
+                                <span>گزینه پنجم</span>
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+
+                        <!-- خروج -->
+                        <li>
+
+                            <form action="<?php echo e(route('logout')); ?>" method="POST" class="m-0">
+
+                                <?php echo csrf_field(); ?>
+
+                                <button type="submit" class="dropdown-item logout-item">
+
+                                    <i class="bi bi-box-arrow-right"></i>
+
+                                    <span>خروج از سیستم</span>
+
+                                </button>
+
+                            </form>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
             <?php endif; ?>
+
+
+
+
         </div>
     </div>
 </nav>

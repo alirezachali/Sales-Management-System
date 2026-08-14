@@ -2,9 +2,9 @@
 @section('title', 'داشبرد مدیریتی')
 @section('content')
 
-    <div class="container bg-dark">
+    <div class="container">
 
-        <h2 class="mb-4 bg-dark">
+        <h2 class="mb-4">
             داشبورد مدیریت
         </h2>
 
@@ -12,23 +12,21 @@
             <div class="col-lg-3 col-md-6">
                 <div class="card dashboard-card">
                     <div class="card-body">
-
+                        <!-- کارت آمار فروش امروز-->
                         <div class="dashboard-icon bg-sales">
                             💰
                         </div>
-
                         <div class="dashboard-title">
                             فروش امروز
                         </div>
-
+                        <!-- فروش امروز از دیتابیس-->
                         <div class="dashboard-number">
                             {{ number_format($todaySales) }}
                         </div>
-
+                        <!-- واحد پولی از دیتابیس -->
                         <small>
-                            تومان
+                            {{ setting('currency', '') }}
                         </small>
-
                     </div>
                 </div>
             </div>
@@ -36,67 +34,57 @@
             <div class="col-lg-3 col-md-6">
                 <div class="card dashboard-card">
                     <div class="card-body">
-
+                        <!-- کارت آمار فاکتورهای امروز-->
                         <div class="dashboard-icon bg-invoice">
                             🧾
                         </div>
-
                         <div class="dashboard-title">
                             فاکتورهای امروز
                         </div>
-
+                        <!-- تعداد فاکتورهای امروز از دیتابیس-->
                         <div class="dashboard-number">
                             {{ $todayInvoices }}
                         </div>
-
                     </div>
                 </div>
             </div>
-
+            <!-- کارت آمار تعداد کالاها-->
             <div class="col-lg-3 col-md-6">
                 <div class="card dashboard-card">
                     <div class="card-body">
-
                         <div class="dashboard-icon bg-product">
                             📦
                         </div>
-
                         <div class="dashboard-title">
                             تعداد کالاها
                         </div>
-
+                        <!-- تعداد کالاها از دیتابیس-->
                         <div class="dashboard-number">
                             {{ $productsCount }}
                         </div>
-
                     </div>
                 </div>
             </div>
-
+            <!-- کارت آمار تعدا کالاهای کم موجود-->
             <div class="col-lg-3 col-md-6">
                 <div class="card dashboard-card">
                     <div class="card-body">
-
                         <div class="dashboard-icon bg-stock">
                             ⚠️
                         </div>
-
                         <div class="dashboard-title">
-                            کالاهای کم موجود
+                           تعداد کالاهای کم موجود
                         </div>
-
                         <div class="dashboard-number">
                             {{ $lowStockProducts }}
                         </div>
-
                     </div>
                 </div>
             </div>
-
+            <!-- کارت آمار آخرین فروش ها-->
             <div class="row mt-4">
                 <div class="col-lg-8">
                     <div class="card dashboard-card">
-
                         <div class="card-header">
                             <strong>آخرین فروش‌ها</strong>
                         </div>
@@ -137,12 +125,11 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- کارت آمار لیست کالاهای کم موجود-->
                 <div class="col-lg-4">
                     <div class="card dashboard-card">
-
                         <div class="card-header bg-danger text-white">
-                            ⚠️ کالاهای کم‌موجودی
+                            ⚠️ لیست کالاهای کم‌موجودی
                         </div>
                         <div class="list-group list-group-flush">
                             @forelse($lowStockList as $product)
@@ -160,7 +147,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- کارت آمار نمودار فروش 30 روز گذشته-->
                 <div class="card dashboard-card mt-4">
                     <div class="card-header">
                         <strong>
@@ -177,6 +164,7 @@
 
 @endsection
 @section('scripts')
+    <!-- اسکریپت مربوط به نمودار فروش 30 روز گذشته-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('salesChart');

@@ -1,0 +1,183 @@
+<?php $__env->startSection('title', 'مدیریت نقش‌ها'); ?>
+<?php $__env->startSection('content'); ?>
+
+<!-- Start Role Page Header -->
+<div class="page-header d-flex justify-content-between align-items-center mb-4">
+
+<!-- Success Alert Section -->
+<?php if(session('success')): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <?php echo e(session('success')); ?>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                title="یستن"></button>
+    </div>
+<?php endif; ?>
+
+<!-- Error Alert Section -->
+<?php if(session('error')): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <?php echo e(session('error')); ?>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                title="یستن"></button>
+    </div>
+<?php endif; ?>
+
+    <div>
+        <h3 class="mb-1">
+            مدیریت نقش‌ها
+        </h3>
+        <p class="text-muted mb-0">
+            مدیریت نقش‌های کاربران سیستم
+        </p>
+    </div>
+    <!-- Add New Role Button  -->
+    <button class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#createRoleModal"
+            title="برای افزودن نقش جدید به سیستم کلیک کنید">
+        <i class="bi bi-plus-circle"></i>
+            افزودن نقش جدید
+    </button>
+</div>
+<!-- End Role Page Header -->
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+
+            <!-- Start Role Table -->        
+            <table class="table table-hover align-middle mb-0">
+
+                <!-- Role Table Head -->
+                <thead>
+                    <tr>
+                        <th width="70">ردیف</th>
+                        <th>نام نقش</th>
+                        <th>شناسه</th>
+                        <th>توضیحات</th>
+                        <th width="120">تعداد کاربران</th>
+                        <th width="180">عملیات</th>
+                    </tr>
+                </thead>
+
+                <!-- Start Role Table Body -->
+                <tbody>
+                    <?php $__empty_1 = true; $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <tr>
+                            <td>
+                                <?php echo e($loop->iteration + ($roles->currentPage()-1) * $roles->perPage()); ?>
+
+                            </td>
+                            <td>
+                                <?php echo e($role->display_name); ?>
+
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary">
+                                    <?php echo e($role->name); ?>
+
+                                </span>
+                            </td>
+                            <td>
+                                <?php echo e($role->description); ?>
+
+                            </td>
+                            <td>
+                                <span class="badge bg-info">
+                                    <?php echo e($role->users()->count()); ?>
+
+                                </span>
+                            </td>
+                            <td>
+                                <!-- Edit Role Button -->
+                                <button class="btn btn-sm btn-warning editRoleBtn"
+                                        data-id="<?php echo e($role->id); ?>"
+                                        data-display_name="<?php echo e($role->display_name); ?>"
+                                        data-name="<?php echo e($role->name); ?>"
+                                        data-description="<?php echo e($role->description); ?>"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editRoleModal"
+                                        title="برای ویرانش این نقش کلیک کنید">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+
+                                <!-- Delete Role Button -->
+                                <button class="btn btn-sm btn-danger deleteRoleBtn"
+                                        data-id="<?php echo e($role->id); ?>"
+                                        data-name="<?php echo e($role->name); ?>"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteRoleModal"
+                                        title="برای حذف این نقش کلیک کنید">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                                <!-- Edit Permissions for Role Button -->
+                                <a href="<?php echo e(route('roles.permissions',$role)); ?>" 
+                                   class="btn btn-sm btn-info"
+                                   title="برای ویرایش مجوز های این نقش کلیک کنید">
+                                   <i class="bi bi-shield-lock"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                    <!-- اگر اطلاعاتی در دیتابیس وجود نداشت اطلاعات زیر را نمایش میدهد -->
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        <tr>
+                            <td colspan="6" class="text-center py-5">
+                                هیچ نقشی ثبت نشده است.
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+                <!-- End Role Table Body -->
+            </table>
+            <!-- End Role Table -->
+        </div>
+    </div>
+</div>
+
+<div class="mt-3"><?php echo e($roles->links()); ?></div>
+
+<?php echo $__env->make('roles.modals.create', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php echo $__env->make('roles.modals.edit', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php echo $__env->make('roles.modals.delete', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('scripts'); ?>
+<!-- Start Edit Role Modal Script -->
+<script>
+document.querySelectorAll('.editRoleBtn').forEach(button=>{
+    button.addEventListener('click',function(){
+        document.getElementById('edit_name').value=this.dataset.display_name;
+        document.getElementById('edit_slug').value=this.dataset.name;
+        document.getElementById('edit_description').value=this.dataset.description;
+        document.getElementById('editRoleForm').action='/roles/'+this.dataset.id;
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('editRoleModal')).show();
+    });
+});
+</script>
+<!-- End Edit Role Modal Script -->
+
+<!-- Start Delete Role Modal Script -->
+<script>
+document.querySelectorAll('.deleteRoleBtn').forEach(button=>{
+    button.addEventListener('click',function(){
+        document.getElementById('deleteRoleName').textContent=this.dataset.name;
+        document.getElementById('deleteRoleForm').action='/roles/'+this.dataset.id;
+        bootstrap.Modal.getOrCreateInstance(
+                document.getElementById('deleteRoleModal')).show();
+    });
+});
+</script>
+<!-- End Delete Role Modal Script -->
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Ali\Documents\Sales-Management-System\laravel-app\resources\views/roles/index.blade.php ENDPATH**/ ?>
