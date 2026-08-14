@@ -12,6 +12,8 @@ class Role extends Model
         'name',
         'display_name',
         'description',
+        'color',
+        'icon',
     ];
 
     public function users(): HasMany

@@ -152,7 +152,7 @@
                         <th>دسته بندی</th>
                         <th>قیمت فروش</th>
                         <th>موجودی</th>
-                        <th width="170">عملیات</th>
+                        <th width="250">عملیات</th>
                     </tr>
                 </thead>
 
@@ -167,7 +167,7 @@
                             <td><?php echo e($product->stock); ?></td>
                             <td>
                                 <!-- دکمه ویرایش کالا -->
-                                <button type="button" class="btn btn-sm btn-outline-primary edit-product-btn"
+                                <button type="button" class="btn btn-sm btn-warning edit-product-btn"
                                     data-bs-toggle="modal" data-bs-target="#editProductModal" data-id="<?php echo e($product->id); ?>"
                                     data-barcode="<?php echo e($product->barcode); ?>" data-name="<?php echo e($product->name); ?>"
                                     data-category="<?php echo e($product->category_id); ?>" data-buy-price="<?php echo e($product->buy_price); ?>"
@@ -177,13 +177,13 @@
                                 </button>
 
                                 <!-- دکمه چاپ لیبل محصول -->
-                                <button type="button" class="btn btn-sm btn-outline-primary print-label-btn"
+                                <button type="button" class="btn btn-sm btn-info print-label-btn"
                                     data-id="<?php echo e($product->id); ?>" title="چاپ لیبل">
                                     <i class="bi bi-printer"></i>
                                 </button>
 
                                 <!-- دکمه مشاهده لیست ورود و خروج این کالا به انبار -->
-                                <a href="<?php echo e(route('products.stock', $product)); ?>" class="btn btn-sm btn-outline-warning"
+                                <a href="<?php echo e(route('products.stock', $product)); ?>" class="btn btn-sm btn-light"
                                     title="مشاهده سوابق ورود و خروج این کالا به انبار">
                                     <i class="bi bi-boxes"></i>
                                 </a>
@@ -193,25 +193,23 @@
                                     <?php echo csrf_field(); ?>
                                     <?php echo method_field('DELETE'); ?>
 
-                                    <!-- دکمه حذف کالا-->
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('حذف شود؟')"
-                                        title="حذف این کالا">
-                                        حذف
-                                    </button>
-
                                     <!-- دکمه ورود کالا به انبار-->
                                     <a href="<?php echo e(route('products.stock.create', $product)); ?>"
                                         class="btn btn-sm btn-outline-success" title="ورود این کالا به انبار">
-                                        <i class="bi bi-plus-circle"></i>
+                                        <i class="bi bi-plus-lg"></i>
                                     </a>
 
                                     <!-- دکمه خروج کالا از انبار-->
                                     <a href="<?php echo e(route('products.sale.create', $product)); ?>"
                                         class="btn btn-sm btn-outline-danger" title="خروج این کالا از انبار">
-                                        <i class="bi bi-dash-circle"></i>
+                                        <i class="bi bi-dash-lg"></i>
                                     </a>
-
                                 </form>
+                                <!-- دکمه حذف کالا-->
+                                    <button class="btn btn-danger btn-sm" onclick="return confirm('حذف شود؟')"
+                                        title="حذف این کالا">
+                                        حذف
+                                    </button>
                             </td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>

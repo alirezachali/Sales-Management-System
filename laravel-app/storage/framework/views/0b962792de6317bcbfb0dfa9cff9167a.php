@@ -1,58 +1,61 @@
-@extends('layouts.app')
-@section('title', 'گردش انبار')
-@section('content')
+<?php $__env->startSection('title', 'گردش انبار'); ?>
+<?php $__env->startSection('content'); ?>
 
     <!-- Success Alert Section -->
-    @if (session('success'))
+    <?php if(session('success')): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
-            {{ session('success') }}
+            <?php echo e(session('success')); ?>
+
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
-    @endif
+    <?php endif; ?>
 
     <!-- Error Alert Section -->
-    @if (session('error'))
+    <?php if(session('error')): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            {{ session('error') }}
+            <?php echo e(session('error')); ?>
+
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
-    @endif
+    <?php endif; ?>
 
     <div class="card">
+
         <div class="card-header d-flex justify-content-between align-items-center mb-4">
             <h3 class="card-title">
                 گردش کالا:
-                {{ $product->name }}
+                <?php echo e($product->name); ?>
+
             </h3>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary" title="بازگشت به صفحه لیست محصولات">
+            <a href="<?php echo e(route('products.index')); ?>" class="btn btn-secondary" title="بازگشت به صفحه لیست محصولات">
                 بازگشت
             </a>
         </div>
 
         <div class="card-body">
+
             <div class="card-header d-flex justify-content-between align-items-center">
-                <!-- نمایش پیغام موجودی فعلی-->
                 <div class="alert alert-info">
                     موجودی فعلی:
                     <strong>
-                        {{ $product->stock }}
+                        <?php echo e($product->stock); ?>
+
                     </strong>
-                    {{ $product->unit }}
+                    <?php echo e($product->unit); ?>
+
                 </div>
-                <!-- دکمه های گرفتن خروجی از لیست ورود و خروج-->
                 <div class="export-btn d-flex justify-content-evenly">
-                    <button type="button" class="btn btn-sm btn-light print-label-btn" data-id="{{ $product->id }}"
+                    <button type="button" class="btn btn-sm btn-light print-label-btn" data-id="<?php echo e($product->id); ?>"
                         title="گرفتن خروجی اکسل">
                         <i class="bi bi-filetype-xls"></i>
                     </button>
-                    <button type="button" class="btn btn-sm btn-light print-label-btn" data-id="{{ $product->id }}"
+                    <button type="button" class="btn btn-sm btn-light print-label-btn" data-id="<?php echo e($product->id); ?>"
                         title="گرفتن خروجی CSV">
                         <i class="bi bi-filetype-csv"></i>
                     </button>
                 </div>
-                
             </div>
 
             <div class="table-responsive">
@@ -68,52 +71,54 @@
                     </thead>
 
                     <tbody>
-                        @foreach ($movements as $movement)
+                        <?php $__currentLoopData = $movements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $movement): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <!-- تاریخ -->
-                                <td>{{ $movement->created_at }}</td>
+                                <td><?php echo e($movement->created_at); ?></td>
                                 <!-- نوع عملیات -->
                                 <td>
-                                    @switch($movement->type)
-                                        @case('initial')
+                                    <?php switch($movement->type):
+                                        case ('initial'): ?>
                                             <span class="badge bg-info">
                                                 موجودی اولیه
                                             </span>
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('purchase')
+                                        <?php case ('purchase'): ?>
                                             <span class="badge bg-success">
                                                 خرید
                                             </span>
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('sale')
+                                        <?php case ('sale'): ?>
                                             <span class="badge bg-danger">
                                                 فروش
                                             </span>
-                                        @break
+                                        <?php break; ?>
 
-                                        @case('adjust')
+                                        <?php case ('adjust'): ?>
                                             <span class="badge bg-warning">
                                                 اصلاح
                                             </span>
-                                        @break
-                                    @endswitch
+                                        <?php break; ?>
+                                    <?php endswitch; ?>
                                 </td>
                                 <!-- مقدار -->
-                                <td>{{ $movement->quantity }}</td>
+                                <td><?php echo e($movement->quantity); ?></td>
                                 <!-- توضیحات -->
-                                <td>{{ $movement->description }}</td>
+                                <td><?php echo e($movement->description); ?></td>
                             </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
 
                 </table>
 
             </div>
 
-            <div class="mt-3">{{ $movements->links() }}</div>
+            <div class="mt-3"><?php echo e($movements->links()); ?></div>
 
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Ali\Documents\Sales-Management-System\laravel-app\resources\views/products/stock.blade.php ENDPATH**/ ?>

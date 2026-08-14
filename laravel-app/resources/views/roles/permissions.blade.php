@@ -2,6 +2,24 @@
 @section('title', 'مجوزهای نقش')
 @section('content')
 
+    <!-- Success Alert Section -->
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+        </div>
+    @endif
+
+    <!-- Error Alert Section -->
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+        </div>
+    @endif
+
     <div class="page-header d-flex justify-content-between align-items-center mb-4">
 
         <div>
@@ -10,7 +28,7 @@
             </h3>
         </div>
 
-        <a href="{{ route('roles.index') }}"class="btn btn-secondary">
+        <a href="{{ route('roles.index') }}"class="btn btn-secondary" title="بازگشت به صفحه لیست نقش ها">
             <i class="bi bi-arrow-right"></i>
             بازگشت
         </a>

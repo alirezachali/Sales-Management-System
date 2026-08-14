@@ -66,3 +66,18 @@
     margin-top: 5px;
     font-size: 1.15rem;
 }
+
+
+/* مربوط به دکمه های خروجی گرفتن از لیست گردش انبار*/
+.export-btn {
+    width: 15%;
+}
+
+.export-btn button {
+    font-size: 35px;
+}
+
+.alert {
+    width: 50%;
+    margin-top: 10px;
+}
