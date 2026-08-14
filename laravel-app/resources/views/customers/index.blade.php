@@ -110,13 +110,17 @@
                         <tbody>
                             @forelse($customers as $customer)
                                 <tr>
+                                    <!-- ردیف -->
                                     <td>{{ $loop->iteration }}</td>
+                                    <!-- نام مشتری -->
                                     <td>
                                         <div class="fw-bold">
                                             {{ $customer->full_name }}
                                         </div>
                                     </td>
+                                    <!-- موبایل -->
                                     <td>{{ $customer->mobile }}</td>
+                                    <!-- نقش -->
                                     <td>
                                         @if ($customer->role)
                                             <span class="badge bg-{{ $customer->role->color }}">
@@ -129,10 +133,16 @@
                                             </span>
                                         @endif
                                     </td>
+                                    <!-- تعداد خرید -->
                                     <td>{{ number_format($customer->purchase_count) }}</td>
+                                    <!-- مجموع خرید -->
                                     <td>{{ number_format($customer->total_purchase_amount) }}
-                                        تومان
+                                        <span>
+                                            <!-- واحد پولی از دیتابیس -->
+                                            {{ setting('currency', '') }}
+                                        </span>
                                     </td>
+                                    <!-- وضعیت -->
                                     <td>
                                         @if ($customer->is_active)
                                             <span class="badge bg-success">
@@ -144,6 +154,7 @@
                                             </span>
                                         @endif
                                     </td>
+                                    <!-- عملیات -->
                                     <td>
                                         <!-- Edit Customer Button -->
                                         <button class="btn btn-sm btn-warning editCustomer" data-id="{{ $customer->id }}"

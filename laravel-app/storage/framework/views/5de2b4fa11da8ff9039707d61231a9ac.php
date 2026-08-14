@@ -112,14 +112,18 @@
                         <tbody>
                             <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr>
+                                    <!-- ردیف -->
                                     <td><?php echo e($loop->iteration); ?></td>
+                                    <!-- نام مشتری -->
                                     <td>
                                         <div class="fw-bold">
                                             <?php echo e($customer->full_name); ?>
 
                                         </div>
                                     </td>
+                                    <!-- موبایل -->
                                     <td><?php echo e($customer->mobile); ?></td>
+                                    <!-- نقش -->
                                     <td>
                                         <?php if($customer->role): ?>
                                             <span class="badge bg-<?php echo e($customer->role->color); ?>">
@@ -133,11 +137,18 @@
                                             </span>
                                         <?php endif; ?>
                                     </td>
+                                    <!-- تعداد خرید -->
                                     <td><?php echo e(number_format($customer->purchase_count)); ?></td>
+                                    <!-- مجموع خرید -->
                                     <td><?php echo e(number_format($customer->total_purchase_amount)); ?>
 
-                                        تومان
+                                        <span>
+                                            <!-- واحد پولی از دیتابیس -->
+                                            <?php echo e(setting('currency', '')); ?>
+
+                                        </span>
                                     </td>
+                                    <!-- وضعیت -->
                                     <td>
                                         <?php if($customer->is_active): ?>
                                             <span class="badge bg-success">
@@ -149,6 +160,7 @@
                                             </span>
                                         <?php endif; ?>
                                     </td>
+                                    <!-- عملیات -->
                                     <td>
                                         <!-- Edit Customer Button -->
                                         <button class="btn btn-sm btn-warning editCustomer" data-id="<?php echo e($customer->id); ?>"

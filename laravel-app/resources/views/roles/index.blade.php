@@ -71,25 +71,32 @@
                 <tbody>
                     @forelse($roles as $role)
                         <tr>
+                            <!-- ردیف -->
                             <td>
                                 {{ $loop->iteration + ($roles->currentPage()-1) * $roles->perPage() }}
                             </td>
+                            <!-- نام نقش -->
                             <td>
                                 {{ $role->display_name }}
                             </td>
+                            <!-- شناسه -->
                             <td>
-                                <span class="badge bg-secondary">
+                                <span class="badge bg-{{ $role->color }}">
                                     {{ $role->name }}
+                                    <i class="{{ $role->icon }}"></i>
                                 </span>
                             </td>
+                            <!-- توضیحات -->
                             <td>
                                 {{ $role->description }}
                             </td>
+                            <!-- تعداد کاربران -->
                             <td>
                                 <span class="badge bg-info">
                                     {{ $role->users()->count() }}
                                 </span>
                             </td>
+                            <!-- عملیات -->
                             <td>
                                 <!-- Edit Role Button -->
                                 <button class="btn btn-sm btn-warning editRoleBtn"

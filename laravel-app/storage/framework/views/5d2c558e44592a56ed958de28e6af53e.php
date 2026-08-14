@@ -72,30 +72,37 @@
                 <tbody>
                     <?php $__empty_1 = true; $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr>
+                            <!-- ردیف -->
                             <td>
                                 <?php echo e($loop->iteration + ($roles->currentPage()-1) * $roles->perPage()); ?>
 
                             </td>
+                            <!-- نام نقش -->
                             <td>
                                 <?php echo e($role->display_name); ?>
 
                             </td>
+                            <!-- شناسه -->
                             <td>
-                                <span class="badge bg-secondary">
+                                <span class="badge bg-<?php echo e($role->color); ?>">
                                     <?php echo e($role->name); ?>
 
+                                    <i class="<?php echo e($role->icon); ?>"></i>
                                 </span>
                             </td>
+                            <!-- توضیحات -->
                             <td>
                                 <?php echo e($role->description); ?>
 
                             </td>
+                            <!-- تعداد کاربران -->
                             <td>
                                 <span class="badge bg-info">
                                     <?php echo e($role->users()->count()); ?>
 
                                 </span>
                             </td>
+                            <!-- عملیات -->
                             <td>
                                 <!-- Edit Role Button -->
                                 <button class="btn btn-sm btn-warning editRoleBtn"

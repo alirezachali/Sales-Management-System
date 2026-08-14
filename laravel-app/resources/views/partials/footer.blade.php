@@ -1,5 +1,4 @@
 <footer class="app-footer">
-
     <div class="footer-content">
 
         <div class="footer-info">
@@ -10,17 +9,13 @@
         </div>
 
         <div class="footer-datetime">
-
             <span class="footer-date">
                 {{ verta()->format('l j F Y') }}
             </span>
-
             <span class="footer-separator">||</span>
-
             <span id="liveClock" class="footer-clock">
                 --:--:--
             </span>
-
         </div>
 
         <div class="footer-info">
@@ -28,5 +23,4 @@
         </div>
 
     </div>
-
 </footer>
