@@ -35,7 +35,7 @@
                         <label class="form-label">
                             نقش
                         </label>
-                        <select name="role_id" class="form-select" required>
+                        <select name="role_id" id="edit_role" class="form-select" required>
                             <option value="">
                                 انتخاب نقش
                             </option>

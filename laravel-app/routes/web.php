@@ -40,52 +40,64 @@ Route::middleware('auth')->group(function () {
     /* مسیر صفحه داشبورد مدیریتی*/
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    /* مسیر صفحه لیست محصولات*/
-    Route::resource('products', ProductController::class)->except(['show']);
-    Route::get('products/{product}/stock', [ProductController::class,'stock'])->name('products.stock');    
-    Route::post('products/{product}/stock', [ProductController::class,'storeStock'])->name('products.stock.store');
-    Route::get('products/{product}/stock/sale', [ProductController::class,'createSale'])->name('products.sale.create');
-    Route::post('products/{product}/stock/sale', [ProductController::class,'storeSale'])->name('products.sale.store');
-    Route::get('products/{product}/stock/create', [ProductController::class,'createStock'])->name('products.stock.create');
-    /* مسیر جنراتور بارکد برای محصولات جدید بدون بارکد کارخانه ای */
-    Route::get('/products/generate-barcode', [BarcodeController::class, 'generate'])->name('products.generate.barcode');
-    /* مسیر چاپ لیبل محصولات */
-    Route::get('products/{product}/label', [LabelController::class, 'show'])->name('products.label');
+    Route::group([], function () {
+        /* مسیر صفحه لیست محصولات*/
+        Route::resource('/products', ProductController::class)->except(['show']);
+        Route::get('products/{product}/stock', [ProductController::class,'stock'])->name('products.stock');    
+        Route::post('products/{product}/stock', [ProductController::class,'storeStock'])->name('products.stock.store');
+        Route::get('products/{product}/stock/sale', [ProductController::class,'createSale'])->name('products.sale.create');
+        Route::post('products/{product}/stock/sale', [ProductController::class,'storeSale'])->name('products.sale.store');
+        Route::get('products/{product}/stock/create', [ProductController::class,'createStock'])->name('products.stock.create');
+        /* مسیر جنراتور بارکد برای محصولات جدید بدون بارکد کارخانه ای */
+        Route::get('products/generate-barcode', [BarcodeController::class, 'generate'])->name('products.generate.barcode');
+        /* مسیر چاپ لیبل محصولات */
+        Route::get('products/{product}/label', [LabelController::class, 'show'])->name('products.label');
+    });
 
-    /* مسیر صفحه صندوق فروش*/
-    Route::get('/pos', [SaleController::class,'index'])->name('pos.index');
-    Route::get('/pos/product', [SaleController::class, 'findProduct'])->name('pos.product');  
-    Route::post('/pos/checkout', [SaleController::class, 'checkout'])->name('pos.checkout');
+    Route::group([], function () {
+        /* مسیر صفحه صندوق فروش*/
+        Route::get('/pos', [SaleController::class,'index'])->name('pos.index');
+        Route::get('pos/product', [SaleController::class, 'findProduct'])->name('pos.product');  
+        Route::post('pos/checkout', [SaleController::class, 'checkout'])->name('pos.checkout');
+    });
     
     /* مسیر نمایش فاکتور فروش بعد از خرید مشتری*/
     Route::get('/invoice/{sale}', [SaleController::class, 'invoice'])->name('invoice');
 
-    /* مسیر صفحه تنظیمات*/
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    /* مسیر ذخیره تنظیمات جدید*/
-    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::group([], function () {
+        /* مسیر صفحه تنظیمات*/
+        Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+        /* مسیر ذخیره تنظیمات جدید*/
+        Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+    });
 
     /* مسیر صفحه لیست دسته بندی های محصولات*/
     Route::resource('categories', CategoryController::class); 
 
-    /* مسیر نمایش لیست کاربران*/
-    Route::resource('users', UserController::class)->except('show');
-    /* مسیر تغییر رمزعبور کاربر*/
-    Route::put('/users/{user}/password', [UserController::class,'updatePassword'])->name('users.password');
+    Route::group([], function () {
+        /* مسیر نمایش لیست کاربران*/
+        Route::resource('/users', UserController::class)->except('show');
+        /* مسیر تغییر رمزعبور کاربر*/
+        Route::put('users/{user}/password', [UserController::class,'updatePassword'])->name('users.password');
+        /* مسیر نمایش لیست نقش های کاربر*/
+        
+        Route::resource('user/roles', RoleController::class)->except('show');
+        /* مسیر ویرایش مجوزهای مربوط به هر نقش کاربر*/
+        Route::get('user/roles/{role}/permissions', [RoleController::class,'permissions'])->name('roles.permissions');
+        Route::post('user/roles/{role}/permissions', [RoleController::class,'syncPermissions'])->name('roles.permissions.sync');
+    });
 
-    /* مسیر نمایش لیست نقش های کاربر*/
-    Route::resource('roles', RoleController::class)->except('show');
+    
+    Route::group([], function () {
+        /* مسیر نمایش لیست مشتریان*/
+        Route::resource('/customers', CustomerController::class);
+        /* مسیر جستجوی مشتریان */
+        Route::get('customers/search', [CustomerController::class, 'search'])->name('customers.search');
 
-    /* مسیر ویرایش مجوزهای مربوط به هر نقش کاربر*/
-    Route::get('/roles/{role}/permissions', [RoleController::class,'permissions'])->name('roles.permissions');
-    Route::post('/roles/{role}/permissions', [RoleController::class,'syncPermissions'])->name('roles.permissions.sync');
+        /* مسیر نمایش لیست نقش های مشتری*/ 
+        Route::resource('customer/roles', CustomerRoleController::class);
+    });
 
-    /* مسیر جستجوی مشتریان */
-    Route::get('/customers/search', [CustomerController::class, 'search'])->name('customers.search');
-    /* مسیر نمایش لیست مشتریان*/
-    Route::resource('customers', CustomerController::class);
-
-    /* مسیر نمایش لیست نقش های مشتری*/ 
-    Route::resource('customer-roles', CustomerRoleController::class);
+    
     
 });

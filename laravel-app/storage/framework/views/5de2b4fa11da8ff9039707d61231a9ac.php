@@ -90,8 +90,8 @@
             <div class="card-body p-0">
                 <div class="table-responsive">
 
-                    <!-- Start Customer Table -->
-                    <table class="table table-hover align-middle mb-0">
+                    <!-- جدول مشتریان -->
+                    <table class="table table-bordered table-hover align-middle">
 
                         <!-- Start Customer Table Head -->
                         <thead>

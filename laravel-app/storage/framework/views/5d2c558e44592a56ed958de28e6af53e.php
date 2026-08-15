@@ -46,17 +46,17 @@
             <div class="table-responsive">
 
                 <!-- Start Role Table -->
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-bordered table-hover align-middle">
 
                     <!-- Role Table Head -->
                     <thead>
                         <tr>
-                            <th width="70">ردیف</th>
+                            <th width="50">ردیف</th>
                             <th>نام نقش</th>
-                            <th>شناسه</th>
+                            <th width="100">شناسه</th>
                             <th>توضیحات</th>
-                            <th width="120">تعداد کاربران</th>
-                            <th width="180">عملیات</th>
+                            <th width="105">تعداد کاربران</th>
+                            <th width="130">عملیات</th>
                         </tr>
                     </thead>
 
@@ -96,7 +96,7 @@
                                 </td>
                                 <!-- عملیات -->
                                 <td>
-                                    <!-- Edit Role Button -->
+                                    <!-- دکمه ویرایش یک نقش -->
                                     <button class="btn btn-sm btn-warning editRoleBtn" data-id="<?php echo e($role->id); ?>"
                                         data-display_name="<?php echo e($role->display_name); ?>" data-name="<?php echo e($role->name); ?>"
                                         data-description="<?php echo e($role->description); ?>" data-bs-toggle="modal"
@@ -104,14 +104,14 @@
                                         <i class="bi bi-pencil"></i>
                                     </button>
 
-                                    <!-- Delete Role Button -->
+                                    <!-- دکمه حذف یک نقش -->
                                     <button class="btn btn-sm btn-danger deleteRoleBtn" data-id="<?php echo e($role->id); ?>"
                                         data-name="<?php echo e($role->name); ?>" data-bs-toggle="modal"
                                         data-bs-target="#deleteRoleModal" title="برای حذف این نقش کلیک کنید">
                                         <i class="bi bi-trash"></i>
                                     </button>
 
-                                    <!-- Edit Permissions for Role Button -->
+                                    <!-- دکمه ویرایش مجوزهای یک نقش -->
                                     <a href="<?php echo e(route('roles.permissions', $role)); ?>" class="btn btn-sm btn-info"
                                         title="برای ویرایش مجوز های این نقش کلیک کنید">
                                         <i class="bi bi-shield-lock"></i>
@@ -144,8 +144,9 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
-    <!-- Start Edit Role Modal Script -->
+    
     <script>
+        // اسکریپت مربوط به مودال ویرایش یک نقش
         document.querySelectorAll('.editRoleBtn').forEach(button => {
             button.addEventListener('click', function() {
                 document.getElementById('edit_name').value = this.dataset.display_name;
@@ -155,11 +156,8 @@
                 bootstrap.Modal.getOrCreateInstance(document.getElementById('editRoleModal')).show();
             });
         });
-    </script>
-    <!-- End Edit Role Modal Script -->
 
-    <!-- Start Delete Role Modal Script -->
-    <script>
+        // اسکریپت مربوط به مودال حذف یک نقش
         document.querySelectorAll('.deleteRoleBtn').forEach(button => {
             button.addEventListener('click', function() {
                 document.getElementById('deleteRoleName').textContent = this.dataset.name;
@@ -169,7 +167,6 @@
             });
         });
     </script>
-    <!-- End Delete Role Modal Script -->
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Ali\Documents\Sales-Management-System\laravel-app\resources\views/roles/index.blade.php ENDPATH**/ ?>

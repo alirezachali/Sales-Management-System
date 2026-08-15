@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index(Request $request)
     {
         $query = Product::with('category');
@@ -55,9 +53,7 @@ class ProductController extends Controller
         ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
         $categories = \App\Models\Category::all();
@@ -65,9 +61,7 @@ class ProductController extends Controller
         return view('products.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(StoreProductRequest $request)
     {
         $data = $request->validated();
@@ -88,17 +82,7 @@ class ProductController extends Controller
             ->with('success', 'کالا با موفقیت ثبت شد');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(Product $product)
     {
         $categories = \App\Models\Category::all();

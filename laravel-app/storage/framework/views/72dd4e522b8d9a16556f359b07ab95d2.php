@@ -2,27 +2,86 @@
 <?php $__env->startSection('content'); ?>
 
     <div class="container">
+
+        <!-- Success Alert Section -->
+        <?php if(session('success')): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <?php echo e(session('success')); ?>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+            </div>
+        <?php endif; ?>
+
+        <!-- Error Alert Section -->
+        <?php if(session('error')): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <?php echo e(session('error')); ?>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+            </div>
+        <?php endif; ?>
+
+        <div class="row row-cards mb-4">
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="subheader">
+                                تعداد دسته بندی ها
+                            </div>
+                        </div>
+                        <div class="h1 mb-0 text-warning">
+                            10
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="subheader">
+                            دسته بندی های فعال
+                        </div>
+                        <div class="h1 mb-0 text-success">
+                            10
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="subheader">
+                            دسته بندی های غیر فعال
+                        </div>
+                        <div class="h1 mb-0 text-danger">
+                            0
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="subheader">
+                            دسته بندی های بدون کالا
+                        </div>
+                        <div class="h1 mb-0 text-secondary">
+                            8
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+        </div>
+
         <div class="card dashboard-card">
-
-            <!-- Success Alert Section -->
-            <?php if(session('success')): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle-fill me-2"></i>
-                    <?php echo e(session('success')); ?>
-
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
-                </div>
-            <?php endif; ?>
-
-            <!-- Error Alert Section -->
-            <?php if(session('error')): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    <?php echo e(session('error')); ?>
-
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
-                </div>
-            <?php endif; ?>
 
             <div class="card-header d-flex justify-content-between align-items-center">
 
@@ -53,33 +112,30 @@
 
                 <div class="table-responsive">
                     <!-- جدول لیست دسته بندی ها -->
-                    <table class="table table-hover align-middle text-center">
+                    <table class="table table-bordered table-hover align-middle">
                         <thead class="table">
                             <tr>
                                 <th width="70">ردیف</th>
                                 <th>نام دسته‌بندی</th>
                                 <th>توضیحات</th>
-                                <th width="140">تعداد کالا</th>
+                                <th width="80">تعداد کالا</th>
                                 <th width="180">تاریخ ایجاد</th>
-                                <th>وضعیت</th>
-                                <th width="140">عملیات</th>
+                                <th width="100">وضعیت</th>
+                                <th width="95">عملیات</th>
                             </tr>
                         </thead>
                         <tbody>
                             <!-- شروع حلقه -->
                             <?php $__empty_1 = true; $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr>
-                                    <!-- ستون ردیف -->
+                                    <!-- ردیف -->
                                     <td>
                                         <?php echo e($loop->iteration + ($categories->currentPage() - 1) * $categories->perPage()); ?>
 
                                     </td>
-                                    <!-- ستون نام دسته بندی -->
-                                    <td class="text-start">
-                                        <?php echo e($category->name); ?>
-
-                                    </td>
-                                    <!-- ستون وضعیت -->
+                                    <!-- نام دسته بندی -->
+                                    <td><?php echo e($category->name); ?></td>
+                                    <!-- توضیحات -->
                                     <td>
                                         <?php if($category->description): ?>
                                             <?php echo e($category->description); ?>
@@ -88,10 +144,10 @@
                                             <span class="text-muted">---</span>
                                         <?php endif; ?>
                                     </td>
-                                    <!-- ستون تعداد کالا -->
+                                    <!-- تعداد کالا -->
                                     <td>
                                         <?php if($category->products_count): ?>
-                                            <span class="badge bg-primary">
+                                            <span class="badge bg-info">
                                                 <?php echo e($category->products_count); ?>
 
                                             </span>
@@ -101,12 +157,9 @@
                                             </span>
                                         <?php endif; ?>
                                     </td>
-                                    <!-- ستون تاریخ ایجاد -->
-                                    <td>
-                                        <?php echo e($category->created_at); ?>
-
-                                    </td>
-                                    <!-- ستون وضعیت -->
+                                    <!-- تاریخ ایجاد -->
+                                    <td><?php echo e($category->created_at); ?></td>
+                                    <!-- وضعیت -->
                                     <td>
                                         <?php if($category->is_active): ?>
                                             <span class="badge bg-success">
@@ -118,23 +171,23 @@
                                             </span>
                                         <?php endif; ?>
                                     </td>
-                                    <!-- ستون عملیات -->
+                                    <!-- عملیات -->
                                     <td>
-                                        <div class="btn-group">
-                                            <!-- دکمه ویرایش دسته بندی -->
-                                            <button type="button" class="btn btn-sm btn-primary btn-edit"
-                                                data-id="<?php echo e($category->id); ?>" data-name="<?php echo e($category->name); ?>"
-                                                data-description="<?php echo e($category->description); ?>"
-                                                data-active="<?php echo e($category->is_active); ?>" title="ویرایش این دسته بندی">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <!-- دکمه حذف دسته بندی -->
-                                            <button type="button" class="btn btn-sm btn-danger btn-delete"
-                                                data-id="<?php echo e($category->id); ?>" data-name="<?php echo e($category->name); ?>"
-                                                title="حذف کردن این دسته بندی">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
+
+                                        <!-- دکمه ویرایش دسته بندی -->
+                                        <button type="button" class="btn btn-sm btn-warning btn-edit"
+                                            data-id="<?php echo e($category->id); ?>" data-name="<?php echo e($category->name); ?>"
+                                            data-description="<?php echo e($category->description); ?>"
+                                            data-active="<?php echo e($category->is_active); ?>" title="ویرایش این دسته بندی">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <!-- دکمه حذف دسته بندی -->
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                            data-id="<?php echo e($category->id); ?>" data-name="<?php echo e($category->name); ?>"
+                                            title="حذف کردن این دسته بندی">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+
                                     </td>
                                 </tr>
                                 <!-- اگر اطلاعاتی در دیتابیس برای نمایش وجود نداشته باشد. اطلاعات زیر را نمایش میدهد -->

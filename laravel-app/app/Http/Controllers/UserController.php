@@ -8,9 +8,7 @@ use App\Models\Role;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         $users = User::with('role')->latest()->paginate(15);
@@ -20,17 +18,7 @@ class UserController extends Controller
         return view('users.index', compact('users', 'roles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -49,25 +37,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'کاربر با موفقیت ایجاد شد.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, User $user)
     {
         $data = $request->validate([
@@ -91,9 +61,7 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success','کاربر با موفقیت ویرایش شد.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(User $user)
     {
         if ($user->id === auth()->id()) {

@@ -45,17 +45,17 @@
             <div class="table-responsive">
 
                 <!-- Start Role Table -->
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-bordered table-hover align-middle">
 
                     <!-- Role Table Head -->
                     <thead>
                         <tr>
-                            <th width="70">ردیف</th>
+                            <th width="50">ردیف</th>
                             <th>نام نقش</th>
-                            <th>شناسه</th>
+                            <th width="100">شناسه</th>
                             <th>توضیحات</th>
-                            <th width="120">تعداد کاربران</th>
-                            <th width="180">عملیات</th>
+                            <th width="105">تعداد کاربران</th>
+                            <th width="130">عملیات</th>
                         </tr>
                     </thead>
 
@@ -90,7 +90,7 @@
                                 </td>
                                 <!-- عملیات -->
                                 <td>
-                                    <!-- Edit Role Button -->
+                                    <!-- دکمه ویرایش یک نقش -->
                                     <button class="btn btn-sm btn-warning editRoleBtn" data-id="{{ $role->id }}"
                                         data-display_name="{{ $role->display_name }}" data-name="{{ $role->name }}"
                                         data-description="{{ $role->description }}" data-bs-toggle="modal"
@@ -98,14 +98,14 @@
                                         <i class="bi bi-pencil"></i>
                                     </button>
 
-                                    <!-- Delete Role Button -->
+                                    <!-- دکمه حذف یک نقش -->
                                     <button class="btn btn-sm btn-danger deleteRoleBtn" data-id="{{ $role->id }}"
                                         data-name="{{ $role->name }}" data-bs-toggle="modal"
                                         data-bs-target="#deleteRoleModal" title="برای حذف این نقش کلیک کنید">
                                         <i class="bi bi-trash"></i>
                                     </button>
 
-                                    <!-- Edit Permissions for Role Button -->
+                                    <!-- دکمه ویرایش مجوزهای یک نقش -->
                                     <a href="{{ route('roles.permissions', $role) }}" class="btn btn-sm btn-info"
                                         title="برای ویرایش مجوز های این نقش کلیک کنید">
                                         <i class="bi bi-shield-lock"></i>
@@ -138,8 +138,9 @@
 @endsection
 
 @push('scripts')
-    <!-- Start Edit Role Modal Script -->
+    
     <script>
+        // اسکریپت مربوط به مودال ویرایش یک نقش
         document.querySelectorAll('.editRoleBtn').forEach(button => {
             button.addEventListener('click', function() {
                 document.getElementById('edit_name').value = this.dataset.display_name;
@@ -149,11 +150,8 @@
                 bootstrap.Modal.getOrCreateInstance(document.getElementById('editRoleModal')).show();
             });
         });
-    </script>
-    <!-- End Edit Role Modal Script -->
 
-    <!-- Start Delete Role Modal Script -->
-    <script>
+        // اسکریپت مربوط به مودال حذف یک نقش
         document.querySelectorAll('.deleteRoleBtn').forEach(button => {
             button.addEventListener('click', function() {
                 document.getElementById('deleteRoleName').textContent = this.dataset.name;
@@ -163,5 +161,4 @@
             });
         });
     </script>
-    <!-- End Delete Role Modal Script -->
 @endpush

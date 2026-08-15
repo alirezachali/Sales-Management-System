@@ -45,4 +45,13 @@ class Product extends Model
     {
         return $this->hasMany(StockMovement::class);
     }
+    
+    // متد برای نمایش موجودی کالا در رابط کاربری
+    public function getFormattedStockAttribute(): string
+    {
+        return rtrim(
+            rtrim(number_format((float) $this->stock, 3, '.', ','), '0'),
+            '.'
+        );
+    }
 }

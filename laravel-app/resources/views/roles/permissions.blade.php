@@ -24,49 +24,79 @@
 
         <div>
             <h3 class="mb-1">
-                مجوز های : <span class="badge bg-success"> {{ $role->display_name }} </span>
+                مجوز های :
+                <span class="badge bg-{{ $role->color }}">
+                    {{ $role->name }}
+                    <i class="{{ $role->icon }}"></i>
+                </span>
             </h3>
         </div>
 
-        <a href="{{ route('roles.index') }}"class="btn btn-secondary" title="بازگشت به صفحه لیست نقش ها">
-            <i class="bi bi-arrow-right"></i>
-            بازگشت
-        </a>
+        <div class="text-end">
+            <button class="btn btn-success">
+                <i class="bi bi-check-circle"></i>
+                ذخیره تغییرات
+            </button>
+
+            <a href="{{ route('roles.index') }}"class="btn btn-secondary" title="بازگشت به صفحه لیست نقش ها">
+                <i class="bi bi-arrow-right"></i>
+                بازگشت
+            </a>
+
+        </div>
 
     </div>
 
     <form action="{{ route('roles.permissions.sync', $role) }}"method="POST">
         @csrf
 
-        @foreach ($groups as $group)
-            <div class="card shadow-sm mb-4">
-                <div class="card-header">
-                    <strong>
-                        <i class="bi {{ $group->icon }}"></i>
-                        {{ $group->name }}
-                    </strong>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        @foreach ($group->permissions as $permission)
-                            <div class="col-md-4 mb-2">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permissions[]"
-                                        value="{{ $permission->id }}" id="permission{{ $permission->id }}"
-                                        {{ $role->permissions->contains($permission->id) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="permission{{ $permission->id }}">
-                                        {{ $permission->display_name }}
-                                    </label>
-                                </div>
+        <div class="permissions-grid">
+
+            @foreach ($groups as $group)
+                <div class="permission-column">
+
+                    <div class="card shadow-sm">
+
+                        <div class="card-header">
+                            <strong>
+                                <i class="bi {{ $group->icon }}"></i>
+                                {{ $group->name }}
+                            </strong>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="permissions-list">
+
+                                @foreach ($group->permissions as $permission)
+                                    <div class="form-check permission-item">
+
+                                        <input class="form-check-input" type="checkbox" name="permissions[]"
+                                            value="{{ $permission->id }}" id="permission{{ $permission->id }}"
+                                            {{ $role->permissions->contains($permission->id) ? 'checked' : '' }}>
+
+                                        <label class="form-check-label" for="permission{{ $permission->id }}">
+                                            {{ $permission->display_name }}
+                                        </label>
+
+                                    </div>
+                                @endforeach
+
                             </div>
-                        @endforeach
+
+                        </div>
+
                     </div>
+
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+
+        </div>
+
+        <hr class="h-r">
 
         <div class="text-end">
-            <button class="btn btn-primary">
+            <button class="btn btn-success">
                 <i class="bi bi-check-circle"></i>
                 ذخیره تغییرات
             </button>

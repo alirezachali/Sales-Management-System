@@ -2,25 +2,25 @@
 @section('title', 'مدیریت محصولات')
 @section('content')
 
-    <div class="row row-cards mb-4 bg-dark">
+    <!-- Success Alert Section -->
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+        </div>
+    @endif
 
-        <!-- Success Alert Section -->
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
-            </div>
-        @endif
+    <!-- Error Alert Section -->
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+        </div>
+    @endif
 
-        <!-- Error Alert Section -->
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
-            </div>
-        @endif
+    <div class="row row-cards mb-4">
 
         <div class="col-sm-6 col-lg-3">
             <div class="card">
@@ -141,24 +141,41 @@
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
-                        <th>بارکد</th>
+                        <th width="130">بارکد</th>
                         <th>نام کالا</th>
                         <th>دسته بندی</th>
                         <th>قیمت فروش</th>
-                        <th>موجودی</th>
-                        <th width="250">عملیات</th>
+                        <th width="120">موجودی</th>
+                        <th width="233">عملیات</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @forelse($products as $product)
                         <tr>
+                            <!-- ردیف -->
                             <td>{{ $loop->iteration }}</td>
+                            <!-- بارکد -->
                             <td>{{ $product->barcode }}</td>
+                            <!-- نام کالا -->
                             <td>{{ $product->name }}</td>
+                            <!-- دسته بندی -->
                             <td>{{ $product->category?->name }}</td>
-                            <td>{{ number_format($product->sell_price) }}</td>
-                            <td>{{ $product->stock }}</td>
+                            <!-- قیمت فروش-->
+                            <td>
+                                {{ number_format($product->sell_price) }}
+                                <span>
+                                    {{ setting('currency', '') }}
+                                </span>
+                            </td>
+                            <!-- موجودی -->
+                            <td>
+                                {{ $product->formatted_stock }}
+                                <span class="badge bg-secondary">
+                                    {{ $product->unit }}
+                                </span>
+                            </td>
+                            <!-- عملیات -->
                             <td>
                                 <!-- دکمه ویرایش کالا -->
                                 <button type="button" class="btn btn-sm btn-warning edit-product-btn"
@@ -200,10 +217,10 @@
                                     </a>
                                 </form>
                                 <!-- دکمه حذف کالا-->
-                                    <button class="btn btn-danger btn-sm" onclick="return confirm('حذف شود؟')"
-                                        title="حذف این کالا">
-                                        حذف
-                                    </button>
+                                <button class="btn btn-danger btn-sm" onclick="return confirm('حذف شود؟')"
+                                    title="حذف این کالا">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             </td>
                         </tr>
                     @empty
@@ -260,77 +277,77 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-           let currentLabelTemplate = '';
+            let currentLabelTemplate = '';
 
-// باز کردن مودال چاپ لیبل
-document.querySelectorAll('.print-label-btn').forEach(button => {
+            // باز کردن مودال چاپ لیبل
+            document.querySelectorAll('.print-label-btn').forEach(button => {
 
-    button.addEventListener('click', function() {
+                button.addEventListener('click', function() {
 
-        let productId = this.dataset.id;
+                    let productId = this.dataset.id;
 
-        fetch(`/products/${productId}/label`)
-            .then(response => {
+                    fetch(`/products/${productId}/label`)
+                        .then(response => {
 
-                if (!response.ok) {
-                    throw new Error('خطا در دریافت اطلاعات لیبل');
-                }
+                            if (!response.ok) {
+                                throw new Error('خطا در دریافت اطلاعات لیبل');
+                            }
 
-                return response.json();
+                            return response.json();
 
-            })
-            .then(data => {
+                        })
+                        .then(data => {
 
-                // نام کالا
-                let labelName = '';
+                            // نام کالا
+                            let labelName = '';
 
-                if (data.label_show_name) {
-                    labelName = `
+                            if (data.label_show_name) {
+                                labelName = `
                         <div class="label-name">
                             ${data.name}
                         </div>
                     `;
-                }
+                            }
 
 
-                // قیمت
-                let labelPrice = '';
+                            // قیمت
+                            let labelPrice = '';
 
-                if (data.label_show_price) {
-                    labelPrice = `
+                            if (data.label_show_price) {
+                                labelPrice = `
                         <div class="label-price">
                             ${Number(data.price).toLocaleString()} تومان
                         </div>
                     `;
-                }
+                            }
 
 
-                // بارکد میله‌ای
-                let labelBarcode = '';
+                            // بارکد میله‌ای
+                            let labelBarcode = '';
 
-                if (data.label_show_barcode) {
-                    labelBarcode = `
+                            if (data.label_show_barcode) {
+                                labelBarcode = `
                         <div class="label-barcode">
                             ${data.barcode_svg}
                         </div>
                     `;
-                }
+                            }
 
 
-                // شماره بارکد
-                let labelCode = '';
+                            // شماره بارکد
+                            let labelCode = '';
 
-                if (data.label_show_code) {
-                    labelCode = `
+                            if (data.label_show_code) {
+                                labelCode = `
                         <div class="label-code">
                             ${data.barcode}
                         </div>
                     `;
-                }
+                            }
 
 
-                // ساخت Template اصلی
-                currentLabelTemplate = `
+                            // ساخت Template اصلی
+                            currentLabelTemplate = `
 
                     <div class="label-print-area"
                          style="
@@ -351,26 +368,26 @@ document.querySelectorAll('.print-label-btn').forEach(button => {
                 `;
 
 
-                document.getElementById('label-container').innerHTML =
-                    currentLabelTemplate;
+                            document.getElementById('label-container').innerHTML =
+                                currentLabelTemplate;
 
 
-                let modal = new bootstrap.Modal(
-                    document.getElementById('labelModal')
-                );
+                            let modal = new bootstrap.Modal(
+                                document.getElementById('labelModal')
+                            );
 
-                modal.show();
+                            modal.show();
 
-            })
-            .catch(error => {
+                        })
+                        .catch(error => {
 
-                console.error('Label Error:', error);
+                            console.error('Label Error:', error);
+
+                        });
+
+                });
 
             });
-
-    });
-
-});
 
             // چاپ لیبل
             document.getElementById('print-label-btn').addEventListener('click', function() {

@@ -46,8 +46,17 @@
     opacity: 0.45;
 }
 
-.footer-info {
-    font-size: 17px;
+.footer-tools {
+    padding: 5px;
+}
+
+.footer-tools a i {
+    font-size: 25px;
+    color: rgb(0, 81, 255);
     white-space: nowrap;
     font-weight: 500;
+}
+
+.footer-lang {
+    color: blue;
 }

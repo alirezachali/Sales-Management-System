@@ -3,25 +3,84 @@
 @section('content')
 
     <div class="container">
+
+        <!-- Success Alert Section -->
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+            </div>
+        @endif
+
+        <!-- Error Alert Section -->
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+            </div>
+        @endif
+
+        <div class="row row-cards mb-4">
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="subheader">
+                                تعداد دسته بندی ها
+                            </div>
+                        </div>
+                        <div class="h1 mb-0 text-warning">
+                            {{-- {{ $totalProducts }} --}}10
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="subheader">
+                            دسته بندی های فعال
+                        </div>
+                        <div class="h1 mb-0 text-success">
+                            {{-- {{ $activeProducts }} --}}10
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="subheader">
+                            دسته بندی های غیر فعال
+                        </div>
+                        <div class="h1 mb-0 text-danger">
+                            {{-- {{ $activeProducts }} --}}0
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="subheader">
+                            دسته بندی های بدون کالا
+                        </div>
+                        <div class="h1 mb-0 text-secondary">
+                            {{-- {{ $activeProducts }} --}}8
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+        </div>
+
         <div class="card dashboard-card">
-
-            <!-- Success Alert Section -->
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle-fill me-2"></i>
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
-                </div>
-            @endif
-
-            <!-- Error Alert Section -->
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
-                </div>
-            @endif
 
             <div class="card-header d-flex justify-content-between align-items-center">
 
@@ -52,31 +111,29 @@
 
                 <div class="table-responsive">
                     <!-- جدول لیست دسته بندی ها -->
-                    <table class="table table-hover align-middle text-center">
+                    <table class="table table-bordered table-hover align-middle">
                         <thead class="table">
                             <tr>
                                 <th width="70">ردیف</th>
                                 <th>نام دسته‌بندی</th>
                                 <th>توضیحات</th>
-                                <th width="140">تعداد کالا</th>
+                                <th width="80">تعداد کالا</th>
                                 <th width="180">تاریخ ایجاد</th>
-                                <th>وضعیت</th>
-                                <th width="140">عملیات</th>
+                                <th width="100">وضعیت</th>
+                                <th width="95">عملیات</th>
                             </tr>
                         </thead>
                         <tbody>
                             <!-- شروع حلقه -->
                             @forelse($categories as $category)
                                 <tr>
-                                    <!-- ستون ردیف -->
+                                    <!-- ردیف -->
                                     <td>
                                         {{ $loop->iteration + ($categories->currentPage() - 1) * $categories->perPage() }}
                                     </td>
-                                    <!-- ستون نام دسته بندی -->
-                                    <td class="text-start">
-                                        {{ $category->name }}
-                                    </td>
-                                    <!-- ستون وضعیت -->
+                                    <!-- نام دسته بندی -->
+                                    <td>{{ $category->name }}</td>
+                                    <!-- توضیحات -->
                                     <td>
                                         @if ($category->description)
                                             {{ $category->description }}
@@ -84,10 +141,10 @@
                                             <span class="text-muted">---</span>
                                         @endif
                                     </td>
-                                    <!-- ستون تعداد کالا -->
+                                    <!-- تعداد کالا -->
                                     <td>
                                         @if ($category->products_count)
-                                            <span class="badge bg-primary">
+                                            <span class="badge bg-info">
                                                 {{ $category->products_count }}
                                             </span>
                                         @else
@@ -96,11 +153,9 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <!-- ستون تاریخ ایجاد -->
-                                    <td>
-                                        {{ $category->created_at }}
-                                    </td>
-                                    <!-- ستون وضعیت -->
+                                    <!-- تاریخ ایجاد -->
+                                    <td>{{ $category->created_at }}</td>
+                                    <!-- وضعیت -->
                                     <td>
                                         @if ($category->is_active)
                                             <span class="badge bg-success">
@@ -112,23 +167,23 @@
                                             </span>
                                         @endif
                                     </td>
-                                    <!-- ستون عملیات -->
+                                    <!-- عملیات -->
                                     <td>
-                                        <div class="btn-group">
-                                            <!-- دکمه ویرایش دسته بندی -->
-                                            <button type="button" class="btn btn-sm btn-primary btn-edit"
-                                                data-id="{{ $category->id }}" data-name="{{ $category->name }}"
-                                                data-description="{{ $category->description }}"
-                                                data-active="{{ $category->is_active }}" title="ویرایش این دسته بندی">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <!-- دکمه حذف دسته بندی -->
-                                            <button type="button" class="btn btn-sm btn-danger btn-delete"
-                                                data-id="{{ $category->id }}" data-name="{{ $category->name }}"
-                                                title="حذف کردن این دسته بندی">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
+
+                                        <!-- دکمه ویرایش دسته بندی -->
+                                        <button type="button" class="btn btn-sm btn-warning btn-edit"
+                                            data-id="{{ $category->id }}" data-name="{{ $category->name }}"
+                                            data-description="{{ $category->description }}"
+                                            data-active="{{ $category->is_active }}" title="ویرایش این دسته بندی">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <!-- دکمه حذف دسته بندی -->
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete"
+                                            data-id="{{ $category->id }}" data-name="{{ $category->name }}"
+                                            title="حذف کردن این دسته بندی">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+
                                     </td>
                                 </tr>
                                 <!-- اگر اطلاعاتی در دیتابیس برای نمایش وجود نداشته باشد. اطلاعات زیر را نمایش میدهد -->
