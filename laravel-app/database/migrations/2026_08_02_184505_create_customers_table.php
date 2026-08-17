@@ -11,8 +11,8 @@ return new class extends Migration {
             $table->id();
             $table->string('first_name', 100);
             $table->string('last_name', 100);
-            $table->string('mobile', 20)->unique();
-            $table->string('phone', 20)->nullable();
+            $table->string('mobile', 15)->unique();
+            $table->string('phone', 15)->nullable();
             $table->string('national_code', 20)->nullable();
             $table->date('birth_date')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();

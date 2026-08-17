@@ -57,6 +57,20 @@
                 <span>مشتریان</span>
             </a>
         </li>
+        <!-- برندها -->
+        <li>
+            <a href="<?php echo e(route('brands.index')); ?>" class="<?php echo e(request()->routeIs('brands.*') ? 'active' : ''); ?>">
+                <i class="bi bi-people"></i>
+                <span>برندها</span>
+            </a>
+        </li>
+        <!-- تامین کنندگان -->
+        <li>
+            <a href="<?php echo e(route('suppliers.index')); ?>" class="<?php echo e(request()->routeIs('suppliers.*') ? 'active' : ''); ?>">
+                <i class="bi bi-people"></i>
+                <span>تامین کنندگان</span>
+            </a>
+        </li>
     </ul>
 </aside>
 <?php /**PATH C:\Users\Ali\Documents\Sales-Management-System\laravel-app\resources\views/partials/sidebar.blade.php ENDPATH**/ ?>

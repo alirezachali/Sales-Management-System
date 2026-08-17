@@ -3,39 +3,40 @@
 @section('content')
 
     <div class="container-fluid">
+
+        <!-- Success Alert Section -->
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
+            </div>
+        @endif
+
+        <!-- Error Alert Section -->
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
+            </div>
+        @endif
+
         <div class="card shadow-sm border-0">
 
-            <!-- Success Alert Section -->
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle-fill me-2"></i>
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
-                </div>
-            @endif
-
-            <!-- Error Alert Section -->
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
-                </div>
-            @endif
-
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="page-header d-flex justify-content-between align-items-center">
                 <div>
-                    <h4 class="mb-0">
+                    <h3 class="fw-bold mb-1">
                         <i class="bi bi-gear-fill text-primary"></i>
                         تنظیمات سیستم
-                    </h4>
+                    </h3>
                     <small class="text-muted">
                         مدیریت اطلاعات فروشگاه و تنظیمات نرم افزار
                     </small>
                 </div>
                 <button type="submit" form="settingsForm" class="btn btn-success">
                     <i class="bi bi-check-circle"></i>
-                    ذخیره تنظیمات
+                    ذخیره تغییرات
                 </button>
             </div>
 
@@ -111,7 +112,7 @@
                         <div class="tab-pane fade" id="system">
                             @include('settings.tabs.system')
                         </div>
-                        
+
                         <div class="tab-pane fade" id="backup">
                             @include('settings.tabs.backup')
                         </div>
@@ -121,6 +122,9 @@
                 </form>
 
             </div>
+
+            <hr>
+
         </div>
     </div>
 

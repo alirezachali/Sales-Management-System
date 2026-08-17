@@ -26,17 +26,63 @@
         <div class="page-header d-flex justify-content-between align-items-center mb-4">
 
             <div>
-                <h3 class="mb-1">مدیریت کاربران</h3>
-                <p class="text-muted mb-0">مدیریت کاربران سیستم</p>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-people-fill text-primary"></i>
+                    مدیریت کاربران
+                </h3>
+                <small class="text-muted">
+                    مدیریت کاربران سیستم
+                </small>
             </div>
 
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createUserModal"
                 title="برای افزودن کاربر جدید به سیستم کلیک کنید">
                 <i class="bi bi-plus-circle"></i>
-                کاربر جدید
+                افزودن کاربر
             </button>
 
         </div>
+
+
+        {{-- Search Card --}}
+        <div class="card glass-card mb-4">
+
+            <!-- Search Card Body -->
+            <div class="card-body">
+
+                <form>
+
+                    <div class="row">
+
+                        <div class="col-lg-5">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input type="text" class="form-control" name="search" value="{{ request('search') }}"
+                                    placeholder="جستجو بر اساس نام یا موبایل">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <button class="btn btn-primary w-100" title="برای شروع جستجو کلیک کنید">
+                                جستجو
+                            </button>
+                        </div>
+
+                        <div class="col-lg-5 text-end">
+                            <span class="badge bg-info fs-6">
+                                تعداد کاربران :
+                                {{-- {{ $customers->total() }} --}}2
+                            </span>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
 
         <!-- بدنه ی کارت کاربران -->
         <div class="card shadow-sm">
@@ -52,9 +98,9 @@
                                 <th>نام</th>
                                 <th>نام کاربری</th>
                                 <th width="100">وضعیت</th>
-                                <th>نقش</th>
-                                <th>آخرین ورود</th>
-                                <th width="135">عملیات</th>
+                                <th width="122">نقش</th>
+                                <th width="150">آخرین ورود</th>
+                                <th width="122">عملیات</th>
                             </tr>
                         </thead>
 
@@ -90,9 +136,9 @@
                                         <button class="btn btn-sm btn-warning editUserBtn" data-id="{{ $user->id }}"
                                             data-name="{{ $user->name }}" data-username="{{ $user->username }}"
                                             data-email="{{ $user->email }}" data-phone="{{ $user->phone }}"
-                                            data-role="{{ $user->role_id }}"
-                                            data-active="{{ $user->is_active }}" data-bs-toggle="modal"
-                                            data-bs-target="#editUserModal" title="برای ویرایش این کاربر کلیک کنید">
+                                            data-role="{{ $user->role_id }}" data-active="{{ $user->is_active }}"
+                                            data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                            title="برای ویرایش این کاربر کلیک کنید">
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                         <!-- دکمه تغییر رمز ورود یک کاربر -->

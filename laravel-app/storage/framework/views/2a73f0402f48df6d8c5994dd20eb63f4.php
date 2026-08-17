@@ -23,17 +23,7 @@
         <!-- جعبه ابزار فوتر -->
         <div class="footer-tools">
 
-            <a href="#" class="btn" title="ماشین حساب">
-                <i class="bi bi-calculator-fill"></i>
-            </a>
-
-            <a href="#" class="btn" title="یادداشت">
-                <i class="bi bi-stickies-fill"></i>
-            </a>
-
-            <a href="#" class="btn" title="پیام">
-                <i class="bi bi-chat-left-dots-fill"></i>
-            </a>
+            
 
             <a href="#" class="btn" title="نوتیفیکیشن">
                 <i class="bi bi-bell-fill"></i>

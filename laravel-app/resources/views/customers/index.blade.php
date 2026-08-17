@@ -23,7 +23,7 @@
         @endif
 
         {{-- Page Header --}}
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="page-header d-flex justify-content-between align-items-center mb-4">
 
             <div>
                 <h3 class="fw-bold mb-1">
@@ -71,7 +71,7 @@
                         </div>
 
                         <div class="col-lg-5 text-end">
-                            <span class="badge bg-primary fs-6">
+                            <span class="badge bg-info fs-6">
                                 تعداد مشتریان :
                                 {{ $customers->total() }}
                             </span>

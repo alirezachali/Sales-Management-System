@@ -21,6 +21,7 @@ class CustomerAccountTransaction extends Model
         'amount' => 'decimal:2',
     ];
 
+    // رابطه این مدل با مدل مشتری
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);

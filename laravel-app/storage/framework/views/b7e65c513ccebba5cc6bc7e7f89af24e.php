@@ -2,43 +2,46 @@
 <?php $__env->startSection('content'); ?>
 
     <div class="container-fluid">
+
+        <!-- Success Alert Section -->
+        <?php if(session('success')): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <?php echo e(session('success')); ?>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
+            </div>
+        <?php endif; ?>
+
+        <!-- Error Alert Section -->
+        <?php if(session('error')): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <?php echo e(session('error')); ?>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
+            </div>
+        <?php endif; ?>
+
         <div class="card shadow-sm border-0">
 
-            <!-- Success Alert Section -->
-            <?php if(session('success')): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="bi bi-check-circle-fill me-2"></i>
-                    <?php echo e(session('success')); ?>
-
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
-                </div>
-            <?php endif; ?>
-
-            <!-- Error Alert Section -->
-            <?php if(session('error')): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    <?php echo e(session('error')); ?>
-
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" title="یستن"></button>
-                </div>
-            <?php endif; ?>
-
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="page-header d-flex justify-content-between align-items-center">
                 <div>
-                    <h4 class="mb-0">
+                    <h3 class="fw-bold mb-1">
                         <i class="bi bi-gear-fill text-primary"></i>
                         تنظیمات سیستم
-                    </h4>
+                    </h3>
                     <small class="text-muted">
                         مدیریت اطلاعات فروشگاه و تنظیمات نرم افزار
                     </small>
                 </div>
                 <button type="submit" form="settingsForm" class="btn btn-success">
                     <i class="bi bi-check-circle"></i>
-                    ذخیره تنظیمات
+                    ذخیره تغییرات
                 </button>
             </div>
+
+           
 
             <div class="card-body">
 
@@ -112,7 +115,7 @@
                         <div class="tab-pane fade" id="system">
                             <?php echo $__env->make('settings.tabs.system', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                         </div>
-                        
+
                         <div class="tab-pane fade" id="backup">
                             <?php echo $__env->make('settings.tabs.backup', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
                         </div>
@@ -122,6 +125,9 @@
                 </form>
 
             </div>
+
+            <hr>
+
         </div>
     </div>
 

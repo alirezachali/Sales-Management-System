@@ -57,5 +57,19 @@
                 <span>مشتریان</span>
             </a>
         </li>
+        <!-- برندها -->
+        <li>
+            <a href="{{ route('brands.index') }}" class="{{ request()->routeIs('brands.*') ? 'active' : '' }}">
+                <i class="bi bi-people"></i>
+                <span>برندها</span>
+            </a>
+        </li>
+        <!-- تامین کنندگان -->
+        <li>
+            <a href="{{ route('suppliers.index') }}" class="{{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
+                <i class="bi bi-people"></i>
+                <span>تامین کنندگان</span>
+            </a>
+        </li>
     </ul>
 </aside>
