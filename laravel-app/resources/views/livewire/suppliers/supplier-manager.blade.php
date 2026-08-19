@@ -1,18 +1,60 @@
 <div dir="rtl">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="mb-0">تامین‌کنندگان</h4>
-        <button type="button" class="btn btn-primary" wire:click="openCreateModal">
-            <i class="bi bi-plus-lg"></i> افزودن تامین‌کننده جدید
-        </button>
-    </div>
-
+    {{-- Success/Error Alerts --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    {{-- Page Header --}}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">
+                <i class="bi bi-tags-fill text-primary"></i>
+                مدیریت تامین کنندگان
+            </h3>
+            <small class="text-muted">مدیریت اطلاعات تامین‌کنندگان </small>
+        </div>
+
+        <button class="btn btn-primary" wire:click="openCreateModal" title="افزودن تامین کننده جدید به سیستم">
+            <i class="bi bi-plus-circle"></i>
+            افزودن تامین کننده
+        </button>
+    </div>
+
+    {{-- Search Card --}}
+    <div class="card glass-card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control" wire:model.live.debounce.400ms="search"
+                            placeholder="جستجو بر اساس نام برند">
+                    </div>
+                </div>
+                <div class="col-lg-5 text-end">
+                    <span class="badge bg-primary fs-6">
+                        تعداد برندها : 
+                        {{-- {{ $brands->total() }} --}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="card">
         <div class="card-body p-0">
