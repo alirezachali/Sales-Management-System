@@ -65,7 +65,7 @@
                         </div>
 
                         <div class="col-lg-2">
-                            <button class="btn btn-primary w-100" title="برای شروع جستجو کلیک کنید">
+                            <button class="btn btn-info w-100" title="برای شروع جستجو کلیک کنید">
                                 جستجو
                             </button>
                         </div>

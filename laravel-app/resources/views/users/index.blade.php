@@ -100,7 +100,7 @@
                                 <th width="100">وضعیت</th>
                                 <th width="122">نقش</th>
                                 <th width="150">آخرین ورود</th>
-                                <th width="122">عملیات</th>
+                                <th width="130">عملیات</th>
                             </tr>
                         </thead>
 

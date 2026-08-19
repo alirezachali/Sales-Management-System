@@ -1,13 +1,13 @@
 <nav class="navbar navbar-expand-lg top-navbar">
     <div class="container-fluid">
         <!-- دکمه منو همبرگری -->
-        <button class="btn me-3" id="toggleSidebar">
+        <button class="btn me-3 nev-menu-btn" id="toggleSidebar">
             <i class="bi bi-list"></i>
         </button>
 
-        <a class="navbar-brand d-flex align-items-center" href="{{ route('dashboard') }}">
+        <a class="navbar-brand d-flex" href="{{ route('dashboard') }}">
             <!-- لوگو فروشگاه -->
-            <img src="{{ storeLogo() }}" alt="Logo" height="45">
+            <img class="nav-logo" src="{{ storeLogo() }}" alt="Logo">
             <!-- نام فروشگاه -->
             <span class="ms-2 fw-bold">
                 {{ setting('store_name', '') }}
@@ -18,21 +18,15 @@
 
                 <div class="dropdown user-menu">
 
-                    <button class="btn user-menu-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn user-menu-toggle" type="button" data-bs-toggle="dropdown" 
+                        aria-expanded="false">
                         <i class="bi bi-person-circle user-avatar"></i>
                     </button>
 
 
 
-                    <ul class="dropdown-menu dropdown-menu-end user-dropdown">
+                    <ul class="dropdown-menu user-dropdown">
 
-                        <p class="user-name">
-                            {{ auth()->user()->name }}
-                        </p>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
                         <!-- پروفایل -->
                         <li>
                             <a class="dropdown-item" href="#">
@@ -47,13 +41,6 @@
                             <a class="dropdown-item" href="{{ route('settings.index') }}">
                                 <i class="bi bi-gear"></i>
                                 <span>تنظیمات</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{{ route('settings.index') }}">
-                                <i class="bi bi-gear"></i>
-                                <span>'گزینه سوم'</span>
                             </a>
                         </li>
 

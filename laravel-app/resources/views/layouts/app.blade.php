@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="rtl">
 <head>
     <!-- Meta Tags -->
     <meta charset="UTF-8">
@@ -11,16 +11,16 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Custom CSS -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/footer.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/footer.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('css/pos.css') }}" rel="stylesheet">
     <link href="{{ asset('css/label-print.css') }}" rel="stylesheet">
     <link href="{{ asset('css/roles.css') }}" rel="stylesheet">
-    <!-- Bootstrap CDN CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    @livewireStyles
 </head>
 <body data-bs-theme="dark">
 <!-- Navbar -->
@@ -34,12 +34,11 @@
     </main>
 </div>
 <!-- Footer -->
-@include('partials.footer')
-<!-- Bootstrap CDN JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Custom JS -->
-<script src="{{ asset('js/app.js') }}"></script>
+{{-- @include('partials.footer') --}}
+
+
 @yield('scripts')
 @stack('scripts')
+@livewireScripts
 </body>
 </html>

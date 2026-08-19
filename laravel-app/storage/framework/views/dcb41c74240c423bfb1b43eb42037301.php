@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>" dir="rtl">
 <head>
     <!-- Meta Tags -->
     <meta charset="UTF-8">
@@ -11,16 +11,17 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <!-- Custom CSS -->
-    <link href="<?php echo e(asset('css/app.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/sidebar.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/navbar.css')); ?>" rel="stylesheet">
-    <link href="<?php echo e(asset('css/footer.css')); ?>" rel="stylesheet">
+    
     <link href="<?php echo e(asset('css/pos.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/label-print.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/roles.css')); ?>" rel="stylesheet">
-    <!-- Bootstrap CDN CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+    
+    <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
+
 </head>
 <body data-bs-theme="dark">
 <!-- Navbar -->
@@ -34,12 +35,12 @@
     </main>
 </div>
 <!-- Footer -->
-<?php echo $__env->make('partials.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-<!-- Bootstrap CDN JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Custom JS -->
-<script src="<?php echo e(asset('js/app.js')); ?>"></script>
+
+
+
 <?php echo $__env->yieldContent('scripts'); ?>
 <?php echo $__env->yieldPushContent('scripts'); ?>
+<?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
+
 </body>
 </html><?php /**PATH C:\Users\Ali\Documents\Sales-Management-System\laravel-app\resources\views/layouts/app.blade.php ENDPATH**/ ?>

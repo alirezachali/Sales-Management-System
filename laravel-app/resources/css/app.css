@@ -2,58 +2,61 @@
 @import "bootstrap-icons/font/bootstrap-icons.css";
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
 
-body {
-    font-family: 'Vazirmatn', sans-serif;
-}
 
 :root {
     --woxilon-dark: #111111;
-    --woxilon-accent: #f5a623;
-    --woxilon-accent-hover: #ffb938;
+    --woxilon-accent: #f58923;
+    --woxilon-accent-hover: #d1a758;
+    --btn-primary: #e6c71a;
+    --btn-primary-hover: #e0e411;
+    --btn-border: #070707;
+    --btn-border-hover: #0a0a0a;
 }
+
+
+
+
+
+
 
 /* فونت */
 body {
     font-family: 'Vazirmatn', sans-serif;
+    width: 100%;
+    padding-bottom: 42px;
 }
 
-/* Sidebar */
-.navbar-vertical {
-    background: var(--woxilon-dark);
-}
-
-.navbar-brand {
-    color: var(--woxilon-accent) !important;
-    font-weight: 800;
-    font-size: 24px;
-}
-
-/* لینک های منو */
-.nav-link {
-    color: #d1d5db !important;
-    border-radius: 8px;
-    margin-bottom: 5px;
-}
-
-.nav-link:hover {
-    background: rgba(245, 166, 35, .15);
-    color: var(--woxilon-accent) !important;
-}
-
-/* آیکون ها */
-.nav-link-icon {
-    color: var(--woxilon-accent);
-}
 
 /* دکمه اصلی */
 .btn-primary {
-    background: var(--woxilon-accent);
-    border-color: var(--woxilon-accent);
+    background: var(--btn-primary);
+    border-color: var(--btn-border);
     color: #111;
 }
 
 .btn-primary:hover {
-    background: var(--woxilon-accent-hover);
-    border-color: var(--woxilon-accent-hover);
+    background: var(--btn-primary-hover);
+    border-color: var(--btn-border-hover);
     color: #111;
 }
+
+.page-header {
+    border-bottom: 4px solid #f38f0c;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.page-header h3 {
+    margin: 5px;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.breadcrumb {
+    margin-bottom: 8px;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+}
+

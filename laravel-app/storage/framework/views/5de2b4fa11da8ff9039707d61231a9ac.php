@@ -4,24 +4,24 @@
     <div class="container-fluid">
 
         <!-- Success Alert Section -->
-        <?php if(session('success')): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session('success')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="bi bi-check-circle-fill me-2"></i>
                 <?php echo e(session('success')); ?>
 
                 <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         <!-- Error Alert Section -->
-        <?php if(session('error')): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session('error')): ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <i class="bi bi-exclamation-triangle-fill me-2"></i>
                 <?php echo e(session('error')); ?>
 
                 <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
         
         <div class="page-header d-flex justify-content-between align-items-center mb-4">
@@ -66,7 +66,7 @@
                         </div>
 
                         <div class="col-lg-2">
-                            <button class="btn btn-primary w-100" title="برای شروع جستجو کلیک کنید">
+                            <button class="btn btn-info w-100" title="برای شروع جستجو کلیک کنید">
                                 جستجو
                             </button>
                         </div>
@@ -110,7 +110,7 @@
 
                         <!-- Start Customer Table Body -->
                         <tbody>
-                            <?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                                 <tr>
                                     <!-- ردیف -->
                                     <td><?php echo e($loop->iteration); ?></td>
@@ -125,7 +125,7 @@
                                     <td><?php echo e($customer->mobile); ?></td>
                                     <!-- نقش -->
                                     <td>
-                                        <?php if($customer->role): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($customer->role): ?>
                                             <span class="badge bg-<?php echo e($customer->role->color); ?>">
                                                 <i class="bi <?php echo e($customer->role->icon); ?>"></i>
                                                 <?php echo e($customer->role->name); ?>
@@ -135,7 +135,7 @@
                                             <span class="badge bg-secondary">
                                                 بدون نقش
                                             </span>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </td>
                                     <!-- تعداد خرید -->
                                     <td><?php echo e(number_format($customer->purchase_count)); ?></td>
@@ -150,7 +150,7 @@
                                     </td>
                                     <!-- وضعیت -->
                                     <td>
-                                        <?php if($customer->is_active): ?>
+                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($customer->is_active): ?>
                                             <span class="badge bg-success">
                                                 فعال
                                             </span>
@@ -158,7 +158,7 @@
                                             <span class="badge bg-danger">
                                                 غیرفعال
                                             </span>
-                                        <?php endif; ?>
+                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                     </td>
                                     <!-- عملیات -->
                                     <td>
@@ -185,7 +185,7 @@
                                 </tr>
 
                                 <!-- اگر مشتری در دیتابیس وجود نداشته باشد اطلاعات زیر را نمایش میدهد -->
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                                 <tr>
                                     <td colspan="8" class="text-center py-5">
                                         <i class="bi bi-inbox fs-1 text-muted"></i>
@@ -193,7 +193,7 @@
                                         مشتری‌ای ثبت نشده است.
                                     </td>
                                 </tr>
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                         </tbody>
                         <!-- End Customer Table Body -->

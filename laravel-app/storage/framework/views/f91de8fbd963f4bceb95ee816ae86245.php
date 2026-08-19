@@ -1,1 +1,0 @@
-<?php /**PATH C:\Users\Ali\Documents\Sales-Management-System\app\resources\views/partials/footer.blade.php ENDPATH**/ ?>

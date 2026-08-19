@@ -89,7 +89,7 @@
                     مدیریت دسته‌بندی محصولات
                 </h4>
 
-                <button class="btn btn-success" id="btnAddCategory" title="افزودن دسته بندی جدید">
+                <button class="btn btn-primary" id="btnAddCategory" title="افزودن دسته بندی جدید">
                     <i class="bi bi-plus-circle"></i>
                     افزودن دسته‌بندی
                 </button>
