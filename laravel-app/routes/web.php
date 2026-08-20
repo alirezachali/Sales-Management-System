@@ -53,7 +53,12 @@ Route::middleware('auth')->group(function () {
         })->name('products.index');
         /* بقیه‌ی مسیرهای resource همچنان از طریق کنترلر (برای سازگاری با لینک‌های قدیمی) */
         Route::resource('products', ProductController::class)->except(['show', 'index']);
-        Route::get('products/{product}/stock', [ProductController::class, 'stock'])->name('products.stock');
+        Route::get('products/{product}/stock', function (\App\Models\Product $product) {
+            return view('products.stock', compact('product'));
+        })->name('products.stock');
+        /* مسیرهای زیر دیگر از رابط جدید استفاده نمی‌شوند (ورود/خروج کالا الان از طریق
+           همان صفحه‌ی products.stock و به‌صورت مودال زنده انجام می‌شود) ولی برای
+           سازگاری با لینک‌های قدیمی حذف نشده‌اند. */
         Route::post('products/{product}/stock', [ProductController::class, 'storeStock'])->name('products.stock.store');
         Route::get('products/{product}/stock/sale', [ProductController::class, 'createSale'])->name('products.sale.create');
         Route::post('products/{product}/stock/sale', [ProductController::class, 'storeSale'])->name('products.sale.store');

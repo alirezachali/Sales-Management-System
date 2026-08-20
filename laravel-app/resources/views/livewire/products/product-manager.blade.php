@@ -150,14 +150,14 @@
                                     <i class="bi bi-boxes"></i>
                                 </a>
 
-                                {{-- دکمه ورود کالا به انبار --}}
-                                <a href="{{ route('products.stock.create', $product) }}"
+                                {{-- دکمه ورود کالا به انبار (مستقیم مودال ورود را در صفحه‌ی گردش کالا باز می‌کند) --}}
+                                <a href="{{ route('products.stock', ['product' => $product, 'action' => 'purchase']) }}"
                                     class="btn btn-sm btn-outline-success" title="ورود این کالا به انبار">
                                     <i class="bi bi-plus-lg"></i>
                                 </a>
 
-                                {{-- دکمه خروج کالا از انبار --}}
-                                <a href="{{ route('products.sale.create', $product) }}"
+                                {{-- دکمه خروج کالا از انبار (مستقیم مودال خروج را در صفحه‌ی گردش کالا باز می‌کند) --}}
+                                <a href="{{ route('products.stock', ['product' => $product, 'action' => 'sale']) }}"
                                     class="btn btn-sm btn-outline-danger" title="خروج این کالا از انبار">
                                     <i class="bi bi-dash-lg"></i>
                                 </a>
