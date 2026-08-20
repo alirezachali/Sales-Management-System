@@ -148,4 +148,85 @@ class StockManager extends Component
             'movements' => $movements,
         ]);
     }
+
+    /*
+    |--------------------------------------------------------------------|
+    |                      خروجی اکسل و CSV گردش کالا                     |
+    |--------------------------------------------------------------------|
+    */
+    public function exportCsv()
+    {
+        $fileName = 'گردش-کالا-' . $this->product->barcode . '.csv';
+
+        return response()->streamDownload(function () {
+            $handle = fopen('php://output', 'w');
+
+            // BOM برای نمایش صحیح حروف فارسی در Excel
+            fwrite($handle, "\xEF\xBB\xBF");
+
+            fputcsv($handle, ['تاریخ', 'نوع عملیات', 'مقدار', 'واحد', 'توضیحات']);
+
+            $this->product->stockMovements()->latest()->chunk(500, function ($movements) use ($handle) {
+                foreach ($movements as $movement) {
+                    fputcsv($handle, [
+                        $movement->created_at->format('Y-m-d H:i'),
+                        $this->movementTypeLabel($movement->type),
+                        $movement->quantity,
+                        $this->product->unit,
+                        $movement->description,
+                    ]);
+                }
+            });
+
+            fclose($handle);
+        }, $fileName, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
+    }
+
+    public function exportExcel()
+    {
+        $fileName = 'گردش-کالا-' . $this->product->barcode . '.xls';
+        $product = $this->product;
+
+        return response()->streamDownload(function () use ($product) {
+            echo "\xEF\xBB\xBF"; // BOM برای نمایش صحیح حروف فارسی
+            echo '<html><head><meta charset="UTF-8"></head><body dir="rtl">';
+            echo '<table border="1">';
+            echo '<thead><tr>
+                    <th>تاریخ</th>
+                    <th>نوع عملیات</th>
+                    <th>مقدار</th>
+                    <th>واحد</th>
+                    <th>توضیحات</th>
+                  </tr></thead><tbody>';
+
+            $product->stockMovements()->latest()->chunk(500, function ($movements) use ($product) {
+                foreach ($movements as $movement) {
+                    echo '<tr>'
+                        . '<td>' . e($movement->created_at->format('Y-m-d H:i')) . '</td>'
+                        . '<td>' . e($this->movementTypeLabel($movement->type)) . '</td>'
+                        . '<td>' . e($movement->quantity) . '</td>'
+                        . '<td>' . e($product->unit) . '</td>'
+                        . '<td>' . e($movement->description) . '</td>'
+                        . '</tr>';
+                }
+            });
+
+            echo '</tbody></table></body></html>';
+        }, $fileName, [
+            'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
+        ]);
+    }
+
+    private function movementTypeLabel(string $type): string
+    {
+        return match ($type) {
+            'initial' => 'موجودی اولیه',
+            'purchase' => 'خرید',
+            'sale' => 'فروش',
+            'adjust' => 'اصلاح',
+            default => $type,
+        };
+    }
 }

@@ -18,10 +18,11 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/storage/framework
+/storage/logs
 /vendor
 Homestead.json
 Homestead.yaml
 Thumbs.db
 /.vscode
 /.vscode/settings.json
-/storage/framework

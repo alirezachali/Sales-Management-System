@@ -29,8 +29,9 @@
                     {{ $product->unit }}
                 </div>
 
-                {{-- دکمه‌های ورود و خروج کالا از انبار --}}
-                <div class="d-flex gap-2">
+                {{-- دکمه‌های ورود، خروج و خروجی گزارش --}}
+                <div class="d-flex align-items-center gap-2">
+
                     <button type="button" class="btn btn-sm btn-outline-success" wire:click="openAddStockModal"
                         title="ورود این کالا به انبار">
                         <i class="bi bi-plus-lg"></i>
@@ -41,6 +42,41 @@
                         <i class="bi bi-dash-lg"></i>
                         خروج کالا
                     </button>
+
+                    <div class="vr mx-1 d-none d-sm-block" style="opacity:.15;"></div>
+
+                    {{-- دراپ‌داون خروجی گزارش (اکسل / CSV) --}}
+                    <div class="dropdown">
+                        <button type="button"
+                            class="btn btn-sm btn-outline-primary dropdown-toggle d-flex align-items-center gap-1"
+                            data-bs-toggle="dropdown" aria-expanded="false" wire:loading.attr="disabled"
+                            wire:target="exportExcel,exportCsv" title="دریافت خروجی گردش کالا">
+                            <span wire:loading.remove wire:target="exportExcel,exportCsv">
+                                <i class="bi bi-download"></i>
+                            </span>
+                            <span wire:loading wire:target="exportExcel,exportCsv"
+                                class="spinner-border spinner-border-sm"></span>
+                            خروجی گزارش
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center gap-2"
+                                    wire:click="exportExcel" wire:loading.attr="disabled"
+                                    wire:target="exportExcel">
+                                    <i class="bi bi-file-earmark-excel-fill text-success fs-5"></i>
+                                    خروجی Excel
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item d-flex align-items-center gap-2"
+                                    wire:click="exportCsv" wire:loading.attr="disabled" wire:target="exportCsv">
+                                    <i class="bi bi-filetype-csv text-primary fs-5"></i>
+                                    خروجی CSV
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
 
