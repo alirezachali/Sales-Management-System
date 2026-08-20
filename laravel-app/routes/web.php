@@ -23,9 +23,9 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-/*  |---------------------------------|
+/*  |--------------------------------------------------|
     |     NOT Authenticated Route     |
-    |---------------------------------|*/
+    |--------------------------------------------------|*/
 /* مسیرهایی که نیاز به احراز هویت ندارند */
 Route::middleware('guest')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -35,23 +35,30 @@ Route::middleware('guest')->group(function () {
 /* مسیر خروج کاربر از برنامه */
 Route::post('logout', [LogoutController::class, 'logout'])->middleware('auth')->name('logout');
 
-/*  |--------------------------------|
+/*  |--------------------------------------------------|
     |      Authenticated Route       |
-    |--------------------------------|*/
-/* مسیر هایی که نیاز به احراز هویت داردند */
+    |--------------------------------------------------|*/
+/* مسیر هایی که نیاز به احراز هویت دارند */
 Route::middleware('auth')->group(function () {
     /* مسیر صفحه داشبورد مدیریتی */
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::group([], function () {
-        /* مسیر صفحه لیست محصولات */
-        Route::resource('products', ProductController::class)->except(['show']);
+        /* مسیر صفحه لیست محصولات - یک ویوی Blade معمولی که کامپوننت Livewire را
+           با تگ <livewire:products.product-manager /> در خودش جای می‌دهد (دقیقاً
+           همان الگوی ماژول تامین‌کنندگان در suppliers.index). جستجو، فیلتر، افزودن،
+           ویرایش و حذف همه بدون رفرش صفحه انجام می‌شوند. */
+        Route::get('products', function () {
+            return view('products.index');
+        })->name('products.index');
+        /* بقیه‌ی مسیرهای resource همچنان از طریق کنترلر (برای سازگاری با لینک‌های قدیمی) */
+        Route::resource('products', ProductController::class)->except(['show', 'index']);
         Route::get('products/{product}/stock', [ProductController::class, 'stock'])->name('products.stock');
         Route::post('products/{product}/stock', [ProductController::class, 'storeStock'])->name('products.stock.store');
         Route::get('products/{product}/stock/sale', [ProductController::class, 'createSale'])->name('products.sale.create');
         Route::post('products/{product}/stock/sale', [ProductController::class, 'storeSale'])->name('products.sale.store');
         Route::get('products/{product}/stock/create', [ProductController::class, 'createStock'])->name('products.stock.create');
-        /* مسیر جنراتور بارکد برای محصولات جدید بدون بارکد کارخانه ای */
+        /* مسیر جنراتور بارکد برای محصولات جدید بدون بارکد خاصی از */
         Route::get('products/generate-barcode', [BarcodeController::class, 'generate'])->name('products.generate.barcode');
         /* مسیر چاپ لیبل محصولات */
         Route::get('products/{product}/label', [LabelController::class, 'show'])->name('products.label');
@@ -78,11 +85,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
 
     Route::group([], function () {
-        /* مسیر نمایش لیست کاربران */
+        /* مسیر لیست کاربران */
         Route::resource('users', UserController::class)->except('show');
         /* مسیر تغییر رمزعبور کاربر */
         Route::put('users/{user}/password', [UserController::class, 'updatePassword'])->name('users.password');
-        /* مسیر نمایش لیست نقش های کاربر */
+        /* مسیر لیست نقش ها */
 
         Route::resource('user/roles', RoleController::class)->except('show');
         /* مسیر ویرایش مجوزهای مربوط به هر نقش کاربر */
@@ -91,7 +98,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::group([], function () {
-        /* مسیر نمایش لیست مشتریان */
+        /* مسیر لیست مشتریان */
         Route::resource('customers', CustomerController::class);
         /* مسیر جستجوی مشتریان */
         Route::get('customers/search', [CustomerController::class, 'search'])->name('customers.search');
@@ -100,8 +107,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('customer/roles', CustomerRoleController::class);
     });
 
-    // مسیر نمایش لیست تامین کنندگان
-// این خط رو داخل routes/web.php اضافه کن (به‌جای Route::resource قبلی مربوط به suppliers)
+    // مسیر نمایش لیست تامین‌کنندگان
+    // این خط رو داخل routes/web.php اضافه کن (به‌جای Route::resource قبلی برای suppliers)
 
 Route::get('/suppliers', function () {
     return view('suppliers.index');
