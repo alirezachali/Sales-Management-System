@@ -69,25 +69,15 @@ Route::middleware('auth')->group(function () {
         Route::get('products/{product}/label', [LabelController::class, 'show'])->name('products.label');
     });
 
-    
     Route::group([], function () {
-    /* مسیر صفحه صندوق فروش - اکنون از طریق کامپوننت Livewire رندر می‌شود */
-    Route::get('pos', function () {
-        return view('sales.index');
-    })->name('pos.index');
+        /* مسیر صفحه صندوق فروش */
+        Route::get('pos', [SaleController::class, 'index'])->name('pos.index');
+        Route::get('pos/product', [SaleController::class, 'findProduct'])->name('pos.product');
+        Route::post('pos/checkout', [SaleController::class, 'checkout'])->name('pos.checkout');
+    });
 
-    // این دو روت دیگر توسط رابط کاربری استفاده نمی‌شوند (منطق چک‌اوت داخل
-    // SaleManager.php از طریق SaleService به‌طور مستقیم انجام می‌شود) اما
-    // برای سازگاری با هر مصرف‌کننده‌ی دیگری (مثلاً اپ موبایل/AJAX قدیمی)
-    // دست‌نخورده نگه داشته شده‌اند.
-    Route::get('pos/product', [SaleController::class, 'findProduct'])->name('pos.product');
-    Route::post('pos/checkout', [SaleController::class, 'checkout'])->name('pos.checkout');
-});
-
-/* مسیر نمایش فاکتور فروش جهت چاپ - بدون تغییر */
-Route::get('invoice/{sale}', [SaleController::class, 'invoice'])->name('invoice');
-
-
+    /* مسیر نمایش فاکتور فروش بعد از خرید مشتری */
+    Route::get('invoice/{sale}', [SaleController::class, 'invoice'])->name('invoice');
 
     Route::group([], function () {
         /* مسیر صفحه تنظیمات */
@@ -113,13 +103,21 @@ Route::get('invoice/{sale}', [SaleController::class, 'invoice'])->name('invoice'
     });
 
     Route::group([], function () {
-        /* مسیر لیست مشتریان */
-        Route::resource('customers', CustomerController::class);
-        /* مسیر جستجوی مشتریان */
+        /* مسیر صفحه‌ی باشگاه مشتریان - کامپوننت Livewire (جستجو، فیلتر رده،
+           افزودن، ویرایش، حذف و گردش حساب، همه بدون رفرش صفحه) */
+        Route::get('customers', function () {
+            return view('customers.index');
+        })->name('customers.index');
+        /* بقیه‌ی مسیرهای resource همچنان از طریق کنترلر (برای سازگاری با لینک‌های قدیمی) */
+        Route::resource('customers', CustomerController::class)->except(['show', 'index']);
+        /* مسیر جستجوی مشتریان (استفاده‌شده در ماژول فروش/pos) */
         Route::get('customers/search', [CustomerController::class, 'search'])->name('customers.search');
 
-        /* مسیر نمایش لیست نقش های مشتری */
-        Route::resource('customer/roles', CustomerRoleController::class);
+        /* مسیر مدیریت رده‌های باشگاه مشتریان - کامپوننت Livewire */
+        Route::get('customer/roles', function () {
+            return view('customers.roles.index');
+        })->name('customer-roles.index');
+        Route::resource('customer/roles', CustomerRoleController::class)->except(['show', 'index']);
     });
 
     // مسیر نمایش لیست تامین‌کنندگان

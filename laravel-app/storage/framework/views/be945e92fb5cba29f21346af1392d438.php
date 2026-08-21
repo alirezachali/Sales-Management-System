@@ -54,7 +54,7 @@
         <li>
             <a href="<?php echo e(route('customers.index')); ?>" class="<?php echo e(request()->routeIs('customers.*') ? 'active' : ''); ?>">
                 <i class="bi bi-people"></i>
-                <span>مشتریان</span>
+                <span>باشگاه مشتریان</span>
             </a>
         </li>
         <!-- برندها -->

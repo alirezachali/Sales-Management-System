@@ -31,27 +31,45 @@ class Sale extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        // با ثبت هر فروش جدید که به یک مشتری متصل است، آمار خرید مشتری
+        // (تعداد خرید، مبلغ کل خرید و تاریخ آخرین خرید) به‌روزرسانی و رده‌ی
+        // باشگاه مشتریانش به‌صورت خودکار بازمحاسبه می‌شود.
+        static::created(function (Sale $sale) {
+            if (! $sale->customer_id) {
+                return;
+            }
+
+            $customer = $sale->customer;
+
+            if ($customer) {
+                $customer->registerPurchase((float) $sale->final_price);
+            }
+        });
+    }
+
     public function items(): HasMany
     {
-        // تعریف رابطه این مدل با مدل آیتم فروش
+        // تعریف رابطه ایان مدل با مدل آیتم فروش
         return $this->hasMany(SaleItem::class);
     }
 
     public function user(): BelongsTo
     {
-        // تعریف رابطه این مدل با مدل کاربران
+        // تعریف رابطه ایان مدل با مدل کاربران
         return $this->belongsTo(User::class);
     }
 
     public function customer(): BelongsTo
     {
-        // تعریف رابطه این مدل با مدل مشتری
+        // تعریف رابطه ایان مدل با مدل مشتری
         return $this->belongsTo(Customer::class);
     }
 
     public function payments(): HasMany
     {
-        // تعریف رابطه میان این مدل با مدل پرداخت
+        // تعریف رابطه یان این مدل با مدل پرداخت
         return $this->hasMany(Payment::class);
     }
 }

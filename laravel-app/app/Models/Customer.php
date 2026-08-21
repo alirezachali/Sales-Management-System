@@ -32,7 +32,24 @@ class Customer extends Model
         'is_active',
     ];
 
-    // Start Accessor methoods >>
+    protected static function booted(): void
+    {
+        // هنگام ثبت مشتری جدید، اگر رده‌ای انتخاب نشده باشد، رده‌ی پیش‌فرض باشگاه
+        // مشتریان به‌صورت خودکار به او اختصاص داده می‌شود.
+        static::creating(function (Customer $customer) {
+            if (! $customer->customer_role_id) {
+                $defaultRole = CustomerRole::where('is_default', true)
+                    ->where('is_active', true)
+                    ->first();
+
+                if ($defaultRole) {
+                    $customer->customer_role_id = $defaultRole->id;
+                }
+            }
+        });
+    }
+
+    // Start Accessor methhoods >>
 
     // (نام + نام خانوادگی = نام کامل) خروجی این متد نام کامل مشتری است
     protected function fullName(): Attribute
@@ -42,7 +59,7 @@ class Customer extends Model
         );
     }
 
-    // این متد برای زمانی که مشتری تصویر پروفایل ندارد حروف اول نام و نام خانوادگی را برمیگرداند
+    // این متد بارای زمانی که مشتری تصویر پروفایلی ندارد جهت حرف اول نام و نام خانوادگی را برمیگرداند
     protected function initials(): Attribute
     {
         return Attribute::make(
@@ -50,13 +67,13 @@ class Customer extends Model
         );
     }
 
-    // این متد لیست مشتری های فعال را برمیگرداند
+    // این متد لیستی مشتریان را فعال را برمیگرداند
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
     }
 
-    // این متد هم برای جستجوی مشتری ها استفاده میشود
+    // این متد هم برای جستجوی مشتریان ها استفاده می‌شود
     public function scopeSearch($query, $search)
     {
         return $query->where(function ($q) use ($search) {
@@ -67,7 +84,7 @@ class Customer extends Model
         });
     }
 
-    // این متد آدرس کامل مشتری را برمیگرداند
+    // این متد آدرس کامل مشتری را با بربرگرداند
     protected function fullAddress(): Attribute
     {
         return Attribute::make(
@@ -84,7 +101,7 @@ class Customer extends Model
         );
     }
 
-    // این متد نام مشتری به همراه شماره تماس مشتری را برمیگرداند
+    // این متد نام مشتری به همراه شماره تماس مشتری را با بربرگرداند
     protected function nameWithMobile(): Attribute
     {
         return Attribute::make(
@@ -96,7 +113,7 @@ class Customer extends Model
         );
     }
 
-    // این متد وضعیت فعلی یک مشتری را برمیگرداند
+    // این متد وضعیت فعلی یک مشتری را با بربرگرداند
     protected function statusText(): Attribute
     {
         return Attribute::make(
@@ -107,7 +124,7 @@ class Customer extends Model
         );
     }
 
-    // این متد رنگ قرمز یا سبز را نسبت به وضعیت مشتری برمیگرداند
+    // این متد رنگ قرمز یا سبز را با نسبت به وضعیت مشتری با بربرگرداند
     protected function statusColor(): Attribute
     {
         return Attribute::make(
@@ -118,7 +135,7 @@ class Customer extends Model
         );
     }
 
-    // این متد سن مشتری را با استفاده از تاریخ تولد محاسبه و برمیگرداند
+    // این متد سن را با اساس تاریخ تولد محاسبه و برمیگرداند
     protected function age(): Attribute
     {
         return Attribute::make(
@@ -129,33 +146,78 @@ class Customer extends Model
         );
     }
 
-    // End Accessor methoods //
+    // End Accessor methhoods //
 
-    // این متد هر بار که اجرا میشود اگر آن روز تولد مشتری باشد مقدار (درست) را برمیگرداند
+    // این متد هر باره اگر آن روز روز تولد مشتری بود مقدار (درست) را برمیگرداند
     public function hasBirthdayToday(): bool
     {
-        if (!$this->birth_date) {
+        if (! $this->birth_date) {
             return false;
         }
 
         return Carbon::parse($this->birth_date)->isBirthday();
     }
 
-    // تعریف رابطه میان این مدل با مدل نقش مشتری
+    // تعریف رابطه میان این مدل و مدل نقش مشتری
     public function role()
     {
         return $this->belongsTo(CustomerRole::class, 'customer_role_id');
     }
 
-    // تعریف رابطه میان این مدل با مدل فروش
+    // تعریف رابطه میان این مدل و مدل فروش
     public function sales()
     {
         return $this->hasMany(Sale::class);
     }
 
-    // تعریف رابطه میان این مدل با مدل تراکنش های حساب مشتری
+    // تعریف رابطه میان این مدل و مدل تراکنش‌های حساب مشتری
     public function accountTransactions(): HasMany
     {
         return $this->hasMany(CustomerAccountTransaction::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------|
+    |                     منطق باشگاه مشتریان (رده‌بندی)                  |
+    |--------------------------------------------------------------------|
+    */
+
+    /**
+     * بر اساس تعداد کل خریدها و مبلغ کل خریدهای این مشتری، مناسب‌ترین رده‌ی
+     * فعال (بالاترین sort_order که شرایطش برقرار است) را پیدا کرده و در صورت
+     * تفاوت با رده‌ی فعلی، آن را به‌روزرسانی می‌کند. اگر هیچ رده‌ای شرایطش را
+     * نداشت، رده‌ی پیش‌فرض اعمال می‌شود.
+     */
+    public function recalculateRole(): void
+    {
+        $matchedRole = CustomerRole::query()
+            ->where('is_active', true)
+            ->where('min_purchase_count', '<=', $this->purchase_count)
+            ->where('min_purchase_amount', '<=', $this->total_purchase_amount)
+            ->orderByDesc('sort_order')
+            ->first();
+
+        if (! $matchedRole) {
+            $matchedRole = CustomerRole::where('is_default', true)
+                ->where('is_active', true)
+                ->first();
+        }
+
+        if ($matchedRole && $matchedRole->id !== $this->customer_role_id) {
+            $this->update(['customer_role_id' => $matchedRole->id]);
+        }
+    }
+
+    /**
+     * وقتی یک فروش برای این مشتری ثبت می‌شود، آمار خریدش را به‌روزرسانی و
+     * رده‌ی باشگاه مشتریانش را بازمحاسبه می‌کند.
+     */
+    public function registerPurchase(float $amount): void
+    {
+        $this->increment('purchase_count');
+        $this->increment('total_purchase_amount', $amount);
+        $this->update(['last_purchase_at' => now()]);
+        $this->refresh();
+        $this->recalculateRole();
     }
 }
