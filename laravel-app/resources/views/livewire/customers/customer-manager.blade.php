@@ -1,10 +1,19 @@
 <div dir="rtl">
 
+    {{-- Success/Error Alerts --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
@@ -79,7 +88,8 @@
                 باشگاه مشتریان
             </h4>
             <div class="d-flex gap-2">
-                <a href="{{ route('customer-roles.index') }}" class="btn btn-outline-primary" title="مدیریت رده‌های باشگاه مشتریان">
+                <a href="{{ route('customer-roles.index') }}" class="btn btn-outline-primary"
+                    title="مدیریت رده‌های باشگاه مشتریان">
                     <i class="bi bi-award"></i>
                     رده‌های باشگاه
                 </a>
@@ -121,7 +131,8 @@
                                 @endif
                             </td>
                             <td>{{ number_format($customer->purchase_count) }}</td>
-                            <td>{{ number_format($customer->total_purchase_amount) }} {{ setting('currency', '') }}</td>
+                            <td>{{ number_format($customer->total_purchase_amount) }} {{ setting('currency', '') }}
+                            </td>
                             <td>
                                 @if ($customer->is_active)
                                     <span class="badge bg-success">فعال</span>
@@ -175,7 +186,8 @@
                             <h5 class="modal-title">
                                 {{ $editingId ? 'ویرایش مشتری' : 'افزودن مشتری جدید' }}
                             </h5>
-                            <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
+                            <button type="button" class="btn-close" wire:click="closeModals"
+                                title="بستن"></button>
                         </div>
 
                         <div class="modal-body">
@@ -279,7 +291,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeModals" title="انصراف">
+                            <button type="button" class="btn btn-secondary" wire:click="closeModals"
+                                title="انصراف">
                                 انصراف
                             </button>
                             <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
@@ -383,25 +396,25 @@
                                                 <td>{{ number_format($transaction->amount) }}</td>
                                                 <td>{{ $transaction->description }}</td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="4" class="text-center py-3 text-muted">
-                                                    هیچ تراکنشی برای این مشتری ثبت نشده است.
-                                                </td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endif
+                                            @empty
+                                                <tr>
+                                                    <td colspan="4" class="text-center py-3 text-muted">
+                                                        هیچ تراکنشی برای این مشتری ثبت نشده است.
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeModals">بستن</button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" wire:click="closeModals">بستن</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    @endif
+        @endif
 
-</div>
+    </div>

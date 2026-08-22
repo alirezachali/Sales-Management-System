@@ -6,7 +6,6 @@ use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\CustomerRoleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ProductController;
@@ -113,11 +112,11 @@ Route::middleware('auth')->group(function () {
         /* مسیر جستجوی مشتریان (استفاده‌شده در ماژول فروش/pos) */
         Route::get('customers/search', [CustomerController::class, 'search'])->name('customers.search');
 
-        /* مسیر مدیریت رده‌های باشگاه مشتریان - کامپوننت Livewire */
+        /* مسیر مدیریت رده‌های باشگاه مشتریان - کامپوننت Livewire
+           (افزودن/ویرایش/حذف همگی داخل کامپوننت CustomerRoleManager انجام می‌شود) */
         Route::get('customer/roles', function () {
             return view('customers.roles.index');
         })->name('customer-roles.index');
-        Route::resource('customer/roles', CustomerRoleController::class)->except(['show', 'index']);
     });
 
     // مسیر نمایش لیست تامین‌کنندگان
