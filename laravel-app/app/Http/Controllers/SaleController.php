@@ -25,7 +25,7 @@ class SaleController extends Controller
 
     public function index()
     {
-        return view('sales.pos');
+        return view('sales.index');
     }
 
     public function findProduct(Request $request)
