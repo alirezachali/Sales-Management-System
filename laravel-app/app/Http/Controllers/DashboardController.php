@@ -2,64 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Product;
-use App\Models\Sale;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use Carbon\CarbonPeriod;
-
 class DashboardController extends Controller
 {
+    /**
+     * نمایش صفحه‌ی داشبورد مدیریتی.
+     *
+     * تمام منطق واکشی آمار (فروش امروز، فاکتورها، کالاهای کم‌موجود،
+     * آخرین فروش‌ها و نمودار ۳۰ روز اخیر) به کامپوننت Livewire
+     * App\Livewire\Dashboard\Overview منتقل شده است. این ویو فقط
+     * لایوت اصلی برنامه را بارگذاری کرده و کامپوننت زنده را در خود
+     * جای می‌دهد؛ دقیقاً همان الگویی که برای ماژول‌های محصولات،
+     * مشتریان و تامین‌کنندگان استفاده شده (resources/views/dashboard/index.blade.php
+     * فقط <livewire:dashboard.overview /> را رندر می‌کند).
+     *
+     * مسیر (routes/web.php) بدون تغییر باقی مانده است:
+     * Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+     */
     public function index()
     {
-        $today = Carbon::today();
-
-        $todaySales = Sale::whereDate('created_at', $today)
-            ->sum('final_price');
-
-        $todayInvoices = Sale::whereDate('created_at', $today)
-            ->count();
-
-        $productsCount = Product::count();
-
-        $lowStockProducts = Product::where('stock', '<=', 5)
-            ->count();
-
-        $latestSales = Sale::with('user')
-            ->latest()
-            ->take(10)
-            ->get(); 
-            
-        $lowStockList = Product::where('stock', '<=', 5)
-            ->orderBy('stock')
-            ->take(10)
-            ->get();
-
-        $period = CarbonPeriod::create(now()->subDays(29), now());
-
-        $labels = [];
-        $data = [];
-
-        foreach ($period as $date) {
-
-            $labels[] = $date->format('m/d');
-
-            $data[] = Sale::whereDate('created_at', $date)
-                ->sum('final_price');
-
-        }
-
-        return view('dashboard.index', compact(
-            'todaySales',
-            'todayInvoices',
-            'productsCount',
-            'lowStockProducts',
-            'latestSales',
-            'lowStockList',
-            'labels',
-            'data',
-        ));
-        
+        return view('dashboard.index');
     }
 }
