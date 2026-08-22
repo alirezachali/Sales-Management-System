@@ -84,7 +84,7 @@ class Overview extends Component
         $data = [];
 
         foreach ($period as $date) {
-            $labels[] = $date->format('m/d');
+            $labels[] = jalaliDate($date, 'm/d');
 
             $data[] = Sale::whereDate('created_at', $date)
                 ->sum('final_price');

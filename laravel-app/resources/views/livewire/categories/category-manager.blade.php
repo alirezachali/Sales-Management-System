@@ -90,13 +90,13 @@
                 <table class="table table-bordered table-hover align-middle mb-0">
                     <thead>
                         <tr>
-                            <th width="70">ردیف</th>
+                            <th width="55">ردیف</th>
                             <th>نام دسته‌بندی</th>
                             <th>توضیحات</th>
-                            <th width="90">تعداد کالا</th>
-                            <th width="150">تاریخ ایجاد</th>
-                            <th width="100">وضعیت</th>
-                            <th width="120">عملیات</th>
+                            <th width="80">تعداد کالا</th>
+                            <th width="200">تاریخ ایجاد</th>
+                            <th width="80">وضعیت</th>
+                            <th width="100">عملیات</th>
                         </tr>
                     </thead>
 
@@ -124,7 +124,7 @@
                                     @endif
                                 </td>
                                 {{-- تاریخ ایجاد --}}
-                                <td>{{ $category->created_at?->format('Y/m/d H:i') }}</td>
+                                <td>{{ $category->created_at ? jalaliDate($category->created_at) : '-' }}</td>
                                 {{-- وضعیت --}}
                                 <td>
                                     @if ($category->is_active)

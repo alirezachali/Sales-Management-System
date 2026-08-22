@@ -116,7 +116,7 @@
                                     <td>{{ $sale->invoice_number }}</td>
                                     <td>{{ $sale->user->name ?? '-' }}</td>
                                     <td>{{ number_format($sale->final_price) }}</td>
-                                    <td>{{ $sale->created_at->format('Y/m/d H:i') }}</td>
+                                    <td>{{ jalaliDateTime($sale->created_at) }}</td>
                                     <td>
                                         <a href="{{ route('invoice', $sale) }}" target="_blank"
                                             class="btn btn-sm btn-outline-primary">

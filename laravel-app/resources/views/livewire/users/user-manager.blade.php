@@ -80,13 +80,13 @@
                 <table class="table table-bordered table-hover align-middle mb-0">
                     <thead>
                         <tr>
-                            <th width="60">ردیف</th>
+                            <th width="50">ردیف</th>
                             <th>نام</th>
-                            <th>نام کاربری</th>
-                            <th width="100">وضعیت</th>
-                            <th width="122">نقش</th>
-                            <th width="150">آخرین ورود</th>
-                            <th width="150">عملیات</th>
+                            <th width="122">نام کاربری</th>
+                            <th width="80">وضعیت</th>
+                            <th width="110">نقش</th>
+                            <th width="220">آخرین ورود</th>
+                            <th width="130">عملیات</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,7 +103,7 @@
                                     @endif
                                 </td>
                                 <td>{{ $user->role?->display_name ?? '-' }}</td>
-                                <td>{{ $user->last_login_at?->format('Y/m/d H:i') ?? '-' }}</td>
+                                <td>{{ $user->last_login_at ? jalaliDateTime($user->last_login_at) : '-' }}</td>
                                 <td>
                                     {{-- دکمه ویرایش مشخصات یک کاربر --}}
                                     <button type="button" class="btn btn-sm btn-warning"

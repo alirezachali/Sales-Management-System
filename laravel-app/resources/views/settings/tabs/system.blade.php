@@ -46,11 +46,14 @@
                     <option value="Y/m/d" @selected(($settings['date_format'] ?? 'Y/m/d') == 'Y/m/d')>
                         1405/05/01
                     </option>
-                    <option value="d/m/Y" @selected(($settings['date_format'] ?? '') == 'd/m/Y')>
-                        01/05/1405
-                    </option>
                     <option value="Y-m-d" @selected(($settings['date_format'] ?? '') == 'Y-m-d')>
                         1405-05-01
+                    </option>
+                    <option value="j F Y" @selected(($settings['date_format'] ?? '') == 'j F Y')>
+                        1 مرداد 1405
+                    </option>
+                    <option value="l j F Y" @selected(($settings['date_format'] ?? '') == 'l j F Y')>
+                        شنبه 1 مرداد 1405
                     </option>
                 </select>
             </div>
