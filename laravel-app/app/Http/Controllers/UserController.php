@@ -4,18 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Role;
 
 class UserController extends Controller
 {
     
     public function index()
     {
-        $users = User::with('role')->latest()->paginate(15);
-
-        $roles = Role::orderBy('name')->get();
-
-        return view('users.index', compact('users', 'roles'));
+        // مدیریت کاربران به‌صورت زنده توسط کامپوننت Livewire (users.user-manager) انجام می‌شود.
+        return view('users.index');
     }
 
     

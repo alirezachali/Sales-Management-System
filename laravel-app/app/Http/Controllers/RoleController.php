@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
-use App\Models\PermissionGroup;
-use App\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -14,9 +12,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::latest()->paginate(15);
-
-        return view('roles.index', compact('roles'));
+        // مدیریت نقش‌ها به‌صورت زنده توسط کامپوننت Livewire (roles.role-manager) انجام می‌شود.
+        return view('roles.index');
     }
 
     /**
@@ -92,18 +89,10 @@ class RoleController extends Controller
     }
 
     public function permissions(Role $role)
-{
-    $role->load('permissions');
-
-    $groups = PermissionGroup::with('permissions')
-                ->orderBy('sort_order')
-                ->get();
-
-    return view(
-        'roles.permissions',
-        compact('role','groups')
-    );
-}
+    {
+        // ویرایش مجوزها به‌صورت زنده توسط کامپوننت Livewire (roles.role-permission-manager) انجام می‌شود.
+        return view('roles.permissions', compact('role'));
+    }
 
 
 public function syncPermissions(Request $request, Role $role)
