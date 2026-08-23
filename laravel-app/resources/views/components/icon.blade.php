@@ -1,3 +1,9 @@
-<div>
-    <!-- It is never too late to be what you might have been. - George Eliot -->
-</div>
+@php
+    $iconPath = resource_path(
+        "icons/tabler/{$variant}/{$name}.svg"
+    );
+@endphp
+
+@if (file_exists($iconPath))
+    {!! file_get_contents($iconPath) !!}
+@endif
