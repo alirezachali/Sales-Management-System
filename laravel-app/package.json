@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@tabler/core": "^1.4.0",
+        "@tabler/icons": "^3.46.0",
         "bootstrap-icons": "^1.13.1"
     }
 }
