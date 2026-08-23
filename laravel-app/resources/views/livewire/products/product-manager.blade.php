@@ -60,11 +60,11 @@
     </div>
 
     {{-- فیلترها --}}
-    <div class="card mb-4">
+    <div class="card glass-card mb-4">
         <div class="card-body">
             <div class="row g-2">
 
-                <div class="col-md-5">
+                <div class="col-md-7">
                     <input type="text" wire:model.live.debounce.400ms="search" class="form-control"
                         placeholder="جستجو نام یا بارکد...">
                 </div>
@@ -78,7 +78,7 @@
                     </select>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <button type="button" wire:click="resetFilters" class="btn btn-outline-secondary w-100"
                         title="پاک کردن فیلترهای جستجو">
                         پاک کردن فیلترها
@@ -93,10 +93,17 @@
     <div class="card shadow-sm" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">مدیریت کالاها</h4>
-            <button type="button" class="btn btn-primary" wire:click="openCreateModal" title="افزودن محصول جدید به سیستم">
+            <div>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-box-seam-fill text-primary"></i>
+                    مدیریت محصولات
+                </h3>
+                <small class="text-muted">مدیریت اطلاعات محصولات موجود در فروشگاه</small>
+            </div>
+            <button type="button" class="btn btn-primary" wire:click="openCreateModal"
+                title="افزودن محصول جدید به سیستم">
                 <i class="bi bi-plus-circle"></i>
-                افزودن کالا جدید
+                افزودن محصول
             </button>
         </div>
 
@@ -110,9 +117,9 @@
                         <th width="130">بارکد</th>
                         <th>نام کالا</th>
                         <th>دسته بندی</th>
-                        <th>قیمت فروش</th>
-                        <th width="120">موجودی</th>
-                        <th width="260">عملیات</th>
+                        <th width="130">قیمت فروش</th>
+                        <th width="90">موجودی</th>
+                        <th width="230">عملیات</th>
                     </tr>
                 </thead>
 
@@ -200,7 +207,8 @@
                                 <i class="bi {{ $editingProductId ? 'bi-pencil-fill' : 'bi-plus-circle-fill' }}"></i>
                                 {{ $editingProductId ? 'ویرایش کالا' : 'افزودن کالا جدید' }}
                             </h5>
-                            <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
+                            <button type="button" class="btn-close" wire:click="closeModals"
+                                title="بستن"></button>
                         </div>
 
                         <div class="modal-body">
@@ -263,7 +271,8 @@
                                 </div>
 
                                 <div class="col-md-4 mb-3">
-                                    <label class="form-label">{{ $editingProductId ? 'موجودی' : 'موجودی اولیه' }}</label>
+                                    <label
+                                        class="form-label">{{ $editingProductId ? 'موجودی' : 'موجودی اولیه' }}</label>
                                     <input type="number" step="0.001" wire:model="stock"
                                         class="form-control @error('stock') is-invalid @enderror">
                                     @error('stock')
@@ -292,7 +301,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeModals" title="انصراف">
+                            <button type="button" class="btn btn-secondary" wire:click="closeModals"
+                                title="انصراف">
                                 انصراف
                             </button>
                             <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
@@ -348,7 +358,8 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">تعداد لیبل</label>
-                        <input type="number" id="label_quantity" class="form-control" value="1" min="1">
+                        <input type="number" id="label_quantity" class="form-control" value="1"
+                            min="1">
                     </div>
                     <div id="label-container"></div>
                 </div>
@@ -367,7 +378,7 @@
             // چاپ لیبل کالا از طریق endpoint موجود، مستقل از رندر لیوایر (فقط یک‌بار ثبت می‌شود)
             let currentLabelTemplate = '';
 
-            document.addEventListener('click', function (e) {
+            document.addEventListener('click', function(e) {
                 const button = e.target.closest('.print-label-btn');
                 if (!button) return;
 
@@ -381,14 +392,14 @@
                         return response.json();
                     })
                     .then(data => {
-                        let labelName = data.label_show_name
-                            ? `<div class="label-name">${data.name}</div>` : '';
-                        let labelPrice = data.label_show_price
-                            ? `<div class="label-price">${Number(data.price).toLocaleString()} تومان</div>` : '';
-                        let labelBarcode = data.label_show_barcode
-                            ? `<div class="label-barcode">${data.barcode_svg}</div>` : '';
-                        let labelCode = data.label_show_code
-                            ? `<div class="label-code">${data.barcode}</div>` : '';
+                        let labelName = data.label_show_name ?
+                            `<div class="label-name">${data.name}</div>` : '';
+                        let labelPrice = data.label_show_price ?
+                            `<div class="label-price">${Number(data.price).toLocaleString()} تومان</div>` : '';
+                        let labelBarcode = data.label_show_barcode ?
+                            `<div class="label-barcode">${data.barcode_svg}</div>` : '';
+                        let labelCode = data.label_show_code ?
+                            `<div class="label-code">${data.barcode}</div>` : '';
 
                         currentLabelTemplate = `
                             <div class="label-print-area" style="width: ${data.label_width}mm; height: ${data.label_height}mm;">
@@ -406,7 +417,7 @@
                     .catch(error => console.error('Label Error:', error));
             });
 
-            document.getElementById('print-label-btn')?.addEventListener('click', function () {
+            document.getElementById('print-label-btn')?.addEventListener('click', function() {
                 let quantity = parseInt(document.getElementById('label_quantity').value) || 1;
                 let container = document.getElementById('label-container');
                 let output = '';
@@ -419,7 +430,7 @@
                 window.print();
             });
 
-            document.getElementById('labelModal')?.addEventListener('hidden.bs.modal', function () {
+            document.getElementById('labelModal')?.addEventListener('hidden.bs.modal', function() {
                 document.getElementById('label-container').innerHTML = '';
                 currentLabelTemplate = '';
             });

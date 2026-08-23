@@ -18,100 +18,154 @@
         </div>
     @endif
 
-    {{-- هدر صفحه --}}
-    <div class="page-header d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="mb-1">
-                <i class="bi bi-people-fill text-primary"></i>
-                مدیریت نقش‌ها
-            </h3>
-            <small class="text-muted">مدیریت نقش‌های کاربران سیستم</small>
-        </div>
 
-        <button class="btn btn-primary" wire:click="openCreateModal" title="برای افزودن نقش جدید به سیستم کلیک کنید">
-            <i class="bi bi-plus-circle"></i>
-            افزودن نقش جدید
-        </button>
+        {{-- کارت‌های آماری --}}
+    <div class="row row-cards mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">تعداد نقش ها</div>
+                    <div class="h1 mb-0">
+                        {{-- {{ $totalCategories }} --}}5
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">نقش های فعال</div>
+                    <div class="h1 mb-0 text-success">
+                        {{-- {{ $activeCategories }} --}}5
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">نقش های غیرفعال</div>
+                    <div class="h1 mb-0 text-danger">
+                        {{-- {{ $inactiveCategories }} --}}0
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">نقش های بدون کاربر</div>
+                    <div class="h1 mb-0 text-warning">
+                        {{-- {{ $emptyCategories }} --}}2
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
 
     {{-- کارت جستجو --}}
-    <div class="card glass-card mb-4">
-        <div class="card-body">
-            <div class="input-group">
-                <span class="input-group-text">
-                    <i class="bi bi-search"></i>
-                </span>
-                <input type="text" class="form-control" wire:model.live.debounce.400ms="search"
-                    placeholder="جستجو بر اساس نام نقش یا شناسه">
+        <div class="card glass-card mb-4">
+            <div class="card-body">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" wire:model.live.debounce.400ms="search"
+                        placeholder="جستجو بر اساس نام نقش یا شناسه">
+                </div>
             </div>
         </div>
-    </div>
 
+
+    {{-- هدر صفحه --}}
     <div class="card shadow-sm" wire:loading.class="opacity-50">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th width="50">ردیف</th>
-                            <th>نام نقش</th>
-                            <th width="150">شناسه</th>
-                            <th>توضیحات</th>
-                            <th width="105">تعداد کاربران</th>
-                            <th width="160">عملیات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($roles as $role)
-                            <tr wire:key="role-{{ $role->id }}">
-                                <td>{{ $loop->iteration + ($roles->currentPage() - 1) * $roles->perPage() }}</td>
-                                <td>{{ $role->display_name }}</td>
-                                <td>
-                                    <span class="badge bg-{{ $role->color ?? 'secondary' }}">
-                                        {{ $role->name }}
-                                        <i class="{{ $role->icon }}"></i>
-                                    </span>
-                                </td>
-                                <td>{{ $role->description }}</td>
-                                <td>
-                                    <span class="badge bg-info">{{ $role->users_count }}</span>
-                                </td>
-                                <td>
-                                    {{-- دکمه ویرایش یک نقش --}}
-                                    <button type="button" class="btn btn-sm btn-warning"
-                                        wire:click="openEditModal({{ $role->id }})" title="برای ویرایش این نقش کلیک کنید">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    {{-- دکمه حذف یک نقش --}}
-                                    <button type="button" class="btn btn-sm btn-danger"
-                                        wire:click="confirmDelete({{ $role->id }})" title="برای حذف این نقش کلیک کنید">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                    {{-- دکمه ویرایش مجوزهای یک نقش --}}
-                                    <a href="{{ route('roles.permissions', $role) }}" class="btn btn-sm btn-info"
-                                        title="برای ویرایش مجوز های این نقش کلیک کنید">
-                                        <i class="bi bi-shield-lock"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @empty
+        <div class="card-header d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-shield-lock-fill text-primary"></i>
+                    مدیریت نقش‌ها
+                </h3>
+                <small class="text-muted">مدیریت نقش‌های کاربران سیستم و مجوزهای دسترسی به هر بخش</small>
+            </div>
+
+            <button class="btn btn-primary" wire:click="openCreateModal"
+                title="برای افزودن نقش جدید به سیستم کلیک کنید">
+                <i class="bi bi-plus-circle"></i>
+                افزودن نقش
+            </button>
+        </div>
+
+        <div class="card shadow-sm" wire:loading.class="opacity-50">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle mb-0">
+                        <thead>
                             <tr>
-                                <td colspan="6" class="text-center py-5 text-muted">
-                                    هیچ نقشی ثبت نشده است.
-                                </td>
+                                <th width="50">ردیف</th>
+                                <th>نام نقش</th>
+                                <th width="150">شناسه</th>
+                                <th>توضیحات</th>
+                                <th width="90">تعداد کاربران</th>
+                                <th width="130">عملیات</th>
                             </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @forelse ($roles as $role)
+                                <tr wire:key="role-{{ $role->id }}">
+                                    <td>{{ $loop->iteration + ($roles->currentPage() - 1) * $roles->perPage() }}</td>
+                                    <td>{{ $role->display_name }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ $role->color ?? 'secondary' }}">
+                                            {{ $role->name }}
+                                            <i class="{{ $role->icon }}"></i>
+                                        </span>
+                                    </td>
+                                    <td>{{ $role->description }}</td>
+                                    <td>
+                                        <span class="badge bg-info">{{ $role->users_count }}</span>
+                                    </td>
+                                    <td>
+                                        {{-- دکمه ویرایش یک نقش --}}
+                                        <button type="button" class="btn btn-sm btn-warning"
+                                            wire:click="openEditModal({{ $role->id }})"
+                                            title="برای ویرایش این نقش کلیک کنید">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        {{-- دکمه حذف یک نقش --}}
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                            wire:click="confirmDelete({{ $role->id }})"
+                                            title="برای حذف این نقش کلیک کنید">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                        {{-- دکمه ویرایش مجوزهای یک نقش --}}
+                                        <a href="{{ route('roles.permissions', $role) }}" class="btn btn-sm btn-info"
+                                            title="برای ویرایش مجوز های این نقش کلیک کنید">
+                                            <i class="bi bi-shield-lock"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center py-5 text-muted">
+                                        هیچ نقشی ثبت نشده است.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="mt-3">{{ $roles->links() }}</div>
+        <div class="mt-3">{{ $roles->links() }}</div>
+    </div>
 
     {{-- ============================ مودال افزودن/ویرایش نقش ============================ --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);" wire:key="role-form-modal">
+        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+            wire:key="role-form-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <form wire:submit="save">
                     <div class="modal-content">
@@ -167,8 +221,7 @@
 
                                 <div class="col-md-12">
                                     <label class="form-label">توضیحات</label>
-                                    <textarea wire:model="description" class="form-control @error('description') is-invalid @enderror"
-                                        rows="3"></textarea>
+                                    <textarea wire:model="description" class="form-control @error('description') is-invalid @enderror" rows="3"></textarea>
                                     @error('description')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -178,7 +231,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeModals" title="انصراف">
+                            <button type="button" class="btn btn-secondary" wire:click="closeModals"
+                                title="انصراف">
                                 انصراف
                             </button>
                             <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"

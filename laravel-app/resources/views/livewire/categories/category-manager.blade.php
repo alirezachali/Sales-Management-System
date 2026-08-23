@@ -71,10 +71,10 @@
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
-                <h4 class="mb-0">
+                <h3 class="fw-bold mb-1">
                     <i class="bi bi-tags-fill text-primary"></i>
                     مدیریت دسته‌بندی‌ها
-                </h4>
+                </h3>
                 <small class="text-muted">مدیریت اطلاعات دسته‌بندی‌های محصولات</small>
             </div>
 

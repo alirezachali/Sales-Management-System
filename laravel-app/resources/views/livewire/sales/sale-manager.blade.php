@@ -22,13 +22,15 @@
     @enderror
 
     {{-- Page Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="fw-bold mb-1">
-                <i class="bi bi-cart-check-fill text-primary"></i>
-                فروش (صندوق)
-            </h3>
-            <small class="text-muted">ثبت فاکتور فروش و چاپ آن</small>
+    <div class="card shadow-sm mb-3" wire:loading.class="opacity-50">
+        <div class="card-header align-items-center">
+            <div>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-cart-check-fill text-primary"></i>
+                    فروش (صندوق)
+                </h3>
+                <small class="text-muted">سبد خرید مشتری و صدور فاکتور خرید</small>
+            </div>
         </div>
     </div>
 
@@ -40,14 +42,14 @@
                     <div class="row g-2">
                         <div class="col-md-6">
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-upc-scan"></i></span>
+                                <span class="input-group-text"><i class="bi bi-upc-scan text-primary"></i></span>
                                 <input type="text" class="form-control" placeholder="اسکن / وارد کردن بارکد"
                                     wire:model="barcode" wire:keydown.enter="addByBarcode" autofocus>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <span class="input-group-text"><i class="bi bi-search text-info"></i></span>
                                 <input type="text" class="form-control" wire:model.live.debounce.400ms="search"
                                     placeholder="جستجو بر اساس نام یا بارکد کالا">
                             </div>
@@ -57,9 +59,11 @@
                     @if ($search && $products->count())
                         <div class="list-group mt-2">
                             @foreach ($products as $product)
-                                <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between"
+                                <button type="button"
+                                    class="list-group-item list-group-item-action d-flex justify-content-between"
                                     wire:click="addProduct({{ $product->id }})">
-                                    <span>{{ $product->name }} <small class="text-muted">({{ $product->barcode }})</small></span>
+                                    <span>{{ $product->name }} <small
+                                            class="text-muted">({{ $product->barcode }})</small></span>
                                     <span class="badge bg-primary">{{ number_format($product->sell_price) }}</span>
                                 </button>
                             @endforeach
@@ -71,10 +75,10 @@
             </div>
 
             {{-- سبد فروش --}}
-            <div class="card">
-                <div class="card-body p-0">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+            <div class="card-body">
+                <div class="table-responsive rounded-3 border">
+                    <table class="table table-bordered table-hover align-middle mb-0">
+                        <thead>
                             <tr>
                                 <th>کالا</th>
                                 <th>قیمت</th>
@@ -127,7 +131,9 @@
                         <select class="form-select" wire:model="customerId">
                             <option value="">مشتری متفرقه</option>
                             @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}">{{ $customer->full_name }} ({{ $customer->mobile }})</option>
+                                <option value="{{ $customer->id }}">{{ $customer->full_name }}
+                                    ({{ $customer->mobile }})
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -148,22 +154,22 @@
                         <strong class="text-primary fs-5">{{ number_format($this->finalPrice) }}</strong>
                     </div>
 
-                    <button type="button" class="btn btn-primary w-100" wire:click="openCheckoutModal">
+                    <button type="button" class="btn btn-success w-100" wire:click="openCheckoutModal">
                         <i class="bi bi-cash-coin"></i> پرداخت و ثبت فاکتور
                     </button>
                 </div>
             </div>
 
             {{-- آخرین فاکتورهای ثبت شده --}}
-            <div class="card mt-3">
-                <div class="card-body p-0">
-                    <table class="table table-sm table-hover align-middle mb-0">
-                        <thead class="table-light">
+            <div class="card-body">
+                <div class="table-responsive rounded-3 border">
+                    <table class="table table-bordered table-hover align-middle mb-0">
+                        <thead>
                             <tr>
                                 <th>شماره فاکتور</th>
                                 <th>مشتری</th>
                                 <th>مبلغ</th>
-                                <th class="text-center">چاپ</th>
+                                <th>چاپ</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -181,22 +187,25 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center py-3 text-muted">فاکتوری ثبت نشده است.</td>
+                                    <td colspan="4" class="text-center py-3 text-muted">فاکتوری ثبت نشده است.
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer">
-                    {{ $recentSales->links() }}
-                </div>
+
+                <div class="card-footer">{{ $recentSales->links() }}</div>
+                
             </div>
         </div>
     </div>
 
+
     {{-- مودال پرداخت / تسویه --}}
     @if ($showCheckoutModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);" wire:key="checkout-modal">
+        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+            wire:key="checkout-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <form wire:submit="checkout">
@@ -208,19 +217,25 @@
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label class="form-label">نوع پرداخت <span class="text-danger">*</span></label>
-                                    <select class="form-select @error('paymentType') is-invalid @enderror" wire:model="paymentType">
+                                    <select class="form-select @error('paymentType') is-invalid @enderror"
+                                        wire:model="paymentType">
                                         <option value="cash">نقدی</option>
                                         <option value="card">کارتخوان</option>
                                         <option value="credit">نسیه (اعتباری)</option>
                                     </select>
-                                    @error('paymentType') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    @error('paymentType')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-12">
                                     <label class="form-label">مبلغ پرداختی</label>
-                                    <input type="number" step="0.01" class="form-control @error('paidAmount') is-invalid @enderror"
-                                        wire:model="paidAmount" @if($paymentType === 'credit') disabled @endif>
-                                    @error('paidAmount') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    <input type="number" step="0.01"
+                                        class="form-control @error('paidAmount') is-invalid @enderror"
+                                        wire:model="paidAmount" @if ($paymentType === 'credit') disabled @endif>
+                                    @error('paidAmount')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-12">
@@ -233,8 +248,10 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" wire:click="closeModals">انصراف</button>
-                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled" wire:target="checkout">
-                                <span wire:loading wire:target="checkout" class="spinner-border spinner-border-sm"></span>
+                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
+                                wire:target="checkout">
+                                <span wire:loading wire:target="checkout"
+                                    class="spinner-border spinner-border-sm"></span>
                                 ثبت نهایی فاکتور
                             </button>
                         </div>
@@ -246,7 +263,8 @@
 
     {{-- مودال موفقیت + چاپ فاکتور --}}
     @if ($showInvoiceModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);" wire:key="invoice-modal">
+        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+            wire:key="invoice-modal">
             <div class="modal-dialog">
                 <div class="modal-content text-center">
                     <div class="modal-header">

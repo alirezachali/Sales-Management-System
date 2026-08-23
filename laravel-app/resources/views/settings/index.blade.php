@@ -24,7 +24,7 @@
 
         <div class="card shadow-sm border-0">
 
-            <div class="page-header d-flex justify-content-between align-items-center">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <div>
                     <h3 class="fw-bold mb-1">
                         <i class="bi bi-gear-fill text-primary"></i>

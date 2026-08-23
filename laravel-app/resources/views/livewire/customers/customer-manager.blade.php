@@ -57,7 +57,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <div class="row g-2">
-                <div class="col-md-5">
+                <div class="col-md-7">
                     <input type="text" wire:model.live.debounce.400ms="search" class="form-control"
                         placeholder="جستجو نام یا موبایل...">
                 </div>
@@ -69,7 +69,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <button type="button" wire:click="resetFilters" class="btn btn-outline-secondary w-100"
                         title="پاک کردن فیلترهای جستجو">
                         پاک کردن فیلترها
@@ -83,15 +83,18 @@
     <div class="card shadow-sm" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">
-                <i class="bi bi-people"></i>
+            <div>
+            <h3 class="fw-bold mb-1">
+                <i class="bi bi-people text-primary"></i>
                 باشگاه مشتریان
-            </h4>
+            </h3>
+            <small class="text-muted">مدیریت اطلاعات مشتریان و رده های باشگاه مشتریان</small>
+            </div>
             <div class="d-flex gap-2">
-                <a href="{{ route('customer-roles.index') }}" class="btn btn-outline-primary"
+                <a href="{{ route('customer-roles.index') }}" class="btn btn-info"
                     title="مدیریت رده‌های باشگاه مشتریان">
                     <i class="bi bi-award"></i>
-                    رده‌های باشگاه
+                    مدیریت رده‌های باشگاه
                 </a>
                 <button type="button" class="btn btn-primary" wire:click="openCreateModal" title="افزودن مشتری جدید">
                     <i class="bi bi-person-plus"></i>
@@ -106,12 +109,12 @@
                     <tr>
                         <th>#</th>
                         <th>نام مشتری</th>
-                        <th>موبایل</th>
-                        <th>رده باشگاه</th>
-                        <th>تعداد خرید</th>
+                        <th width="90">موبایل</th>
+                        <th width="100">رده باشگاه</th>
+                        <th width="60">تعداد خرید</th>
                         <th>مبلغ کل خرید</th>
-                        <th width="90">وضعیت</th>
-                        <th width="220">عملیات</th>
+                        <th width="80">وضعیت</th>
+                        <th width="160">عملیات</th>
                     </tr>
                 </thead>
                 <tbody>

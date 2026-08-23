@@ -18,27 +18,58 @@
         </div>
     @endif
 
-    {{-- هدر صفحه --}}
-    <div class="page-header d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="fw-bold mb-1">
-                <i class="bi bi-people-fill text-primary"></i>
-                مدیریت کاربران
-            </h3>
-            <small class="text-muted">مدیریت کاربران سیستم</small>
-        </div>
 
-        <button class="btn btn-primary" wire:click="openCreateModal" title="برای افزودن کاربر جدید به سیستم کلیک کنید">
-            <i class="bi bi-plus-circle"></i>
-            افزودن کاربر
-        </button>
+        {{-- کارت‌های آماری --}}
+    <div class="row row-cards mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">تعداد کاربران</div>
+                    <div class="h1 mb-0">
+                        {{ $totalUsers }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">کاربران فعال</div>
+                    <div class="h1 mb-0 text-success">
+                        {{-- {{ $activeCategories }} --}}2
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">کاربران غیرفعال</div>
+                    <div class="h1 mb-0 text-danger">
+                        {{-- {{ $inactiveCategories }} --}}1
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">تعداد کارمندان</div>
+                    <div class="h1 mb-0 text-warning">
+                        {{-- {{ $emptyCategories }} --}}0
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 
     {{-- کارت جستجو و فیلتر --}}
     <div class="card glass-card mb-4">
         <div class="card-body">
             <div class="row g-2">
-                <div class="col-lg-5">
+
+                <div class="col-lg-7">
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="bi bi-search"></i>
@@ -64,17 +95,30 @@
                     </button>
                 </div>
 
-                <div class="col-lg-2 text-end">
-                    <span class="badge bg-info fs-6">
-                        تعداد کاربران : {{ $totalUsers }}
-                    </span>
-                </div>
             </div>
         </div>
     </div>
 
-    {{-- بدنه‌ی کارت کاربران --}}
+    {{-- جدول کاربران --}}
     <div class="card shadow-sm" wire:loading.class="opacity-50">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-people-fill text-primary"></i>
+                    مدیریت کاربران
+                </h3>
+                <small class="text-muted">مدیریت اطلاعات کاربران سیستم</small>
+            </div>
+
+            <button class="btn btn-primary" wire:click="openCreateModal"
+                title="برای افزودن کاربر جدید به سیستم کلیک کنید">
+                <i class="bi bi-plus-circle"></i>
+                افزودن کاربر
+            </button>
+        </div>
+
+
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle mb-0">
@@ -142,7 +186,8 @@
 
     {{-- ============================ مودال افزودن/ویرایش کاربر ============================ --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);" wire:key="user-form-modal">
+        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+            wire:key="user-form-modal">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <form wire:submit="save">
                     <div class="modal-content">
@@ -158,7 +203,8 @@
                             <div class="row g-3">
 
                                 <div class="col-md-6">
-                                    <label class="form-label">نام و نام خانوادگی <span class="text-danger">*</span></label>
+                                    <label class="form-label">نام و نام خانوادگی <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" wire:model="name"
                                         class="form-control @error('name') is-invalid @enderror">
                                     @error('name')
@@ -218,8 +264,10 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="form-label">تکرار رمز عبور <span class="text-danger">*</span></label>
-                                        <input type="password" wire:model="password_confirmation" class="form-control">
+                                        <label class="form-label">تکرار رمز عبور <span
+                                                class="text-danger">*</span></label>
+                                        <input type="password" wire:model="password_confirmation"
+                                            class="form-control">
                                     </div>
                                 @endif
 
@@ -235,7 +283,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeModals" title="انصراف">
+                            <button type="button" class="btn btn-secondary" wire:click="closeModals"
+                                title="انصراف">
                                 انصراف
                             </button>
                             <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
@@ -261,7 +310,8 @@
 
                         <div class="modal-header">
                             <h5 class="modal-title">تغییر رمز عبور</h5>
-                            <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
+                            <button type="button" class="btn-close" wire:click="closeModals"
+                                title="بستن"></button>
                         </div>
 
                         <div class="modal-body">
@@ -286,7 +336,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeModals" title="انصراف">
+                            <button type="button" class="btn btn-secondary" wire:click="closeModals"
+                                title="انصراف">
                                 انصراف
                             </button>
                             <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"

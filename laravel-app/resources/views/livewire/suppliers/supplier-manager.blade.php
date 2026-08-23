@@ -17,27 +17,57 @@
         </div>
     @endif
 
-    {{-- Page Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h3 class="fw-bold mb-1">
-                <i class="bi bi-tags-fill text-primary"></i>
-                مدیریت تامین کنندگان
-            </h3>
-            <small class="text-muted">مدیریت اطلاعات تامین‌کنندگان </small>
-        </div>
 
-        <button class="btn btn-primary" wire:click="openCreateModal" title="افزودن تامین کننده جدید به سیستم">
-            <i class="bi bi-plus-circle"></i>
-            افزودن تامین کننده
-        </button>
+    {{-- کارت‌های آماری --}}
+    <div class="row row-cards mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">تعداد تامین کنندگان</div>
+                    <div class="h1 mb-0">
+                        {{ $suppliers->total() }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">تامین کنندگان فعال</div>
+                    <div class="h1 mb-0 text-success">
+                        {{-- {{ $activeCategories }} --}}1
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">تامین کنندگان غیرفعال</div>
+                    <div class="h1 mb-0 text-danger">
+                        {{-- {{ $inactiveCategories }} --}}0
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">تامین کنندگان بدون برند</div>
+                    <div class="h1 mb-0 text-warning">
+                        {{-- {{ $emptyCategories }} --}}0
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 
     {{-- Search Card --}}
     <div class="card glass-card mb-4">
         <div class="card-body">
             <div class="row">
-                <div class="col-lg-7">
+                <div class="col-lg-12">
                     <div class="input-group">
                         <span class="input-group-text">
                             <i class="bi bi-search"></i>
@@ -46,66 +76,83 @@
                             placeholder="جستجو بر اساس نام برند">
                     </div>
                 </div>
-                <div class="col-lg-5 text-end">
-                    <span class="badge bg-primary fs-6">
-                        تعداد برندها : 
-                        {{-- {{ $brands->total() }} --}}
-                    </span>
-                </div>
+
             </div>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-body p-0">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>کد</th>
-                        <th>نام</th>
-                        <th>موبایل</th>
-                        <th>شهر</th>
-                        <th>نوع</th>
-                        <th>وضعیت</th>
-                        <th class="text-center">عملیات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($suppliers as $supplier)
-                        <tr wire:key="supplier-{{ $supplier->id }}">
-                            <td>{{ $supplier->code }}</td>
-                            <td>{{ $supplier->name }}</td>
-                            <td>{{ $supplier->mobile }}</td>
-                            <td>{{ $supplier->city ?? '-' }}</td>
-                            <td>{{ $supplier->type === 'company' ? 'حقوقی' : 'حقیقی' }}</td>
-                            <td>
-                                @if ($supplier->is_active)
-                                    <span class="badge bg-success">فعال</span>
-                                @else
-                                    <span class="badge bg-secondary">غیرفعال</span>
-                                @endif
-                            </td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-sm btn-outline-primary"
-                                    wire:click="openEditModal({{ $supplier->id }})">
-                                    <i class="bi bi-pencil"></i> ویرایش
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger"
-                                    wire:click="confirmDelete({{ $supplier->id }})">
-                                    <i class="bi bi-trash"></i> حذف
-                                </button>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">هیچ تامین‌کننده‌ای ثبت نشده است.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+
+    {{-- جدول تامین کنندگان --}}
+    <div class="card shadow-sm" wire:loading.class="opacity-50">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-tags-fill text-primary"></i>
+                    مدیریت تامین کنندگان
+                </h3>
+                <small class="text-muted">مدیریت اطلاعات تامین‌کنندگان </small>
+            </div>
+
+            <button class="btn btn-primary" wire:click="openCreateModal" title="افزودن تامین کننده جدید به سیستم">
+                <i class="bi bi-plus-circle"></i>
+                افزودن تامین کننده
+            </button>
         </div>
-        <div class="card-footer">
-            {{ $suppliers->links() }}
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th width="55">ردیف</th>
+                            <th>کد</th>
+                            <th>نام</th>
+                            <th width="100">موبایل</th>
+                            <th>شهر</th>
+                            <th width="70">نوع</th>
+                            <th width="80">وضعیت</th>
+                            <th width="180">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($suppliers as $supplier)
+                            <tr wire:key="supplier-{{ $supplier->id }}">
+                                <td>{{ $loop->iteration + ($suppliers->currentPage() - 1) * $suppliers->perPage() }}</td>
+                                <td>{{ $supplier->code }}</td>
+                                <td>{{ $supplier->name }}</td>
+                                <td>{{ $supplier->mobile }}</td>
+                                <td>{{ $supplier->city ?? '-' }}</td>
+                                <td>{{ $supplier->type === 'company' ? 'حقوقی' : 'حقیقی' }}</td>
+                                <td>
+                                    @if ($supplier->is_active)
+                                        <span class="badge bg-success">فعال</span>
+                                    @else
+                                        <span class="badge bg-secondary">غیرفعال</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm btn-outline-primary"
+                                        wire:click="openEditModal({{ $supplier->id }})">
+                                        <i class="bi bi-pencil"></i> ویرایش
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                        wire:click="confirmDelete({{ $supplier->id }})">
+                                        <i class="bi bi-trash"></i> حذف
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">هیچ تامین‌کننده‌ای ثبت نشده است.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer">{{ $suppliers->links() }}</div>
+
         </div>
     </div>
 
@@ -125,8 +172,11 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label">نام <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" wire:model="name">
-                                    @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                        wire:model="name">
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-6">
@@ -149,8 +199,11 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">موبایل <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('mobile') is-invalid @enderror" wire:model="mobile">
-                                    @error('mobile') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    <input type="text" class="form-control @error('mobile') is-invalid @enderror"
+                                        wire:model="mobile">
+                                    @error('mobile')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-4">
@@ -160,8 +213,11 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">ایمیل</label>
-                                    <input type="email" class="form-control @error('email') is-invalid @enderror" wire:model="email">
-                                    @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                        wire:model="email">
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-6">
@@ -196,12 +252,14 @@
 
                                 <div class="col-md-4">
                                     <label class="form-label">سقف اعتباری (ریال)</label>
-                                    <input type="number" step="0.01" class="form-control" wire:model="credit_limit">
+                                    <input type="number" step="0.01" class="form-control"
+                                        wire:model="credit_limit">
                                 </div>
 
                                 <div class="col-md-4">
                                     <label class="form-label">مونده اولیه حساب (ریال)</label>
-                                    <input type="number" step="0.01" class="form-control" wire:model="opening_balance">
+                                    <input type="number" step="0.01" class="form-control"
+                                        wire:model="opening_balance">
                                 </div>
 
                                 <div class="col-md-4">
@@ -211,12 +269,14 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">شرایط پرداخت</label>
-                                    <input type="text" class="form-control" wire:model="payment_terms" placeholder="مثلاً: اعتباری ۳۰ روزه">
+                                    <input type="text" class="form-control" wire:model="payment_terms"
+                                        placeholder="مثلاً: اعتباری ۳۰ روزه">
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="form-label">امتیاز (۱ تا ۵)</label>
-                                    <input type="number" min="1" max="5" class="form-control" wire:model="rating">
+                                    <input type="number" min="1" max="5" class="form-control"
+                                        wire:model="rating">
                                 </div>
 
                                 <div class="col-12">
@@ -225,14 +285,16 @@
                                 </div>
 
                                 <div class="col-12 form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" id="is_active" wire:model="is_active">
+                                    <input type="checkbox" class="form-check-input" id="is_active"
+                                        wire:model="is_active">
                                     <label class="form-check-label" for="is_active">فعال</label>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" wire:click="closeModals">انصراف</button>
-                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled" wire:target="save">
+                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
+                                wire:target="save">
                                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                                 {{ $supplierId ? 'ذخیره تغییرات' : 'ثبت تامین‌کننده' }}
                             </button>
@@ -245,7 +307,8 @@
 
     {{-- مودال تایید حذف --}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);" wire:key="delete-modal">
+        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+            wire:key="delete-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -257,7 +320,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" wire:click="closeModals">انصراف</button>
-                        <button type="button" class="btn btn-danger" wire:click="delete" wire:loading.attr="disabled">
+                        <button type="button" class="btn btn-danger" wire:click="delete"
+                            wire:loading.attr="disabled">
                             حذف
                         </button>
                     </div>
