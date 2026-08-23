@@ -11,9 +11,11 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $settings = Setting::pluck('value', 'key');
-
-        return view('settings.index', compact('settings'));
+        /* صفحه‌ی تنظیمات حالا یک ویوی نازک است که کامپوننت Livewire
+           را با تگ <livewire:settings.settings-manager /> در خودش جای می‌دهد
+           (دقیقاً همان الگوی ماژول‌های تامین‌کنندگان و باشگاه مشتریان).
+           بارگذاری و ذخیره‌ی تنظیمات به‌صورت زنده داخل همان کامپوننت انجام می‌شود. */
+        return view('settings.index');
     }
 
     public function update(Request $request)
