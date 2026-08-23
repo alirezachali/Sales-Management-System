@@ -32,7 +32,7 @@
         </div>
     @endif
 
-    <div class="card shadow-sm border-0" wire:loading.class="opacity-75">
+    <div class="card shadow-sm border-4" wire:loading.class="opacity-75">
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
@@ -45,7 +45,7 @@
                 </small>
             </div>
             <button type="button" wire:click="save" class="btn btn-success" wire:loading.attr="disabled"
-                wire:target="save">
+                wire:target="save" title="ذخیره تغییرات ایجاد کرده">
                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                 <i class="bi bi-check-circle" wire:loading.remove wire:target="save"></i>
                 ذخیره تغییرات
@@ -59,49 +59,49 @@
                 <ul class="nav nav-tabs mb-4">
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'store') active @endif"
+                        <button type="button" class="nav-link m-1 @if ($activeTab === 'store') active @endif"
                             wire:click="selectTab('store')">
-                            <i class="bi bi-shop"></i>
+                            <i class="bi bi-shop text-warning m-2"></i>
                             اطلاعات فروشگاه
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'sales') active @endif"
+                        <button type="button" class="nav-link m-1 @if ($activeTab === 'sales') active @endif"
                             wire:click="selectTab('sales')">
-                            <i class="bi bi-receipt"></i>
+                            <i class="bi bi-receipt text-warning m-2"></i>
                             فروش
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'print') active @endif"
+                        <button type="button" class="nav-link m-1 @if ($activeTab === 'print') active @endif"
                             wire:click="selectTab('print')">
-                            <i class="bi bi-printer"></i>
+                            <i class="bi bi-printer text-warning m-2"></i>
                             چاپ
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'barcode') active @endif"
+                        <button type="button" class="nav-link m-1 @if ($activeTab === 'barcode') active @endif"
                             wire:click="selectTab('barcode')">
-                            <i class="bi bi-upc-scan"></i>
+                            <i class="bi bi-upc-scan text-warning m-2"></i>
                             بارکد و لیبل
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'system') active @endif"
+                        <button type="button" class="nav-link m-1 @if ($activeTab === 'system') active @endif"
                             wire:click="selectTab('system')">
-                            <i class="bi bi-cpu"></i>
+                            <i class="bi bi-cpu text-warning m-2"></i>
                             سیستم
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'backup') active @endif"
+                        <button type="button" class="nav-link m-1 @if ($activeTab === 'backup') active @endif"
                             wire:click="selectTab('backup')">
-                            <i class="bi bi-database"></i>
+                            <i class="bi bi-database text-warning m-2"></i>
                             پشتیبان گیری
                         </button>
                     </li>
@@ -113,7 +113,7 @@
                     @if ($activeTab === 'store')
                         <div class="row">
                             <div class="col-lg-8">
-                                <div class="card border-0 shadow-sm mb-4">
+                                <div class="card border-4 shadow-sm mb-4">
                                     <div class="card-header">
                                         <strong>
                                             <i class="bi bi-shop"></i>
@@ -130,7 +130,8 @@
 
                                             <div class="col-md-6">
                                                 <label class="form-label">نام مدیر</label>
-                                                <input type="text" class="form-control" wire:model="data.manager_name">
+                                                <input type="text" class="form-control"
+                                                    wire:model="data.manager_name">
                                             </div>
 
                                             <div class="col-md-6">
@@ -170,15 +171,14 @@
 
                             <div class="col-lg-4">
 
-                                <div class="card shadow-sm border-0 mb-4">
+                                <div class="card shadow-sm border-4 mb-4">
                                     <div class="card-header">
                                         <strong>لوگوی فروشگاه</strong>
                                     </div>
                                     <div class="card-body text-center">
                                         <img src="{{ $store_logo && $store_logo->isPreviewable() ? $store_logo->temporaryUrl() : storeLogo() }}"
                                             class="img-fluid rounded border mb-3" style="max-height:180px">
-                                        <input
-                                            class="form-control @error('store_logo') is-invalid @enderror"
+                                        <input class="form-control @error('store_logo') is-invalid @enderror"
                                             type="file" wire:model="store_logo" accept=".png,.jpg,.jpeg,.webp">
                                         <div wire:loading wire:target="store_logo" class="text-muted small mt-1">
                                             در حال بارگذاری...
@@ -190,7 +190,7 @@
                                     </div>
                                 </div>
 
-                                <div class="card shadow-sm border-0">
+                                <div class="card shadow-sm border-4">
                                     <div class="card-header">
                                         <strong>Favicon</strong>
                                     </div>
@@ -203,8 +203,7 @@
                                                 فایل انتخاب شد ({{ $store_favicon->getClientOriginalName() }})
                                             </div>
                                         @endif
-                                        <input
-                                            class="form-control @error('store_favicon') is-invalid @enderror"
+                                        <input class="form-control @error('store_favicon') is-invalid @enderror"
                                             type="file" wire:model="store_favicon" accept=".png,.ico">
                                         <div wire:loading wire:target="store_favicon" class="text-muted small mt-1">
                                             در حال بارگذاری...
@@ -222,7 +221,7 @@
 
                     {{-- ============================ فروش ============================ --}}
                     @if ($activeTab === 'sales')
-                        <div class="card border-0 shadow-sm">
+                        <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
                                     <i class="bi bi-receipt"></i>
@@ -272,7 +271,8 @@
 
                                     <div class="col-md-4">
                                         <label class="form-label">تخفیف پیش فرض (%)</label>
-                                        <input type="number" class="form-control" wire:model="data.default_discount">
+                                        <input type="number" class="form-control"
+                                            wire:model="data.default_discount">
                                     </div>
 
                                     <div class="col-md-4">
@@ -282,7 +282,8 @@
 
                                     <div class="col-md-4">
                                         <label class="form-label">حداکثر اقلام هر فاکتور</label>
-                                        <input type="number" class="form-control" wire:model="data.max_invoice_items">
+                                        <input type="number" class="form-control"
+                                            wire:model="data.max_invoice_items">
                                     </div>
                                 </div>
 
@@ -337,7 +338,7 @@
 
                     {{-- ============================ چاپ ============================ --}}
                     @if ($activeTab === 'print')
-                        <div class="card border-0 shadow-sm">
+                        <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
                                     <i class="bi bi-printer"></i>
@@ -386,7 +387,8 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.print_address" id="print_address">
-                                            <label class="form-check-label" for="print_address">چاپ آدرس فروشگاه</label>
+                                            <label class="form-check-label" for="print_address">چاپ آدرس
+                                                فروشگاه</label>
                                         </div>
                                     </div>
 
@@ -402,7 +404,8 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.print_barcode" id="print_barcode">
-                                            <label class="form-check-label" for="print_barcode">چاپ بارکد روی فاکتور</label>
+                                            <label class="form-check-label" for="print_barcode">چاپ بارکد روی
+                                                فاکتور</label>
                                         </div>
                                     </div>
 
@@ -418,7 +421,8 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.print_datetime" id="print_datetime">
-                                            <label class="form-check-label" for="print_datetime">چاپ تاریخ و ساعت</label>
+                                            <label class="form-check-label" for="print_datetime">چاپ تاریخ و
+                                                ساعت</label>
                                         </div>
                                     </div>
 
@@ -439,7 +443,7 @@
 
                     {{-- ============================ بارکد و لیبل ============================ --}}
                     @if ($activeTab === 'barcode')
-                        <div class="card border-0 shadow-sm">
+                        <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
                                     <i class="bi bi-upc-scan"></i>
@@ -517,13 +521,15 @@
                                     <div class="form-check form-switch mb-2">
                                         <input class="form-check-input" type="checkbox"
                                             wire:model="data.label_show_barcode" id="label_show_barcode">
-                                        <label class="form-check-label" for="label_show_barcode">نمایش بارکد میله‌ای</label>
+                                        <label class="form-check-label" for="label_show_barcode">نمایش بارکد
+                                            میله‌ای</label>
                                     </div>
 
                                     <div class="form-check form-switch mb-2">
                                         <input class="form-check-input" type="checkbox"
                                             wire:model="data.label_show_code" id="label_show_code">
-                                        <label class="form-check-label" for="label_show_code">نمایش شماره بارکد</label>
+                                        <label class="form-check-label" for="label_show_code">نمایش شماره
+                                            بارکد</label>
                                     </div>
 
                                     <div class="form-check form-switch">
@@ -540,7 +546,7 @@
 
                     {{-- ============================ سیستم ============================ --}}
                     @if ($activeTab === 'system')
-                        <div class="card border-0 shadow-sm">
+                        <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
                                     <i class="bi bi-cpu"></i>
@@ -586,7 +592,8 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.system_log" id="system_log">
-                                            <label class="form-check-label" for="system_log">ثبت گزارش فعالیت کاربران</label>
+                                            <label class="form-check-label" for="system_log">ثبت گزارش فعالیت
+                                                کاربران</label>
                                         </div>
                                     </div>
 
@@ -594,7 +601,8 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.remember_login" id="remember_login">
-                                            <label class="form-check-label" for="remember_login">فعال بودن ورود خودکار</label>
+                                            <label class="form-check-label" for="remember_login">فعال بودن ورود
+                                                خودکار</label>
                                         </div>
                                     </div>
 
@@ -602,7 +610,8 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.maintenance_mode" id="maintenance_mode">
-                                            <label class="form-check-label" for="maintenance_mode">حالت تعمیر و نگهداری</label>
+                                            <label class="form-check-label" for="maintenance_mode">حالت تعمیر و
+                                                نگهداری</label>
                                         </div>
                                     </div>
 
@@ -610,7 +619,8 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.developer_mode" id="developer_mode">
-                                            <label class="form-check-label" for="developer_mode">حالت توسعه دهنده</label>
+                                            <label class="form-check-label" for="developer_mode">حالت توسعه
+                                                دهنده</label>
                                         </div>
                                     </div>
 
@@ -618,7 +628,8 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.enable_cache" id="enable_cache">
-                                            <label class="form-check-label" for="enable_cache">فعال بودن کش سیستم</label>
+                                            <label class="form-check-label" for="enable_cache">فعال بودن کش
+                                                سیستم</label>
                                         </div>
                                     </div>
 
@@ -626,7 +637,8 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.check_update" id="check_update">
-                                            <label class="form-check-label" for="check_update">بررسی بروزرسانی هنگام اجرا</label>
+                                            <label class="form-check-label" for="check_update">بررسی بروزرسانی هنگام
+                                                اجرا</label>
                                         </div>
                                     </div>
 
@@ -643,7 +655,8 @@
 
                                     <div class="col-md-6">
                                         <label class="form-label">تعداد رکورد در هر صفحه</label>
-                                        <input type="number" class="form-control" wire:model="data.pagination_limit">
+                                        <input type="number" class="form-control"
+                                            wire:model="data.pagination_limit">
                                     </div>
 
                                 </div>
@@ -653,7 +666,7 @@
 
                     {{-- ============================ پشتیبان‌گیری ============================ --}}
                     @if ($activeTab === 'backup')
-                        <div class="card border-0 shadow-sm">
+                        <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
                                     <i class="bi bi-database"></i>
@@ -665,7 +678,7 @@
                                 <div class="row">
 
                                     <div class="col-lg-6">
-                                        <div class="card border h-100">
+                                        <div class="card border-4 h-100">
                                             <div class="card-body text-center">
                                                 <i class="bi bi-cloud-arrow-down display-3 text-success"></i>
                                                 <h5 class="mt-3">تهیه نسخه پشتیبان</h5>
@@ -686,7 +699,7 @@
                                     </div>
 
                                     <div class="col-lg-6">
-                                        <div class="card border h-100">
+                                        <div class="card border-4 h-100">
                                             <div class="card-body text-center">
                                                 <i class="bi bi-cloud-arrow-up display-3 text-primary"></i>
                                                 <h5 class="mt-3">بازیابی اطلاعات</h5>
@@ -700,7 +713,8 @@
                                                 <button type="button" class="btn btn-primary"
                                                     wire:click="restoreBackup"
                                                     wire:confirm="آیا مطمئن هستید؟ اطلاعات فعلی با نسخه‌ی پشتیبان جایگزین می‌شود."
-                                                    wire:loading.attr="disabled" wire:target="restoreBackup,restoreFile">
+                                                    wire:loading.attr="disabled"
+                                                    wire:target="restoreBackup,restoreFile">
                                                     <span wire:loading wire:target="restoreBackup"
                                                         class="spinner-border spinner-border-sm"></span>
                                                     <i class="bi bi-upload" wire:loading.remove
@@ -745,7 +759,8 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.auto_backup" id="auto_backup">
-                                            <label class="form-check-label" for="auto_backup">تهیه نسخه پشتیبان خودکار</label>
+                                            <label class="form-check-label" for="auto_backup">تهیه نسخه پشتیبان
+                                                خودکار</label>
                                         </div>
                                     </div>
 
@@ -773,11 +788,11 @@
                                     <table class="table table-bordered table-hover align-middle mb-0">
                                         <thead>
                                             <tr>
-                                                <th width="55">ردیف</th>
+                                                <th width="40">ردیف</th>
                                                 <th>نام فایل</th>
                                                 <th width="120">حجم</th>
-                                                <th width="180">تاریخ ساخت</th>
-                                                <th width="180">عملیات</th>
+                                                <th width="220">تاریخ ساخت</th>
+                                                <th width="150">عملیات</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -786,7 +801,7 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $backup['name'] }}</td>
                                                     <td>{{ number_format($backup['size'] / 1024, 1) }} KB</td>
-                                                    <td>{{ $backup['date'] }}</td>
+                                                    <td>{{ $backup['date'] ? jalaliDateTime($backup['date']) : '-' }}</td>
                                                     <td class="text-center">
                                                         <button type="button" class="btn btn-sm btn-outline-success"
                                                             wire:click="downloadBackup('{{ $backup['name'] }}')">
