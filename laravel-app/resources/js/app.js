@@ -1,18 +1,7 @@
 import './bootstrap';
 import '@tabler/core/dist/js/tabler.min.js';
 
-// import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
-// import Clipboard from '@ryangjchandler/alpine-clipboard'
-
-// Alpine.plugin(Clipboard)
-
-// Livewire.start()
-
-const toggleButton = document.getElementById('toggleSidebar');
-const sidebar = document.getElementById('sidebar');
-
-if (toggleButton && sidebar) {
-    toggleButton.addEventListener('click', function () {
-        sidebar.classList.toggle('collapsed');
-    });
-}
+// باز/بستن سایدبار و تغییر تم (روشن/تیره) اکنون توسط Alpine
+// که به‌همراه Livewire بارگذاری می‌شود مدیریت می‌شود.
+// وضعیت هر دو در localStorage ذخیره و بین صفحات حفظ می‌شود
+// (به resources/views/layouts/app.blade.php و partials/navbar.blade.php مراجعه کنید).

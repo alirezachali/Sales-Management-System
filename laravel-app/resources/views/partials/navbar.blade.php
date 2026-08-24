@@ -1,97 +1,107 @@
-<nav class="navbar navbar-expand-lg top-navbar">
-    <div class="container-fluid">
-        <!-- دکمه منو همبرگری -->
-        <button class="btn me-3 nev-menu-btn" id="toggleSidebar">
-            <i class="bi bi-list"></i>
-        </button>
+<nav class="top-navbar" dir="rtl">
+    <div class="navbar-inner">
 
-        <a class="navbar-brand d-flex" href="{{ route('dashboard') }}">
-            <!-- لوگو فروشگاه -->
-            <img class="nav-logo" src="{{ storeLogo() }}" alt="Logo">
-            <!-- نام فروشگاه -->
-            <span class="ms-2 fw-bold">
-                {{ setting('store_name', '') }}
-            </span>
-        </a>
-        
-            @auth
+        {{-- سمت راست: دکمه منوی همبرگری + برند فروشگاه --}}
+        <div class="navbar-section">
 
-                <div class="dropdown user-menu">
+            {{-- دکمه باز/بستن سایدبار (با Alpine که همراه Livewire بارگذاری می‌شود) --}}
+            <button type="button" class="nav-icon-btn" @click="toggleSidebar()"
+                :class="{ 'is-active': sidebarCollapsed }" title="باز و بستن منو" aria-label="باز و بستن منو">
+                <i class="bi bi-list"></i>
+            </button>
 
-                    <button class="btn user-menu-toggle" type="button" data-bs-toggle="dropdown" 
-                        aria-expanded="false">
-                        <i class="bi bi-person-circle user-avatar"></i>
+            <a class="navbar-brand" href="{{ route('dashboard') }}">
+                <img class="nav-logo" src="{{ storeLogo() }}" alt="Logo">
+                <span class="brand-name">{{ setting('store_name', 'فروشگاه') }}</span>
+            </a>
+        </div>
+
+        {{-- سمت چپ: منوی کاربر --}}
+        @auth
+            <div class="navbar-section">
+                @php $avatarUrl = auth()->user()->avatar_url; @endphp
+
+                <div class="user-menu" x-data="{ open: false }" @keydown.escape.window="open = false">
+
+                    {{-- دکمه‌ی باز کردن منو با کلیک روی تصویر پروفایل --}}
+                    <button type="button" class="user-menu-toggle" @click="open = !open"
+                        :class="{ 'is-open': open }" aria-haspopup="true" :aria-expanded="open.toString()">
+                        @if ($avatarUrl)
+                            <img src="{{ $avatarUrl }}" class="user-avatar-img" alt="avatar">
+                        @else
+                            <span class="user-avatar-fallback"><i class="bi bi-person"></i></span>
+                        @endif
+                        <span class="user-menu-name d-none d-md-inline">{{ auth()->user()->name }}</span>
+                        <i class="bi bi-chevron-down user-menu-caret"></i>
                     </button>
 
+                    {{-- منوی بازشونده --}}
+                    <div class="user-dropdown" x-show="open" x-cloak x-transition
+                        @click.outside="open = false">
 
+                        {{-- سربرگ اطلاعات کاربر --}}
+                        <div class="user-dropdown-head">
+                            @if ($avatarUrl)
+                                <img src="{{ $avatarUrl }}" class="dropdown-avatar" alt="avatar">
+                            @else
+                                <span class="dropdown-avatar dropdown-avatar-fallback">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                            @endif
+                            <div class="dropdown-user-meta">
+                                <div class="dropdown-user-name">{{ auth()->user()->name }}</div>
+                                <div class="dropdown-user-role">
+                                    {{ auth()->user()->role?->display_name ?? 'کاربر' }}
+                                </div>
+                            </div>
+                        </div>
 
-                    <ul class="dropdown-menu user-dropdown">
-
-                        <!-- پروفایل -->
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="bi bi-person"></i>
-                                <span>پروفایل</span>
-                            </a>
-                        </li>
-
-
-                        <!-- تنظیمات -->
-                        <li>
-                            <a class="dropdown-item" href="{{ route('settings.index') }}">
-                                <i class="bi bi-gear"></i>
-                                <span>تنظیمات</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{{ route('settings.index') }}">
-                                <i class="bi bi-gear"></i>
-                                <span>گزینه چهارم</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{{ route('settings.index') }}">
-                                <i class="bi bi-gear"></i>
-                                <span>گزینه پنجم</span>
-                            </a>
-                        </li>
-
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-
-                        <!-- خروج -->
-                        <li>
-
-                            <form action="{{ route('logout') }}" method="POST" class="m-0">
-
-                                @csrf
-
-                                <button type="submit" class="dropdown-item logout-item">
-
-                                    <i class="bi bi-box-arrow-right"></i>
-
-                                    <span>خروج از سیستم</span>
-
+                        {{-- سوییچ تغییر تم روشن / تیره --}}
+                        <div class="theme-switch">
+                            <span class="theme-switch-label">حالت نمایش</span>
+                            <div class="theme-switch-btns" role="group" aria-label="تغییر تم">
+                                <button type="button" class="theme-btn" @click="setTheme('light')"
+                                    :class="{ 'active': theme === 'light' }" title="حالت روشن"
+                                    aria-label="حالت روشن">
+                                    <i class="bi bi-sun-fill"></i>
                                 </button>
+                                <button type="button" class="theme-btn" @click="setTheme('dark')"
+                                    :class="{ 'active': theme === 'dark' }" title="حالت تیره"
+                                    aria-label="حالت تیره">
+                                    <i class="bi bi-moon-stars-fill"></i>
+                                </button>
+                            </div>
+                        </div>
 
-                            </form>
+                        <div class="dropdown-divider-line"></div>
 
-                        </li>
+                        {{-- پروفایل --}}
+                        <a class="user-dropdown-item" href="#">
+                            <i class="bi bi-person"></i>
+                            <span>پروفایل</span>
+                        </a>
 
-                    </ul>
+                        {{-- تنظیمات --}}
+                        <a class="user-dropdown-item" href="{{ route('settings.index') }}">
+                            <i class="bi bi-gear"></i>
+                            <span>تنظیمات</span>
+                        </a>
 
+                        <div class="dropdown-divider-line"></div>
+
+                        {{-- خروج از سیستم --}}
+                        <form action="{{ route('logout') }}" method="POST" class="m-0">
+                            @csrf
+                            <button type="submit" class="user-dropdown-item logout-item">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>خروج از سیستم</span>
+                            </button>
+                        </form>
+
+                    </div>
                 </div>
+            </div>
+        @endauth
 
-            @endauth
-
-
-
-
-        </div>
     </div>
 </nav>

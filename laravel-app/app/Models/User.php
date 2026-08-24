@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
 
 class User extends Authenticatable
@@ -26,6 +27,7 @@ class User extends Authenticatable
         'username',
         'email',
         'phone',
+        'avatar',
         'password',
         'role_id',
         'is_active',
@@ -73,5 +75,16 @@ class User extends Authenticatable
         return $this->hasMany(StockMovement::class);
     }
 
-    
+    /**
+     * آدرس کامل تصویر پروفایل کاربر؛ در صورت نبود تصویر، null برمی‌گرداند
+     * تا در رابط کاربری آیکن پیش‌فرض نمایش داده شود.
+     */
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if ($this->avatar && Storage::disk('public')->exists($this->avatar)) {
+            return Storage::disk('public')->url($this->avatar);
+        }
+
+        return null;
+    }
 }

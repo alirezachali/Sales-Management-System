@@ -4,6 +4,19 @@
     <!-- Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('app-theme') || 'dark';
+                document.documentElement.setAttribute('data-bs-theme', t);
+            } catch (e) {
+                document.documentElement.setAttribute('data-bs-theme', 'dark');
+            }
+        })();
+    </script>
+
     <!-- Title -->
     <title><?php echo $__env->yieldContent('title', setting('store_name')); ?></title>
     <!-- Favicon -->
@@ -23,7 +36,19 @@
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::styles(); ?>
 
 </head>
-<body data-bs-theme="dark">
+<body x-data="{
+        theme: (localStorage.getItem('app-theme') || 'dark'),
+        sidebarCollapsed: (localStorage.getItem('app-sidebar-collapsed') === '1'),
+        setTheme(t) {
+            this.theme = t;
+            localStorage.setItem('app-theme', t);
+            document.documentElement.setAttribute('data-bs-theme', t);
+        },
+        toggleSidebar() {
+            this.sidebarCollapsed = !this.sidebarCollapsed;
+            localStorage.setItem('app-sidebar-collapsed', this.sidebarCollapsed ? '1' : '0');
+        }
+    }" x-init="document.documentElement.setAttribute('data-bs-theme', theme)">
 <!-- Navbar -->
 <?php echo $__env->make('partials.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <div class="wrapper">

@@ -213,6 +213,35 @@
                         <div class="modal-body">
                             <div class="row g-3">
 
+                                {{-- تصویر پروفایل کاربر --}}
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                                        <div class="user-avatar-preview">
+                                            @if ($avatar)
+                                                <img src="{{ $avatar->temporaryUrl() }}" alt="avatar">
+                                            @elseif ($currentAvatar)
+                                                <img src="{{ asset('storage/' . $currentAvatar) }}" alt="avatar">
+                                            @else
+                                                <i class="bi bi-person-circle"></i>
+                                            @endif
+                                        </div>
+
+                                        <div class="flex-grow-1">
+                                            <label class="form-label">تصویر پروفایل</label>
+                                            <input type="file" wire:model="avatar" accept=".png,.jpg,.jpeg,.webp"
+                                                class="form-control @error('avatar') is-invalid @enderror">
+                                            <div wire:loading wire:target="avatar" class="form-text text-info">
+                                                <span class="spinner-border spinner-border-sm"></span>
+                                                در حال بارگذاری تصویر...
+                                            </div>
+                                            @error('avatar')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
+                                            <small class="text-muted d-block mt-1">PNG / JPG / WEBP — حداکثر ۲ مگابایت</small>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6">
                                     <label class="form-label">نام و نام خانوادگی <span
                                             class="text-danger">*</span></label>

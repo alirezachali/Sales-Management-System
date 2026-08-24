@@ -1,67 +1,92 @@
-.wrapper{
-    display:flex;
+.wrapper {
+    display: flex;
 }
 
-.sidebar{
-    width:260px;
-    min-height:calc(100vh - 65px);
-    background:#3a3a3b;
-    color:white;
-    transition:.3s;
+.sidebar {
+    width: 260px;
+    min-height: calc(100vh - var(--nav-height, 64px));
+    background: var(--bs-tertiary-bg);
+    border-inline-end: 1px solid var(--bs-border-color);
+    color: var(--bs-body-color);
+    transition: width .25s ease;
+    padding: 12px 10px;
 }
 
-.sidebar-menu{
-    list-style:none;
-    padding:0;
-    margin:0;
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.sidebar-menu li{
-    margin:5px 0;
+.sidebar-menu li {
+    margin: 4px 0;
 }
 
-.sidebar-menu a{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:14px 20px;
-    color:#cbd5e1;
-    text-decoration:none;
-    transition:.25s;
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: var(--bs-secondary-color);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color .2s ease, color .2s ease;
 }
 
-.sidebar-menu a:hover{
-    background:#f8f9fa;
-    color:rgb(7, 7, 7);
+.sidebar-menu a:hover {
+    background: var(--bs-secondary-bg);
+    color: var(--bs-emphasis-color);
 }
 
-.sidebar-menu a.active{
-    background:#ebb135;
-    color:rgb(10, 10, 10);
+.sidebar-menu a.active {
+    background: var(--nav-accent, #e6a417);
+    color: var(--nav-accent-contrast, #1a1a1a);
+    font-weight: 600;
 }
 
-.sidebar-menu i{
-    font-size:20px;
+.sidebar-menu i {
+    font-size: 20px;
+    flex-shrink: 0;
 }
 
-.content{
-    flex:1;
-    padding:25px;
-    min-height:calc(100vh - 65px);
+.content {
+    flex: 1;
+    min-width: 0;
+    padding: 25px;
+    min-height: calc(100vh - var(--nav-height, 64px));
 }
 
-.sidebar.collapsed{
-    width:80px;
+/* حالت جمع‌شده‌ی سایدبار */
+.sidebar.collapsed {
+    width: 78px;
 }
 
-.sidebar.collapsed span{
-    display:none;
+.sidebar.collapsed span {
+    display: none;
 }
 
-.sidebar.collapsed a{
-    justify-content:center;
+.sidebar.collapsed a {
+    justify-content: center;
+    padding: 12px;
 }
 
-.sidebar.collapsed i{
-    font-size:24px;
+.sidebar.collapsed i {
+    font-size: 24px;
+}
+
+/* واکنش‌گرا: در موبایل سایدبار جمع می‌شود */
+@media (max-width: 767.98px) {
+    .sidebar {
+        width: 78px;
+    }
+
+    .sidebar span {
+        display: none;
+    }
+
+    .sidebar a {
+        justify-content: center;
+        padding: 12px;
+    }
 }

@@ -1,115 +1,361 @@
+/* ==========================================================================
+   متغیرهای مشترک رابط کاربری
+   ========================================================================== */
+:root {
+    --nav-height: 64px;
+    --nav-accent: #e6a417;
+    --nav-accent-contrast: #1a1a1a;
+    --nav-radius: 12px;
+}
+
+/* ==========================================================================
+   نوار بالای صفحه (Top Navbar) — مینیمال و سازگار با تم روشن/تیره
+   ========================================================================== */
 .top-navbar {
-    background: #3d3d3c;
-    min-height: 65px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, .08);
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    height: var(--nav-height);
     width: 100%;
+    display: flex;
+    align-items: center;
+    background: color-mix(in srgb, var(--bs-body-bg) 85%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--bs-border-color);
 }
 
-/* .top-navbar .navbar-brand{
-    color:#fff;
-    font-size:20px;
+.navbar-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    gap: 12px;
 }
 
-.top-navbar .navbar-brand:hover{
-    color:#fff;
-} */
+.navbar-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
 
-/* .top-navbar span{
-    color:#e78606;
-    font-size:25px;
-} */
-
-.top-navbar .navbar-brand .nav-logo {
-    width: 80px;
-    height: 65px;
+/* دکمه‌های آیکنی نوار بالا (منوی همبرگری) */
+.nav-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+    border: none;
     border-radius: 10px;
+    background: transparent;
+    color: var(--bs-body-color);
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
 }
 
-.top-navbar .nev-menu-btn {
+.nav-icon-btn:hover {
+    background: var(--bs-secondary-bg);
+}
+
+.nav-icon-btn.is-active {
+    color: var(--nav-accent);
+    background: color-mix(in srgb, var(--nav-accent) 15%, transparent);
+}
+
+/* برند فروشگاه */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--bs-emphasis-color);
+    min-width: 0;
+}
+
+.navbar-brand .nav-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
     border-radius: 10px;
-    font-size: 40px;
+    border: 1px solid var(--bs-border-color);
 }
 
-/* ==========================
-   User Menu
-========================== */
+.navbar-brand .brand-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
+/* ==========================================================================
+   منوی کاربر
+   ========================================================================== */
 .user-menu {
     position: relative;
 }
 
-/* دکمه کاربر */
 .user-menu-toggle {
     display: flex;
-    gap: 5px;
-    border: none;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
     background: transparent;
-    padding: 5px;
-    /* border-radius: 10px; */
-}
-
-.user-avatar {
-    font-size: 40px;
-    color: #fff;
-}
-
-.user-avatar:hover {
-    font-size: 40px;
-    color: #f0b30a;
+    padding: 5px 8px 5px 5px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--bs-body-color);
+    transition: background-color .2s ease, border-color .2s ease;
 }
 
 .user-menu-toggle:hover,
-.user-menu-toggle:focus {
-    color: rgba(255, 255, 255, 0.08) !important;
-    box-shadow: none;
+.user-menu-toggle.is-open {
+    background: var(--bs-secondary-bg);
+    border-color: var(--bs-border-color);
 }
 
-/* فلش Bootstrap */
-.user-menu-toggle::after {
-    margin-right: 4px;
+/* تصویر پروفایل در نوار */
+.user-avatar-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--nav-accent);
+    display: block;
 }
 
-/* منوی بازشونده */
-.user-dropdown {
-    min-width: 170px;
-    margin-top: 10px !important;
-    padding: 8px;
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
-}
-
-/* آیتم‌ها */
-.user-dropdown .dropdown-item {
-    display: flex;
-    gap: 10px;
-    padding: 10px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    text-align: right;
-}
-
-/* آیکن آیتم‌ها */
-.user-dropdown .dropdown-item i {
+/* آیکن جایگزین وقتی تصویری وجود ندارد */
+.user-avatar-fallback {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 20px;
-    width: 30px;
+    color: var(--nav-accent-contrast);
+    background: var(--nav-accent);
 }
 
-/* هاور */
-.user-dropdown .dropdown-item:hover {
-    background-color: #e6a417;
-    color: #161616;
+.user-menu-name {
+    font-weight: 600;
+    font-size: .9rem;
+    max-width: 140px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-menu-caret {
+    font-size: 12px;
+    color: var(--bs-secondary-color);
+    transition: transform .2s ease;
+}
+
+.user-menu-toggle.is-open .user-menu-caret {
+    transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   منوی بازشونده کاربر
+   ========================================================================== */
+.user-dropdown {
+    position: absolute;
+    inset-inline-start: 0;
+    top: calc(100% + 10px);
+    /* min-width: 260px; */
+    padding: 10px;
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 16px;
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22);
+    z-index: 1050;
+}
+
+/* سربرگ اطلاعات کاربر */
+.user-dropdown-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 8px 12px;
+}
+
+.dropdown-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--nav-accent);
+    flex-shrink: 0;
+}
+
+.dropdown-avatar-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--nav-accent-contrast);
+    background: var(--nav-accent);
+    border: none;
+}
+
+.dropdown-user-meta {
+    min-width: 0;
+}
+
+.dropdown-user-name {
+    font-weight: 700;
+    font-size: .95rem;
+    color: var(--bs-emphasis-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-user-role {
+    font-size: .8rem;
+    color: var(--bs-secondary-color);
+}
+
+/* سوییچ تم روشن/تیره */
+.theme-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px;
+    margin: 4px 0;
+    border-radius: 10px;
+    background: var(--bs-secondary-bg);
+}
+
+.theme-switch-label {
+    font-size: .85rem;
+    color: var(--bs-secondary-color);
+}
+
+.theme-switch-btns {
+    display: inline-flex;
+    gap: 6px;
+    background: var(--bs-body-bg);
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid var(--bs-border-color);
+}
+
+.theme-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 30px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--bs-secondary-color);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.theme-btn:hover {
+    color: var(--bs-emphasis-color);
+}
+
+.theme-btn.active {
+    background: var(--nav-accent);
+    color: var(--nav-accent-contrast);
+}
+
+/* خط جداکننده */
+.dropdown-divider-line {
+    height: 1px;
+    background: var(--bs-border-color);
+    margin: 8px 4px;
+}
+
+/* آیتم‌های منو */
+.user-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    color: var(--bs-body-color);
+    font-size: .9rem;
+    text-align: start;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.user-dropdown-item i {
+    font-size: 18px;
+    width: 22px;
+    text-align: center;
+}
+
+.user-dropdown-item:hover {
+    background: color-mix(in srgb, var(--nav-accent) 18%, transparent);
+    color: var(--bs-emphasis-color);
 }
 
 /* خروج */
-.user-dropdown .logout-item {
-    width: 100%;
-    border: none;
-    background: transparent;
-    color: #ec051d;
-    cursor: pointer;
+.user-dropdown-item.logout-item {
+    color: #e0405a;
 }
 
-.user-dropdown .logout-item:hover {
-    background-color: #f03939;
+.user-dropdown-item.logout-item:hover {
+    background: color-mix(in srgb, #e0405a 16%, transparent);
+    color: #e0405a;
+}
+
+/* ==========================================================================
+   پیش‌نمایش تصویر پروفایل داخل مودال کاربر
+   ========================================================================== */
+.user-avatar-preview {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bs-secondary-bg);
+    border: 2px solid var(--bs-border-color);
+}
+
+.user-avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-avatar-preview i {
+    font-size: 46px;
+    color: var(--bs-secondary-color);
+}
+
+/* مخفی‌سازی عناصر Alpine تا قبل از مقداردهی اولیه */
+[x-cloak] {
+    display: none !important;
+}
+
+/* واکنش‌گرا */
+@media (max-width: 575.98px) {
+    .navbar-brand .brand-name {
+        display: none;
+    }
+
+    .user-dropdown {
+        min-width: 230px;
+    }
 }

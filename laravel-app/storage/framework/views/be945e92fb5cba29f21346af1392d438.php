@@ -1,4 +1,4 @@
-<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar" :class="{ 'collapsed': sidebarCollapsed }">
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
         <!-- داشبورد -->

@@ -4,13 +4,16 @@ namespace App\Livewire\Users;
 
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class UserManager extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -34,6 +37,10 @@ class UserManager extends Component
     public ?string $phone = null;
     public string $role_id = '';
     public bool $is_active = true;
+
+    // تصویر پروفایل (آپلود موقت) و مسیر تصویر فعلی هنگام ویرایش
+    public $avatar = null;
+    public ?string $currentAvatar = null;
 
     // رمز عبور (فقط هنگام ساخت کاربر جدید استفاده می‌شود)
     public string $password = '';
@@ -89,6 +96,7 @@ class UserManager extends Component
                 Rule::unique('users', 'email')->ignore($this->editingId),
             ],
             'phone'     => ['nullable', 'string', 'max:20'],
+            'avatar'    => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'role_id'   => ['required', 'exists:roles,id'],
             'is_active' => ['boolean'],
             'password'  => $this->editingId
@@ -107,6 +115,9 @@ class UserManager extends Component
             'email.unique'       => 'این ایمیل قبلاً ثبت شده است.',
             'role_id.required'   => 'انتخاب نقش الزامی است.',
             'role_id.exists'     => 'نقش انتخاب‌شده معتبر نیست.',
+            'avatar.image'       => 'فایل انتخابی باید یک تصویر باشد.',
+            'avatar.mimes'       => 'فرمت مجاز تصویر: jpg, jpeg, png, webp',
+            'avatar.max'         => 'حجم تصویر نباید بیشتر از ۲ مگابایت باشد.',
             'password.required'  => 'وارد کردن رمز عبور الزامی است.',
             'password.confirmed' => 'رمز عبور و تکرار آن یکسان نیستند.',
             'password.min'       => 'رمز عبور باید حداقل ۶ کاراکتر باشد.',
@@ -136,6 +147,10 @@ class UserManager extends Component
         $this->role_id   = (string) $user->role_id;
         $this->is_active = (bool) $user->is_active;
 
+        // تصویر فعلی برای نمایش پیش‌نمایش؛ آپلود موقت خالی می‌شود
+        $this->avatar = null;
+        $this->currentAvatar = $user->avatar;
+
         // رمز عبور در ویرایش لمس نمی‌شود (تغییر رمز مودال جداگانه دارد)
         $this->password = '';
         $this->password_confirmation = '';
@@ -156,6 +171,20 @@ class UserManager extends Component
             'role_id'   => $this->role_id,
             'is_active' => $this->is_active,
         ];
+
+        // آپلود/جایگزینی تصویر پروفایل
+        if ($this->avatar) {
+            // هنگام ویرایش، تصویر قبلی حذف می‌شود
+            if ($this->editingId) {
+                $old = User::whereKey($this->editingId)->value('avatar');
+
+                if ($old && Storage::disk('public')->exists($old)) {
+                    Storage::disk('public')->delete($old);
+                }
+            }
+
+            $data['avatar'] = $this->avatar->store('avatars', 'public');
+        }
 
         if ($this->editingId) {
             User::findOrFail($this->editingId)->update($data);
@@ -235,7 +264,14 @@ class UserManager extends Component
                 return;
             }
 
-            User::findOrFail($this->deletingId)->delete();
+            $user = User::findOrFail($this->deletingId);
+
+            // حذف تصویر پروفایل از دیسک در صورت وجود
+            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+
+            $user->delete();
             session()->flash('success', 'کاربر با موفقیت حذف شد.');
         }
 
@@ -262,6 +298,8 @@ class UserManager extends Component
         $this->phone     = null;
         $this->role_id   = '';
         $this->is_active = true;
+        $this->avatar = null;
+        $this->currentAvatar = null;
         $this->password  = '';
         $this->password_confirmation = '';
         $this->resetErrorBag();
