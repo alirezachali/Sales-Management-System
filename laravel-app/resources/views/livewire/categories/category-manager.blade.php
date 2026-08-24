@@ -118,9 +118,9 @@
                                 {{-- تعداد کالا --}}
                                 <td>
                                     @if ($category->products_count)
-                                        <span class="badge bg-info">{{ $category->products_count }}</span>
+                                        <span class="badge bg-info text-dark">{{ $category->products_count }}</span>
                                     @else
-                                        <span class="badge bg-secondary">0</span>
+                                        <span class="badge bg-secondary text-dark">0</span>
                                     @endif
                                 </td>
                                 {{-- تاریخ ایجاد --}}
@@ -128,20 +128,20 @@
                                 {{-- وضعیت --}}
                                 <td>
                                     @if ($category->is_active)
-                                        <span class="badge bg-success">فعال</span>
+                                        <span class="badge bg-success text-dark">فعال</span>
                                     @else
-                                        <span class="badge bg-danger">غیرفعال</span>
+                                        <span class="badge bg-danger text-dark">غیرفعال</span>
                                     @endif
                                 </td>
                                 {{-- عملیات --}}
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-warning"
+                                    <button type="button" class="btn btn-sm btn-warning text-dark"
                                         wire:click="openEditModal({{ $category->id }})" title="ویرایش دسته‌بندی">
-                                        <i class="bi bi-pencil"></i>
+                                        <i class="bi bi-pencil-fill"></i>
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-danger"
+                                    <button type="button" class="btn btn-sm btn-danger text-dark"
                                         wire:click="confirmDelete({{ $category->id }})" title="حذف دسته‌بندی">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash-fill"></i>
                                     </button>
                                 </td>
                             </tr>

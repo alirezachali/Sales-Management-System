@@ -136,19 +136,19 @@
                             </td>
                             <td>
                                 {{ $product->formatted_stock }}
-                                <span class="badge bg-secondary">{{ $product->unit }}</span>
+                                <span class="badge bg-secondary text-dark">{{ $product->unit }}</span>
                             </td>
                             <td>
                                 {{-- دکمه ویرایش کالا --}}
-                                <button type="button" class="btn btn-sm btn-warning"
+                                <button type="button" class="btn btn-sm btn-warning text-dark"
                                     wire:click="openEditModal({{ $product->id }})" title="ویرایش کالا">
-                                    <i class="bi bi-pencil"></i>
+                                    <i class="bi bi-pencil-fill"></i>
                                 </button>
 
                                 {{-- دکمه چاپ لیبل --}}
-                                <button type="button" class="btn btn-sm btn-info print-label-btn"
+                                <button type="button" class="btn btn-sm btn-info text-dark print-label-btn"
                                     data-id="{{ $product->id }}" title="چاپ لیبل">
-                                    <i class="bi bi-printer"></i>
+                                    <i class="bi bi-printer-fill"></i>
                                 </button>
 
                                 {{-- دکمه مشاهده موجودی و ورود و خروج این کالا به انبار --}}
@@ -170,9 +170,9 @@
                                 </a>
 
                                 {{-- دکمه حذف کالا --}}
-                                <button type="button" class="btn btn-danger btn-sm"
+                                <button type="button" class="btn btn-danger text-dark btn-sm"
                                     wire:click="confirmDelete({{ $product->id }})" title="حذف این کالا">
-                                    <i class="bi bi-trash"></i>
+                                    <i class="bi bi-trash-fill"></i>
                                 </button>
                             </td>
                         </tr>

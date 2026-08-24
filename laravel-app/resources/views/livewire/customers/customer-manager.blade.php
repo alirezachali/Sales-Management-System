@@ -90,16 +90,20 @@
             </h3>
             <small class="text-muted">مدیریت اطلاعات مشتریان و رده های باشگاه مشتریان</small>
             </div>
-            <div class="d-flex gap-2">
-                <a href="{{ route('customer-roles.index') }}" class="btn btn-info"
-                    title="مدیریت رده‌های باشگاه مشتریان">
-                    <i class="bi bi-award"></i>
-                    مدیریت رده‌های باشگاه
+            <div class="d-flex gap-3">
+
+                <a href="{{ route('customer-roles.index') }}">
+                    <button class="btn btn-info text-dark" title="مدیریت رده‌های باشگاه مشتریان">
+                        <i class="bi bi-award"></i>
+                        مدیریت رده‌های باشگاه
+                    </button>
                 </a>
+
                 <button type="button" class="btn btn-primary" wire:click="openCreateModal" title="افزودن مشتری جدید">
                     <i class="bi bi-person-plus"></i>
                     افزودن مشتری
                 </button>
+
             </div>
         </div>
 
@@ -107,7 +111,7 @@
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
-                        <th>#</th>
+                        <th width="40">ردیف</th>
                         <th>نام مشتری</th>
                         <th width="90">موبایل</th>
                         <th width="100">رده باشگاه</th>
@@ -125,7 +129,7 @@
                             <td>{{ $customer->mobile }}</td>
                             <td>
                                 @if ($customer->role)
-                                    <span class="badge bg-{{ $customer->role->color }}">
+                                    <span class="badge bg-{{ $customer->role->color }} text-dark">
                                         <i class="bi {{ $customer->role->icon }}"></i>
                                         {{ $customer->role->name }}
                                     </span>
@@ -138,28 +142,28 @@
                             </td>
                             <td>
                                 @if ($customer->is_active)
-                                    <span class="badge bg-success">فعال</span>
+                                    <span class="badge bg-success text-dark">فعال</span>
                                 @else
-                                    <span class="badge bg-danger">غیرفعال</span>
+                                    <span class="badge bg-danger text-dark">غیرفعال</span>
                                 @endif
                             </td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-warning"
+                                <button type="button" class="btn btn-sm btn-warning text-dark"
                                     wire:click="openEditModal({{ $customer->id }})" title="ویرایش مشتری">
-                                    <i class="bi bi-pencil"></i>
+                                    <i class="bi bi-pencil-fill"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-info"
+                                <button type="button" class="btn btn-sm btn-info text-dark"
                                     wire:click="openLedger({{ $customer->id }})" title="مشاهده گردش حساب مشتری">
-                                    <i class="bi bi-wallet2"></i>
+                                    <i class="bi bi-wallet-fill"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary"
+                                <button type="button" class="btn btn-sm btn-outline-light"
                                     wire:click="recalculateRole({{ $customer->id }})"
                                     title="بازمحاسبه‌ی رده‌ی این مشتری بر اساس آمار خرید فعلی">
                                     <i class="bi bi-arrow-repeat"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-danger"
+                                <button type="button" class="btn btn-sm btn-danger text-dark"
                                     wire:click="confirmDelete({{ $customer->id }})" title="حذف مشتری">
-                                    <i class="bi bi-trash"></i>
+                                    <i class="bi bi-trash-fill"></i>
                                 </button>
                             </td>
                         </tr>

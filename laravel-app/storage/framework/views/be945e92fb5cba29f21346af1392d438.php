@@ -38,21 +38,14 @@
         </li>
         <!-- کاربران -->
         <li>
-            <a href="<?php echo e(route('users.index')); ?>" class="<?php echo e(request()->routeIs('users.*') ? 'active' : ''); ?>">
+            <a href="<?php echo e(route('users.index')); ?>" class="<?php echo e(request()->routeIs('users.*') ? 'active' : ''); ?> <?php echo e(request()->routeIs('roles.*') ? 'active' : ''); ?>">
                 <i class="bi bi-people"></i>
                 <span>کاربران</span>
             </a>
         </li>
-        <!-- نقش های کاربران -->
-        <li>
-            <a href="<?php echo e(route('roles.index')); ?>" class="<?php echo e(request()->routeIs('roles.*') ? 'active' : ''); ?>">
-                <i class="bi bi-shield-lock"></i>
-                <span>نقش‌ های کاربران</span>
-            </a>
-        </li>
         <!-- مشتریان -->
         <li>
-            <a href="<?php echo e(route('customers.index')); ?>" class="<?php echo e(request()->routeIs('customers.*') ? 'active' : ''); ?>">
+            <a href="<?php echo e(route('customers.index')); ?>" class="<?php echo e(request()->routeIs('customers.*') ? 'active' : ''); ?> <?php echo e(request()->routeIs('customer-roles.*') ? 'active' : ''); ?>">
                 <i class="bi bi-people"></i>
                 <span>باشگاه مشتریان</span>
             </a>

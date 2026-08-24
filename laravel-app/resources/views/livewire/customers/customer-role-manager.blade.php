@@ -17,23 +17,32 @@
         </div>
     @endif
 
-    <div class="card">
+    <div class="card shadow-sm" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">
-                <i class="bi bi-award"></i>
-                رده‌های باشگاه مشتریان
-            </h4>
-            <div class="d-flex gap-2">
-                <a href="{{ route('customers.index') }}" class="btn btn-outline-secondary btn-sm"
-                    title="بازگشت به لیست مشتریان">
-                    <i class="bi bi-arrow-right"></i>
-                    بازگشت
+
+            <div>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-award-fill text-primary"></i>
+                    رده‌های باشگاه مشتریان
+                </h3>
+                <small class="text-muted">مدیریت رده های باشگاه مشتریان و مدیریت درصد تخفیف برای هر رده</small>
+            </div>
+
+            <div class="d-flex gap-3">
+
+                <a href="{{ route('customers.index') }}">
+                    <button class="btn btn-info text-dark" title="بازگشت به لیست مشتریان">
+                        <i class="bi bi-arrow-right"></i>
+                        بازگشت
+                    </button>
                 </a>
-                <button type="button" class="btn btn-primary btn-sm" wire:click="openCreateModal"
+
+                <button type="button" class="btn btn-primary" wire:click="openCreateModal"
                     title="افزودن رده جدید به باشگاه مشتریان">
                     <i class="bi bi-plus-circle"></i>
                     رده جدید
                 </button>
+
             </div>
         </div>
 
@@ -41,14 +50,14 @@
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
-                        <th width="70">ترتیب</th>
+                        <th width="40">ترتیب</th>
                         <th>عنوان رده</th>
                         <th>حداقل تعداد خرید</th>
                         <th>حداقل مبلغ کل خرید</th>
-                        <th>درصد تخفیف</th>
-                        <th>تعداد مشتریان</th>
-                        <th width="90">وضعیت</th>
-                        <th width="120">عملیات</th>
+                        <th width="80">درصد تخفیف</th>
+                        <th width="80">تعداد مشتریان</th>
+                        <th width="80">وضعیت</th>
+                        <th width="100">عملیات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,7 +65,7 @@
                         <tr wire:key="role-{{ $role->id }}">
                             <td>{{ $role->sort_order }}</td>
                             <td>
-                                <span class="badge bg-{{ $role->color }}">
+                                <span class="badge bg-{{ $role->color }} text-dark">
                                     <i class="bi {{ $role->icon }}"></i>
                                     {{ $role->name }}
                                 </span>
@@ -68,23 +77,23 @@
                             <td>{{ number_format($role->min_purchase_amount) }} {{ setting('currency', '') }}</td>
                             <td>{{ $role->discount_percent }}٪</td>
                             <td>
-                                <span class="badge bg-secondary-lt text-dark">{{ $role->customers_count }} نفر</span>
+                                <span class="badge bg-info text-dark">{{ $role->customers_count }} نفر</span>
                             </td>
                             <td>
                                 @if ($role->is_active)
-                                    <span class="badge bg-success">فعال</span>
+                                    <span class="badge bg-success text-dark">فعال</span>
                                 @else
-                                    <span class="badge bg-danger">غیرفعال</span>
+                                    <span class="badge bg-danger text-dark">غیرفعال</span>
                                 @endif
                             </td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-warning"
+                                <button type="button" class="btn btn-sm btn-warning text-dark"
                                     wire:click="openEditModal({{ $role->id }})" title="ویرایش رده">
-                                    <i class="bi bi-pencil"></i>
+                                    <i class="bi bi-pencil-fill"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-danger"
+                                <button type="button" class="btn btn-sm btn-danger text-dark"
                                     wire:click="confirmDelete({{ $role->id }})" title="حذف رده">
-                                    <i class="bi bi-trash"></i>
+                                    <i class="bi bi-trash-fill"></i>
                                 </button>
                             </td>
                         </tr>

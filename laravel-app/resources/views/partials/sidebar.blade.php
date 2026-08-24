@@ -38,21 +38,14 @@
         </li>
         <!-- کاربران -->
         <li>
-            <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }}">
+            <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }} {{ request()->routeIs('roles.*') ? 'active' : '' }}">
                 <i class="bi bi-people"></i>
                 <span>کاربران</span>
             </a>
         </li>
-        <!-- نقش های کاربران -->
-        <li>
-            <a href="{{ route('roles.index') }}" class="{{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                <i class="bi bi-shield-lock"></i>
-                <span>نقش‌ های کاربران</span>
-            </a>
-        </li>
         <!-- مشتریان -->
         <li>
-            <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }}">
+            <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }} {{ request()->routeIs('customer-roles.*') ? 'active' : '' }}">
                 <i class="bi bi-people"></i>
                 <span>باشگاه مشتریان</span>
             </a>

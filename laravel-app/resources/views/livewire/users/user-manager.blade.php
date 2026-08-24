@@ -19,7 +19,7 @@
     @endif
 
 
-        {{-- کارت‌های آماری --}}
+    {{-- کارت‌های آماری --}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card">
@@ -111,11 +111,21 @@
                 <small class="text-muted">مدیریت اطلاعات کاربران سیستم</small>
             </div>
 
-            <button class="btn btn-primary" wire:click="openCreateModal"
-                title="برای افزودن کاربر جدید به سیستم کلیک کنید">
-                <i class="bi bi-plus-circle"></i>
-                افزودن کاربر
-            </button>
+            <div class="d-flex gap-3">
+                <a href="{{ route('roles.index') }}">
+                    <button class="btn btn-info text-dark" title=" مدیریت نقش‌هاو مجوزهای دسترسی آنها">
+                        <i class="bi bi-shield-lock"></i>
+                        مدیریت نقش‌ها
+                    </button>
+                </a>
+
+                <button class="btn btn-primary" wire:click="openCreateModal"
+                    title="برای افزودن کاربر جدید به سیستم کلیک کنید">
+                    <i class="bi bi-plus-circle"></i>
+                    افزودن کاربر
+                </button>
+
+            </div>
         </div>
 
 
@@ -141,31 +151,31 @@
                                 <td>{{ $user->username }}</td>
                                 <td>
                                     @if ($user->is_active)
-                                        <span class="badge bg-success">فعال</span>
+                                        <span class="badge bg-success text-dark">فعال</span>
                                     @else
-                                        <span class="badge bg-danger">غیرفعال</span>
+                                        <span class="badge bg-danger text-dark">غیرفعال</span>
                                     @endif
                                 </td>
                                 <td>{{ $user->role?->display_name ?? '-' }}</td>
                                 <td>{{ $user->last_login_at ? jalaliDateTime($user->last_login_at) : '-' }}</td>
                                 <td>
                                     {{-- دکمه ویرایش مشخصات یک کاربر --}}
-                                    <button type="button" class="btn btn-sm btn-warning"
+                                    <button type="button" class="btn btn-sm btn-warning text-dark"
                                         wire:click="openEditModal({{ $user->id }})"
                                         title="برای ویرایش این کاربر کلیک کنید">
-                                        <i class="bi bi-pencil"></i>
+                                        <i class="bi bi-pencil-fill"></i>
                                     </button>
                                     {{-- دکمه تغییر رمز ورود یک کاربر --}}
-                                    <button type="button" class="btn btn-sm btn-info"
+                                    <button type="button" class="btn btn-sm btn-info text-dark"
                                         wire:click="openPasswordModal({{ $user->id }})"
                                         title="برای تغییر کلمه عبور این کاربر کلیک کنید">
-                                        <i class="bi bi-key"></i>
+                                        <i class="bi bi-key-fill"></i>
                                     </button>
                                     {{-- دکمه حذف یک کاربر --}}
-                                    <button type="button" class="btn btn-sm btn-danger"
+                                    <button type="button" class="btn btn-sm btn-danger text-dark"
                                         wire:click="confirmDelete({{ $user->id }})"
                                         title="برای حذف این کاربر کلیک کنید">
-                                        <i class="bi bi-trash"></i>
+                                        <i class="bi bi-trash-fill"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -196,7 +206,8 @@
                             <h5 class="modal-title">
                                 {{ $editingId ? 'ویرایش کاربر' : 'افزودن کاربر جدید' }}
                             </h5>
-                            <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
+                            <button type="button" class="btn-close" wire:click="closeModals"
+                                title="بستن"></button>
                         </div>
 
                         <div class="modal-body">

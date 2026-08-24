@@ -19,7 +19,7 @@
     @endif
 
 
-        {{-- کارت‌های آماری --}}
+    {{-- کارت‌های آماری --}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card">
@@ -66,17 +66,17 @@
 
 
     {{-- کارت جستجو --}}
-        <div class="card glass-card mb-4">
-            <div class="card-body">
-                <div class="input-group">
-                    <span class="input-group-text">
-                        <i class="bi bi-search"></i>
-                    </span>
-                    <input type="text" class="form-control" wire:model.live.debounce.400ms="search"
-                        placeholder="جستجو بر اساس نام نقش یا شناسه">
-                </div>
+    <div class="card glass-card mb-4">
+        <div class="card-body">
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" class="form-control" wire:model.live.debounce.400ms="search"
+                    placeholder="جستجو بر اساس نام نقش یا شناسه">
             </div>
         </div>
+    </div>
 
 
     {{-- هدر صفحه --}}
@@ -89,12 +89,20 @@
                 </h3>
                 <small class="text-muted">مدیریت نقش‌های کاربران سیستم و مجوزهای دسترسی به هر بخش</small>
             </div>
+            <div class="d-flex gap-3">
 
-            <button class="btn btn-primary" wire:click="openCreateModal"
-                title="برای افزودن نقش جدید به سیستم کلیک کنید">
-                <i class="bi bi-plus-circle"></i>
-                افزودن نقش
-            </button>
+                <button class="btn btn-info text-dark" title="بازگشت به لیست کاربران">
+                    <i class="bi bi-arrow-right"></i>
+                    بازگشت
+                </button>
+
+                <button class="btn btn-primary" wire:click="openCreateModal"
+                    title="برای افزودن نقش جدید به سیستم کلیک کنید">
+                    <i class="bi bi-plus-circle"></i>
+                    افزودن نقش
+                </button>
+
+            </div>
         </div>
 
         <div class="card shadow-sm" wire:loading.class="opacity-50">
@@ -117,32 +125,32 @@
                                     <td>{{ $loop->iteration + ($roles->currentPage() - 1) * $roles->perPage() }}</td>
                                     <td>{{ $role->display_name }}</td>
                                     <td>
-                                        <span class="badge bg-{{ $role->color ?? 'secondary' }}">
+                                        <span class="badge bg-{{ $role->color ?? 'secondary' }} text-dark">
                                             {{ $role->name }}
                                             <i class="{{ $role->icon }}"></i>
                                         </span>
                                     </td>
                                     <td>{{ $role->description }}</td>
                                     <td>
-                                        <span class="badge bg-info">{{ $role->users_count }}</span>
+                                        <span class="badge bg-info text-dark">{{ $role->users_count }}</span>
                                     </td>
                                     <td>
                                         {{-- دکمه ویرایش یک نقش --}}
-                                        <button type="button" class="btn btn-sm btn-warning"
+                                        <button type="button" class="btn btn-sm btn-warning text-dark"
                                             wire:click="openEditModal({{ $role->id }})"
                                             title="برای ویرایش این نقش کلیک کنید">
-                                            <i class="bi bi-pencil"></i>
+                                            <i class="bi bi-pencil-fill"></i>
                                         </button>
                                         {{-- دکمه حذف یک نقش --}}
-                                        <button type="button" class="btn btn-sm btn-danger"
+                                        <button type="button" class="btn btn-sm btn-danger text-dark"
                                             wire:click="confirmDelete({{ $role->id }})"
                                             title="برای حذف این نقش کلیک کنید">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="bi bi-trash-fill"></i>
                                         </button>
                                         {{-- دکمه ویرایش مجوزهای یک نقش --}}
-                                        <a href="{{ route('roles.permissions', $role) }}" class="btn btn-sm btn-info"
+                                        <a href="{{ route('roles.permissions', $role) }}" class="btn btn-sm btn-info text-dark"
                                             title="برای ویرایش مجوز های این نقش کلیک کنید">
-                                            <i class="bi bi-shield-lock"></i>
+                                            <i class="bi bi-shield-lock-fill"></i>
                                         </a>
                                     </td>
                                 </tr>

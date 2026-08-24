@@ -125,19 +125,19 @@
                                 <td>{{ $supplier->type === 'company' ? 'حقوقی' : 'حقیقی' }}</td>
                                 <td>
                                     @if ($supplier->is_active)
-                                        <span class="badge bg-success">فعال</span>
+                                        <span class="badge bg-success text-dark">فعال</span>
                                     @else
-                                        <span class="badge bg-secondary">غیرفعال</span>
+                                        <span class="badge bg-secondary text-dark">غیرفعال</span>
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-outline-primary"
+                                    <button type="button" class="btn btn-sm btn-primary text-dark"
                                         wire:click="openEditModal({{ $supplier->id }})">
-                                        <i class="bi bi-pencil"></i> ویرایش
+                                        <i class="bi bi-pencil-fill"></i> ویرایش
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                    <button type="button" class="btn btn-sm btn-danger text-dark"
                                         wire:click="confirmDelete({{ $supplier->id }})">
-                                        <i class="bi bi-trash"></i> حذف
+                                        <i class="bi bi-trash-fill"></i> حذف
                                     </button>
                                 </td>
                             </tr>
