@@ -80,14 +80,14 @@
                 </div>
             </div>
 
-            <div class="table-responsive mt-3">
-                <table class="table table-vcenter">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
 
                     <thead>
                         <tr>
-                            <th>تاریخ</th>
-                            <th>نوع عملیات</th>
-                            <th>مقدار</th>
+                            <th width="300">تاریخ</th>
+                            <th width="150">نوع عملیات</th>
+                            <th width="150">مقدار</th>
                             <th>توضیحات</th>
                         </tr>
                     </thead>
@@ -95,27 +95,30 @@
                     <tbody>
                         @forelse ($movements as $movement)
                             <tr wire:key="movement-{{ $movement->id }}">
-                                <td>{{ $movement->created_at }}</td>
+                                <td>{{ jalaliDateTime($movement->created_at) }}</td>
                                 <td>
                                     @switch($movement->type)
                                         @case('initial')
-                                            <span class="badge bg-info">موجودی اولیه</span>
+                                            <span class="badge bg-info text-dark">موجودی اولیه</span>
                                         @break
 
                                         @case('purchase')
-                                            <span class="badge bg-success">خرید</span>
+                                            <span class="badge bg-success text-dark">خرید</span>
                                         @break
 
                                         @case('sale')
-                                            <span class="badge bg-danger">فروش</span>
+                                            <span class="badge bg-danger text-dark">فروش</span>
                                         @break
 
                                         @case('adjust')
-                                            <span class="badge bg-warning">اصلاح</span>
+                                            <span class="badge bg-warning text-dark">اصلاح</span>
                                         @break
                                     @endswitch
                                 </td>
-                                <td>{{ $movement->quantity }}</td>
+                                <td>
+                                    {{ number_format($movement->quantity, 0) }}
+                                    <span>{{ $product->unit }}</span>
+                                </td>
                                 <td>{{ $movement->description }}</td>
                             </tr>
                         @empty

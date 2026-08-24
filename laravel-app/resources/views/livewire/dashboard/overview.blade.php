@@ -148,8 +148,9 @@
                         <div class="list-group-item d-flex justify-content-between"
                             wire:key="low-stock-{{ $product->id }}">
                             <span>{{ $product->name }}</span>
-                            <span class="badge bg-danger">
-                                {{ $product->stock }}
+                            <span class="badge bg-danger text-dark">
+                                {{ $product->formatted_stock }}
+                                <span class="text-dark">{{ $product->unit }}</span>
                             </span>
                         </div>
                     @empty

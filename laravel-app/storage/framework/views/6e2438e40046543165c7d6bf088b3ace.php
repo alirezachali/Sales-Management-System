@@ -1,4 +1,4 @@
-<nav class="top-navbar" dir="rtl">
+<nav class="top-navbar" dir="rtl"> 
     <div class="navbar-inner">
 
         

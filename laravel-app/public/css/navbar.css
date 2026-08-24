@@ -165,15 +165,16 @@
    ========================================================================== */
 .user-dropdown {
     position: absolute;
-    inset-inline-start: 0;
-    top: calc(100% + 10px);
-    /* min-width: 260px; */
+    /* inset-inline-start: 0; */
+    /* top: calc(100% + 10px); */
+    min-width: 200px;
     padding: 10px;
-    background: var(--bs-body-bg);
+    /* background: var(--bs-body-bg); */
+    /* background: color-mix(in srgb, var(--bs-body-bg) 85%, transparent); */
     border: 1px solid var(--bs-border-color);
     border-radius: 16px;
-    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22);
-    z-index: 1050;
+    /* box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22); */
+    /* z-index: 1050; */
 }
 
 /* سربرگ اطلاعات کاربر */
