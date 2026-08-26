@@ -56,6 +56,23 @@
                             </div>
                         </div>
 
+                        {{-- سوییچ تغییر زبان فارسی / انگلیسی --}}
+                        <div class="lang-switch">
+                            <span class="lang-switch-label">زبان برنامه</span>
+                            <div class="lang-switch-btns" role="group" aria-label="تغییر زبان">
+                                <a href="{{ route('locale.switch', 'fa') }}"
+                                    class="lang-btn {{ app()->getLocale() === 'fa' ? 'active' : '' }}"
+                                    title="فارسی" aria-label="فارسی">
+                                    <img src="{{ asset('images/flags/ir.svg') }}" class="flag" alt="فارسی">
+                                </a>
+                                <a href="{{ route('locale.switch', 'en') }}"
+                                    class="lang-btn {{ app()->getLocale() === 'en' ? 'active' : '' }}"
+                                    title="English" aria-label="English">
+                                    <img src="{{ asset('images/flags/us.svg') }}" class="flag" alt="English">
+                                </a>
+                            </div>
+                        </div>
+
                         {{-- سوییچ تغییر تم روشن / تیره --}}
                         <div class="theme-switch">
                             <span class="theme-switch-label">حالت نمایش</span>

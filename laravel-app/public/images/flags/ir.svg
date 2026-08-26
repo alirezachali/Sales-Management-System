@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="پرچم ایران">
+  <rect width="640" height="480" fill="#fff"/>
+  <rect width="640" height="160" fill="#239f40"/>
+  <rect y="320" width="640" height="160" fill="#da0000"/>
+  <g fill="#da0000">
+    <path d="M320 208c-4 6-4 15 0 21-7-2-11-8-11-15-5 9-2 19 6 24-9 0-15-7-17-15 0 15 10 28 22 28s22-13 22-28c-2 8-8 15-17 15 8-5 11-15 6-24 0 7-4 13-11 15 4-6 4-15 0-21z"/>
+  </g>
+</svg>

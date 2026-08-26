@@ -165,16 +165,20 @@
    ========================================================================== */
 .user-dropdown {
     position: absolute;
-    /* inset-inline-start: 0; */
-    /* top: calc(100% + 10px); */
-    min-width: 200px;
+    top: calc(100% + 10px);
+    left: 0;
+    right: auto;
+    min-width: 260px;
     padding: 10px;
-    /* background: var(--bs-body-bg); */
-    /* background: color-mix(in srgb, var(--bs-body-bg) 85%, transparent); */
+    /* پس‌زمینه‌ی شیشه‌ای مات (Glassmorphism): کمی شفاف + فیلتر بلور */
+    background: var(--bs-body-bg); /* fallback برای مرورگرهای قدیمی */
+    background: color-mix(in srgb, var(--bs-body-bg) 88%, transparent);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    backdrop-filter: blur(18px) saturate(180%);
     border: 1px solid var(--bs-border-color);
     border-radius: 16px;
-    /* box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22); */
-    /* z-index: 1050; */
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    z-index: 1050;
 }
 
 /* سربرگ اطلاعات کاربر */
@@ -220,6 +224,63 @@
 .dropdown-user-role {
     font-size: .8rem;
     color: var(--bs-secondary-color);
+}
+
+/* سوییچ زبان فارسی/انگلیسی */
+.lang-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px;
+    margin: 4px 0;
+    border-radius: 10px;
+    background: var(--bs-secondary-bg);
+}
+
+.lang-switch-label {
+    font-size: .85rem;
+    color: var(--bs-secondary-color);
+}
+
+.lang-switch-btns {
+    display: inline-flex;
+    gap: 6px;
+    background: var(--bs-body-bg);
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid var(--bs-border-color);
+}
+
+.lang-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    opacity: .55;
+    transition: opacity .2s ease, border-color .2s ease, transform .15s ease;
+}
+
+.lang-btn .flag {
+    width: 26px;
+    height: 19px;
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+}
+
+.lang-btn:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+.lang-btn.active {
+    opacity: 1;
+    border-color: var(--nav-accent);
 }
 
 /* سوییچ تم روشن/تیره */

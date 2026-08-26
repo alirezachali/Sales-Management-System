@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SaleController;
@@ -84,6 +85,9 @@ Route::middleware('auth')->group(function () {
         /* مسیر ذخیره تنظیمات جدید */
         Route::post('settings', [SettingController::class, 'update'])->name('settings.update');
     });
+
+    /* مسیر تغییر زبان برنامه (کلیک روی پرچم در منوی ناوبری) */
+    Route::get('locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
     /* مسیر صفحه لیست دسته بندی های محصولات */
     Route::resource('categories', CategoryController::class);

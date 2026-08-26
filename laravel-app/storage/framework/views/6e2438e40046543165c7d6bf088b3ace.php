@@ -58,6 +58,23 @@
                         </div>
 
                         
+                        <div class="lang-switch">
+                            <span class="lang-switch-label">زبان برنامه</span>
+                            <div class="lang-switch-btns" role="group" aria-label="تغییر زبان">
+                                <a href="<?php echo e(route('locale.switch', 'fa')); ?>"
+                                    class="lang-btn <?php echo e(app()->getLocale() === 'fa' ? 'active' : ''); ?>"
+                                    title="فارسی" aria-label="فارسی">
+                                    <img src="<?php echo e(asset('images/flags/ir.svg')); ?>" class="flag" alt="فارسی">
+                                </a>
+                                <a href="<?php echo e(route('locale.switch', 'en')); ?>"
+                                    class="lang-btn <?php echo e(app()->getLocale() === 'en' ? 'active' : ''); ?>"
+                                    title="English" aria-label="English">
+                                    <img src="<?php echo e(asset('images/flags/us.svg')); ?>" class="flag" alt="English">
+                                </a>
+                            </div>
+                        </div>
+
+                        
                         <div class="theme-switch">
                             <span class="theme-switch-label">حالت نمایش</span>
                             <div class="theme-switch-btns" role="group" aria-label="تغییر تم">
