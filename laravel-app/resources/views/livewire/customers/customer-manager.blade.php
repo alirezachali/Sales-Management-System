@@ -20,7 +20,7 @@
     {{-- کارت‌های آماری --}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">تعداد مشتریان</div>
                     <div class="h1 mb-0">{{ $totalCustomers }}</div>
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">مشتریان فعال</div>
                     <div class="h1 mb-0 text-success">{{ $activeCustomers }}</div>
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">مشتریان غیرفعال</div>
                     <div class="h1 mb-0 text-danger">{{ $inactiveCustomers }}</div>
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">بدون رده</div>
                     <div class="h1 mb-0 text-warning">{{ $noRoleCustomers }}</div>
@@ -54,7 +54,7 @@
     </div>
 
     {{-- فیلترها --}}
-    <div class="card mb-4">
+    <div class="card mb-4 border-3">
         <div class="card-body">
             <div class="row g-2">
                 <div class="col-md-7">
@@ -80,7 +80,7 @@
     </div>
 
     {{-- جدول مشتریان --}}
-    <div class="card shadow-sm" wire:loading.class="opacity-50">
+    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>

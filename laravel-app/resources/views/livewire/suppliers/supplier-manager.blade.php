@@ -21,7 +21,7 @@
     {{-- کارت‌های آماری --}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">تعداد تامین کنندگان</div>
                     <div class="h1 mb-0">
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">تامین کنندگان فعال</div>
                     <div class="h1 mb-0 text-success">
@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">تامین کنندگان غیرفعال</div>
                     <div class="h1 mb-0 text-danger">
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">تامین کنندگان بدون برند</div>
                     <div class="h1 mb-0 text-warning">
@@ -64,7 +64,7 @@
 
 
     {{-- Search Card --}}
-    <div class="card glass-card mb-4">
+    <div class="card glass-card mb-4 border-3">
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-12">
@@ -83,7 +83,7 @@
 
 
     {{-- جدول تامین کنندگان --}}
-    <div class="card shadow-sm" wire:loading.class="opacity-50">
+    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <h3 class="fw-bold mb-1">

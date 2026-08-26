@@ -22,7 +22,7 @@
     <div class="row row-cards mb-4">
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">تعداد کالاها</div>
                     <div class="h1 mb-0">{{ $totalProducts }}</div>
@@ -31,7 +31,7 @@
         </div>
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">کالاهای فعال</div>
                     <div class="h1 mb-0 text-success">{{ $activeProducts }}</div>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">کالاهای غیرفعال</div>
                     <div class="h1 mb-0 text-danger">{{ $inactiveProducts }}</div>
@@ -49,7 +49,7 @@
         </div>
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">موجودی کم</div>
                     <div class="h1 mb-0 text-warning">{{ $lowStockProducts }}</div>
@@ -60,7 +60,7 @@
     </div>
 
     {{-- فیلترها --}}
-    <div class="card glass-card mb-4">
+    <div class="card glass-card mb-4 border-3">
         <div class="card-body">
             <div class="row g-2">
 
@@ -90,7 +90,7 @@
     </div>
 
     {{-- جدول کالاها --}}
-    <div class="card shadow-sm" wire:loading.class="opacity-50">
+    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>

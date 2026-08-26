@@ -22,7 +22,7 @@
     @enderror
 
     {{-- Page Header --}}
-    <div class="card shadow-sm mb-3" wire:loading.class="opacity-50">
+    <div class="card shadow-sm mb-3 border-3" wire:loading.class="opacity-50">
         <div class="card-header align-items-center">
             <div>
                 <h3 class="fw-bold mb-1">
@@ -37,7 +37,7 @@
     <div class="row g-3">
         {{-- ستون جستجو و افزودن کالا --}}
         <div class="col-lg-7">
-            <div class="card glass-card mb-3">
+            <div class="card glass-card mb-3 border-3">
                 <div class="card-body">
                     <div class="row g-2">
                         <div class="col-md-6">
@@ -64,7 +64,7 @@
                                     wire:click="addProduct({{ $product->id }})">
                                     <span>{{ $product->name }} <small
                                             class="text-muted">({{ $product->barcode }})</small></span>
-                                    <span class="badge bg-primary">{{ number_format($product->sell_price) }}</span>
+                                    <span class="badge bg-success text-dark">{{ number_format($product->sell_price) }}</span>
                                 </button>
                             @endforeach
                         </div>
@@ -75,9 +75,13 @@
             </div>
 
             {{-- سبد فروش --}}
-            <div class="card-body">
-                <div class="table-responsive rounded-3 border">
-                    <table class="table table-bordered table-hover align-middle mb-0">
+            <div class="card glass-card border-3">
+                <div class="card-header">
+                    <h5 class="fw-bold text-success">جدول آیتم های سبد خرید مشتری</h5>
+                </div>
+                <div class="table-responsive rounded-3">
+                    <table class="table table-bordered table-hover align-middle">
+
                         <thead>
                             <tr>
                                 <th>کالا</th>
@@ -87,6 +91,7 @@
                                 <th class="text-center">عملیات</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             @forelse ($cart as $item)
                                 <tr wire:key="cart-{{ $item['id'] }}">
@@ -122,10 +127,13 @@
 
         {{-- ستون جمع‌بندی و پرداخت --}}
         <div class="col-lg-5">
-            <div class="card glass-card">
-                <div class="card-body">
-                    <h5 class="fw-bold mb-3">جمع‌بندی فاکتور</h5>
+            <div class="card glass-card border-3">
 
+                <div class="card-header">
+                    <h5 class="fw-bold text-primary">جمع‌بندی فاکتور</h5>
+                </div>
+
+                <div class="card-body">
                     <div class="mb-2">
                         <label class="form-label">مشتری</label>
                         <select class="form-select" wire:model="customerId">
@@ -154,48 +162,56 @@
                         <strong class="text-primary fs-5">{{ number_format($this->finalPrice) }}</strong>
                     </div>
 
-                    <button type="button" class="btn btn-success w-100" wire:click="openCheckoutModal">
+                    <button type="button" class="btn btn-success text-dark w-100" wire:click="openCheckoutModal">
                         <i class="bi bi-cash-coin"></i> پرداخت و ثبت فاکتور
                     </button>
                 </div>
             </div>
 
             {{-- آخرین فاکتورهای ثبت شده --}}
-            <div class="card-body">
-                <div class="table-responsive rounded-3 border">
-                    <table class="table table-bordered table-hover align-middle mb-0">
-                        <thead>
-                            <tr>
-                                <th>شماره فاکتور</th>
-                                <th>مشتری</th>
-                                <th>مبلغ</th>
-                                <th>چاپ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($recentSales as $sale)
-                                <tr wire:key="sale-{{ $sale->id }}">
-                                    <td>{{ $sale->invoice_number }}</td>
-                                    <td>{{ $sale->customer->full_name ?? 'متفرقه' }}</td>
-                                    <td>{{ number_format($sale->final_price) }}</td>
-                                    <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-outline-primary"
-                                            wire:click="printInvoice({{ $sale->id }})">
-                                            <i class="bi bi-printer"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="text-center py-3 text-muted">فاکتوری ثبت نشده است.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+            <div class="card glass-card border-3 mt-3">
+                <div class="card-header">
+                    <h5 class="fw-bold text-warning">آخرین فاکتورها</h5>
                 </div>
+                
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>شماره فاکتور</th>
+                                    <th>مشتری</th>
+                                    <th>مبلغ</th>
+                                    <th>چاپ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($recentSales as $sale)
+                                    <tr wire:key="sale-{{ $sale->id }}">
+                                        <td>{{ $sale->invoice_number }}</td>
+                                        <td>{{ $sale->customer->full_name ?? 'متفرقه' }}</td>
+                                        <td>{{ number_format($sale->final_price) }}</td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                                wire:click="printInvoice({{ $sale->id }})">
+                                                <i class="bi bi-printer"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center py-3 text-muted">فاکتوری ثبت نشده است.
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
 
-                <div class="card-footer">{{ $recentSales->links() }}</div>
+                    <div class="card-footer">
+
+                        {{-- {{ $recentSales->links() }} --}}
+
+                    </div>
                 
             </div>
         </div>

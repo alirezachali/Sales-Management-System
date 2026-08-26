@@ -26,10 +26,6 @@
     <!-- Custom CSS -->
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
-    {{-- <link href="{{ asset('css/footer.css') }}" rel="stylesheet"> --}}
-    <link href="{{ asset('css/pos.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/label-print.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/roles.css') }}" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
@@ -48,16 +44,22 @@
             localStorage.setItem('app-sidebar-collapsed', this.sidebarCollapsed ? '1' : '0');
         }
     }" x-init="document.documentElement.setAttribute('data-bs-theme', theme)">
+
 <!-- Navbar -->
 @include('partials.navbar')
+
 <div class="wrapper">
+
     <!-- Sidebar -->
     @include('partials.sidebar')
+
     <!-- Content -->
     <main class="content">
         @yield('content')
     </main>
+
 </div>
+
 <!-- Footer -->
 {{-- @include('partials.footer') --}}
 

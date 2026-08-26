@@ -26,10 +26,6 @@
     <!-- Custom CSS -->
     <link href="<?php echo e(asset('css/sidebar.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/navbar.css')); ?>" rel="stylesheet">
-    
-    <link href="<?php echo e(asset('css/pos.css')); ?>" rel="stylesheet">
-    <link href="<?php echo e(asset('css/label-print.css')); ?>" rel="stylesheet">
-    <link href="<?php echo e(asset('css/roles.css')); ?>" rel="stylesheet">
 
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     
@@ -49,16 +45,22 @@
             localStorage.setItem('app-sidebar-collapsed', this.sidebarCollapsed ? '1' : '0');
         }
     }" x-init="document.documentElement.setAttribute('data-bs-theme', theme)">
+
 <!-- Navbar -->
 <?php echo $__env->make('partials.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
 <div class="wrapper">
+
     <!-- Sidebar -->
     <?php echo $__env->make('partials.sidebar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
     <!-- Content -->
     <main class="content">
         <?php echo $__env->yieldContent('content'); ?>
     </main>
+
 </div>
+
 <!-- Footer -->
 
 

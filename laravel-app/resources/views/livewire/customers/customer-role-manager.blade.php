@@ -17,7 +17,7 @@
         </div>
     @endif
 
-    <div class="card shadow-sm" wire:loading.class="opacity-50">
+    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center">
 
             <div>
