@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
+use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
@@ -86,5 +87,15 @@ class User extends Authenticatable
         }
 
         return null;
+    }
+
+    /**
+     * آیا این کاربر هم‌اکنون در سیستم آنلاین است؟
+     * وضعیت با میدل‌ور TrackUserOnline در کش نگه‌داری می‌شود و
+     * چند دقیقه پس از آخرین درخواست کاربر، به‌صورت خودکار منقضی می‌شود.
+     */
+    public function isOnline(): bool
+    {
+        return Cache::has('user-online-' . $this->id);
     }
 }

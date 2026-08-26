@@ -4,6 +4,7 @@ namespace App\Livewire\Dashboard;
 
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Livewire\Component;
@@ -51,6 +52,11 @@ class Overview extends Component
             ->orderBy('stock')
             ->take(10)
             ->get();
+            
+            // لیست کاربران به‌همراه نقش‌شان برای کارت «کاربران» در داشبورد.
+        $users = User::with('role')
+            ->orderBy('name')
+            ->get();
 
         [$labels, $chartData] = $this->buildChartSeries();
 
@@ -68,6 +74,7 @@ class Overview extends Component
             'lowStockList',
             'labels',
             'chartData',
+            'users',
         ));
     }
 

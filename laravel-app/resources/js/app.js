@@ -1,5 +1,5 @@
-import './bootstrap';
-import '@tabler/core/dist/js/tabler.min.js';
+// import './bootstrap';
+// import '@tabler/core/dist/js/tabler.min.js';
 
 // باز/بستن سایدبار و تغییر تم (روشن/تیره) اکنون توسط Alpine
 // که به‌همراه Livewire بارگذاری می‌شود مدیریت می‌شود.
