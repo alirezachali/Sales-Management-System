@@ -109,83 +109,85 @@
 
         <div class="card-body">
 
-            <table class="table table-bordered table-hover align-middle">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
 
-                <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th width="130">بارکد</th>
-                        <th>نام کالا</th>
-                        <th>دسته بندی</th>
-                        <th width="130">قیمت فروش</th>
-                        <th width="90">موجودی</th>
-                        <th width="230">عملیات</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @forelse ($products as $product)
-                        <tr wire:key="product-{{ $product->id }}">
-                            <td>{{ $loop->iteration + ($products->currentPage() - 1) * $products->perPage() }}</td>
-                            <td>{{ $product->barcode }}</td>
-                            <td>{{ $product->name }}</td>
-                            <td>{{ $product->category?->name }}</td>
-                            <td>
-                                {{ number_format($product->sell_price) }}
-                                <span>{{ setting('currency', '') }}</span>
-                            </td>
-                            <td>
-                                {{ $product->formatted_stock }}
-                                <span class="badge bg-secondary text-dark">{{ $product->unit }}</span>
-                            </td>
-                            <td>
-                                {{-- دکمه ویرایش کالا --}}
-                                <button type="button" class="btn btn-sm btn-warning text-dark"
-                                    wire:click="openEditModal({{ $product->id }})" title="ویرایش کالا">
-                                    <i class="bi bi-pencil-fill"></i>
-                                </button>
-
-                                {{-- دکمه چاپ لیبل --}}
-                                <button type="button" class="btn btn-sm btn-info text-dark print-label-btn"
-                                    data-id="{{ $product->id }}" title="چاپ لیبل">
-                                    <i class="bi bi-printer-fill"></i>
-                                </button>
-
-                                {{-- دکمه مشاهده موجودی و ورود و خروج این کالا به انبار --}}
-                                <a href="{{ route('products.stock', $product) }}" class="btn btn-sm btn-light"
-                                    title="مشاهده سوابق ورود و خروج این کالا به انبار">
-                                    <i class="bi bi-boxes"></i>
-                                </a>
-
-                                {{-- دکمه ورود کالا به انبار (مستقیم مودال ورود را در صفحه‌ی گردش کالا باز می‌کند) --}}
-                                <a href="{{ route('products.stock', ['product' => $product, 'action' => 'purchase']) }}"
-                                    class="btn btn-sm btn-outline-success" title="ورود این کالا به انبار">
-                                    <i class="bi bi-plus-lg"></i>
-                                </a>
-
-                                {{-- دکمه خروج کالا از انبار (مستقیم مودال خروج را در صفحه‌ی گردش کالا باز می‌کند) --}}
-                                <a href="{{ route('products.stock', ['product' => $product, 'action' => 'sale']) }}"
-                                    class="btn btn-sm btn-outline-danger" title="خروج این کالا از انبار">
-                                    <i class="bi bi-dash-lg"></i>
-                                </a>
-
-                                {{-- دکمه حذف کالا --}}
-                                <button type="button" class="btn btn-danger text-dark btn-sm"
-                                    wire:click="confirmDelete({{ $product->id }})" title="حذف این کالا">
-                                    <i class="bi bi-trash-fill"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    @empty
+                    <thead>
                         <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">
-                                هیچ کالایی ثبت نشده است.
-                            </td>
+                            <th>#</th>
+                            <th width="130">بارکد</th>
+                            <th>نام کالا</th>
+                            <th>دسته بندی</th>
+                            <th width="130">قیمت فروش</th>
+                            <th width="90">موجودی</th>
+                            <th width="230">عملیات</th>
                         </tr>
-                    @endforelse
-                </tbody>
+                    </thead>
 
-            </table>
+                    <tbody>
+                        @forelse ($products as $product)
+                            <tr wire:key="product-{{ $product->id }}">
+                                <td>{{ $loop->iteration + ($products->currentPage() - 1) * $products->perPage() }}</td>
+                                <td>{{ $product->barcode }}</td>
+                                <td>{{ $product->name }}</td>
+                                <td>{{ $product->category?->name }}</td>
+                                <td>
+                                    {{ number_format($product->sell_price) }}
+                                    <span>{{ setting('currency', '') }}</span>
+                                </td>
+                                <td>
+                                    {{ $product->formatted_stock }}
+                                    <span class="badge bg-secondary text-dark">{{ $product->unit }}</span>
+                                </td>
+                                <td>
+                                    {{-- دکمه ویرایش کالا --}}
+                                    <button type="button" class="btn btn-sm btn-warning text-dark"
+                                        wire:click="openEditModal({{ $product->id }})" title="ویرایش کالا">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+
+                                    {{-- دکمه چاپ لیبل --}}
+                                    <button type="button" class="btn btn-sm btn-info text-dark print-label-btn"
+                                        data-id="{{ $product->id }}" title="چاپ لیبل">
+                                        <i class="bi bi-printer-fill"></i>
+                                    </button>
+
+                                    {{-- دکمه مشاهده موجودی و ورود و خروج این کالا به انبار --}}
+                                    <a href="{{ route('products.stock', $product) }}" class="btn btn-sm btn-light"
+                                        title="مشاهده سوابق ورود و خروج این کالا به انبار">
+                                        <i class="bi bi-boxes"></i>
+                                    </a>
+
+                                    {{-- دکمه ورود کالا به انبار (مستقیم مودال ورود را در صفحه‌ی گردش کالا باز می‌کند) --}}
+                                    <a href="{{ route('products.stock', ['product' => $product, 'action' => 'purchase']) }}"
+                                        class="btn btn-sm btn-outline-success" title="ورود این کالا به انبار">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </a>
+
+                                    {{-- دکمه خروج کالا از انبار (مستقیم مودال خروج را در صفحه‌ی گردش کالا باز می‌کند) --}}
+                                    <a href="{{ route('products.stock', ['product' => $product, 'action' => 'sale']) }}"
+                                        class="btn btn-sm btn-outline-danger" title="خروج این کالا از انبار">
+                                        <i class="bi bi-dash-lg"></i>
+                                    </a>
+
+                                    {{-- دکمه حذف کالا --}}
+                                    <button type="button" class="btn btn-danger text-dark btn-sm"
+                                        wire:click="confirmDelete({{ $product->id }})" title="حذف این کالا">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">
+                                    هیچ کالایی ثبت نشده است.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+
+                </table>
+            </div>
 
             <div class="mt-3">{{ $products->links() }}</div>
 

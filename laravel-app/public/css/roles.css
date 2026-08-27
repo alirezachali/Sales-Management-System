@@ -22,7 +22,7 @@
 .permissions-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
 .permission-item {
@@ -44,16 +44,4 @@
         column-count: 1;
     }
 
-}
-
-/*
-Source - https://stackoverflow.com/a/49460957
-Posted by Lakindu Gunasekara, modified by community. See post 'Timeline' for change history
-Retrieved 2026-08-14, License - CC BY-SA 3.0
-*/
-
-.h-r {
-    background-size: 4px;
-    border-top: 4px solid #FFF0F2;
-    border-color: #f5f8f4;
 }

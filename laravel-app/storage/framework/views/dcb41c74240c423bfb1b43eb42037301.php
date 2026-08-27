@@ -26,6 +26,7 @@
     <!-- Custom CSS -->
     <link href="<?php echo e(asset('css/sidebar.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/navbar.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('css/roles.css')); ?>" rel="stylesheet">
 
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     

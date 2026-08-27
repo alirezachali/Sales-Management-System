@@ -20,7 +20,7 @@
     {{-- کارت‌های آماری --}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">تعداد کل مجوزها</div>
                     <div class="h1 mb-0">
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">مجوزهای فعال</div>
                     <div class="h1 mb-0 text-success">
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">مجوزهای غیرفعال</div>
                     <div class="h1 mb-0 text-danger">
@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">تعداد گروه های مجوز</div>
                     <div class="h1 mb-0 text-warning">
@@ -65,12 +65,12 @@
     <form wire:submit="save">
 
         {{-- هدر صفحه --}}
-        <div class="card shadow-sm mb-3" wire:loading.class="opacity-50">
+        <div class="card shadow-sm mb-4 border-3" wire:loading.class="opacity-50">
             <div class="card-header d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h3 class="fw-bold mb-1">
                         دسترسی های رول :
-                        <span class="badge bg-{{ $role->color ?? 'secondary' }}">
+                        <span class="badge bg-{{ $role->color ?? 'secondary' }} text-dark">
                             {{ $role->name }}
                             <i class="{{ $role->icon }}"></i>
                         </span>
@@ -78,18 +78,19 @@
                     <small class="text-muted">مدیریت مجوزها و سطح دسترسی به بخش های سیستم توسط هر نقش</small>
                 </div>
 
-                <div class="text-end">
+                <div class="d-flex gap-3">
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:target="save">
                         <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                         <i class="bi bi-check-circle"></i>
                         ذخیره تغییرات
                     </button>
 
-                    <a href="{{ route('roles.index') }}" class="btn btn-secondary" title="بازگشت به صفحه لیست نقش ها">
+                    <a href="{{ route('roles.index') }}" class="btn btn-info" title="بازگشت به صفحه لیست نقش ها">
                         <i class="bi bi-arrow-right"></i>
                         بازگشت
                     </a>
                 </div>
+
             </div>
         </div>
 
@@ -97,9 +98,9 @@
 
             @foreach ($groups as $group)
                 <div class="permission-column">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm border-3">
 
-                        <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card-header d-flex justify-content-between align-items-center bg-secondary text-dark">
                             <strong>
                                 <i class="bi {{ $group->icon }}"></i>
                                 {{ $group->name }}
@@ -119,7 +120,7 @@
                             <div class="form-check form-switch m-0">
                                 <input class="form-check-input" type="checkbox" id="group-{{ $group->id }}"
                                     wire:click="toggleGroup({{ $group->id }})" @checked($groupAllChecked)>
-                                <label class="form-check-label small text-muted" for="group-{{ $group->id }}">
+                                <label class="form-check-label small" for="group-{{ $group->id }}">
                                     همه
                                 </label>
                             </div>

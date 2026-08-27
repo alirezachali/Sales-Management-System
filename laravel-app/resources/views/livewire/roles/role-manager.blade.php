@@ -22,7 +22,7 @@
     {{-- کارت‌های آماری --}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">تعداد نقش ها</div>
                     <div class="h1 mb-0">
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">نقش های فعال</div>
                     <div class="h1 mb-0 text-success">
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">نقش های غیرفعال</div>
                     <div class="h1 mb-0 text-danger">
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card border-3">
                 <div class="card-body">
                     <div class="subheader">نقش های بدون کاربر</div>
                     <div class="h1 mb-0 text-warning">
@@ -66,7 +66,7 @@
 
 
     {{-- کارت جستجو --}}
-    <div class="card glass-card mb-4">
+    <div class="card glass-card mb-4 border-3">
         <div class="card-body">
             <div class="input-group">
                 <span class="input-group-text">
@@ -80,7 +80,7 @@
 
 
     {{-- هدر صفحه --}}
-    <div class="card shadow-sm" wire:loading.class="opacity-50">
+    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="fw-bold mb-1">
@@ -91,10 +91,12 @@
             </div>
             <div class="d-flex gap-3">
 
-                <button class="btn btn-info text-dark" title="بازگشت به لیست کاربران">
-                    <i class="bi bi-arrow-right"></i>
-                    بازگشت
-                </button>
+                <a href="{{ route('users.index') }}">
+                    <button class="btn btn-info text-dark" title="بازگشت به لیست کاربران">
+                        <i class="bi bi-arrow-right"></i>
+                        بازگشت
+                    </button>
+                </a>
 
                 <button class="btn btn-primary" wire:click="openCreateModal"
                     title="برای افزودن نقش جدید به سیستم کلیک کنید">
