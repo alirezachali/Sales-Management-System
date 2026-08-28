@@ -64,5 +64,12 @@
                 <span>تامین کنندگان</span>
             </a>
         </li>
+        <!-- کارکنان -->
+        <li>
+            <a href="{{ route('employees.index') }}" class="{{ request()->routeIs('employees.*') ? 'active' : '' }}">
+                <i class="bi bi-person-badge"></i>
+                <span>مدیریت کارکنان</span>
+            </a>
+        </li>
     </ul>
 </aside>

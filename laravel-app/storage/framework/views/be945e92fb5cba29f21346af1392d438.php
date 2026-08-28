@@ -64,6 +64,13 @@
                 <span>تامین کنندگان</span>
             </a>
         </li>
+        <!-- کارکنان -->
+        <li>
+            <a href="<?php echo e(route('employees.index')); ?>" class="<?php echo e(request()->routeIs('employees.*') ? 'active' : ''); ?>">
+                <i class="bi bi-person-badge"></i>
+                <span>مدیریت کارکنان</span>
+            </a>
+        </li>
     </ul>
 </aside>
 <?php /**PATH C:\Users\Ali\Documents\Sales-Management-System\laravel-app\resources\views/partials/sidebar.blade.php ENDPATH**/ ?>

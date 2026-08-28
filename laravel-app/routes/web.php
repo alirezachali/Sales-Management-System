@@ -130,6 +130,11 @@ Route::get('/suppliers', function () {
     return view('suppliers.index');
 })->name('suppliers.index')->middleware('auth');
 
+    // مسیر نمایش لیست کارکنان
+    Route::get('employees', function () {
+        return view('employees.index');
+    })->name('employees.index');
+
 
 
 
