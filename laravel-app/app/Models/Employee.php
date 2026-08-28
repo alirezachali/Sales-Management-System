@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Carbon\Carbon;
 
 class Employee extends Model
@@ -91,5 +92,11 @@ class Employee extends Model
                 ? max(0, Carbon::parse($this->hired_at)->diffInYears(now()))
                 : null,
         );
+    }
+
+    // تعریف رابطه میان این مدل و هزینه‌های مرتبط (مثل حقوق و مزایا)
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class);
     }
 }

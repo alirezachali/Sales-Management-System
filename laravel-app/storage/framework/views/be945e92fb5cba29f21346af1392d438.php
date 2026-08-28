@@ -39,28 +39,28 @@
         <!-- کاربران -->
         <li>
             <a href="<?php echo e(route('users.index')); ?>" class="<?php echo e(request()->routeIs('users.*') ? 'active' : ''); ?> <?php echo e(request()->routeIs('roles.*') ? 'active' : ''); ?>">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-person-video"></i>
                 <span>کاربران</span>
             </a>
         </li>
         <!-- مشتریان -->
         <li>
             <a href="<?php echo e(route('customers.index')); ?>" class="<?php echo e(request()->routeIs('customers.*') ? 'active' : ''); ?> <?php echo e(request()->routeIs('customer-roles.*') ? 'active' : ''); ?>">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-person-standing-dress"></i>
                 <span>باشگاه مشتریان</span>
             </a>
         </li>
         <!-- برندها -->
         <li>
             <a href="<?php echo e(route('brands.index')); ?>" class="<?php echo e(request()->routeIs('brands.*') ? 'active' : ''); ?>">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-bing"></i>
                 <span>برندها</span>
             </a>
         </li>
         <!-- تامین کنندگان -->
         <li>
             <a href="<?php echo e(route('suppliers.index')); ?>" class="<?php echo e(request()->routeIs('suppliers.*') ? 'active' : ''); ?>">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-bus-front-fill"></i>
                 <span>تامین کنندگان</span>
             </a>
         </li>
@@ -69,6 +69,13 @@
             <a href="<?php echo e(route('employees.index')); ?>" class="<?php echo e(request()->routeIs('employees.*') ? 'active' : ''); ?>">
                 <i class="bi bi-person-badge"></i>
                 <span>مدیریت کارکنان</span>
+            </a>
+        </li>
+        <!-- هزینه‌ها -->
+        <li>
+            <a href="<?php echo e(route('expenses.index')); ?>" class="<?php echo e(request()->routeIs('expenses.*') ? 'active' : ''); ?>">
+                <i class="bi bi-wallet2"></i>
+                <span>مدیریت هزینه‌ها</span>
             </a>
         </li>
     </ul>

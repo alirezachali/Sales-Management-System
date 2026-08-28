@@ -39,28 +39,28 @@
         <!-- کاربران -->
         <li>
             <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }} {{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-person-video"></i>
                 <span>کاربران</span>
             </a>
         </li>
         <!-- مشتریان -->
         <li>
             <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }} {{ request()->routeIs('customer-roles.*') ? 'active' : '' }}">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-person-standing-dress"></i>
                 <span>باشگاه مشتریان</span>
             </a>
         </li>
         <!-- برندها -->
         <li>
             <a href="{{ route('brands.index') }}" class="{{ request()->routeIs('brands.*') ? 'active' : '' }}">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-bing"></i>
                 <span>برندها</span>
             </a>
         </li>
         <!-- تامین کنندگان -->
         <li>
             <a href="{{ route('suppliers.index') }}" class="{{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
-                <i class="bi bi-people"></i>
+                <i class="bi bi-bus-front-fill"></i>
                 <span>تامین کنندگان</span>
             </a>
         </li>
@@ -69,6 +69,13 @@
             <a href="{{ route('employees.index') }}" class="{{ request()->routeIs('employees.*') ? 'active' : '' }}">
                 <i class="bi bi-person-badge"></i>
                 <span>مدیریت کارکنان</span>
+            </a>
+        </li>
+        <!-- هزینه‌ها -->
+        <li>
+            <a href="{{ route('expenses.index') }}" class="{{ request()->routeIs('expenses.*') ? 'active' : '' }}">
+                <i class="bi bi-wallet2"></i>
+                <span>مدیریت هزینه‌ها</span>
             </a>
         </li>
     </ul>

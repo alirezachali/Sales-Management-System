@@ -135,6 +135,11 @@ Route::get('/suppliers', function () {
         return view('employees.index');
     })->name('employees.index');
 
+    // مسیر نمایش لیست هزینه‌ها
+    Route::get('expenses', function () {
+        return view('expenses.index');
+    })->name('expenses.index');
+
 
 
 

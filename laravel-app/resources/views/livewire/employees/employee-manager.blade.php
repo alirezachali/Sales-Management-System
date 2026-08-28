@@ -106,11 +106,11 @@
                         <th width="40">ردیف</th>
                         <th>نام کارمند</th>
                         <th width="110">موبایل</th>
-                        <th width="120">عنوان شغلی</th>
-                        <th width="120">تاریخ استخدام</th>
+                        <th width="110">عنوان شغلی</th>
+                        <th width="170">تاریخ استخدام</th>
                         <th width="130">حقوق پایه</th>
-                        <th width="80">وضعیت</th>
-                        <th width="100">عملیات</th>
+                        <th width="60">وضعیت</th>
+                        <th width="90">عملیات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -131,7 +131,7 @@
                             </td>
                             <td>{{ $employee->mobile ?? '—' }}</td>
                             <td>{{ $employee->job_title ?? '—' }}</td>
-                            <td>{{ $employee->hired_at ? $employee->hired_at->format('Y/m/d') : '—' }}</td>
+                            <td>{{ jalaliDate($employee->hired_at) }}</td>
                             <td>
                                 {{ number_format($employee->base_salary) }} {{ setting('currency', '') }}
                             </td>

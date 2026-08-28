@@ -85,7 +85,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
             <h3 class="fw-bold mb-1">
-                <i class="bi bi-people text-primary"></i>
+                <i class="bi bi-person-standing-dress text-primary"></i>
                 باشگاه مشتریان
             </h3>
             <small class="text-muted">مدیریت اطلاعات مشتریان و رده های باشگاه مشتریان</small>
