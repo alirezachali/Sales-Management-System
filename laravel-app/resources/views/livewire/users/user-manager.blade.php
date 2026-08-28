@@ -105,7 +105,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <h3 class="fw-bold mb-1">
-                    <i class="bi bi-people-fill text-primary"></i>
+                    <i class="bi bi-person-video text-primary"></i>
                     مدیریت کاربران
                 </h3>
                 <small class="text-muted">مدیریت اطلاعات کاربران سیستم</small>

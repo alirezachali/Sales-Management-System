@@ -130,6 +130,16 @@ Route::get('/suppliers', function () {
     return view('suppliers.index');
 })->name('suppliers.index')->middleware('auth');
 
+    // مسیر نمایش لیست کارکنان
+    Route::get('employees', function () {
+        return view('employees.index');
+    })->name('employees.index');
+
+    // مسیر نمایش لیست هزینه‌ها
+    Route::get('expenses', function () {
+        return view('expenses.index');
+    })->name('expenses.index');
+
 
 
 
