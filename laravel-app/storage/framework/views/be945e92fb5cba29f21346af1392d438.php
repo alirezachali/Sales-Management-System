@@ -78,11 +78,11 @@
                 <span>مدیریت هزینه‌ها</span>
             </a>
         </li>
-        <!-- گزارش‌ها -->
+        <!-- لیست کارها-->
         <li>
-            <a href="<?php echo e(route('reports.sales')); ?>" class="<?php echo e(request()->routeIs('reports.*') ? 'active' : ''); ?>">
-                <i class="bi bi-clipboard-data"></i>
-                <span>گزارش‌ها</span>
+            <a href="<?php echo e(route('todos.index')); ?>" class="<?php echo e(request()->routeIs('todos.*') ? 'active' : ''); ?>">
+                <i class="bi bi-check2-square"></i>
+                <span>لیست کارها</span>
             </a>
         </li>
     </ul>
