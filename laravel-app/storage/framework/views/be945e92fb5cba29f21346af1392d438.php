@@ -78,6 +78,14 @@
                 <span>مدیریت هزینه‌ها</span>
             </a>
         </li>
+        <!-- لیست کارها -->
+        <li>
+            <a href="<?php echo e(route('todos.index')); ?>" class="<?php echo e(request()->routeIs('todos.*') ? 'active' : ''); ?>">
+                <i class="bi bi-check2-square"></i>
+                <span>لیست کارها</span>
+            </a>
+        </li>
+        
     </ul>
 </aside>
 <?php /**PATH C:\Users\Ali\Documents\Sales-Management-System\laravel-app\resources\views/partials/sidebar.blade.php ENDPATH**/ ?>

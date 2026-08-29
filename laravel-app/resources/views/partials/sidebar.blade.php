@@ -78,5 +78,13 @@
                 <span>مدیریت هزینه‌ها</span>
             </a>
         </li>
+        <!-- لیست کارها -->
+        <li>
+            <a href="{{ route('todos.index') }}" class="{{ request()->routeIs('todos.*') ? 'active' : '' }}">
+                <i class="bi bi-check2-square"></i>
+                <span>لیست کارها</span>
+            </a>
+        </li>
+        
     </ul>
 </aside>
