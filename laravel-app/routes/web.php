@@ -140,9 +140,9 @@ Route::get('/suppliers', function () {
         return view('expenses.index');
     })->name('expenses.index');
 
-    // مسیر گزارش فروش
-    Route::get('reports/sales', function () {
-        return view('reports.sales');
+    // مسیر لیست کارها
+    Route::get('todos', function () {
+        return view('todos.index');
     })->name('reports.sales');
 
 
