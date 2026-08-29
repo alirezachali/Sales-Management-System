@@ -95,7 +95,7 @@
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
                 <h3 class="fw-bold mb-1">
-                    <i class="bi bi-receipt text-primary"></i>
+                    <i class="bi bi-clipboard-data text-primary"></i>
                     گزارش فروش
                 </h3>
                 <small class="text-muted">مشاهده فروش‌ها در بازه زمانی انتخابی</small>
@@ -150,7 +150,7 @@
                                 <td class="text-center">{{ number_format($sale->items_count) }}</td>
                                 <td>{{ number_format($sale->total_price) }}</td>
                                 <td>
-                                    <span class="badge bg-danger text-dark">
+                                    <span class="badge bg-danger text-light">
                                         {{ number_format($sale->discount) }} %
                                     </span>
                                 </td>

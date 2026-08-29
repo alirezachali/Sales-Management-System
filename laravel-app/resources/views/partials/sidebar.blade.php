@@ -85,5 +85,12 @@
                 <span>لیست کارها</span>
             </a>
         </li>
+        <!-- گزارش فروش-->
+        <li>
+            <a href="{{ route('reports.sales') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">
+                <i class="bi bi-clipboard-data"></i>
+                <span>گزارش فروش</span>
+            </a>
+        </li>
     </ul>
 </aside>
