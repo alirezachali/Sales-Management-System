@@ -133,9 +133,9 @@
                         <th width="70">دسته‌بندی</th>
                         <th width="100">کارمند</th>
                         <th width="135">تاریخ</th>
-                        <th width="70">روش پرداخت</th>
+                        <th width="60">روش پرداخت</th>
                         <th width="130">مبلغ</th>
-                        <th width="110">عملیات</th>
+                        <th width="120">عملیات</th>
                     </tr>
                 </thead>
                 <tbody>

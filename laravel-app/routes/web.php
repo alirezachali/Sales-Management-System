@@ -140,10 +140,10 @@ Route::get('/suppliers', function () {
         return view('expenses.index');
     })->name('expenses.index');
 
-    // مسیر لیست کارها (Todo)
-    Route::get('todos', function () {
-        return view('todos.index');
-    })->name('todos.index');
+    // مسیر گزارش فروش
+    Route::get('reports/sales', function () {
+        return view('reports.sales');
+    })->name('reports.sales');
 
 
 

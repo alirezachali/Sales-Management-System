@@ -78,13 +78,12 @@
                 <span>مدیریت هزینه‌ها</span>
             </a>
         </li>
-        <!-- لیست کارها -->
+        <!-- گزارش‌ها -->
         <li>
-            <a href="{{ route('todos.index') }}" class="{{ request()->routeIs('todos.*') ? 'active' : '' }}">
-                <i class="bi bi-check2-square"></i>
-                <span>لیست کارها</span>
+            <a href="{{ route('reports.sales') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">
+                <i class="bi bi-clipboard-data"></i>
+                <span>گزارش‌ها</span>
             </a>
         </li>
-        
     </ul>
 </aside>
