@@ -78,6 +78,13 @@
                 <span>مدیریت هزینه‌ها</span>
             </a>
         </li>
+        <!-- گزارش‌ها -->
+        <li>
+            <a href="<?php echo e(route('reports.sales')); ?>" class="<?php echo e(request()->routeIs('reports.*') ? 'active' : ''); ?>">
+                <i class="bi bi-clipboard-data"></i>
+                <span>گزارش‌ها</span>
+            </a>
+        </li>
     </ul>
 </aside>
 <?php /**PATH C:\Users\Ali\Documents\Sales-Management-System\laravel-app\resources\views/partials/sidebar.blade.php ENDPATH**/ ?>

@@ -118,7 +118,9 @@
                                 {{-- تعداد کالا --}}
                                 <td>
                                     @if ($category->products_count)
-                                        <span class="badge bg-info text-dark">{{ $category->products_count }}</span>
+                                        <span class="badge bg-info text-dark">
+                                            {{ $category->products_count }}
+                                        </span>
                                     @else
                                         <span class="badge bg-secondary text-dark">0</span>
                                     @endif

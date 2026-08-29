@@ -78,5 +78,12 @@
                 <span>مدیریت هزینه‌ها</span>
             </a>
         </li>
+        <!-- گزارش‌ها -->
+        <li>
+            <a href="{{ route('reports.sales') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">
+                <i class="bi bi-clipboard-data"></i>
+                <span>گزارش‌ها</span>
+            </a>
+        </li>
     </ul>
 </aside>
