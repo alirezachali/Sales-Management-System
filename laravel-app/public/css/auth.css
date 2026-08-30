@@ -3,15 +3,13 @@
     --bg2:#1e293b;
     --glass:rgba(255,255,255,.08);
     --border:rgba(255,255,255,.12);
-    --text:#ffffff;
-    --muted:#b8c0cc;
-    --primary:#0d6efd;
+    --text:#f3f1ee;
 }
 
 html,
 body{
     width:100%;
-    height:100%;
+    height:auto;
 }
 
 body{
@@ -24,30 +22,32 @@ body{
 
 .auth-wrapper{
     width:100%;
-    height:100vh;
+    height:auto;
     display:flex;
     justify-content:center;
     align-items:center;
-    padding:30px;
+    padding:8px;
 }
 
 .login-card{
     width:500px;
-    height: 100%;
+    height: auto;
     max-width:100%;
-    padding:40px;
+    padding:20px;
     border-radius:22px;
     background:rgba(88, 87, 87, 0.096);
     backdrop-filter:blur(18px);
-    border:1px solid rgba(255,255,255,.12);
+    border:3px solid rgba(255,255,255,.12);
     box-shadow:0 20px 60px rgba(0,0,0,.35);
-    animation:fadeUp .6s ease;
+    animation:fadeUp .9s ease;
 }
 
 .login-logo{
     width:120px;
     height:120px;
     object-fit:contain;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(27, 27, 27, 0.35);
 }
 
 .login-btn{
@@ -66,7 +66,7 @@ body{
 .input-group-text{
     background:rgba(255,255,255,.08);
     border-color:rgba(255,255,255,.15);
-    color:#fff;
+    color:#f7f5f4;
 }
 
 .form-control{
@@ -89,7 +89,7 @@ body{
 @keyframes fadeUp{
     from{
         opacity:0;
-        transform:translateY(35px);
+        transform:translateY(55px);
     }
 
     to{
