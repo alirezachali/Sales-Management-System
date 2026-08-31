@@ -124,7 +124,7 @@
                             <th width="40">ردیف</th>
                             <th>شماره فاکتور</th>
                             <th width="130">مشتری</th>
-                            <th width="180">تاریخ</th>
+                            <th width="160">تاریخ</th>
                             <th width="40">اقلام</th>
                             <th width="100">جمع کل</th>
                             <th width="60">تخفیف</th>
