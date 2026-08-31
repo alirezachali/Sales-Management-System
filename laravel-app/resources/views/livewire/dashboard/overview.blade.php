@@ -88,16 +88,16 @@
     <div class="row g-3">
 
         <!-- کارت آخرین فروش‌ها-->
-        <div class="col-md-8">
+        <div class="col-md-6">
             <div class="card dashboard-card border-3">
-                <div class="card-header">
+                <div class="card-header bg-warning text-dark opacity-70">
                     <strong>آخرین فروش‌ها</strong>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>فاکتور</th>
+                                {{-- <th>فاکتور</th> --}}
                                 <th>فروشنده</th>
                                 <th>مبلغ</th>
                                 <th>تاریخ</th>
@@ -107,7 +107,7 @@
                         <tbody>
                             @forelse($latestSales as $sale)
                                 <tr wire:key="latest-sale-{{ $sale->id }}">
-                                    <td>{{ $sale->invoice_number }}</td>
+                                    {{-- <td>{{ $sale->invoice_number }}</td> --}}
                                     <td>{{ $sale->user->name ?? '-' }}</td>
                                     <td>{{ number_format($sale->final_price) }}</td>
                                     <td>{{ jalaliDateTime($sale->created_at) }}</td>
@@ -131,13 +131,13 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="row g-3">
 
                 <!-- کارت لیست کالاهای کم‌موجود-->
                 <div class="col-12">
                     <div class="card dashboard-card border-3">
-                        <div class="card-header bg-danger">
+                        <div class="card-header bg-danger opacity-70">
                             ⚠️ لیست کالاهای کم‌موجودی
                         </div>
                         <div class="list-group list-group-flush">
@@ -162,7 +162,7 @@
                 <!-- کارت کاربران -->
                 <div class="col-12">
                     <div class="card dashboard-card border-3">
-                        <div class="card-header bg-success text-dark">
+                        <div class="card-header bg-success text-dark opacity-70">
                             <strong>👤 کاربران</strong>
                         </div>
                         <div class="table-responsive">
@@ -211,18 +211,15 @@
                     </div>
                 </div>
 
-            </div>
-        </div>
-
-        <!-- کارت کارهای در حال انجام -->
-        <div class="col-md-12">
+                <!-- کارت کارهای در حال انجام -->
+        <div class="col-12">
             <div class="card dashboard-card border-3">
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header bg-info text-dark d-flex justify-content-between align-items-center opacity-70">
                     <strong>
                         <i class="bi bi-hourglass-split text-warning"></i>
                         کارهای در حال انجام
                     </strong>
-                    <a href="{{ route('todos.index') }}" class="btn btn-sm btn-outline-primary">
+                    <a href="{{ route('todos.index') }}" class="btn btn-sm btn-primary">
                         مشاهده همه
                     </a>
                 </div>
@@ -275,10 +272,15 @@
             </div>
         </div>
 
+            </div>
+        </div>
+
+        
+
         <!-- کارت نمودار فروش 30 روز گذشته-->
         <div class="col-md-12">
             <div class="card dashboard-card border-3">
-                <div class="card-header">
+                <div class="card-header bg-secondary text-dark opacity-70">
                     <strong>
                         نمودار فروش ۳۰ روز اخیر
                     </strong>
