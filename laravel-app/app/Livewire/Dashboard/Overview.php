@@ -4,6 +4,7 @@ namespace App\Livewire\Dashboard;
 
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\Todo;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -58,6 +59,13 @@ class Overview extends Component
             ->orderBy('name')
             ->get();
 
+        // کارهای در حال انجام برای نمایش در کارت داشبورد
+        $inProgressTodos = Todo::where('status', 'in_progress')
+            ->with('assignee')
+            ->latest()
+            ->take(10)
+            ->get();
+
         [$labels, $chartData] = $this->buildChartSeries();
 
         // به نمودار Chart.js سمت کلاینت اطلاع می‌دهیم داده‌ی تازه‌ای آماده است.
@@ -75,6 +83,7 @@ class Overview extends Component
             'labels',
             'chartData',
             'users',
+            'inProgressTodos',
         ));
     }
 

@@ -128,18 +128,18 @@
             </div>
         </div>
 
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
                         <th width="40">ردیف</th>
                         <th>عنوان</th>
-                        <th width="100">وضعیت</th>
-                        <th width="90">اولویت</th>
+                        <th width="90">وضعیت</th>
+                        <th width="80">اولویت</th>
                         <th width="90">کاربر</th>
-                        <th width="90">انجام‌دهنده</th>
-                        <th width="120">سررسید</th>
-                        <th width="130">عملیات</th>
+                        <th width="100">انجام‌دهنده</th>
+                        <th width="160">سررسید</th>
+                        <th width="160">عملیات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -157,12 +157,12 @@
                                 @endif
                             </td>
                             <td>
-                                <span class="badge bg-{{ $todo->status === 'completed' ? 'success' : ($todo->status === 'in_progress' ? 'info' : 'secondary') }}">
+                                <span class="badge bg-{{ $todo->status === 'completed' ? 'success' : ($todo->status === 'in_progress' ? 'info' : 'secondary') }} text-dark">
                                     {{ $todo->status_label }}
                                 </span>
                             </td>
                             <td>
-                                <span class="badge bg-{{ $todo->priority_color }}">
+                                <span class="badge bg-{{ $todo->priority_color }} text-dark">
                                     {{ $todo->priority_label }}
                                 </span>
                             </td>
@@ -171,7 +171,12 @@
                             </td>
                             <td>
                                 @if ($todo->assignee)
-                                    <span class="badge bg-secondary">{{ $todo->assignee?->name }}</span>
+                                    <span class="badge bg-secondary text-dark">{{ $todo->assignee?->name }}</span>
+                                    @if ($todo->isCompleted())
+                                        <i class="bi bi-check-circle-fill text-success ms-1" title="تکمیل شده"></i>
+                                    @else
+                                        <i class="bi bi-hourglass-split text-warning ms-0" title="در انتظار انجام"></i>
+                                    @endif
                                 @else
                                     <span class="text-muted">—</span>
                                 @endif
@@ -187,12 +192,12 @@
                             </td>
                             <td>
                                 <button type="button"
-                                    class="btn btn-sm {{ $todo->isCompleted() ? 'btn-outline-success' : 'btn-success' }}"
+                                    class="btn btn-sm {{ $todo->isCompleted() ? 'btn-success text-dark' : 'btn-success text-dark' }}"
                                     wire:click="toggleComplete({{ $todo->id }}"
                                     title="{{ $todo->isCompleted() ? 'برگرداندن به در انتظار' : 'تکمیل کردن' }}">
                                     <i class="bi {{ $todo->isCompleted() ? 'bi-arrow-counterclockwise' : 'bi-check-lg' }}"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-outline-light"
+                                <button type="button" class="btn btn-sm btn-info text-dark"
                                     wire:click="openDetails({{ $todo->id }})" title="مشاهده جزئیات">
                                     <i class="bi bi-eye"></i>
                                 </button>
@@ -277,13 +282,27 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">انجام‌دهنده</label>
+                                    <label class="form-label">
+                                        <i class="bi bi-person-check"></i>
+                                        ثبت کار برای (انجام‌دهنده)
+                                    </label>
                                     <select wire:model="assigned_to" class="form-select">
-                                        <option value="">بدون انجام‌دهنده</option>
                                         @foreach ($allUsers as $user)
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                            <option value="{{ $user->id }}">
+                                                {{ $user->id === auth()->id() ? $user->name . ' (خودم)' : $user->name }}
+                                            </option>
                                         @endforeach
                                     </select>
+                                    <small class="text-muted">
+                                        اگر این کار را برای کاربر دیگری ثبت می‌کنید، او را از این فهرست انتخاب کنید.
+                                    </small>
+                                </div>
+
+                                <div class="col-md-6 d-flex align-items-end">
+                                    <div class="alert alert-light border mb-0 w-100 py-0">
+                                        <div class="subheader">ثبت‌کننده</div>
+                                        <div class="fw-bold">{{ auth()->user()->name ?? '' }}</div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -321,44 +340,44 @@
                         <table class="table table-bordered table-sm">
                             <tbody>
                                 <tr>
-                                    <th class="w-40 bg-light">عنوان</th>
+                                    <th class="w-40">عنوان</th>
                                     <td>{{ $detailsTodo->title }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">توضیحات</th>
+                                    <th>توضیحات</th>
                                     <td>{{ $detailsTodo->description ?? '—' }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">وضعیت</th>
+                                    <th>وضعیت</th>
                                     <td>
-                                        <span class="badge bg-{{ $detailsTodo->status === 'completed' ? 'success' : ($detailsTodo->status === 'in_progress' ? 'info' : 'secondary') }}">
+                                        <span class="badge bg-{{ $detailsTodo->status === 'completed' ? 'success' : ($detailsTodo->status === 'in_progress' ? 'info' : 'secondary') }} text-dark">
                                             {{ $detailsTodo->status_label }}
                                         </span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">اولویت</th>
+                                    <th>اولویت</th>
                                     <td>
-                                        <span class="badge bg-{{ $detailsTodo->priority_color }}">
+                                        <span class="badge bg-{{ $detailsTodo->priority_color }} text-dark">
                                             {{ $detailsTodo->priority_label }}
                                         </span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">سررسید</th>
+                                    <th>سررسید</th>
                                     <td>{{ $detailsTodo->due_date ? jalaliDate($detailsTodo->due_date) : '—' }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">ثبت‌کننده</th>
+                                    <th>ثبت‌کننده</th>
                                     <td>{{ $detailsTodo->user?->name ?? '—' }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">انجام‌دهنده</th>
+                                    <th>انجام‌دهنده</th>
                                     <td>{{ $detailsTodo->assignee?->name ?? '—' }}</td>
                                 </tr>
                                 @if ($detailsTodo->completed_at)
                                     <tr>
-                                        <th class="bg-light">زمان تکمیل</th>
+                                        <th>زمان تکمیل</th>
                                         <td>{{ jalaliDateTime($detailsTodo->completed_at) }}</td>
                                     </tr>
                                 @endif

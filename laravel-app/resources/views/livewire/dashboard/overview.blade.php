@@ -214,6 +214,67 @@
             </div>
         </div>
 
+        <!-- کارت کارهای در حال انجام -->
+        <div class="col-md-12">
+            <div class="card dashboard-card border-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <strong>
+                        <i class="bi bi-hourglass-split text-warning"></i>
+                        کارهای در حال انجام
+                    </strong>
+                    <a href="{{ route('todos.index') }}" class="btn btn-sm btn-outline-primary">
+                        مشاهده همه
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>عنوان</th>
+                                <th>انجام‌دهنده</th>
+                                <th>اولویت</th>
+                                <th>سررسید</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($inProgressTodos as $todo)
+                                <tr wire:key="in-progress-todo-{{ $todo->id }}">
+                                    <td class="fw-bold">{{ $todo->title }}</td>
+                                    <td>
+                                        @if ($todo->assignee)
+                                            <span class="badge bg-secondary text-dark">{{ $todo->assignee->name }}</span>
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{{ $todo->priority_color }} text-dark">
+                                            {{ $todo->priority_label }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if ($todo->due_date)
+                                            <span class="{{ $todo->due_date->isPast() ? 'text-danger fw-bold' : '' }}">
+                                                {{ jalaliDate($todo->due_date) }}
+                                            </span>
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">
+                                        هیچ کار در حال انجامی وجود ندارد.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <!-- کارت نمودار فروش 30 روز گذشته-->
         <div class="col-md-12">
             <div class="card dashboard-card border-3">

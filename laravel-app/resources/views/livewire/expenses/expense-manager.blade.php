@@ -149,7 +149,7 @@
                                 @endif
                             </td>
                             <td>
-                                <span class="badge bg-secondary-lt text-dark">{{ $expense->category?->name }}</span>
+                                <span class="badge bg-secondary text-dark">{{ $expense->category?->name }}</span>
                             </td>
                             <td>
                                 @if ($expense->employee)
@@ -164,7 +164,7 @@
                                 {{ number_format($expense->amount) }} {{ setting('currency', '') }}
                             </td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-outline-light"
+                                <button type="button" class="btn btn-sm btn-secondary text-dark"
                                     wire:click="openDetails({{ $expense->id }})" title="مشاهده جزئیات">
                                     <i class="bi bi-eye"></i>
                                 </button>

@@ -156,7 +156,7 @@
                                     wire:click="openLedger({{ $customer->id }})" title="مشاهده گردش حساب مشتری">
                                     <i class="bi bi-wallet-fill"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-outline-light"
+                                <button type="button" class="btn btn-sm btn-secondary text-dark"
                                     wire:click="recalculateRole({{ $customer->id }})"
                                     title="بازمحاسبه‌ی رده‌ی این مشتری بر اساس آمار خرید فعلی">
                                     <i class="bi bi-arrow-repeat"></i>

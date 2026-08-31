@@ -101,7 +101,7 @@
                 <small class="text-muted">مشاهده فروش‌ها در بازه زمانی انتخابی</small>
             </div>
             <div class="d-flex gap-2 flex-wrap">
-                <button type="button" class="btn btn-success" wire:click="exportExcel" wire:loading.attr="disabled"
+                <button type="button" class="btn btn-success text-dark" wire:click="exportExcel" wire:loading.attr="disabled"
                     wire:target="exportExcel" title="خروجی اکسل">
                     <span wire:loading wire:target="exportExcel" class="spinner-border spinner-border-sm me-1"></span>
                     <i class="bi bi-file-earmark-excel"></i>
@@ -154,7 +154,7 @@
                                         {{ number_format($sale->discount) }} %
                                     </span>
                                 </td>
-                                <td class="fw-bold text-light">
+                                <td class="fw-bold">
                                     {{ number_format($sale->final_price) }} {{ setting('currency', '') }}
                                 </td>
                                 <td>

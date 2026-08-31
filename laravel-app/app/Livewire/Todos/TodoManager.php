@@ -164,7 +164,9 @@ class TodoManager extends Component
         $this->status = Todo::STATUS_PENDING;
         $this->priority = Todo::PRIORITY_MEDIUM;
         $this->due_date = null;
-        $this->assigned_to = null;
+        // به‌صورت پیش‌فرض، کار برای خودِ کاربرِ ثبت‌کننده ساخته می‌شود؛
+        // کاربر می‌تواند آن را به هر کاربر دیگری (مثلاً یک مدیر برای کارمندش) واگذار کند.
+        $this->assigned_to = (string) auth()->id();
         $this->resetErrorBag();
     }
 
