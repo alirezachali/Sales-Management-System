@@ -23,10 +23,10 @@
         <div class="card-body">
             <div class="card-header d-flex justify-content-between align-items-center">
                 {{-- نمایش پیغام موجودی فعلی --}}
-                <div class="alert alert-info mb-0">
+                <div class="alert alert-info mb-3">
                     موجودی فعلی:
-                    <strong>{{ $product->formatted_stock }}</strong>
-                    {{ $product->unit }}
+                    <strong>{{ $product->formatted_stock }}{{ $product->unit }}</strong>
+                    
                 </div>
 
                 {{-- دکمه‌های ورود، خروج و خروجی گزارش --}}
@@ -162,13 +162,13 @@
 
                         <div class="modal-body">
 
-                            <div class="alert {{ $formType === 'purchase' ? 'alert-info' : 'alert-warning' }}">
+                            <div class="alert {{ $formType === 'purchase' ? 'alert-success' : 'alert-danger' }}">
                                 کالا:
-                                <strong>{{ $product->name }}</strong>
-                                <br>
+                                <strong class="text-info">{{ $product->name }}</strong>
+                                    <span>|</span>
                                 موجودی فعلی:
-                                <strong>{{ $product->formatted_stock }}</strong>
-                                {{ $product->unit }}
+                                <strong class="text-info">{{ $product->formatted_stock }}{{ $product->unit }}</strong>
+                                
                             </div>
 
                             <div class="mb-3">
@@ -192,7 +192,7 @@
                                 انصراف
                             </button>
                             <button type="submit"
-                                class="btn {{ $formType === 'purchase' ? 'btn-primary' : 'btn-danger' }}"
+                                class="btn {{ $formType === 'purchase' ? 'btn-success' : 'btn-danger' }}"
                                 wire:loading.attr="disabled" wire:target="save">
                                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                                 {{ $formType === 'purchase' ? 'ثبت ورود کالا' : 'ثبت خروج کالا' }}
