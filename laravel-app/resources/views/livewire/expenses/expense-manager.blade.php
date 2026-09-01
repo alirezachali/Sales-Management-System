@@ -205,7 +205,7 @@
                 @php $maxTotal = $topCategories->max('total'); @endphp
                 @foreach ($topCategories as $tc)
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <span class="badge bg-secondary-lt text-dark" style="min-width: 140px;">
+                        <span class="badge bg-secondary text-dark" style="min-width: 140px;">
                             {{ $tc->category?->name ?? 'بدون دسته' }}
                         </span>
                         <div class="progress flex-grow-1" style="height: 12px;">

@@ -1,4 +1,4 @@
-/* ==========================================================================
+/* ========================================================================== 
    متغیرهای مشترک رابط کاربری
    ========================================================================== */
 :root {
@@ -13,15 +13,16 @@
    ========================================================================== */
 .top-navbar {
     position: sticky;
+    /* position: relative; */
     top: 0;
     z-index: 1030;
     height: var(--nav-height);
     width: 101%;
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.88);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.438);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
     border-bottom: 2px solid rgba(0, 0, 0, 0.12);
 }
 
@@ -124,7 +125,7 @@
 }
 
 .user-menu-toggle.is-open {
-    background: rgba(251, 255, 0, 0.404);
+    background: rgba(217, 218, 214, 0.178);
 }
 
 /* تصویر پروفایل در نوار */
@@ -180,9 +181,9 @@
     min-width: 230px;
     padding: 10px;
     /* پس‌زمینه‌ی شیشه‌ای مات (Glassmorphism): کمی شفاف + فیلتر بلور */
-    background: rgba(255, 255, 255, 0.85);
-    /* -webkit-backdrop-filter: blur(10px); */
-    /* backdrop-filter: blur(10px); */
+    background: rgb(255, 255, 255);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
     border: 2px solid rgba(0, 0, 0, 0.12);
     border-radius: 16px;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
@@ -190,13 +191,13 @@
 }
 
 [data-bs-theme="dark"] .user-dropdown {
-    background: rgba(7, 7, 7, 0.849);
+    background: rgb(7, 7, 7);
     border-color: rgba(121, 120, 120, 0.247);
 }
 
 /* سربرگ اطلاعات کاربر */
 .user-dropdown-head {
-    display: flex;
+    display: block;
     align-items: center;
     gap: 12px;
     padding: 6px 8px 12px;
@@ -208,7 +209,7 @@
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--nav-accent);
-    flex-shrink: 0;
+    /* flex-shrink: 0; */
 }
 
 .dropdown-avatar-fallback {
@@ -218,7 +219,7 @@
     font-size: 24px;
     color: var(--nav-accent-contrast);
     background: var(--nav-accent);
-    border: none;
+    border: 2px;
 }
 
 .dropdown-user-meta {
@@ -229,14 +230,14 @@
     font-weight: 700;
     font-size: .95rem;
     color: var(--bs-emphasis-color);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* white-space: nowrap; */
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
 }
 
 .dropdown-user-role {
     font-size: .8rem;
-    color: var(--bs-secondary-color);
+    /* color: var(--bs-secondary-color); */
 }
 
 /* سوییچ زبان فارسی/انگلیسی */
@@ -259,14 +260,14 @@
 .lang-switch-btns {
     display: inline-flex;
     gap: 6px;
-    background: #fff;
+    /* background: #fff; */
     padding: 5px;
     border-radius: 999px;
     border: 2px solid rgba(0, 0, 0, 0.12);
 }
 
 [data-bs-theme="dark"] .lang-switch-btns {
-    background: #1a1a1a;
+    /* background: #1a1a1a; */
     border-color: rgba(255, 255, 255, 0.12);
 }
 
@@ -360,7 +361,7 @@
 
 /* آیتم‌های منو */
 .user-dropdown-item {
-    display: flex;
+    /* display: flex; */
     align-items: center;
     gap: 12px;
     width: 100%;
@@ -383,17 +384,17 @@
 }
 
 .user-dropdown-item:hover {
-    background: color-mix(in srgb, var(--nav-accent) 70%, transparent);
-    color: var(--bs-emphasis-color);
+    background: rgb(255, 174, 0);
+    color: black;
 }
 
 /* خروج */
 .user-dropdown-item.logout-item {
-    color: #e0405a;
+    color: #f5052d;
 }
 
 .user-dropdown-item.logout-item:hover {
-    background: color-mix(in srgb, #e0405a 70%, transparent);
+    background: #f3052d;
     color: #0a0a0a;
 }
 
@@ -416,7 +417,7 @@
 .user-avatar-preview img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* object-fit: cover; */
 }
 
 .user-avatar-preview i {

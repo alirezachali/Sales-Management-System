@@ -9,7 +9,7 @@
                 {{ verta()->format('l j F Y') }}
             </span>
 
-            <span class="footer-separator">||</span>
+            <span class="footer-separator">|</span>
 
             <span id="liveClock" class="footer-clock">
                 --:--:--
@@ -18,11 +18,18 @@
 
         </div>
 
-        <div>
-            <a href="#" class="btn" title="نوتیفیکیشن">
-                <i class="bi bi-bell-fill"></i>
-            </a>
-        </div>
-
     </div>
 </footer>
+
+<script>
+
+    function updateClock() {
+        const now = new Date();
+        document.getElementById("liveClock").innerHTML =
+            now.toLocaleTimeString("fa-IR");
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+</script>
