@@ -169,7 +169,7 @@
             </div>
 
             {{-- آخرین فاکتورهای ثبت شده --}}
-            <div class="card glass-card border-3 mt-3">
+            {{-- <div class="card glass-card border-3 mt-3">
                 <div class="card-header">
                     <h5 class="fw-bold text-warning">آخرین فاکتورها</h5>
                 </div>
@@ -208,12 +208,11 @@
                     </div>
 
                     <div class="card-footer">
-
-                        {{-- {{ $recentSales->links() }} --}}
-
+                        {{ $recentSales->links() }}
                     </div>
-                
-            </div>
+            </div> --}}
+
+            
         </div>
     </div>
 
