@@ -63,4 +63,9 @@ class Supplier extends Model
     {
         return $this->belongsToMany(Brand::class, 'brand_supplier');
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }

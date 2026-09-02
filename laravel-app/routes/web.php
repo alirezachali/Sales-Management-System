@@ -51,6 +51,10 @@ Route::middleware('auth')->group(function () {
         Route::get('products', function () {
             return view('products.index');
         })->name('products.index');
+
+        Route::get('purchase-invoices', function () {
+            return view('purchase-invoices.index');
+        })->name('purchase-invoices.index');
         /* بقیه‌ی مسیرهای resource همچنان از طریق کنترلر (برای سازگاری با لینک‌های قدیمی) */
         Route::resource('products', ProductController::class)->except(['show', 'index']);
         Route::get('products/{product}/stock', function (\App\Models\Product $product) {

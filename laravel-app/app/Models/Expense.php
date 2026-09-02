@@ -64,6 +64,11 @@ class Expense extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function purchaseInvoice(): BelongsTo
+    {
+        return $this->belongsTo(PurchaseInvoice::class);
+    }
+
     // فیلتر هزینه‌های مربوط به یک دوره زمانی مشخص
     public function scopeBetween($query, $start, $end)
     {

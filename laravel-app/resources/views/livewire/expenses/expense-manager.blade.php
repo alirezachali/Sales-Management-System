@@ -348,41 +348,41 @@
                         <table class="table table-bordered table-sm">
                             <tbody>
                                 <tr>
-                                    <th class="w-40 bg-light">عنوان</th>
+                                    <th class="w-40">عنوان</th>
                                     <td>{{ $detailsExpense->title }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">دسته‌بندی</th>
+                                    <th>دسته‌بندی</th>
                                     <td>{{ $detailsExpense->category?->name ?? '—' }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">کارمند</th>
+                                    <th>کارمند</th>
                                     <td>{{ $detailsExpense->employee?->full_name ?? '—' }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">مبلغ</th>
+                                    <th>مبلغ</th>
                                     <td class="fw-bold text-danger">
                                         {{ number_format($detailsExpense->amount) }} {{ setting('currency', '') }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">تاریخ</th>
+                                    <th>تاریخ</th>
                                     <td>{{ jalaliDate($detailsExpense->expense_date) }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">روش پرداخت</th>
+                                    <th>روش پرداخت</th>
                                     <td>{{ $detailsExpense->payment_method_text }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">شماره مرجع</th>
+                                    <th>شماره مرجع</th>
                                     <td>{{ $detailsExpense->reference_number ?? '—' }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">ثبت‌کننده</th>
+                                    <th>ثبت‌کننده</th>
                                     <td>{{ $detailsExpense->user?->name ?? '—' }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="bg-light">توضیحات</th>
+                                    <th>توضیحات</th>
                                     <td>{{ $detailsExpense->description ?? '—' }}</td>
                                 </tr>
                             </tbody>

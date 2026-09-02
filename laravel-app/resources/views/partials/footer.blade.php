@@ -5,16 +5,16 @@
         <div class="footer-datetime">
 
             <span class="footer-date">
-                <i class="bi bi-calendar2-date"></i>
+                {{-- <i class="bi bi-calendar2-date"></i> --}}
                 {{ verta()->format('l j F Y') }}
             </span>
 
-            <span class="footer-separator">|</span>
+            <span class="footer-separator">&emsp;| |&emsp;</span>
 
             <span id="liveClock" class="footer-clock">
                 --:--:--
             </span>
-            <i class="bi bi-clock"></i>
+            {{-- <i class="bi bi-clock"></i> --}}
 
         </div>
 

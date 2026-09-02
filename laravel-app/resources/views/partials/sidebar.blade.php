@@ -15,6 +15,13 @@
                 <span>محصولات</span>
             </a>
         </li>
+        <!-- فاکتور خرید -->
+        <li>
+            <a href="{{ route('purchase-invoices.index') }}" class="{{ request()->routeIs('purchase-invoices.*') ? 'active' : '' }}">
+                <i class="bi bi-file-earmark-plus"></i>
+                <span>ثبت فاکتور خرید</span>
+            </a>
+        </li>
         <!-- دسته بندی ها -->
         <li>
             <a href="{{ route('categories.index') }}" class="{{ request()->routeIs('categories.*') ? 'active' : '' }}">
