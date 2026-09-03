@@ -35,6 +35,8 @@ class TodoManager extends Component
     public string $status = 'pending';
     public string $priority = 'medium';
     public ?string $due_date = null;
+    /** تاریخ سررسید شمسی برای نمایش و انتخاب توسط کاربر (مثل 1405/06/11) */
+    public ?string $due_date_jalali = null;
     public ?string $assigned_to = null;
 
     /*
@@ -94,6 +96,7 @@ class TodoManager extends Component
             'status' => ['required', Rule::in(array_keys($this->statusLabels))],
             'priority' => ['required', Rule::in(array_keys($this->priorityLabels))],
             'due_date' => ['nullable', 'date'],
+            'due_date_jalali' => ['nullable', 'string'],
             'assigned_to' => ['nullable', 'exists:users,id'],
         ];
     }
@@ -104,6 +107,7 @@ class TodoManager extends Component
             'title.required' => 'وارد کردن عنوان کار الزامی است.',
             'status.required' => 'انتخاب وضعیت الزامی است.',
             'priority.required' => 'انتخاب اولویت الزامی است.',
+            'due_date.date' => 'تاریخ سررسید معتبر نیست.',
         ];
     }
 
@@ -128,6 +132,7 @@ class TodoManager extends Component
         $this->status = $todo->status;
         $this->priority = $todo->priority;
         $this->due_date = $todo->due_date?->toDateString();
+        $this->due_date_jalali = $todo->due_date ? gregorianToJalaliInput($todo->due_date) : null;
         $this->assigned_to = $todo->assigned_to ? (string) $todo->assigned_to : null;
 
         $this->resetErrorBag();
@@ -156,6 +161,53 @@ class TodoManager extends Component
         $this->resetForm();
     }
 
+    /*
+    |--------------------------------------------------------------------|
+    | همگام‌سازی تاریخ شمسی ورودی کاربر با تاریخ میلادی سمت سرور          |
+    |--------------------------------------------------------------------|
+    */
+    public function updatedDueDateJalali(): void
+    {
+        $val = trim((string) $this->due_date_jalali);
+
+        if ($val === '') {
+            $this->due_date = null;
+            $this->resetErrorBag('due_date_jalali');
+            return;
+        }
+
+        $gregorian = jalaliToGregorian($val);
+
+        if ($gregorian !== null) {
+            $this->due_date = $gregorian;
+            $this->resetErrorBag('due_date_jalali');
+        }
+    }
+
+    /** تبدیل ورودی شمسی به میلادی؛ ورودی خالی یعنی بدون سررسید. در صورت نامعتبر بودن false برمی‌گرداند. */
+    private function syncDueDate(): bool
+    {
+        $val = trim((string) $this->due_date_jalali);
+
+        if ($val === '') {
+            $this->due_date = null;
+            return true;
+        }
+
+        $gregorian = jalaliToGregorian($val);
+
+        if ($gregorian === null) {
+            $this->addError('due_date_jalali', 'تاریخ سررسید معتبر نیست. مثال درست: 1405/06/11');
+            return false;
+        }
+
+        $this->due_date = $gregorian;
+        // نرمال‌سازی قالب نمایش
+        $this->due_date_jalali = gregorianToJalaliInput($gregorian) ?? $this->due_date_jalali;
+
+        return true;
+    }
+
     private function resetForm(): void
     {
         $this->editingId = null;
@@ -164,6 +216,7 @@ class TodoManager extends Component
         $this->status = Todo::STATUS_PENDING;
         $this->priority = Todo::PRIORITY_MEDIUM;
         $this->due_date = null;
+        $this->due_date_jalali = null;
         // به‌صورت پیش‌فرض، کار برای خودِ کاربرِ ثبت‌کننده ساخته می‌شود؛
         // کاربر می‌تواند آن را به هر کاربر دیگری (مثلاً یک مدیر برای کارمندش) واگذار کند.
         $this->assigned_to = (string) auth()->id();
@@ -177,7 +230,14 @@ class TodoManager extends Component
     */
     public function save(): void
     {
+        if (! $this->syncDueDate()) {
+            return;
+        }
+
         $data = $this->validate();
+
+        // ستون due_date_jalali در دیتابیس وجود ندارد؛ فقط due_date میلادی ذخیره می‌شود
+        unset($data['due_date_jalali']);
 
         $data['assigned_to'] = $data['assigned_to'] ?: null;
 

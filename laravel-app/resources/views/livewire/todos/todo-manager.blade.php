@@ -137,8 +137,8 @@
                         <th width="90">وضعیت</th>
                         <th width="80">اولویت</th>
                         <th width="90">کاربر</th>
-                        <th width="100">انجام‌دهنده</th>
-                        <th width="160">سررسید</th>
+                        <th width="140">انجام‌دهنده</th>
+                        <th width="130">سررسید</th>
                         <th width="160">عملیات</th>
                     </tr>
                 </thead>
@@ -277,8 +277,13 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">تاریخ سررسید</label>
-                                    <input type="date" wire:model="due_date" class="form-control">
+                                    <label class="form-label">تاریخ سررسید (شمسی)</label>
+                                    <input type="text" wire:model="due_date_jalali" data-jdp
+                                        autocomplete="off" inputmode="numeric" placeholder="1405/06/11"
+                                        class="form-control @error('due_date_jalali') is-invalid @enderror">
+                                    @error('due_date_jalali')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-6">
