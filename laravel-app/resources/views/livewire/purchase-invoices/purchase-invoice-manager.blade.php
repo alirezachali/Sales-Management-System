@@ -27,10 +27,11 @@
             <div class="row g-3">
 
                 <div class="col-md-3">
-                    <label class="form-label">تاریخ خرید</label>
-                    <input type="date" wire:model="purchase_date"
-                        class="form-control @error('purchase_date') is-invalid @enderror">
-                    @error('purchase_date')
+                    <label class="form-label">تاریخ خرید (شمسی)</label>
+                    <input type="text" wire:model="purchase_date_jalali" data-jdp
+                        autocomplete="off" inputmode="numeric" placeholder="1405/06/11"
+                        class="form-control @error('purchase_date_jalali') is-invalid @enderror">
+                    @error('purchase_date_jalali')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

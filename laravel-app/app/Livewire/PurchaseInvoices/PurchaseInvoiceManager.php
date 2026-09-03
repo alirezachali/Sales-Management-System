@@ -17,7 +17,10 @@ use Livewire\Component;
 
 class PurchaseInvoiceManager extends Component
 {
+    /** تاریخ میلادی برای ذخیره در دیتابیس (سمت سرور) */
     public string $purchase_date = '';
+    /** تاریخ شمسی برای نمایش و انتخاب توسط کاربر (مثل 1405/06/11) */
+    public string $purchase_date_jalali = '';
     public string $supplier_id = '';
     public string $payment_method = 'cash';
     public ?string $notes = null;
@@ -46,9 +49,20 @@ class PurchaseInvoiceManager extends Component
     {
         return [
             'purchase_date' => ['required', 'date'],
+            'purchase_date_jalali' => ['required', 'string'],
             'supplier_id' => ['required', 'exists:suppliers,id'],
             'payment_method' => ['required', Rule::in(['cash', 'card', 'transfer', 'credit', 'other'])],
             'notes' => ['nullable', 'string'],
+        ];
+    }
+
+    protected function messages(): array
+    {
+        return [
+            'purchase_date_jalali.required' => 'وارد کردن تاریخ خرید الزامی است.',
+            'purchase_date.required' => 'وارد کردن تاریخ خرید الزامی است.',
+            'purchase_date.date' => 'تاریخ خرید معتبر نیست.',
+            'supplier_id.required' => 'انتخاب تامین‌کننده الزامی است.',
         ];
     }
 
@@ -76,6 +90,39 @@ class PurchaseInvoiceManager extends Component
     public function mount(): void
     {
         $this->purchase_date = now()->toDateString();
+        $this->purchase_date_jalali = gregorianToJalaliInput($this->purchase_date) ?? '';
+    }
+
+    /*
+    |--------------------------------------------------------------------|
+    | همگام‌سازی تاریخ شمسی ورودی کاربر با تاریخ میلادی سمت سرور          |
+    |--------------------------------------------------------------------|
+    */
+    public function updatedPurchaseDateJalali(): void
+    {
+        $gregorian = jalaliToGregorian($this->purchase_date_jalali);
+
+        if ($gregorian !== null) {
+            $this->purchase_date = $gregorian;
+            $this->resetErrorBag('purchase_date_jalali');
+        }
+    }
+
+    /** تبدیل ورودی شمسی به میلادی؛ در صورت نامعتبر بودن خطای فارسی ثبت می‌کند */
+    private function syncPurchaseDate(): bool
+    {
+        $gregorian = jalaliToGregorian($this->purchase_date_jalali);
+
+        if ($gregorian === null) {
+            $this->addError('purchase_date_jalali', 'تاریخ خرید معتبر نیست. مثال درست: 1405/06/11');
+            return false;
+        }
+
+        $this->purchase_date = $gregorian;
+        // نرمال‌سازی قالب نمایش (مثل 1405/6/1 به 1405/06/01)
+        $this->purchase_date_jalali = gregorianToJalaliInput($gregorian) ?? $this->purchase_date_jalali;
+
+        return true;
     }
 
     public function render()
@@ -293,6 +340,10 @@ class PurchaseInvoiceManager extends Component
 
     public function save(): void
     {
+        if (! $this->syncPurchaseDate()) {
+            return;
+        }
+
         $this->validate();
 
         if (empty($this->items)) {
@@ -384,6 +435,7 @@ class PurchaseInvoiceManager extends Component
     private function resetForm(): void
     {
         $this->purchase_date = now()->toDateString();
+        $this->purchase_date_jalali = gregorianToJalaliInput($this->purchase_date) ?? '';
         $this->supplier_id = '';
         $this->payment_method = 'cash';
         $this->notes = null;
