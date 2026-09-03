@@ -154,7 +154,10 @@ Route::get('/suppliers', function () {
         return view('reports.sales');
     })->name('reports.sales');
 
-
+    // مسیر مدیریت مالی
+    Route::get('financial', function () {
+        return view('financial.index');
+    })->name('financial.index');
 
     // مسیر نمایش لیست برندها
     Route::resource('brands', BrandController::class);

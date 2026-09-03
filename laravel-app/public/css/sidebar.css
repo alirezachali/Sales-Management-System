@@ -3,63 +3,74 @@
 }
 
 .sidebar {
-    width: 260px;
+    width: 220px;
     min-height: calc(100vh - var(--nav-height, 64px));
-    background: var(--bs-tertiary-bg);
-    border-inline-end: 1px solid var(--bs-border-color);
-    color: var(--bs-body-color);
+    /* background: rgba(34, 33, 33, 0.452); */
+    border-inline-end: 1px solid rgba(68, 68, 68, 0.315);
     transition: width .25s ease;
-    padding: 12px 10px;
+    padding: 0px;
 }
 
 .sidebar-menu {
     list-style: none;
-    padding: 0;
-    margin: 0;
+    padding: 5px;
+    margin: 5px;
 }
 
 .sidebar-menu li {
-    margin: 4px 0;
+    margin: 5px;
 }
 
 .sidebar-menu a {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 14px;
+    padding: 10px;
     border-radius: 10px;
-    color: var(--bs-secondary-color);
-    text-decoration: none;
+    color: rgb(17, 17, 17);
     white-space: nowrap;
     transition: background-color .2s ease, color .2s ease;
 }
-
-.sidebar-menu a:hover {
-    background: var(--bs-secondary-bg);
-    color: var(--bs-emphasis-color);
+[data-bs-theme="dark"] .sidebar-menu a {
+    color: rgb(247, 243, 243);
 }
 
+
+.sidebar-menu a:hover {
+    background: rgb(8, 8, 8);
+    color: rgb(253, 251, 251);
+}
+[data-bs-theme="dark"] .sidebar-menu a:hover {
+    background: rgb(247, 245, 245);
+    color: rgb(8, 8, 8);
+}
+
+
 .sidebar-menu a.active {
-    background: var(--nav-accent, #e6a417);
-    color: var(--nav-accent-contrast, #1a1a1a);
+    background: #e6a417;
+    color: #1a1a1a;
     font-weight: 600;
 }
 
+
 .sidebar-menu i {
-    font-size: 20px;
+    font-size: 25px;
     flex-shrink: 0;
 }
 
 .content {
     flex: 1;
     min-width: 0;
-    padding: 25px;
+    padding-left: 0;
+    padding-right: 17px;
+    padding-top: 25px;
+    padding-bottom: 25px;
     min-height: calc(100vh - var(--nav-height, 64px));
 }
 
 /* حالت جمع‌شده‌ی سایدبار */
 .sidebar.collapsed {
-    width: 78px;
+    width: 70px;
 }
 
 .sidebar.collapsed span {
@@ -68,11 +79,11 @@
 
 .sidebar.collapsed a {
     justify-content: center;
-    padding: 12px;
+    padding: 10px;
 }
 
 .sidebar.collapsed i {
-    font-size: 24px;
+    font-size: 25px;
 }
 
 /* واکنش‌گرا: در موبایل سایدبار جمع می‌شود */
@@ -87,6 +98,6 @@
 
     .sidebar a {
         justify-content: center;
-        padding: 12px;
+        padding: 10px;
     }
 }

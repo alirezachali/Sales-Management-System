@@ -99,5 +99,12 @@
                 <span>گزارش فروش</span>
             </a>
         </li>
+        <!-- مدیریت مالی -->
+        <li>
+            <a href="{{ route('financial.index') }}" class="{{ request()->routeIs('financial.*') ? 'active' : '' }}">
+                <i class="bi bi-bank"></i>
+                <span>مدیریت مالی</span>
+            </a>
+        </li>
     </ul>
 </aside>
