@@ -1,13 +1,12 @@
-{{-- resources/views/reports/sales.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'گزارش فروش')
+@section('title', 'گزارش خرید')
 
 @section('content')
     <div class="container-fluid">
-        <livewire:reports.sales-report />
+        <livewire:reports.purchase-report />
     </div>
-    
+
     {{-- استایل تقویم شمسی (فقط همین صفحه) --}}
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@majidh1/jalalidatepicker@1.0.0/dist/jalalidatepicker.min.css">
@@ -17,7 +16,7 @@
     {{-- تقویم شمسی سبک و بدون وابستگی برای انتخاب بازه گزارش --}}
     <script src="https://cdn.jsdelivr.net/npm/@majidh1/jalalidatepicker@1.0.0/dist/jalalidatepicker.min.js"></script>
     <script>
-        function initSalesReportJalaliPicker() {
+        function initPurchaseReportJalaliPicker() {
             if (!window.jalaliDatepicker) return;
             jalaliDatepicker.startWatch({
                 time: false,
@@ -27,11 +26,11 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', initSalesReportJalaliPicker);
+        document.addEventListener('DOMContentLoaded', initPurchaseReportJalaliPicker);
         // بعد از هر به‌روزرسانی Livewire هم تقویم را دوباره فعال می‌کنیم
         document.addEventListener('livewire:init', () => {
-            initSalesReportJalaliPicker();
-            Livewire.hook('morph.updated', initSalesReportJalaliPicker);
+            initPurchaseReportJalaliPicker();
+            Livewire.hook('morph.updated', initPurchaseReportJalaliPicker);
         });
     </script>
 @endsection

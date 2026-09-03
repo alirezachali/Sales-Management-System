@@ -171,7 +171,7 @@
                 <form wire:submit="save">
                     <div class="modal-content">
 
-                        <div class="modal-header">
+                        <div class="modal-header bg-info text-dark">
                             <h5 class="modal-title">
                                 {{ $editingId ? 'ویرایش دسته‌بندی' : 'افزودن دسته‌بندی جدید' }}
                             </h5>
@@ -214,7 +214,7 @@
                             <button type="button" class="btn btn-secondary" wire:click="closeModals" title="انصراف">
                                 انصراف
                             </button>
-                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
+                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled"
                                 wire:target="save">
                                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                                 {{ $editingId ? 'ذخیره تغییرات' : 'ذخیره دسته‌بندی' }}

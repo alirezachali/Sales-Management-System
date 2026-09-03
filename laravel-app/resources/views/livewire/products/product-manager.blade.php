@@ -204,7 +204,7 @@
 
                     <div class="modal-content glass-card">
 
-                        <div class="modal-header">
+                        <div class="modal-header bg-info text-dark">
                             <h5 class="modal-title">
                                 <i class="bi {{ $editingProductId ? 'bi-pencil-fill' : 'bi-plus-circle-fill' }}"></i>
                                 {{ $editingProductId ? 'ویرایش کالا' : 'افزودن کالا جدید' }}
@@ -214,14 +214,14 @@
                         </div>
 
                         <div class="modal-body">
-                            <div class="row g-3">
+                            <div class="row g-5">
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label class="form-label">بارکد</label>
                                     <input type="text" wire:model="barcode"
                                         class="form-control @error('barcode') is-invalid @enderror">
                                     @unless ($editingProductId)
-                                        <button type="button" class="btn btn-outline-primary mt-2"
+                                        <button type="button" class="btn btn-info mt-2"
                                             wire:click="generateBarcode">
                                             <i class="bi bi-upc-scan"></i>
                                             تولید بارکد
@@ -232,7 +232,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label">نام کالا</label>
                                     <input type="text" wire:model="name"
                                         class="form-control @error('name') is-invalid @enderror">
@@ -241,7 +241,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-3 mb-3">
                                     <label class="form-label">دسته بندی</label>
                                     <select wire:model="category_id" class="form-select">
                                         <option value="">انتخاب کنید</option>
@@ -254,44 +254,47 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-3 mb-3">
                                     <label class="form-label">قیمت خرید</label>
-                                    <input type="number" wire:model="buy_price"
+                                    <input type="number" step="1000" wire:model="buy_price"
                                         class="form-control @error('buy_price') is-invalid @enderror">
                                     @error('buy_price')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-3 mb-3">
                                     <label class="form-label">قیمت فروش</label>
-                                    <input type="number" wire:model="sell_price"
+                                    <input type="number" step="1000" wire:model="sell_price"
                                         class="form-control @error('sell_price') is-invalid @enderror">
                                     @error('sell_price')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-2 mb-3">
                                     <label
                                         class="form-label">{{ $editingProductId ? 'موجودی' : 'موجودی اولیه' }}</label>
-                                    <input type="number" step="0.001" wire:model="stock"
+                                    <input type="number" step="1" wire:model="stock"
                                         class="form-control @error('stock') is-invalid @enderror">
                                     @error('stock')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-2 mb-3">
                                     <label class="form-label">واحد</label>
                                     <select wire:model="unit" class="form-select">
                                         <option value="عدد">عدد</option>
                                         <option value="کیلوگرم">کیلوگرم</option>
                                         <option value="لیتر">لیتر</option>
+                                        <option value="بطری">بطری</option>
+                                        <option value="بسته">بسته</option>
+                                        <option value="باکس">باکس</option>
                                     </select>
                                 </div>
 
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-2 mb-3">
                                     <label class="form-label">وضعیت</label>
                                     <select wire:model="is_active" class="form-select">
                                         <option value="1">فعال</option>
@@ -307,7 +310,7 @@
                                 title="انصراف">
                                 انصراف
                             </button>
-                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
+                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled"
                                 wire:target="save" title="ذخیره کالا">
                                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                                 <i class="bi bi-save" wire:loading.remove wire:target="save"></i>

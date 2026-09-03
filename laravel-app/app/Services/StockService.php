@@ -20,12 +20,15 @@ class StockService
 
         $product->decrement('stock', $quantity);
 
+        $userId = Auth::id();
+        
         // ثبت کاهش موجودی در دیتابیس
         StockMovement::create([
             'product_id'  => $product->id,
             'type'        => 'sale',
             'quantity'    => $quantity,
             'description' => $description,
+            'user_id'     => $userId,
         ]);
     }
 
@@ -45,16 +48,14 @@ class StockService
 
             $product->increment('stock',$quantity);
 
+            $userId = Auth::id();
+
             StockMovement::create([
-
-                'product_id'=>$product->id,
-
-                'type'=>$type,
-
-                'quantity'=>$quantity,
-
-                'description'=>$description,
-
+                'product_id'  =>$product->id,
+                'type'        =>$type,
+                'quantity'    =>$quantity,
+                'description' =>$description,
+                'user_id'     => $userId,
             ]);
 
         });

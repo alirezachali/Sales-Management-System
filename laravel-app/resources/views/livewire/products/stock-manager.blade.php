@@ -26,7 +26,7 @@
                 <div class="alert alert-info mb-3">
                     موجودی فعلی:
                     <strong>{{ $product->formatted_stock }}{{ $product->unit }}</strong>
-                    
+
                 </div>
 
                 {{-- دکمه‌های ورود، خروج و خروجی گزارش --}}
@@ -61,8 +61,7 @@
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                             <li>
                                 <button type="button" class="dropdown-item d-flex align-items-center gap-2"
-                                    wire:click="exportExcel" wire:loading.attr="disabled"
-                                    wire:target="exportExcel">
+                                    wire:click="exportExcel" wire:loading.attr="disabled" wire:target="exportExcel">
                                     <i class="bi bi-file-earmark-excel-fill text-success fs-5"></i>
                                     خروجی Excel
                                 </button>
@@ -85,10 +84,11 @@
 
                     <thead>
                         <tr>
-                            <th width="300">تاریخ</th>
-                            <th width="150">نوع عملیات</th>
+                            <th width="250">تاریخ</th>
+                            <th width="120">نوع عملیات</th>
                             <th width="150">مقدار</th>
                             <th>توضیحات</th>
+                            <th>توسط</th>
                         </tr>
                     </thead>
 
@@ -116,94 +116,105 @@
                                     @endswitch
                                 </td>
                                 <td>
-                                    {{ number_format($movement->quantity, 0) }}
+                                    {{ number_format($movement->quantity) }}
                                     <span>{{ $product->unit }}</span>
                                 </td>
                                 <td>{{ $movement->description }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" class="text-center py-4 text-muted">
-                                    هیچ گردشی برای این کالا ثبت نشده است.
+                                <td>
+                                    @if ($movement->user?->name)
+                                        <span class="badge bg-success text-dark">
+                                            {{ $movement->user?->name }}
+                                        </span>
+                                    @else
+                                        <span class="badge bg-secondary text-dark">کاربر نامشخص</span>
+                                    @endif
                                 </td>
                             </tr>
-                        @endforelse
-                    </tbody>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">
+                                        هیچ گردشی برای این کالا ثبت نشده است.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
 
-                </table>
+                    </table>
+                </div>
+
+                <div class="mt-3">{{ $movements->links() }}</div>
+
             </div>
-
-            <div class="mt-3">{{ $movements->links() }}</div>
-
         </div>
-    </div>
 
-    {{-- ============================ مودال ورود/خروج کالا ============================ --}}
-    @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
-            wire:key="stock-form-modal">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+        {{-- ============================ مودال ورود/خروج کالا ============================ --}}
+        @if ($showFormModal)
+            <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+                wire:key="stock-form-modal">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
 
-                    <form wire:submit="save">
+                        <form wire:submit="save">
 
-                        <div class="modal-header">
-                            <h5 class="modal-title">
-                                @if ($formType === 'purchase')
-                                    <i class="bi bi-plus-lg text-success"></i>
-                                    ورود کالا به انبار
-                                @else
-                                    <i class="bi bi-dash-lg text-danger"></i>
-                                    خروج کالا از انبار
-                                @endif
-                            </h5>
-                            <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
-                        </div>
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    @if ($formType === 'purchase')
+                                        <i class="bi bi-plus-lg text-success"></i>
+                                        ورود کالا به انبار
+                                    @else
+                                        <i class="bi bi-dash-lg text-danger"></i>
+                                        خروج کالا از انبار
+                                    @endif
+                                </h5>
+                                <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
+                            </div>
 
-                        <div class="modal-body">
+                            <div class="modal-body">
 
-                            <div class="alert {{ $formType === 'purchase' ? 'alert-success' : 'alert-danger' }}">
-                                کالا:
-                                <strong class="text-info">{{ $product->name }}</strong>
+                                <div class="alert {{ $formType === 'purchase' ? 'alert-success' : 'alert-danger' }}">
+                                    کالا:
+                                    <strong class="text-info">{{ $product->name }}</strong>
                                     <span>|</span>
-                                موجودی فعلی:
-                                <strong class="text-info">{{ $product->formatted_stock }}{{ $product->unit }}</strong>
-                                
+                                    موجودی فعلی:
+                                    <strong class="text-info">{{ $product->formatted_stock }}{{ $product->unit }}</strong>
+
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">تعداد
+                                        {{ $formType === 'purchase' ? 'ورودی' : 'خروجی' }}</label>
+                                    <input type="number" step="0.001" wire:model="quantity"
+                                        class="form-control @error('quantity') is-invalid @enderror" autofocus>
+                                    @error('quantity')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">توضیحات</label>
+                                    <textarea wire:model="description" class="form-control"></textarea>
+                                </div>
+
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">تعداد {{ $formType === 'purchase' ? 'ورودی' : 'خروجی' }}</label>
-                                <input type="number" step="0.001" wire:model="quantity"
-                                    class="form-control @error('quantity') is-invalid @enderror" autofocus>
-                                @error('quantity')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" wire:click="closeModals"
+                                    title="انصراف">
+                                    انصراف
+                                </button>
+                                <button type="submit"
+                                    class="btn {{ $formType === 'purchase' ? 'btn-success' : 'btn-danger' }}"
+                                    wire:loading.attr="disabled" wire:target="save">
+                                    <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
+                                    {{ $formType === 'purchase' ? 'ثبت ورود کالا' : 'ثبت خروج کالا' }}
+                                </button>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">توضیحات</label>
-                                <textarea wire:model="description" class="form-control"></textarea>
-                            </div>
+                        </form>
 
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeModals" title="انصراف">
-                                انصراف
-                            </button>
-                            <button type="submit"
-                                class="btn {{ $formType === 'purchase' ? 'btn-success' : 'btn-danger' }}"
-                                wire:loading.attr="disabled" wire:target="save">
-                                <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
-                                {{ $formType === 'purchase' ? 'ثبت ورود کالا' : 'ثبت خروج کالا' }}
-                            </button>
-                        </div>
-
-                    </form>
-
+                    </div>
                 </div>
             </div>
-        </div>
-    @endif
+        @endif
 
-</div>
+    </div>
