@@ -64,12 +64,22 @@
         <div class="card-body">
             <div class="row g-2 align-items-end">
                 <div class="col-md-3">
-                    <label class="form-label">از تاریخ</label>
-                    <input type="date" wire:model.live="dateFrom" class="form-control">
+                    <label class="form-label">از تاریخ (شمسی)</label>
+                    <input type="text" wire:model.live.debounce.500ms="dateFromJalali" data-jdp
+                        autocomplete="off" inputmode="numeric" placeholder="1405/06/01"
+                        class="form-control @if (isset($dateErrors['from'])) is-invalid @endif">
+                    @if (isset($dateErrors['from']))
+                        <div class="invalid-feedback d-block">{{ $dateErrors['from'] }}</div>
+                    @endif
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">تا تاریخ</label>
-                    <input type="date" wire:model.live="dateTo" class="form-control">
+                    <label class="form-label">تا تاریخ (شمسی)</label>
+                    <input type="text" wire:model.live.debounce.500ms="dateToJalali" data-jdp
+                        autocomplete="off" inputmode="numeric" placeholder="1405/06/31"
+                        class="form-control @if (isset($dateErrors['to'])) is-invalid @endif">
+                    @if (isset($dateErrors['to']))
+                        <div class="invalid-feedback d-block">{{ $dateErrors['to'] }}</div>
+                    @endif
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">روش پرداخت</label>
@@ -87,6 +97,9 @@
                     </button>
                 </div>
             </div>
+            @if (isset($dateErrors['range']))
+                <div class="alert alert-warning mt-2 mb-0 py-2">{{ $dateErrors['range'] }}</div>
+            @endif
         </div>
     </div>
 

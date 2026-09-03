@@ -23,6 +23,17 @@ class SalesReport extends Component
     public ?string $dateTo = null;
     public string $filterPaymentType = '';
 
+    /*
+     * ورودی‌های شمسی کاربر (مثل 1405/06/11) برای نمایش و انتخاب.
+     * معادل میلادی در dateFrom/dateTo سمت سرور نگه‌داری می‌شود.
+     * خالی بودن یعنی بدون فیلتر تاریخ.
+     */
+    public string $dateFromJalali = '';
+    public string $dateToJalali = '';
+
+    /** خطاهای اعتبارسنجی تاریخ (کلیدها: from ،to ،range) */
+    public array $dateErrors = [];
+
     public array $paymentTypeLabels = [
         'cash' => 'نقدی',
         'card' => 'کارت',
@@ -30,14 +41,58 @@ class SalesReport extends Component
         'credit' => 'نسیه',
     ];
 
-    public function updatedDateFrom(): void
+    public function updatedDateFromJalali(): void
     {
+        $this->syncJalaliFilter('dateFromJalali', 'dateFrom', 'from');
         $this->resetPage();
     }
 
-    public function updatedDateTo(): void
+    public function updatedDateToJalali(): void
     {
+        $this->syncJalaliFilter('dateToJalali', 'dateTo', 'to');
         $this->resetPage();
+    }
+
+    /*
+    |--------------------------------------------------------------------|
+    | همگام‌سازی ورودی شمسی با معادل میلادی سمت سرور. ورودی خالی یعنی    |
+    | بدون فیلتر؛ ورودی نامعتبر فیلتری اعمال نمی‌کند و خطا نمایش می‌دهد. |
+    |--------------------------------------------------------------------|
+    */
+    private function syncJalaliFilter(string $jalaliProp, string $gregorianProp, string $errorKey): void
+    {
+        $value = trim($this->{$jalaliProp});
+
+        if ($value === '') {
+            $this->{$gregorianProp} = null;
+            unset($this->dateErrors[$errorKey]);
+            unset($this->dateErrors['range']);
+            return;
+        }
+
+        $gregorian = jalaliToGregorian($value);
+
+        if ($gregorian === null) {
+            $this->{$gregorianProp} = null;
+            $this->dateErrors[$errorKey] = 'تاریخ معتبر نیست. مثال درست: 1405/06/11';
+            return;
+        }
+
+        unset($this->dateErrors[$errorKey]);
+
+        // نرمال‌سازی قالب نمایش (مثل 1405/6/1 به 1405/06/01)
+        $normalized = gregorianToJalaliInput($gregorian) ?? $value;
+        if ($normalized !== $this->{$jalaliProp}) {
+            $this->{$jalaliProp} = $normalized;
+        }
+
+        $this->{$gregorianProp} = $gregorian;
+
+        if ($this->dateFrom !== null && $this->dateTo !== null && $this->dateFrom > $this->dateTo) {
+            $this->dateErrors['range'] = 'تاریخ شروع نمی‌تواند بعد از تاریخ پایان باشد.';
+        } else {
+            unset($this->dateErrors['range']);
+        }
     }
 
     public function updatedFilterPaymentType(): void
@@ -47,7 +102,7 @@ class SalesReport extends Component
 
     public function resetFilters(): void
     {
-        $this->reset(['dateFrom', 'dateTo', 'filterPaymentType']);
+        $this->reset(['dateFrom', 'dateTo', 'filterPaymentType', 'dateFromJalali', 'dateToJalali', 'dateErrors']);
         $this->resetPage();
     }
 
