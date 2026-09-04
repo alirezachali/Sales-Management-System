@@ -106,7 +106,7 @@
         <li>
             <a href="{{ route('reports.purchases') }}" class="{{ request()->routeIs('reports.purchases') ? 'active' : '' }}">
                 <i class="bi bi-archive"></i>
-                <span>گزارش خرید</span>
+                <span>گزارش ورود/خروج کالا</span>
             </a>
         </li>
         <!-- گزارش مالی -->

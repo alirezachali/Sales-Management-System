@@ -203,20 +203,22 @@ class PurchaseReport extends Component
         // $invoiceCount = $invoices->count();
         // $invoiceTotal = $invoices->sum(fn ($i) => (float) ($i->total_amount ?? 0));
 
-        $movementCount = $movements->count();
+        $movementCount = $movements->count(); 
 
         // Count purchase movements (entry)
         $entryCount = $movements->where('type', 'purchase')->count();
         // Count sale movements (exit)
         $exitCount = $movements->where('type', 'sale')->count();
+        // Count purchase movements (initial)
+        $initialCount = $movements->where('type', 'initial')->count();
 
         return (object) [
-            'count' => $movementCount,
+            // 'count' => $movementCount,
             // 'invoice_count' => $invoiceCount,
             'movement_count' => $movementCount,
-            // 'invoice_total' => $invoiceTotal,
             'entry_count' => $entryCount,
             'exit_count' => $exitCount,
+            'initial_count' => $initialCount,
         ];
     }
 

@@ -21,33 +21,39 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">تعداد کل عملیات خرید</div>
-                    <div class="h1 mb-0">{{ number_format($totals->count ?? 0) }}</div>
+                    <div class="subheader">تعداد کل عملیات ها</div>
+                    <div class="h1 mb-0">
+                        {{ $totals->movement_count }}
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">فاکتورهای خرید</div>
-                    <div class="h1 mb-0 text-primary">{{ number_format($totals->invoice_count ?? 0) }}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
-                <div class="card-body">
-                    <div class="subheader">ورود/خروج دستی انبار</div>
-                    <div class="h1 mb-0 text-warning">{{ number_format($totals->movement_count ?? 0) }}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
-                <div class="card-body">
-                    <div class="subheader">جمع مبالغ فاکتورها</div>
+                    <div class="subheader">تعداد عملیات های ورود کالا</div>
                     <div class="h1 mb-0 text-success">
-                        {{ number_format($totals->invoice_total ?? 0) }} {{ setting('currency', '') }}
+                        {{ $totals->entry_count }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card border-3">
+                <div class="card-body">
+                    <div class="subheader">تعداد عملیات های خروج کالا</div>
+                    <div class="h1 mb-0 text-danger">
+                        {{ $totals->exit_count }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card border-3">
+                <div class="card-body">
+                    <div class="subheader">تعداد عملیات های موجودی اولیه</div>
+                    <div class="h1 mb-0 text-info">
+                        {{ $totals->initial_count }}
                     </div>
                 </div>
             </div>
@@ -107,15 +113,15 @@
         </div>
     </div>
 
-    {{-- جدول گزارش خرید --}}
+    {{-- جدول گزارش --}}
     <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
                 <h3 class="fw-bold mb-1">
                     <i class="bi bi-clipboard-data text-primary"></i>
-                    گزارش خرید و ورود/خروج انبار
+                    گزارش ورود/خروج کالا
                 </h3>
-                <small class="text-muted">مشاهده فاکتورهای خرید و عملیات ورود/خروج کالا در بازه زمانی انتخابی</small>
+                <small class="">مشاهده گزارش عملیات ورود/خروج کالا به/از انبار در بازه زمانی انتخابی</small>
             </div>
             <div class="d-flex gap-2 flex-wrap">
                 <button type="button" class="btn btn-success text-dark" wire:click="exportExcel" wire:loading.attr="disabled"
