@@ -27,7 +27,7 @@
             <div class="row g-3">
 
                 <div class="col-md-3">
-                    <label class="form-label">تاریخ خرید (شمسی)</label>
+                    <label class="form-label">تاریخ خرید</label>
                     <input type="text" wire:model="purchase_date_jalali" data-jdp
                         autocomplete="off" inputmode="numeric" placeholder="1405/06/11"
                         class="form-control @error('purchase_date_jalali') is-invalid @enderror">
@@ -94,7 +94,7 @@
                     <input type="text" wire:model.live.debounce.300ms="product_search"
                         class="form-control" placeholder="نام کالا را جستجو کنید" autocomplete="off">
                     @if (!empty($searchResults))
-                        <ul class="list-group position-absolute w-100 mt-1" style="z-index: 1000; max-height: 200px; overflow-y: auto;">
+                        <ul class="list-group position-absolute" id="purchase-inv-search-product">
                             @foreach ($searchResults as $result)
                                 <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                                     wire:click="selectSearchResult({{ $result['id'] }})">
@@ -133,7 +133,7 @@
                             <tr>
                                 <th width="40">#</th>
                                 <th>نام کالا</th>
-                                <th>بارکد</th>
+                                <th width="130">بارکد</th>
                                 <th width="80">تعداد</th>
                                 <th width="150">قیمت خرید</th>
                                 <th width="150">قیمت فروش</th>

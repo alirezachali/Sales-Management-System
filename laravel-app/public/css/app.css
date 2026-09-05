@@ -5,3 +5,22 @@ body a {
 body a:hover {
     text-decoration: none;
 }
+
+
+/* استایل فیلد جستجو کالا در ثبت فاکتور خرید */
+#purchase-inv-search-product {
+    z-index: 1;
+    width: 97%;
+    /* max-height: 500px; */
+    /* overflow-y: auto; */
+    /* overflow-x: auto; */
+    cursor: pointer;
+    opacity: 90%;
+    color: rgb(7, 7, 7);
+    background-color: rgb(212, 212, 214);  
+}
+[data-bs-theme="dark"] #purchase-inv-search-product {
+    color: rgb(248, 246, 246);
+    background-color: rgb(10, 10, 10);
+}
+
