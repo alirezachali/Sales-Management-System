@@ -7,7 +7,6 @@
     <div class="container-fluid">
         <livewire:reports.sales-report />
     </div>
-    
     {{-- استایل تقویم شمسی (فقط همین صفحه) --}}
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@majidh1/jalalidatepicker@1.0.0/dist/jalalidatepicker.min.css">

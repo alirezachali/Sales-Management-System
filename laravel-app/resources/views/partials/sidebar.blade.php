@@ -17,8 +17,7 @@
         </li>
         <!-- فاکتور خرید -->
         <li>
-            <a href="{{ route('purchase-invoices.index') }}"
-                class="{{ request()->routeIs('purchase-invoices.*') ? 'active' : '' }}">
+            <a href="{{ route('purchase-invoices.index') }}" class="{{ request()->routeIs('purchase-invoices.*') ? 'active' : '' }}">
                 <i class="bi bi-file-earmark-plus"></i>
                 <span>ثبت فاکتور خرید</span>
             </a>
@@ -46,16 +45,14 @@
         </li>
         <!-- کاربران -->
         <li>
-            <a href="{{ route('users.index') }}"
-                class="{{ request()->routeIs('users.*') ? 'active' : '' }} {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+            <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }} {{ request()->routeIs('roles.*') ? 'active' : '' }}">
                 <i class="bi bi-person-video"></i>
                 <span>کاربران</span>
             </a>
         </li>
         <!-- مشتریان -->
         <li>
-            <a href="{{ route('customers.index') }}"
-                class="{{ request()->routeIs('customers.*') ? 'active' : '' }} {{ request()->routeIs('customer-roles.*') ? 'active' : '' }}">
+            <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }} {{ request()->routeIs('customer-roles.*') ? 'active' : '' }}">
                 <i class="bi bi-person-standing-dress"></i>
                 <span>باشگاه مشتریان</span>
             </a>
@@ -97,7 +94,7 @@
         </li>
         <!-- گزارش فروش-->
         <li>
-            <a href="{{ route('reports.sales') }}" class="{{ request()->routeIs('reports.sales') ? 'active' : '' }}">
+            <a href="{{ route('reports.sales') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">
                 <i class="bi bi-clipboard-data"></i>
                 <span>گزارش فروش</span>
             </a>
@@ -106,7 +103,7 @@
         <li>
             <a href="{{ route('reports.purchases') }}" class="{{ request()->routeIs('reports.purchases') ? 'active' : '' }}">
                 <i class="bi bi-archive"></i>
-                <span>گزارش ورود/خروج کالا</span>
+                <span>گزارش خرید</span>
             </a>
         </li>
         <!-- گزارش مالی -->

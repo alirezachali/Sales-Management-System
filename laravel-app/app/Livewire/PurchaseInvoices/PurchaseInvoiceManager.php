@@ -395,7 +395,6 @@ class PurchaseInvoiceManager extends Component
 
                     StockMovement::create([
                         'product_id' => $product->id,
-                        'user_id' => auth()->id(),
                         'type' => 'purchase',
                         'quantity' => $quantity,
                         'description' => 'خرید از ' . $purchaseInvoice->supplier->name . ' - فاکتور شماره: ' . $invoiceNumber,

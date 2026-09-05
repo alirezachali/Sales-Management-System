@@ -6,7 +6,6 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\StockMovement;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -135,8 +134,6 @@ class ProductController extends Controller
             'description' => 'nullable|string'
         ]);
 
-        $userId = Auth::id();
-
         DB::transaction(function () use ($data, $product) {
             $product->increment(
                 'stock',
@@ -148,8 +145,7 @@ class ProductController extends Controller
                 'type' => 'purchase',
                 'quantity' => $data['quantity'],
                 'description' => $data['description']
-                    ?? 'ورود کالا از خرید',
-                'user_id'     => $userId,
+                    ?? 'ورود کالا از خرید'
             ]);
         });
 
@@ -184,8 +180,6 @@ class ProductController extends Controller
                 );
         }
 
-        $userId = Auth::id();
-        
         DB::transaction(function () use ($data, $product) {
             $product->decrement(
                 'stock',
@@ -197,8 +191,7 @@ class ProductController extends Controller
                 'type' => 'sale',
                 'quantity' => $data['quantity'],
                 'description' => $data['description']
-                    ?? 'فروش کالا',
-                'user_id'     => $userId,
+                    ?? 'فروش کالا'
             ]);
         });
 

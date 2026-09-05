@@ -4,7 +4,6 @@ namespace App\Livewire\Products;
 
 use App\Models\Product;
 use App\Models\StockMovement;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -110,7 +109,6 @@ class StockManager extends Component
 
                 StockMovement::create([
                     'product_id' => $this->product->id,
-                    'user_id' => auth()->id(),
                     'type' => 'purchase',
                     'quantity' => $data['quantity'],
                     'description' => $data['description'] ?? 'ورود کالا از خرید',
@@ -120,7 +118,6 @@ class StockManager extends Component
 
                 StockMovement::create([
                     'product_id' => $this->product->id,
-                    'user_id' => auth()->id(),
                     'type' => 'sale',
                     'quantity' => $data['quantity'],
                     'description' => $data['description'] ?? 'فروش کالا',
@@ -144,7 +141,6 @@ class StockManager extends Component
     {
         $movements = $this->product
             ->stockMovements()
-            ->with('user')
             ->latest()
             ->paginate(20);
 
