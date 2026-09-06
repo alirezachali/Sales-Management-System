@@ -51,13 +51,17 @@ if not exist .env (
     echo ✓ The .env file already exists.
 )
 
+
 REM Generate App key
 echo.
 echo [5/6] Generate App key (APP_KEY)...
 call php artisan key:generate
 if errorlevel 1 (
     echo ⚠ Error in key generation (Maybe it was already produced)
+) else (
+    echo ✓ The App key was successfully generated
 )
+
 
 REM Installing Node dependencies
 echo.
@@ -75,13 +79,20 @@ if errorlevel 1 (
 )
 
 echo.
-echo ====================================
-echo ✓ Program setup is complete.
-echo ====================================
+echo =====================================
+echo     ✓ Program setup is complete!
+echo =====================================
 echo.
 echo Next steps:
 echo 1. Check the (.env) file settings (Database connection settings)
 echo 2. Run the following command to create the database:
 echo    php artisan migrate
-echo.
+echo 3. To create sample data and an admin user for the first login, run the following command:
+echo    php artisan migrate:fresh --seed
+echo 4. To compile the assets, run the following command:
+echo    npm run build
+echo 5. Run the server:
+echo    php artisan serve
+echo .
+echo  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 pause

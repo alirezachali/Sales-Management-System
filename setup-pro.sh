@@ -110,77 +110,77 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 
 if [ ! -f .env ]; then
     if [ -f .env.example ]; then
-        if confirm "آیا می‌خوای فایل .env از .env.example کپی شود؟"; then
+        if confirm "Do you want the (.env) file to be copied from the (.env.example) file?"; then
             cp .env.example .env
-            success "فایل .env ایجاد شد"
+            success ".env file created"
         else
-            warning ".env کپی نشد"
+            warning ".env file could not be copied"
         fi
     else
-        warning "فایل .env.example یافت نشد"
+        warning ".env.example file not found"
     fi
 else
-    info "فایل .env قبلاً موجود است"
+    info "The .env file already exists"
 fi
 
 # ============ مرحله 5: تولید APP_KEY ============
 echo ""
-echo -e "\033[35m[5/6] تولید کلید برنامه (APP_KEY)\033[0m"
+echo -e "\033[35m[5/6] Generate App key (APP_KEY)...\033[0m"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-if confirm "آیا می‌خوای php artisan key:generate اجرا شود؟"; then
+if confirm "Do you want to run the (php artisan key:generate)?"; then
     php artisan key:generate
     if [ $? -ne 0 ]; then
-        warning "خطا در تولید کلید (شاید قبلاً تولید شده)"
+        warning "Error in key generation (Maybe it was already produced)"
     else
-        success "کلید برنامه تولید شد"
+        success "The App key was successfully generated"
     fi
 else
-    warning "key:generate رد شد"
+    warning "key:generate rejected"
 fi
 
 # ============ مرحله 6: نصب وابستگی‌های Node ============
 echo ""
-echo -e "\033[35m[6/6] نصب وابستگی‌های Node.js\033[0m"
+echo -e "\033[35m[6/6] Installing Node.js dependencies...\033[0m"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 if ! command -v npm &> /dev/null; then
-    warning "npm نصب نیست - نصب وابستگی‌های Node.js رد شد"
+    warning "Node dependencies installation failed. NPM is not installed"
 else
-    if confirm "آیا می‌خوای npm install اجرا شود؟"; then
+    if confirm "Do you want to run the (npm install)?"; then
         npm install
         if [ $? -ne 0 ]; then
-            warning "خطا در npm install"
+            warning "Error in (npm install)"
         else
-            success "وابستگی‌های Node.js نصب شدند"
+            success "Node dependencies installed successfully"
         fi
     else
-        warning "npm install رد شد"
+        warning "npm install rejected"
     fi
 fi
 
 # ============ نتیجه نهایی ============
 echo ""
 echo "╔═══════════════════════════════════════════════════════╗"
-echo "║      ✓ راه‌اندازی پروژه تمام شد!                      ║"
+echo "║            ✓ Program setup is complete!               ║"
 echo "╚═══════════════════════════════════════════════════════╝"
 echo ""
 
-echo -e "\033[36m📝 مراحل بعدی:\033[0m"
+echo -e "\033[36m📝 Next steps:\033[0m"
 echo ""
-echo "1️⃣  تنظیمات .env رو چک کن:"
+echo "1️⃣ Check the (.env) file settings:"
 echo "   ${PWD}/.env"
 echo ""
-echo "2️⃣  فایل پایگاه‌داده رو تنظیم کن و سپس اجرا کن:"
+echo "2️⃣ Database connection settings and run following command:"
 echo "   php artisan migrate"
 echo ""
-echo "3️⃣  (اختیاری) برای ساخت داده نمونه:"
+echo "3️⃣ To create sample data and an admin user for the first login, run the following command:"
 echo "   php artisan migrate:fresh --seed"
 echo ""
-echo "4️⃣  (اختیاری) برای کامپایل assets:"
+echo "4️⃣ To compile the assets, run the following command:"
 echo "   npm run build"
 echo ""
-echo "5️⃣  سرور رو شروع کن:"
+echo "5️⃣ Run the server:"
 echo "   php artisan serve"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
