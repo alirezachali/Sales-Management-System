@@ -1,6 +1,6 @@
 <div dir="rtl">
 
-    {{-- نمایش پیغام‌های موفقیت --}}
+{{--=================== نمایش پیغام‌های موفقیت ===================--}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
@@ -9,7 +9,7 @@
         </div>
     @endif
 
-    {{-- نمایش پیغام‌های خطا --}}
+{{--=================== نمایش پیغام‌های خطا ===================--}}
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -19,7 +19,7 @@
     @endif
 
 
-    {{-- کارت‌های آماری --}}
+{{--=================== کارت‌های آماری ===================--}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
@@ -64,7 +64,7 @@
     </div>
 
 
-    {{-- کارت جستجو و فیلتر --}}
+{{--=================== کارت جستجو و فیلتر ===================--}}
     <div class="card glass-card mb-4 border-3">
         <div class="card-body">
             <div class="row g-2">
@@ -99,7 +99,7 @@
         </div>
     </div>
 
-    {{-- جدول کاربران --}}
+{{--============================ جدول کاربران ============================--}}
     <div class="card shadow-sm  border-3" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -127,7 +127,6 @@
 
             </div>
         </div>
-
 
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -194,7 +193,7 @@
 
     <div class="mt-3">{{ $users->links() }}</div>
 
-    {{-- ============================ مودال افزودن/ویرایش کاربر ============================ --}}
+{{-- ================================ مودال افزودن/ویرایش کاربر ================================ --}}
     @if ($showFormModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="user-form-modal">
@@ -340,7 +339,7 @@
         </div>
     @endif
 
-    {{-- ============================ مودال تغییر رمز عبور ============================ --}}
+{{-- =================================== مودال تغییر رمز عبور =================================== --}}
     @if ($showPasswordModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="user-password-modal">
@@ -348,7 +347,7 @@
                 <form wire:submit="updatePassword">
                     <div class="modal-content">
 
-                        <div class="modal-header">
+                        <div class="modal-header bg-info text-dark">
                             <h5 class="modal-title">تغییر رمز عبور</h5>
                             <button type="button" class="btn-close" wire:click="closeModals"
                                 title="بستن"></button>
@@ -394,7 +393,7 @@
         </div>
     @endif
 
-    {{-- ============================ مودال تایید حذف ============================ --}}
+{{-- ==================================== مودال تایید حذف ==================================== --}}
     @if ($showDeleteModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="user-delete-modal">

@@ -7,4 +7,4 @@
     <div class="container-fluid">
         <livewire:employees.employee-manager />
     </div>
-@endsection
+@endsection 

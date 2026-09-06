@@ -1,23 +1,24 @@
 <div dir="rtl">
 
-    {{-- Success/Error Alerts --}}
+{{--=================== نمایش پیغام‌های موفقیت ===================--}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
+{{--=================== نمایش پیغام‌های خطا ===================--}}
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
-    {{-- کارت‌های آماری --}}
+{{--=================== کارت‌های آماری ===================--}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
@@ -53,7 +54,7 @@
         </div>
     </div>
 
-    {{-- فیلترها --}}
+{{--=================== فیلترها ===================--}}
     <div class="card mb-4 border-3">
         <div class="card-body">
             <div class="row g-2">
@@ -79,7 +80,7 @@
         </div>
     </div>
 
-    {{-- جدول مشتریان --}}
+{{--============================ جدول مشتریان ============================--}}
     <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -181,7 +182,7 @@
         </div>
     </div>
 
-    {{-- ============================ مودال افزودن/ویرایش مشتری ============================ --}}
+{{-- =============================== مودال افزودن/ویرایش مشتری =============================== --}}
     @if ($showFormModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="customer-form-modal">
@@ -315,13 +316,13 @@
         </div>
     @endif
 
-    {{-- ============================ مودال تایید حذف ============================ --}}
+{{-- =================================== مودال تایید حذف ==================================== --}}
     @if ($showDeleteModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="customer-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-danger text-dark">
                         <h5 class="modal-title">حذف مشتری</h5>
                         <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
                     </div>
@@ -337,13 +338,13 @@
         </div>
     @endif
 
-    {{-- ============================ مودال گردش حساب مشتری ============================ --}}
+{{-- ================================= مودال گردش حساب مشتری ================================= --}}
     @if ($showLedgerModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="customer-ledger-modal">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-info text-dark">
                         <h5 class="modal-title">
                             <i class="bi bi-wallet2"></i>
                             گردش حساب:

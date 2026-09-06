@@ -1,6 +1,6 @@
 <div dir="rtl">
 
-    {{-- Success/Error Alerts --}}
+{{--=================== نمایش پیغام‌های موفقیت ===================--}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
@@ -9,6 +9,7 @@
         </div>
     @endif
 
+{{--=================== نمایش پیغام‌های خطا ===================--}}
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -17,7 +18,7 @@
         </div>
     @endif
 
-    {{-- کارت‌های آماری --}}
+{{--=================== کارت‌های آماری ===================--}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
@@ -62,7 +63,7 @@
     </div>
 
 
-    {{-- کارت جستجو --}}
+{{--=================== کارت جستجو ===================--}}
     <div class="card glass-card mb-4 border-3">
         <div class="card-body">
             <div class="row">
@@ -81,7 +82,7 @@
     </div>
 
 
-    {{-- جدول برندها --}}
+{{--================================ جدول لیست برندها ================================--}}
     <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
@@ -98,8 +99,6 @@
             </button>
         </div>
 
-
-        {{-- جدول --}}
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle mb-0">
@@ -163,7 +162,7 @@
         </div>
     </div>
 
-    {{-- مودال ساخت / ویرایش برند --}}
+{{--=================================== مودال ساخت / ویرایش برند ===================================--}}
     @if ($showFormModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="brand-form-modal">
@@ -239,13 +238,13 @@
         </div>
     @endif
 
-    {{-- مودال تایید حذف --}}
+{{--=================================== مودال تایید حذف ===================================--}}
     @if ($showDeleteModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="brand-delete-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-danger text-dark">
                         <h5 class="modal-title">حذف برند</h5>
                         <button type="button" class="btn-close" wire:click="closeModals"></button>
                     </div>

@@ -164,6 +164,11 @@ Route::get('/suppliers', function () {
         return view('financial.index');
     })->name('financial.index');
 
+     // مسیر مدیریت بدهی ها
+    Route::get('debts', function () {
+        return view('debts.index');
+    })->name('debts.index');
+    
     // مسیر نمایش لیست برندها
     Route::resource('brands', BrandController::class);
 });

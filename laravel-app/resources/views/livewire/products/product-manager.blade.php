@@ -1,6 +1,6 @@
 <div dir="rtl">
 
-    {{-- پیام موفقیت --}}
+{{--============ پیام موفقیت ============--}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
@@ -9,7 +9,7 @@
         </div>
     @endif
 
-    {{-- پیام خطا --}}
+{{--============ پیام خطا ============--}}
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    {{-- کارت‌های آماری --}}
+{{--============ کارت‌های آماری ============--}}
     <div class="row row-cards mb-4">
 
         <div class="col-sm-6 col-lg-3">
@@ -59,7 +59,7 @@
 
     </div>
 
-    {{-- فیلترها --}}
+{{--================== فیلترها ==================--}}
     <div class="card glass-card mb-4 border-3">
         <div class="card-body">
             <div class="row g-2">
@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    {{-- جدول کالاها --}}
+{{--======================== جدول لیست کالاها ========================--}}
     <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -108,10 +108,8 @@
         </div>
 
         <div class="card-body">
-
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle">
-
                     <thead>
                         <tr>
                             <th>#</th>
@@ -123,7 +121,6 @@
                             <th width="230">عملیات</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         @forelse ($products as $product)
                             <tr wire:key="product-{{ $product->id }}">
@@ -140,37 +137,37 @@
                                     <span class="badge bg-secondary text-dark">{{ $product->unit }}</span>
                                 </td>
                                 <td>
-                                    {{-- دکمه ویرایش کالا --}}
+                                {{--============ دکمه ویرایش کالا ============--}}
                                     <button type="button" class="btn btn-sm btn-warning text-dark"
                                         wire:click="openEditModal({{ $product->id }})" title="ویرایش کالا">
                                         <i class="bi bi-pencil-fill"></i>
                                     </button>
 
-                                    {{-- دکمه چاپ لیبل --}}
+                                {{--============ دکمه چاپ لیبل ============--}}
                                     <button type="button" class="btn btn-sm btn-info text-dark print-label-btn"
                                         data-id="{{ $product->id }}" title="چاپ لیبل">
                                         <i class="bi bi-printer-fill"></i>
                                     </button>
 
-                                    {{-- دکمه مشاهده موجودی و ورود و خروج این کالا به انبار --}}
+                                {{--====== دکمه مشاهده موجودی و ورود و خروج این کالا به انبار ======--}}
                                     <a href="{{ route('products.stock', $product) }}" class="btn btn-sm btn-light"
                                         title="مشاهده سوابق ورود و خروج این کالا به انبار">
                                         <i class="bi bi-boxes"></i>
                                     </a>
 
-                                    {{-- دکمه ورود کالا به انبار (مستقیم مودال ورود را در صفحه‌ی گردش کالا باز می‌کند) --}}
+                                {{--============ دکمه ورود کالا به انبار ============--}}
                                     <a href="{{ route('products.stock', ['product' => $product, 'action' => 'purchase']) }}"
                                         class="btn btn-sm btn-outline-success" title="ورود این کالا به انبار">
                                         <i class="bi bi-plus-lg"></i>
                                     </a>
 
-                                    {{-- دکمه خروج کالا از انبار (مستقیم مودال خروج را در صفحه‌ی گردش کالا باز می‌کند) --}}
+                                {{--============ دکمه خروج کالا از انبار ============--}}
                                     <a href="{{ route('products.stock', ['product' => $product, 'action' => 'sale']) }}"
                                         class="btn btn-sm btn-outline-danger" title="خروج این کالا از انبار">
                                         <i class="bi bi-dash-lg"></i>
                                     </a>
 
-                                    {{-- دکمه حذف کالا --}}
+                                {{--================== دکمه حذف کالا ==================--}}
                                     <button type="button" class="btn btn-danger text-dark btn-sm"
                                         wire:click="confirmDelete({{ $product->id }})" title="حذف این کالا">
                                         <i class="bi bi-trash-fill"></i>
@@ -194,7 +191,7 @@
         </div>
     </div>
 
-    {{-- ============================ مودال افزودن/ویرایش کالا (بدون بوت‌استرپ JS، دقیقاً مثل ماژول تامین‌کنندگان) ============================ --}}
+{{-- ================================ مودال افزودن/ویرایش کالا ================================ --}}
     @if ($showFormModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="product-form-modal">
@@ -323,13 +320,13 @@
         </div>
     @endif
 
-    {{-- ============================ مودال تایید حذف ============================ --}}
+{{-- ============================ مودال تایید حذف ============================ --}}
     @if ($showDeleteModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="product-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-danger text-dark">
                         <h5 class="modal-title">حذف کالا</h5>
                         <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
                     </div>
@@ -349,7 +346,7 @@
         </div>
     @endif
 
-    {{-- ============================ مودال چاپ لیبل ============================ --}}
+{{-- ============================ مودال چاپ لیبل ============================ --}}
     <div class="modal fade" id="labelModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

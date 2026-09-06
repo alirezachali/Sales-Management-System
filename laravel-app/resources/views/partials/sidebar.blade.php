@@ -94,7 +94,7 @@
         </li>
         <!-- گزارش فروش-->
         <li>
-            <a href="{{ route('reports.sales') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">
+            <a href="{{ route('reports.sales') }}" class="{{ request()->routeIs('reports.sales') ? 'active' : '' }}">
                 <i class="bi bi-clipboard-data"></i>
                 <span>گزارش فروش</span>
             </a>
@@ -104,6 +104,13 @@
             <a href="{{ route('reports.purchases') }}" class="{{ request()->routeIs('reports.purchases') ? 'active' : '' }}">
                 <i class="bi bi-archive"></i>
                 <span>گزارش ورود/خروج کالا</span>
+            </a>
+        </li>
+        <!-- مدیریت بدهی ها -->
+        <li>
+            <a href="{{ route('debts.index') }}" class="{{ request()->routeIs('debts.*') ? 'active' : '' }}">
+                <i class="bi bi-journal-minus"></i>
+                <span>مدیریت بدهی ها</span>
             </a>
         </li>
         <!-- گزارش مالی -->

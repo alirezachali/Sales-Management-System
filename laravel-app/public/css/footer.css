@@ -9,7 +9,7 @@
 
 footer {
     position: sticky;
-    padding: 5px;
+    padding: 3px;
     grid-row: 2;
     bottom: 0;
 }
@@ -17,7 +17,7 @@ footer {
 .app-footer {
     /* z-index: 1030; */
     height: var(--footer-height);
-    width: 101%;
+    width: 100%;
     
     background: rgba(255, 254, 254, 0.123);
     -webkit-backdrop-filter: blur(10px);

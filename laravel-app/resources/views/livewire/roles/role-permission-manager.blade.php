@@ -1,6 +1,6 @@
 <div dir="rtl">
 
-    {{-- نمایش پیغام‌های موفقیت / خطا --}}
+{{--============ نمایش پیغام‌های موفقیت ============--}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
@@ -9,6 +9,7 @@
         </div>
     @endif
 
+{{--============ نمایش پیغام های خطا ============--}}
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -17,7 +18,7 @@
         </div>
     @endif
 
-    {{-- کارت‌های آماری --}}
+{{--================== کارت‌های آماری ==================--}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
@@ -64,7 +65,7 @@
 
     <form wire:submit="save">
 
-        {{-- هدر صفحه --}}
+    {{--======================== هدر صفحه ========================--}}
         <div class="card shadow-sm mb-4 border-3" wire:loading.class="opacity-50">
             <div class="card-header d-flex justify-content-between align-items-center mb-4">
                 <div>

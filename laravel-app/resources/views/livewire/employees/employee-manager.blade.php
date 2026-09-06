@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    {{-- جدول کارکنان --}}
+    {{-- جدول کارکنان --}} 
     <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -102,7 +102,7 @@
 
         <div class="card-body">
             <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
+                <thead>
                     <tr>
                         <th width="40">ردیف</th>
                         <th>نام کارمند</th>

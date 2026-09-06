@@ -107,7 +107,7 @@
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
                 <h3 class="fw-bold mb-1">
-                    <i class="bi bi-wallet2 text-danger"></i>
+                    <i class="bi bi-wallet2 text-primary"></i>
                     مدیریت هزینه‌ها
                 </h3>
                 <small class="text-muted">ثبت و پیگیری هزینه‌ها و دسته‌بندی آن‌ها</small>
@@ -126,68 +126,71 @@
         </div>
 
         <div class="card-body">
-            <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th width="40">ردیف</th>
-                        <th width="160">عنوان</th>
-                        <th width="70">دسته‌بندی</th>
-                        <th width="100">کارمند</th>
-                        <th width="135">تاریخ</th>
-                        <th width="60">روش پرداخت</th>
-                        <th width="130">مبلغ</th>
-                        <th width="120">عملیات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($expenses as $expense)
-                        <tr wire:key="expense-{{ $expense->id }}">
-                            <td>{{ $loop->iteration + ($expenses->currentPage() - 1) * $expenses->perPage() }}</td>
-                            <td>
-                                <div class="fw-bold">{{ $expense->title }}</div>
-                                @if ($expense->reference_number)
-                                    <small class="text-muted">مرجع: {{ $expense->reference_number }}</small>
-                                @endif
-                            </td>
-                            <td>
-                                <span class="badge bg-secondary text-dark">{{ $expense->category?->name }}</span>
-                            </td>
-                            <td>
-                                @if ($expense->employee)
-                                    <span class="badge bg-info text-dark">{{ $expense->employee->full_name }}</span>
-                                @else
-                                    <span class="text-muted">—</span>
-                                @endif
-                            </td>
-                            <td>{{ jalaliDate($expense->expense_date) }}</td>
-                            <td>{{ $expense->payment_method_text }}</td>
-                            <td class="fw-bold text-danger">
-                                {{ number_format($expense->amount) }} {{ setting('currency', '') }}
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-secondary text-dark"
-                                    wire:click="openDetails({{ $expense->id }})" title="مشاهده جزئیات">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-warning text-dark"
-                                    wire:click="openEditModal({{ $expense->id }})" title="ویرایش هزینه">
-                                    <i class="bi bi-pencil-fill"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-danger text-dark"
-                                    wire:click="confirmDelete({{ $expense->id }})" title="حذف هزینه">
-                                    <i class="bi bi-trash-fill"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    @empty
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead>
                         <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">
-                                هیچ هزینه‌ای ثبت نشده است.
-                            </td>
+                            <th width="40">ردیف</th>
+                            <th width="160">عنوان</th>
+                            <th width="70">دسته‌بندی</th>
+                            <th width="100">کارمند</th>
+                            <th width="135">تاریخ</th>
+                            <th width="60">روش پرداخت</th>
+                            <th width="130">مبلغ</th>
+                            <th width="120">عملیات</th>
                         </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse ($expenses as $expense)
+                            <tr wire:key="expense-{{ $expense->id }}">
+                                <td>{{ $loop->iteration + ($expenses->currentPage() - 1) * $expenses->perPage() }}</td>
+                                <td>
+                                    <div class="fw-bold">{{ $expense->title }}</div>
+                                    @if ($expense->reference_number)
+                                        <small class="text-muted">مرجع: {{ $expense->reference_number }}</small>
+                                    @endif
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary text-dark">{{ $expense->category?->name }}</span>
+                                </td>
+                                <td>
+                                    @if ($expense->employee)
+                                        <span
+                                            class="badge bg-info text-dark">{{ $expense->employee->full_name }}</span>
+                                    @else
+                                        <span class="text-muted">—</span>
+                                    @endif
+                                </td>
+                                <td>{{ jalaliDate($expense->expense_date) }}</td>
+                                <td>{{ $expense->payment_method_text }}</td>
+                                <td class="fw-bold text-danger">
+                                    {{ number_format($expense->amount) }} {{ setting('currency', '') }}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-secondary text-dark"
+                                        wire:click="openDetails({{ $expense->id }})" title="مشاهده جزئیات">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-warning text-dark"
+                                        wire:click="openEditModal({{ $expense->id }})" title="ویرایش هزینه">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger text-dark"
+                                        wire:click="confirmDelete({{ $expense->id }})" title="حذف هزینه">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">
+                                    هیچ هزینه‌ای ثبت نشده است.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
             <div class="mt-3">{{ $expenses->links() }}</div>
         </div>
@@ -210,7 +213,8 @@
                             {{ $tc->category?->name ?? 'بدون دسته' }}
                         </span>
                         <div class="progress flex-grow-1" style="height: 12px;">
-                            <div class="progress-bar bg-warning" style="width: {{ $maxTotal > 0 ? ($tc->total / $maxTotal) * 100 : 0 }}%"></div>
+                            <div class="progress-bar bg-warning"
+                                style="width: {{ $maxTotal > 0 ? ($tc->total / $maxTotal) * 100 : 0 }}%"></div>
                         </div>
                         <span class="fw-bold text-nowrap">
                             {{ number_format($tc->total) }} {{ setting('currency', '') }}
@@ -233,7 +237,8 @@
                             <h5 class="modal-title">
                                 {{ $editingId ? 'ویرایش هزینه' : 'ثبت هزینه جدید' }}
                             </h5>
-                            <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
+                            <button type="button" class="btn-close" wire:click="closeModals"
+                                title="بستن"></button>
                         </div>
 
                         <div class="modal-body">
@@ -431,7 +436,8 @@
                             <h5 class="modal-title">
                                 {{ $categoryId ? 'ویرایش دسته‌بندی' : 'افزودن دسته‌بندی هزینه' }}
                             </h5>
-                            <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
+                            <button type="button" class="btn-close" wire:click="closeModals"
+                                title="بستن"></button>
                         </div>
 
                         <div class="modal-body">

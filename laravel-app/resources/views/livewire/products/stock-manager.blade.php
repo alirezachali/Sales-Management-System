@@ -1,6 +1,6 @@
 <div dir="rtl">
 
-    {{-- پیام موفقیت --}}
+{{--============ پیام موفقیت ============--}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
@@ -9,7 +9,7 @@
         </div>
     @endif
 
-    {{-- پیام خطا --}}
+{{--============ پیام خطا ============--}}
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -38,7 +38,7 @@
                     
                 </div>
 
-                {{-- دکمه‌های ورود، خروج و خروجی گزارش --}}
+            {{--====== دکمه‌های ورود، خروج و خروجی گزارش ======--}}
                 <div class="d-flex align-items-center gap-2">
 
                     <button type="button" class="btn btn-sm btn-outline-success" wire:click="openAddStockModal"
@@ -54,7 +54,7 @@
 
                     <div class="vr mx-1 d-none d-sm-block" style="opacity:.15;"></div>
 
-                    {{-- دراپ‌داون خروجی گزارش (اکسل / CSV) --}}
+                {{--====== دراپ‌داون خروجی گزارش (اکسل / CSV) ======--}}
                     <div class="dropdown">
                         <button type="button"
                             class="btn btn-sm btn-outline-primary dropdown-toggle d-flex align-items-center gap-1"
@@ -147,7 +147,7 @@
         </div>
     </div>
 
-    {{-- ============================ مودال ورود/خروج کالا ============================ --}}
+{{-- ================================== مودال ورود/خروج کالا ================================== --}}
     @if ($showFormModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="stock-form-modal">
