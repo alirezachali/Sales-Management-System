@@ -273,6 +273,7 @@ class PurchaseInvoiceManager extends Component
                 'type' => 'initial',
                 'quantity' => $product->stock,
                 'description' => 'موجودی اولیه کالا از فاکتور خرید',
+                'user_id'        => auth()->id(),
             ]);
         }
 
@@ -403,6 +404,7 @@ class PurchaseInvoiceManager extends Component
                         'type'        => 'purchase',
                         'quantity'    => $quantity,
                         'description' => 'خرید از ' . $purchaseInvoice->supplier->name . ' - فاکتور: ' . $invoiceNumber,
+                        'user_id'        => auth()->id(),
                     ]);
                 }
 

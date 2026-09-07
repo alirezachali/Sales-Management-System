@@ -23,9 +23,9 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">تعداد فاکتورهای خرید</div>
+                    <div class="subheader">تعداد کل عملیات ها</div>
                     <div class="h1 mb-0">
-                        {{ $totals->invoice_count }}
+                        {{ $totals->movement_count }}
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                 <div class="card-body">
                     <div class="subheader">تعداد عملیات های ورود کالا</div>
                     <div class="h1 mb-0 text-success">
-                        {{-- {{ $totals->entry_count }} --}}
+                        {{ $totals->entry_count }}
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                 <div class="card-body">
                     <div class="subheader">تعداد عملیات های خروج کالا</div>
                     <div class="h1 mb-0 text-danger">
-                        {{-- {{ $totals->exit_count }} --}}
+                        {{ $totals->exit_count }}
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 <div class="card-body">
                     <div class="subheader">تعداد عملیات های موجودی اولیه</div>
                     <div class="h1 mb-0 text-info">
-                        {{-- {{ $totals->initial_count }} --}}
+                        {{ $totals->initial_count }}
                     </div>
                 </div>
             </div>
@@ -65,9 +65,9 @@
 {{--================== فیلترها ==================--}}
     <div class="card mb-4 border-3">
         <div class="card-body">
-            <div class="row g-4 align-items-end">
+            <div class="row g-2 align-items-end">
                 <div class="col-md-3">
-                    <label class="form-label">از تاریخ</label>
+                    <label class="form-label">از تاریخ (شمسی)</label>
                     <input type="text" wire:model.live.debounce.500ms="dateFromJalali" data-jdp
                         autocomplete="off" inputmode="numeric" placeholder="1405/06/01"
                         class="form-control @if (isset($dateErrors['from'])) is-invalid @endif">
@@ -76,7 +76,7 @@
                     @endif
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">تا تاریخ</label>
+                    <label class="form-label">تا تاریخ (شمسی)</label>
                     <input type="text" wire:model.live.debounce.500ms="dateToJalali" data-jdp
                         autocomplete="off" inputmode="numeric" placeholder="1405/06/31"
                         class="form-control @if (isset($dateErrors['to'])) is-invalid @endif">
@@ -84,7 +84,7 @@
                         <div class="invalid-feedback d-block">{{ $dateErrors['to'] }}</div>
                     @endif
                 </div>
-                {{-- <div class="col-md-3">
+                <div class="col-md-3">
                     <label class="form-label">نوع عملیات</label>
                     <select wire:model.live="filterType" class="form-select">
                         <option value="">همه</option>
@@ -92,8 +92,8 @@
                         <option value="purchase">ورود کالا</option>
                         <option value="sale">خروج کالا</option>
                     </select>
-                </div> --}}
-                <div class="col-md-3">
+                </div>
+                {{-- <div class="col-md-2">
                     <label class="form-label">روش پرداخت</label>
                     <select wire:model.live="filterPaymentMethod" class="form-select">
                         <option value="">همه روش‌ها</option>
@@ -101,7 +101,7 @@
                             <option value="{{ $key }}">{{ $label }}</option>
                         @endforeach
                     </select>
-                </div>
+                </div> --}}
                 <div class="col-md-3">
                     <button type="button" wire:click="resetFilters" class="btn btn-outline-secondary w-100"
                         title="پاک کردن فیلترها">
@@ -121,9 +121,9 @@
             <div>
                 <h3 class="fw-bold mb-1">
                     <i class="bi bi-clipboard-data text-primary"></i>
-                    گزارش فاکتورهای خرید
+                    گزارش ورود/خروج کالا
                 </h3>
-                <small class="">مشاهده گزارش لیست فاکتورهای خرید ثبت شده در بازه زمانی انتخابی</small>
+                <small class="">مشاهده گزارش عملیات ورود/خروج کالا به/از انبار در بازه زمانی انتخابی</small>
             </div>
             <div class="d-flex gap-2 flex-wrap">
                 <button type="button" class="btn btn-success text-dark" wire:click="exportExcel" wire:loading.attr="disabled"
@@ -147,68 +147,57 @@
                     <thead class="table-dark">
                         <tr>
                             <th width="40">ردیف</th>
-                            <th width="80">شماره فاکتور</th>
-                            <th width="80">روش پرداخت</th>
-                            <th>تامین کننده</th>
-                            <th width="120">تاریخ ثبت</th>
-                            <th width="150">مبلغ</th>
-                            <th width="120">ثبت کننده</th>
-                            <th width="70">عملیات</th>
+                            <th width="80">نوع</th>
+                            <th>شرح</th>
+                            <th width="80">نام محصول</th>
+                            <th width="120">تاریخ</th>
+                            <th width="50">تعداد</th>
+                            <th width="120">توسط</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($records as $record)
-                            <tr wire:key="{{ $record['id'] }}">
+                            <tr wire:key="{{ $record['type'] }}-{{ $record['id'] }}">
                                 <td>{{ $loop->iteration + ($records->currentPage() - 1) * $records->perPage() }}</td>
-                                {{--شماره فاکتور--}}
-                                <td>{{ $record['invoice_number'] }}</td>
-                                {{--روش پرداخت--}}
                                 <td>
-                                    @if ($record['payment_method'] === 'credit')
-                                        <span class="badge bg-danger text-dark">
-                                            <i class="bi bi-box-arrow-in-down me-1"></i>
-                                            نسیه
-                                        </span>
-                                    @elseif ($record['payment_method'] === 'cash')
+                                    @if ($record['type'] === 'purchase')
                                         <span class="badge bg-success text-dark">
-                                            <i class="bi bi-box-arrow-up me-1"></i>
-                                            نقد
+                                            <i class="bi bi-box-arrow-in-down me-1"></i>ورود کالا
                                         </span>
-                                    @elseif ($record['payment_method'] === 'transfer')
+                                    @elseif ($record['type'] === 'sale')
+                                        <span class="badge bg-danger text-dark">
+                                            <i class="bi bi-box-arrow-up me-1"></i>خروج کالا
+                                        </span>
+                                    @elseif ($record['type'] === 'initial')
                                         <span class="badge bg-info text-dark">
-                                            <i class="bi bi-box-arrow-up me-1"></i>
-                                            حواله
-                                        </span>
-                                    @elseif ($record['payment_method'] === 'card')
-                                        <span class="badge bg-warning text-dark">
-                                            <i class="bi bi-box-arrow-up me-1"></i>
-                                            کارت
+                                            <i class="bi bi-box-arrow-up me-1"></i>موجودی اولیه
                                         </span>
                                     @endif
                                 </td>
-                                {{--تامین کننده--}}
-                                <td class="fw-bold">{{ $record['supplier'] }}</td>
-                                {{--تاریخ ثبت--}}
+                                <td class="fw-bold">{{ $record['description'] }}</td>
                                 <td>
-                                    {{ jalaliDate($record['date'] ) }}
+                                    <span class="badge bg-warning text-dark">
+                                        {{ $record['related_name'] }}
+                                    </span>
                                 </td>
-                                {{--مبلغ--}}
-                                <td>{{ $record['total_amount'] }}</td>
-                                {{--ثبت کننده--}}
+                                <td>{{ jalaliDate($record['date'] ) }}</td>
+                                <td class="text-center">
+                                    @if ($record['type'] === 'sale')
+                                        <span class="text-danger">{{ number_format($record['quantity']) }}-</span>
+                                    @elseif ($record['type'] === 'purchase')
+                                        <span class="text-success">{{ number_format($record['quantity']) }}+</span>
+                                    @elseif ($record['type'] === 'initial')
+                                        <span class="text-info">{{ number_format($record['quantity']) }}+</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($record['user_name'])
-                                        <span class="badge bg-secondary text-dark">
+                                        <span class="badge bg-light text-dark">
                                             <i class="bi bi-person me-1"></i>{{ $record['user_name'] }}
                                         </span>
                                     @else
-                                        <span class="text-muted">نامشخص</span>
+                                        <span class="text-muted">—</span>
                                     @endif
-                                </td>
-                                {{--عملیات--}}
-                                <td>
-                                    <button type="button" class="btn btn-sm btn-info text-dark" title="مشاهده جزئیات">
-                                        جزئیات
-                                    </button>
                                 </td>
                             </tr>
                         @empty
@@ -228,5 +217,3 @@
         </div>
     </div>
 </div>
-
-

@@ -99,11 +99,18 @@
                 <span>گزارش فروش</span>
             </a>
         </li>
-        <!-- گزارش خرید -->
+        <!-- گزارش فاکتورهای خرید-->
         <li>
             <a href="{{ route('reports.purchases') }}" class="{{ request()->routeIs('reports.purchases') ? 'active' : '' }}">
                 <i class="bi bi-archive"></i>
-                <span>گزارش ورود/خروج کالا</span>
+                <span>گزارش فاکتورهای خرید</span>
+            </a>
+        </li>
+        <!-- گزارش ورود|خروج کالا-->
+        <li>
+            <a href="{{ route('reports.stockmovements') }}" class="{{ request()->routeIs('reports.stockmovements') ? 'active' : '' }}">
+                <i class="bi bi-archive"></i>
+                <span>گزارش ورود|خروج کالا</span>
             </a>
         </li>
         <!-- مدیریت بدهی ها -->

@@ -154,10 +154,15 @@ Route::get('/suppliers', function () {
         return view('reports.sales');
     })->name('reports.sales');
 
-    // مسیر گزارش ورود و خروج کالا 
+    // مسیر گزارش فاکتورهای خرید 
      Route::get('reports.purchases', function () {
         return view('reports.purchases');
     })->name('reports.purchases');
+
+    // مسیر گزارش ورود و خروج کالا 
+     Route::get('reports.stockmovements', function () {
+        return view('reports.stockmovements');
+    })->name('reports.stockmovements');
 
     // مسیر مدیریت مالی
     Route::get('financial', function () {

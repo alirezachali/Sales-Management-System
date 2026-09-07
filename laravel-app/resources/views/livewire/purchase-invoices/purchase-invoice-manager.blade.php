@@ -69,7 +69,7 @@
                         <option value="card">کارت</option>
                         <option value="transfer">کارت به کارت / حواله</option>
                         <option value="credit">نسیه</option>
-                        <option value="other">سایر</option>
+                        {{-- <option value="other">سایر</option> --}}
                     </select>
                 </div>
 
