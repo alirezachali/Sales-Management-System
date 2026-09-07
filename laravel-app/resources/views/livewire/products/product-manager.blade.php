@@ -118,7 +118,7 @@
                             <th>دسته بندی</th>
                             <th width="130">قیمت فروش</th>
                             <th width="90">موجودی</th>
-                            <th width="230">عملیات</th>
+                            <th width="160">عملیات</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -134,7 +134,7 @@
                                 </td>
                                 <td>
                                     {{ $product->formatted_stock }}
-                                    <span class="badge bg-secondary text-dark">{{ $product->unit }}</span>
+                                    <span class="badge bg-secondary text-light">{{ $product->unit }}</span>
                                 </td>
                                 <td>
                                 {{--============ دکمه ویرایش کالا ============--}}
@@ -153,18 +153,6 @@
                                     <a href="{{ route('products.stock', $product) }}" class="btn btn-sm btn-light"
                                         title="مشاهده سوابق ورود و خروج این کالا به انبار">
                                         <i class="bi bi-boxes"></i>
-                                    </a>
-
-                                {{--============ دکمه ورود کالا به انبار ============--}}
-                                    <a href="{{ route('products.stock', ['product' => $product, 'action' => 'purchase']) }}"
-                                        class="btn btn-sm btn-outline-success" title="ورود این کالا به انبار">
-                                        <i class="bi bi-plus-lg"></i>
-                                    </a>
-
-                                {{--============ دکمه خروج کالا از انبار ============--}}
-                                    <a href="{{ route('products.stock', ['product' => $product, 'action' => 'sale']) }}"
-                                        class="btn btn-sm btn-outline-danger" title="خروج این کالا از انبار">
-                                        <i class="bi bi-dash-lg"></i>
                                     </a>
 
                                 {{--================== دکمه حذف کالا ==================--}}
@@ -195,7 +183,7 @@
     @if ($showFormModal)
         <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="product-form-modal">
-            <div class="modal-dialog modal-l modal-dialog-centered">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
 
                 <form wire:submit="save">
 
