@@ -1,7 +1,7 @@
 {{-- resources/views/reports/sales.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'گزارش فروش')
+@section('title', 'گزارش فاکتورهای خرید')
 
 @section('content')
     <div class="container-fluid">

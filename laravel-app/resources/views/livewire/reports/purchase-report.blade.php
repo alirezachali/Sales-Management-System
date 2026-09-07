@@ -206,7 +206,8 @@
                                 </td>
                                 {{--عملیات--}}
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-info text-dark" title="مشاهده جزئیات">
+                                    <button type="button" class="btn btn-sm btn-info text-dark"
+                                        wire:click="openDetails({{ $record['id'] }})" title="مشاهده جزئیات">
                                         جزئیات
                                     </button>
                                 </td>
@@ -227,6 +228,190 @@
             </div>
         </div>
     </div>
+
+{{--======================== مودال جزئیات فاکتور خرید ========================--}}
+    @if ($showDetailsModal && $detailsInvoice)
+        @php
+            $itemCount = $detailsInvoice->items->count();
+            $totalQty = $detailsInvoice->items->sum(fn ($item) => (float) $item->quantity);
+            $invoiceTotal = (float) $detailsInvoice->total_amount;
+            $paidAmount = (float) ($detailsInvoice->paid_amount ?? 0);
+            $remainAmount = $invoiceTotal - $paidAmount;
+            $statusLabels = [
+                'completed' => 'تکمیل شده',
+                'pending' => 'در انتظار',
+                'cancelled' => 'لغو شده',
+            ];
+        @endphp
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+            wire:key="purchase-invoice-details-modal">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-dark">
+                        <h5 class="modal-title">
+                            <i class="bi bi-receipt"></i>
+                            جزئیات فاکتور خرید
+                            @if ($detailsInvoice->invoice_number)
+                                <span class="fw-normal">#{{ $detailsInvoice->invoice_number }}</span>
+                            @endif
+                        </h5> 
+                        <button type="button" class="btn-close" wire:click="closeDetails" title="بستن"></button>
+                    </div>
+                    <div class="modal-body" id="purchase-invoice-print-area">
+                        <h5 class="fw-bold mb-3">اطلاعات فاکتور</h5>
+                        <table class="table table-bordered table-sm mb-4">
+                            <tbody>
+                                <tr>
+                                    <th class="w-25 text-primary">شماره فاکتور</th>
+                                    <td>{{ $detailsInvoice->invoice_number ?: '—' }}</td>
+                                    <th class="w-25 text-primary">تاریخ خرید</th>
+                                    <td>{{ jalaliDate($detailsInvoice->purchase_date) }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-primary">تامین‌کننده</th>
+                                    <td>{{ $detailsInvoice->supplier?->name ?? '—' }}</td>
+                                    <th class="text-primary">روش پرداخت</th>
+                                    <td>{{ $paymentMethodLabels[$detailsInvoice->payment_method] ?? $detailsInvoice->payment_method }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-primary">وضعیت</th>
+                                    <td>{{ $statusLabels[$detailsInvoice->status] ?? ($detailsInvoice->status ?: '—') }}</td>
+                                    <th class="text-primary">ثبت‌کننده</th>
+                                    <td>{{ $detailsInvoice->user?->name ?? 'نامشخص' }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-primary">مبلغ کل</th>
+                                    <td class="fw-bold">{{ number_format($invoiceTotal) }}</td>
+                                    <th class="text-primary">پرداخت‌شده</th>
+                                    <td>{{ number_format($paidAmount) }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-primary">مانده</th>
+                                    <td>{{ number_format($remainAmount) }}</td>
+                                    <th class="text-primary">توضیحات</th>
+                                    <td>{{ $detailsInvoice->notes ?: '—' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h6 class="fw-bold mb-3">اقلام خرید</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-sm align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="40">ردیف</th>
+                                        <th>کالا</th>
+                                        <th width="90">تعداد</th>
+                                        <th width="120">قیمت خرید</th>
+                                        <th width="120">قیمت فروش</th>
+                                        <th width="130">جمع</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($detailsInvoice->items as $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->product?->name ?? '—' }}</td>
+                                            <td>{{ rtrim(rtrim(number_format((float) $item->quantity, 3, '.', ''), '0'), '.') }}</td>
+                                            <td>{{ number_format((float) $item->buy_price) }}</td>
+                                            <td>{{ number_format((float) $item->sell_price) }}</td>
+                                            <td class="fw-bold">{{ number_format((float) $item->total) }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted py-3">
+                                                آیتمی برای این فاکتور ثبت نشده است.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row g-2 mt-2">
+                            <div class="col-md-4">
+                                <div class="border rounded p-2">
+                                    <div class="text-muted small">تعداد اقلام کالا</div>
+                                    <div class="fw-bold fs-5">{{ $itemCount }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="border rounded p-2">
+                                    <div class="text-muted small">تعداد کل کالا</div>
+                                    <div class="fw-bold fs-5">{{ rtrim(rtrim(number_format($totalQty, 3, '.', ''), '0'), '.') }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="border rounded p-2">
+                                    <div class="text-muted small">مبلغ خرید کل فاکتور</div>
+                                    <div class="fw-bold fs-5">{{ number_format($invoiceTotal) }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer no-print">
+                        <button type="button" class="btn btn-secondary" wire:click="closeDetails">بستن</button>
+                        <button type="button" class="btn btn-sm btn-light text-dark"
+                                onclick="printPurchaseInvoiceDetails()" title="پرینت">
+                            <i class="bi bi-printer"></i>
+                            پرینت
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function printPurchaseInvoiceDetails() {
+                const area = document.getElementById('purchase-invoice-print-area');
+                if (!area) {
+                    return;
+                }
+
+                const win = window.open('', '_blank', 'width=900,height=700');
+                if (!win) {
+                    return;
+                }
+
+                win.document.write(`<!DOCTYPE html>
+                    <html lang="fa" dir="rtl">
+                        <head>
+                            <meta charset="UTF-8">
+                            <title>جزئیات فاکتور خرید</title>
+                            <style>
+                                body {
+                                    font-family: Tahoma, Vazirmatn, sans-serif;
+                                    padding: 16px;
+                                    color: #111;
+                                    background: #fff;
+                                }
+                                h6 { margin: 0 0 12px; }
+                                table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+                                th, td { border: 1px solid #333; padding: 6px 8px; text-align: right; font-size: 13px; }
+                                th { background: #f3f3f3; }
+                                .row { display: flex; gap: 8px; }
+                                .col-md-4 { flex: 1; }
+                                .border { border: 1px solid #333; border-radius: 6px; padding: 8px; }
+                                .text-muted { color: #555; font-size: 12px; }
+                                .fw-bold { font-weight: bold; }
+                                .fs-5 { font-size: 18px; }
+                                .table-responsive { overflow: visible; }
+                                @page { margin: 12mm; }
+                            </style>
+                        </head>
+                        <body>
+                            <h3 style="margin-top:0;">جزئیات فاکتور خرید</h3>
+                            ${area.innerHTML}
+                        </body>
+                    </html>`);
+                win.document.close();
+                win.focus();
+                setTimeout(function () {
+                    win.print();
+                    win.close();
+                }, 250);
+            }
+        </script>
+    @endif
 </div>
 
 

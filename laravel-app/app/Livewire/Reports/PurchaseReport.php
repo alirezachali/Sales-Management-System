@@ -30,6 +30,9 @@ class PurchaseReport extends Component
     public string $filterPaymentMethod = '';
     public array $dateErrors = [];
 
+    public bool $showDetailsModal = false;
+    public ?int $detailsId = null;
+
     public array $paymentMethodLabels = [
         'cash' => 'نقدی',
         'card' => 'کارت',
@@ -97,6 +100,18 @@ class PurchaseReport extends Component
         $this->resetPage();
     }
 
+    public function openDetails(int $id): void
+    {
+        $this->detailsId = $id;
+        $this->showDetailsModal = true;
+    }
+
+    public function closeDetails(): void
+    {
+        $this->showDetailsModal = false;
+        $this->detailsId = null;
+    }
+
     public function render()
     {
         // --- 1. دریافت فاکتورهای خرید ---
@@ -162,9 +177,17 @@ class PurchaseReport extends Component
 
         $totals = $this->calculateTotals($invoices);
 
+        $detailsInvoice = null;
+        if ($this->showDetailsModal && $this->detailsId) {
+            $detailsInvoice = PurchaseInvoice::query()
+                ->with(['supplier', 'user', 'items.product'])
+                ->find($this->detailsId);
+        }
+
         return view('livewire.reports.purchase-report', [
             'records' => $paginator,
             'totals' => $totals,
+            'detailsInvoice' => $detailsInvoice,
         ]);
     }
 
