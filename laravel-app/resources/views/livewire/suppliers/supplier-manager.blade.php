@@ -156,9 +156,9 @@
         </div>
     </div>
 
-    {{-- مودال ساخت / ویرایش (یک مودال مشترک، بدون وابستگی به Bootstrap JS) --}}
+{{--====================================== مودال ساخت / ویرایش ==================================--}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);" wire:key="form-modal">
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);" wire:key="form-modal">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <form wire:submit="save">
@@ -305,13 +305,13 @@
         </div>
     @endif
 
-    {{-- مودال تایید حذف --}}
+{{--==================================== مودال تایید حذف ====================================--}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="delete-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-danger text-dark">
                         <h5 class="modal-title">حذف تامین‌کننده</h5>
                         <button type="button" class="btn-close" wire:click="closeModals"></button>
                     </div>

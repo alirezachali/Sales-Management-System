@@ -196,7 +196,7 @@
         </div>
     </div>
 
-    {{-- کارت پرهزینه‌ترین دسته‌بندی‌های این ماه --}}
+{{--================= کارت پرهزینه‌ترین دسته‌بندی‌های این ماه =================--}}
     @if ($topCategories->isNotEmpty())
         <div class="card mt-4 border-3">
             <div class="card-header">
@@ -225,9 +225,9 @@
         </div>
     @endif
 
-    {{-- ============================ مودال افزودن/ویرایش هزینه ============================ --}}
+{{-- =================================== مودال افزودن/ویرایش هزینه =================================== --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="expense-form-modal">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <form wire:submit="save">
@@ -337,13 +337,13 @@
         </div>
     @endif
 
-    {{-- ============================ مودال جزئیات هزینه ============================ --}}
+{{-- =================================== مودال جزئیات هزینه =================================== --}}
     @if ($showDetailsModal && $detailsExpense)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="expense-details-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-ingo text-dark">
                         <h5 class="modal-title">
                             <i class="bi bi-receipt"></i>
                             جزئیات هزینه
@@ -402,13 +402,13 @@
         </div>
     @endif
 
-    {{-- ============================ مودال تایید حذف هزینه ============================ --}}
+{{-- =================================== مودال تایید حذف هزینه =================================== --}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="expense-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-danger text-dark">
                         <h5 class="modal-title">حذف هزینه</h5>
                         <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
                     </div>
@@ -424,9 +424,9 @@
         </div>
     @endif
 
-    {{-- ============================ مودال افزودن/ویرایش دسته‌بندی ============================ --}}
+{{-- =================================== مودال افزودن/ویرایش دسته‌بندی =================================== --}}
     @if ($showCategoryModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="expense-category-form-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <form wire:submit="saveCategory">
@@ -487,13 +487,13 @@
         </div>
     @endif
 
-    {{-- ============================ مودال تایید حذف دسته‌بندی ============================ --}}
+{{-- =================================== مودال تایید حذف دسته‌بندی =================================== --}}
     @if ($showCategoryDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="expense-category-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-danger text-dark">
                         <h5 class="modal-title">حذف دسته‌بندی</h5>
                         <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
                     </div>

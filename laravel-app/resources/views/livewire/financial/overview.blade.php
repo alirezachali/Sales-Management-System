@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    {{-- فیلتر بازه‌ی شمسی --}}
+{{--==================== فیلتر بازه‌ی شمسی ====================--}}
     <div class="card border-3 mb-4">
         <div class="card-body">
             <div class="row g-4 align-items-end">
@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    {{-- کارت‌های مالی --}}
+{{--==================== کارت‌های مالی ====================--}}
     <div class="row g-3 mb-4">
 
         <div class="col-lg-4 col-md-6">
@@ -155,7 +155,7 @@
 
     </div>
 
-    {{-- جزئیات فرمول سود --}}
+{{--==================== جزئیات فرمول سود ====================--}}
     <div class="card border-3">
         <div class="card-header bg-secondary">
             <strong><i class="bi bi-calculator text-primary"></i> نحوه محاسبه سود خالص ({{ $displayFrom }} تا {{ $displayTo }})</strong>

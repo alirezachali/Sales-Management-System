@@ -164,7 +164,7 @@
 
 {{--=================================== مودال ساخت / ویرایش برند ===================================--}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="brand-form-modal">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -240,7 +240,7 @@
 
 {{--=================================== مودال تایید حذف ===================================--}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="brand-delete-modal">
             <div class="modal-dialog">
                 <div class="modal-content">

@@ -113,7 +113,7 @@
                         <th width="110">مانده</th>
                         <th width="120">سررسید</th>
                         <th width="100">وضعیت</th>
-                        <th width="120">عملیات</th>
+                        <th width="60">عملیات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -170,13 +170,7 @@
                                     <span class="badge bg-danger text-dark">پرداخت‌نشده</span>
                                 @endif
                             </td>
-                            <td>
-                                @if ($debt->status !== 'paid')
-                                    <button wire:click="openPayModal({{ $debt->id }})"
-                                        class="btn btn-success text-dark btn-sm" title="ثبت پرداخت">
-                                        <i class="bi bi-cash-coin"></i>
-                                    </button>
-                                @endif
+                            <td class="row justify-content-md-center g-1">
                                 <button wire:click="openEditModal({{ $debt->id }})"
                                     class="btn btn-warning text-dark btn-sm" title="ویرایش">
                                     <i class="bi bi-pencil"></i>
@@ -185,6 +179,12 @@
                                     class="btn btn-danger text-dark btn-sm" title="حذف">
                                     <i class="bi bi-trash"></i>
                                 </button>
+                                @if ($debt->status !== 'paid')
+                                    <button wire:click="openPayModal({{ $debt->id }})"
+                                        class="btn btn-success text-dark btn-sm" title="ثبت پرداخت">
+                                        <i class="bi bi-cash-coin"></i>
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                     @empty
@@ -323,7 +323,7 @@
         <div class="modal modal-blur fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.5)">
             <div class="modal-dialog modal-sm modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-success text-dark">
                         <h5 class="modal-title"><i class="bi bi-cash-coin me-2"></i>ثبت پرداخت</h5>
                         <button type="button" class="btn-close" wire:click="closeModal"></button>
                     </div>
@@ -331,8 +331,8 @@
                         @if ($payingDebtId)
                             @php $payingDebt = \App\Models\Debt::find($payingDebtId); @endphp
                             @if ($payingDebt)
-                                <div class="mb-3 p-2 bg-light rounded">
-                                    <div class="text-muted small">مانده بدهی</div>
+                                <div class="mb-3 p-2 rounded bg-light">
+                                    <div class="text-muted">مانده بدهی</div>
                                     <div class="fw-bold text-danger">
                                         {{ number_format($payingDebt->remaining_amount) }} ریال</div>
                                 </div>

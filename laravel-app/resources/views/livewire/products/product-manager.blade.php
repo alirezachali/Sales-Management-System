@@ -193,9 +193,9 @@
 
 {{-- ================================ مودال افزودن/ویرایش کالا ================================ --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="product-form-modal">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-dialog modal-l modal-dialog-centered">
 
                 <form wire:submit="save">
 
@@ -213,7 +213,7 @@
                         <div class="modal-body">
                             <div class="row g-3">
 
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <label class="form-label">بارکد</label>
                                     <input type="text" wire:model="barcode"
                                         class="form-control @error('barcode') is-invalid @enderror">
@@ -229,7 +229,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-7 mb-3">
                                     <label class="form-label">نام کالا</label>
                                     <input type="text" wire:model="name"
                                         class="form-control @error('name') is-invalid @enderror">
@@ -322,7 +322,7 @@
 
 {{-- ============================ مودال تایید حذف ============================ --}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="product-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -347,7 +347,7 @@
     @endif
 
 {{-- ============================ مودال چاپ لیبل ============================ --}}
-    <div class="modal fade" id="labelModal" tabindex="-1">
+    <div class="modal modal-blur fade" id="labelModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">

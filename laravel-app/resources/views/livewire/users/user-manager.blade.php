@@ -195,7 +195,7 @@
 
 {{-- ================================ مودال افزودن/ویرایش کاربر ================================ --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="user-form-modal">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <form wire:submit="save">
@@ -341,7 +341,7 @@
 
 {{-- =================================== مودال تغییر رمز عبور =================================== --}}
     @if ($showPasswordModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="user-password-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <form wire:submit="updatePassword">
@@ -395,7 +395,7 @@
 
 {{-- ==================================== مودال تایید حذف ==================================== --}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="user-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">

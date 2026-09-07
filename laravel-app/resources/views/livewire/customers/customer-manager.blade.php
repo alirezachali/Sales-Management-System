@@ -184,7 +184,7 @@
 
 {{-- =============================== مودال افزودن/ویرایش مشتری =============================== --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="customer-form-modal">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <form wire:submit="save">
@@ -318,7 +318,7 @@
 
 {{-- =================================== مودال تایید حذف ==================================== --}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="customer-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -340,7 +340,7 @@
 
 {{-- ================================= مودال گردش حساب مشتری ================================= --}}
     @if ($showLedgerModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="customer-ledger-modal">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">

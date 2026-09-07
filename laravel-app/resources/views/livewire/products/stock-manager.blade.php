@@ -31,7 +31,7 @@
 
         <div class="card-body">
             <div class="card-header d-flex justify-content-between align-items-center">
-                {{-- نمایش پیغام موجودی فعلی --}}
+            {{--======= نمایش پیغام موجودی فعلی =======--}}
                 <div class="alert alert-info mb-3">
                     موجودی فعلی:
                     <strong>{{ $product->formatted_stock }}{{ $product->unit }}</strong>
@@ -149,7 +149,7 @@
 
 {{-- ================================== مودال ورود/خروج کالا ================================== --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="stock-form-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">

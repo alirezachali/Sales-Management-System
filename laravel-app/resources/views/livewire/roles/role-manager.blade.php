@@ -174,7 +174,7 @@
 
 {{-- ================================== مودال افزودن/ویرایش نقش ================================== --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="role-form-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <form wire:submit="save">
@@ -260,7 +260,7 @@
 
 {{-- ======================================== مودال تایید حذف ======================================== --}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="role-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">

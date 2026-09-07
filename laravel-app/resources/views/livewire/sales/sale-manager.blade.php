@@ -35,7 +35,7 @@
     </div>
 
     <div class="row g-3">
-        {{-- ستون جستجو و افزودن کالا --}}
+    {{--=============== ستون جستجو و افزودن کالا ===============--}}
         <div class="col-lg-7">
             <div class="card glass-card mb-3 border-3">
                 <div class="card-body">
@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-            {{-- سبد فروش --}}
+        {{--==================== سبد فروش ====================--}}
             <div class="card glass-card border-3">
                 <div class="card-header">
                     <h5 class="fw-bold text-success">جدول آیتم های سبد خرید مشتری</h5>
@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        {{-- ستون جمع‌بندی و پرداخت --}}
+    {{--=============== ستون جمع‌بندی و پرداخت ===============--}}
         <div class="col-lg-5">
             <div class="card glass-card border-3">
 
@@ -217,9 +217,9 @@
     </div>
 
 
-    {{-- مودال پرداخت / تسویه --}}
+{{--================================== مودال پرداخت / تسویه ===================================--}}
     @if ($showCheckoutModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="checkout-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -276,9 +276,9 @@
         </div>
     @endif
 
-    {{-- مودال موفقیت + چاپ فاکتور --}}
+{{--=============================== مودال موفقیت + چاپ فاکتور ==============================--}}
     @if ($showInvoiceModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="invoice-modal">
             <div class="modal-dialog">
                 <div class="modal-content text-center">
@@ -304,7 +304,7 @@
         </div>
     @endif
 
-    {{-- باز کردن خودکار فاکتور در تب جدید هنگام کلیک روی دکمه چاپ در لیست فاکتورهای اخیر --}}
+{{--============ باز کردن خودکار فاکتور در تب جدید هنگام کلیک روی دکمه چاپ در لیست فاکتورهای اخیر ============--}}
     <script>
         document.addEventListener('livewire:init', () => {
             Livewire.on('open-invoice', (event) => {
