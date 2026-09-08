@@ -32,7 +32,8 @@
                     <!-- فروش امروز از دیتابیس-->
                     <div class="dashboard-number">
                         <div class="h1 mb-0 text-success">{{ number_format($todaySales) }}
-                            {{ setting('currency', '') }}</div>
+                            {{ setting('currency', '') }}
+                        </div>
                     </div>
 
                 </div>
