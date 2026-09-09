@@ -63,8 +63,6 @@
         </div>
     </div>
 
-
-
 {{--================== کارت جستجو ==================--}}
     <div class="card glass-card mb-4 border-3">
         <div class="card-body">
@@ -77,7 +75,6 @@
             </div>
         </div>
     </div>
-
 
 {{--============================== هدر صفحه ==============================--}}
     <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
@@ -109,6 +106,7 @@
             </div>
         </div>
 
+    {{--============================== جدول لیست نقش ها ==============================--}}
         <div class="card shadow-sm" wire:loading.class="opacity-50">
             <div class="card-body p-0">
                 <div class="table-responsive">

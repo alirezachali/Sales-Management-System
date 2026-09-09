@@ -137,11 +137,11 @@
                         <tr>
                             <th width="50">ردیف</th>
                             <th>نام</th>
-                            <th width="122">نام کاربری</th>
-                            <th width="80">وضعیت</th>
-                            <th width="110">نقش</th>
+                            <th width="130">نام کاربری</th>
+                            <th width="90">وضعیت</th>
+                            <th width="120">نقش</th>
                             <th width="220">آخرین ورود</th>
-                            <th width="130">عملیات</th>
+                            <th width="140">عملیات</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -157,7 +157,11 @@
                                         <span class="badge bg-danger text-dark">غیرفعال</span>
                                     @endif
                                 </td>
-                                <td>{{ $user->role?->display_name ?? '-' }}</td>
+                                <td>
+                                    <span class="badge bg-primary text-dark">
+                                        {{ $user->role?->display_name ?? '-' }}
+                                    </span>
+                                </td>
                                 <td>{{ $user->last_login_at ? jalaliDateTime($user->last_login_at) : '-' }}</td>
                                 <td>
                                     {{-- دکمه ویرایش مشخصات یک کاربر --}}

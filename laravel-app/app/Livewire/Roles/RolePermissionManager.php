@@ -63,8 +63,24 @@ class RolePermissionManager extends Component
 
     public function render()
     {
+        /* آمار کارت‌های بالای صفحه؛ بر اساس وضعیت فعلی فرم (selected) محاسبه
+           می‌شود تا با تیک زدن/برداشتن مجوزها بلافاصله به‌روز شوند */
+        $groups = PermissionGroup::with('permissions')->orderBy('sort_order')->get();
+
+        $selectedIds = array_map('intval', $this->selected);
+
+        /* تعداد مجوزهای رول جاری که در گروه‌های مختلف پخش شده‌اند */
+        $selectedGroupIds = Permission::query()
+            ->whereIn('id', $selectedIds)
+            ->distinct()
+            ->pluck('permission_group_id');
+
         return view('livewire.roles.role-permission-manager', [
-            'groups' => PermissionGroup::with('permissions')->orderBy('sort_order')->get(),
+            'groups' => $groups,
+            'totalPermissions' => Permission::count(),
+            'selectedCount' => count($selectedIds),
+            'remainingCount' => Permission::count() - count($selectedIds),
+            'touchedGroupsCount' => $selectedGroupIds->count(),
         ]);
     }
 }

@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <div class="subheader">تعداد کل مجوزها</div>
                     <div class="h1 mb-0">
-                        {{-- {{ $totalCategories }} --}}97
+                        {{ $totalPermissions }}
                     </div>
                 </div>
             </div>
@@ -33,9 +33,9 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">مجوزهای فعال</div>
+                    <div class="subheader">مجوزهای ست‌شده برای این نقش</div>
                     <div class="h1 mb-0 text-success">
-                        {{-- {{ $activeCategories }} --}}97
+                        {{ $selectedCount }}
                     </div>
                 </div>
             </div>
@@ -43,9 +43,9 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">مجوزهای غیرفعال</div>
+                    <div class="subheader">مجوزهای باقی‌مانده (ست‌نشده)</div>
                     <div class="h1 mb-0 text-danger">
-                        {{-- {{ $inactiveCategories }} --}}0
+                        {{ $remainingCount }}
                     </div>
                 </div>
             </div>
@@ -53,9 +53,9 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">تعداد گروه های مجوز</div>
+                    <div class="subheader">گروه‌های دارای حداقل یک مجوز فعال</div>
                     <div class="h1 mb-0 text-warning">
-                        {{-- {{ $emptyCategories }} --}}23
+                        {{ $touchedGroupsCount }}
                     </div>
                 </div>
             </div>

@@ -1,8 +1,7 @@
 @extends('layouts.app')
-
 @section('title', 'دسترسی غیرمجاز')
-
 @section('content')
+
 <div class="container-fluid">
     <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
         <div class="col-12 col-md-8 col-lg-6 text-center">
