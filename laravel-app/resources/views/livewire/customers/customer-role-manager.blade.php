@@ -40,11 +40,13 @@
                     </button>
                 </a>
 
+                @can('customers.create')
                 <button type="button" class="btn btn-primary" wire:click="openCreateModal"
                     title="افزودن رده جدید به باشگاه مشتریان">
                     <i class="bi bi-plus-circle"></i>
                     رده جدید
                 </button>
+                @endcan
 
             </div>
         </div>
@@ -90,14 +92,18 @@
                                 @endif
                             </td>
                             <td>
+                                @can('customers.edit')
                                 <button type="button" class="btn btn-sm btn-warning text-dark"
                                     wire:click="openEditModal({{ $role->id }})" title="ویرایش رده">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
+                                @endcan
+                                @can('customers.delete')
                                 <button type="button" class="btn btn-sm btn-danger text-dark"
                                     wire:click="confirmDelete({{ $role->id }})" title="حذف رده">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
+                                @endcan
                             </td>
                         </tr>
                     @empty

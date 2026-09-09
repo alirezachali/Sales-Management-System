@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Customers;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Customer;
 use App\Models\CustomerRole;
 use App\Services\CustomerAccountService;
@@ -12,6 +13,7 @@ use Livewire\WithPagination;
 class CustomerManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -190,6 +192,8 @@ class CustomerManager extends Component
     */
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'customers.edit' : 'customers.create');
+
         $data = $this->validate();
         $data['customer_role_id'] = $data['customer_role_id'] ?: null;
 
@@ -213,6 +217,8 @@ class CustomerManager extends Component
     */
     public function delete(): void
     {
+        $this->authorizeAction('customers.delete');
+
         if ($this->deletingId) {
             Customer::findOrFail($this->deletingId)->delete();
             session()->flash('success', 'مشتری حذف شد');
@@ -230,6 +236,8 @@ class CustomerManager extends Component
     */
     public function recalculateRole(int $id): void
     {
+        $this->authorizeAction('customers.edit');
+
         $customer = Customer::findOrFail($id);
         $customer->recalculateRole();
 

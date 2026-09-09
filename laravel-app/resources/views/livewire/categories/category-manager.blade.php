@@ -78,11 +78,13 @@
                 <small class="text-muted">مدیریت اطلاعات دسته‌بندی‌های محصولات</small>
             </div>
 
+            @can('categories.create')
             <button type="button" class="btn btn-primary" wire:click="openCreateModal"
                 title="افزودن دسته‌بندی جدید به سیستم">
                 <i class="bi bi-plus-circle"></i>
                 افزودن دسته‌بندی
             </button>
+            @endcan
         </div>
 
         <div class="card-body">
@@ -137,14 +139,18 @@
                                 </td>
                                 {{-- عملیات --}}
                                 <td>
+                                    @can('categories.edit')
                                     <button type="button" class="btn btn-sm btn-warning text-dark"
                                         wire:click="openEditModal({{ $category->id }})" title="ویرایش دسته‌بندی">
                                         <i class="bi bi-pencil-fill"></i>
                                     </button>
+                                    @endcan
+                                    @can('categories.delete')
                                     <button type="button" class="btn btn-sm btn-danger text-dark"
                                         wire:click="confirmDelete({{ $category->id }})" title="حذف دسته‌بندی">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty

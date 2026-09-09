@@ -94,10 +94,12 @@
                 <small class="text-muted">مدیریت بدهی های فروشگاه</small>
             </div>
             <div class="d-flex gap-3">
+                @can('debts.create')
                 <button wire:click="openAddModal" class="btn btn-primary">
                     <i class="bi bi-plus-lg me-1"></i>
                     ثبت بدهی جدید
                 </button>
+                @endcan
             </div>
         </div>
 
@@ -171,19 +173,25 @@
                                 @endif
                             </td>
                             <td class="row justify-content-md-center g-1">
+                                @can('debts.edit')
                                 <button wire:click="openEditModal({{ $debt->id }})"
                                     class="btn btn-warning text-dark btn-sm" title="ویرایش">
                                     <i class="bi bi-pencil"></i>
                                 </button>
+                                @endcan
+                                @can('debts.delete')
                                 <button wire:click="confirmDelete({{ $debt->id }})"
                                     class="btn btn-danger text-dark btn-sm" title="حذف">
                                     <i class="bi bi-trash"></i>
                                 </button>
+                                @endcan
                                 @if ($debt->status !== 'paid')
+                                    @can('debts.settle')
                                     <button wire:click="openPayModal({{ $debt->id }})"
                                         class="btn btn-success text-dark btn-sm" title="ثبت پرداخت">
                                         <i class="bi bi-cash-coin"></i>
                                     </button>
+                                    @endcan
                                 @endif
                             </td>
                         </tr>

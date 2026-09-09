@@ -93,10 +93,12 @@
                 <small class="text-muted">مدیریت اطلاعات برندها و تامین‌کنندگان مرتبط با هرکدام</small>
             </div>
 
+            @can('brands.create')
             <button class="btn btn-primary" wire:click="openCreateModal" title="افزودن برند جدید به سیستم">
                 <i class="bi bi-plus-circle"></i>
                 افزودن برند
             </button>
+            @endcan
         </div>
 
         <div class="card-body">
@@ -133,14 +135,18 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
+                                    @can('brands.edit')
                                     <button type="button" class="btn btn-sm btn-primary text-dark"
                                         wire:click="openEditModal({{ $brand->id }})">
                                         <i class="bi bi-pencil-fill"></i> ویرایش
                                     </button>
+                                    @endcan
+                                    @can('brands.delete')
                                     <button type="button" class="btn btn-sm btn-danger text-dark"
                                         wire:click="confirmDelete({{ $brand->id }})">
                                         <i class="bi bi-trash-fill"></i> حذف
                                     </button>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty

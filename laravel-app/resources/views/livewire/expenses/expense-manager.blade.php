@@ -113,6 +113,7 @@
                 <small class="text-muted">ثبت و پیگیری هزینه‌ها و دسته‌بندی آن‌ها</small>
             </div>
             <div class="d-flex gap-2 flex-wrap">
+                @can('expenses.create')
                 <button type="button" class="btn btn-info text-dark" wire:click="openCategoryCreateModal"
                     title="مدیریت دسته‌بندی هزینه‌ها">
                     <i class="bi bi-tags"></i>
@@ -122,6 +123,7 @@
                     <i class="bi bi-plus-circle"></i>
                     ثبت هزینه
                 </button>
+                @endcan
             </div>
         </div>
 
@@ -171,14 +173,18 @@
                                         wire:click="openDetails({{ $expense->id }})" title="مشاهده جزئیات">
                                         <i class="bi bi-eye"></i>
                                     </button>
+                                    @can('expenses.edit')
                                     <button type="button" class="btn btn-sm btn-warning text-dark"
                                         wire:click="openEditModal({{ $expense->id }})" title="ویرایش هزینه">
                                         <i class="bi bi-pencil-fill"></i>
                                     </button>
+                                    @endcan
+                                    @can('expenses.delete')
                                     <button type="button" class="btn btn-sm btn-danger text-dark"
                                         wire:click="confirmDelete({{ $expense->id }})" title="حذف هزینه">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty

@@ -93,10 +93,12 @@
                 <small class="text-muted">مدیریت اطلاعات کارکنان و حقوق پایه آن‌ها</small>
             </div>
             <div class="d-flex gap-3">
+                @can('employees.create')
                 <button type="button" class="btn btn-primary" wire:click="openCreateModal" title="افزودن کارمند جدید">
                     <i class="bi bi-person-plus"></i>
                     افزودن کارمند
                 </button>
+                @endcan
             </div>
         </div>
 
@@ -144,14 +146,18 @@
                                 @endif
                             </td>
                             <td>
+                                @can('employees.edit')
                                 <button type="button" class="btn btn-sm btn-warning text-dark"
                                     wire:click="openEditModal({{ $employee->id }})" title="ویرایش کارمند">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
+                                @endcan
+                                @can('employees.delete')
                                 <button type="button" class="btn btn-sm btn-danger text-dark"
                                     wire:click="confirmDelete({{ $employee->id }})" title="حذف کارمند">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
+                                @endcan
                             </td>
                         </tr>
                     @empty

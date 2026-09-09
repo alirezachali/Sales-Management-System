@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Users;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
@@ -14,6 +15,7 @@ class UserManager extends Component
 {
     use WithPagination;
     use WithFileUploads;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -161,6 +163,8 @@ class UserManager extends Component
 
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'users.edit' : 'users.create');
+
         $this->validate();
 
         $data = [
@@ -220,6 +224,8 @@ class UserManager extends Component
 
     public function updatePassword(): void
     {
+        $this->authorizeAction('users.edit');
+
         $this->validate([
             'new_password' => ['required', 'confirmed', 'min:6'],
         ], [
@@ -254,6 +260,8 @@ class UserManager extends Component
 
     public function delete(): void
     {
+        $this->authorizeAction('users.delete');
+
         if ($this->deletingId) {
             // امکان حذف کاربری که وارد سیستم شده وجود ندارد
             if ($this->deletingId === auth()->id()) {

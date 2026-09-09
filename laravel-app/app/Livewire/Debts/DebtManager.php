@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Livewire\Debts; 
+namespace App\Livewire\Debts;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Debt;
 use App\Models\Supplier;
 use Livewire\Component;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 class DebtManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     // Filters
     public string $search = '';
@@ -86,6 +88,8 @@ class DebtManager extends Component
     // Save (add or edit)
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'debts.edit' : 'debts.create');
+
         $this->validate();
 
         $data = [
@@ -122,6 +126,8 @@ class DebtManager extends Component
     // Record payment
     public function recordPayment(): void
     {
+        $this->authorizeAction('debts.settle');
+
         $this->validate([
             'pay_amount' => 'required|integer|min:1',
         ]);
@@ -152,6 +158,8 @@ class DebtManager extends Component
     // Delete
     public function delete(): void
     {
+        $this->authorizeAction('debts.delete');
+
         Debt::findOrFail($this->deletingId)->delete();
         session()->flash('success', 'بدهی با موفقیت حذف شد.');
         $this->showDeleteModal = false;

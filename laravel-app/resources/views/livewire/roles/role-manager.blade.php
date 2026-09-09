@@ -98,11 +98,13 @@
                     </button>
                 </a>
 
+                @can('roles.create')
                 <button class="btn btn-primary" wire:click="openCreateModal"
                     title="برای افزودن نقش جدید به سیستم کلیک کنید">
                     <i class="bi bi-plus-circle"></i>
                     افزودن نقش
                 </button>
+                @endcan
 
             </div>
         </div>
@@ -138,22 +140,28 @@
                                     </td>
                                     <td>
                                         {{-- دکمه ویرایش یک نقش --}}
+                                        @can('roles.edit')
                                         <button type="button" class="btn btn-sm btn-warning text-dark"
                                             wire:click="openEditModal({{ $role->id }})"
                                             title="برای ویرایش این نقش کلیک کنید">
                                             <i class="bi bi-pencil-fill"></i>
                                         </button>
+                                        @endcan
                                         {{-- دکمه حذف یک نقش --}}
+                                        @can('roles.delete')
                                         <button type="button" class="btn btn-sm btn-danger text-dark"
                                             wire:click="confirmDelete({{ $role->id }})"
                                             title="برای حذف این نقش کلیک کنید">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
+                                        @endcan
                                         {{-- دکمه ویرایش مجوزهای یک نقش --}}
+                                        @can('roles.permissions')
                                         <a href="{{ route('roles.permissions', $role) }}" class="btn btn-sm btn-info text-dark"
                                             title="برای ویرایش مجوز های این نقش کلیک کنید">
                                             <i class="bi bi-shield-lock-fill"></i>
                                         </a>
+                                        @endcan
                                     </td>
                                 </tr>
                             @empty

@@ -119,11 +119,13 @@
                     </button>
                 </a>
 
+                @can('users.create')
                 <button class="btn btn-primary" wire:click="openCreateModal"
                     title="برای افزودن کاربر جدید به سیستم کلیک کنید">
                     <i class="bi bi-plus-circle"></i>
                     افزودن کاربر
                 </button>
+                @endcan
 
             </div>
         </div>
@@ -159,23 +161,29 @@
                                 <td>{{ $user->last_login_at ? jalaliDateTime($user->last_login_at) : '-' }}</td>
                                 <td>
                                     {{-- دکمه ویرایش مشخصات یک کاربر --}}
+                                    @can('users.edit')
                                     <button type="button" class="btn btn-sm btn-warning text-dark"
                                         wire:click="openEditModal({{ $user->id }})"
                                         title="برای ویرایش این کاربر کلیک کنید">
                                         <i class="bi bi-pencil-fill"></i>
                                     </button>
+                                    @endcan
                                     {{-- دکمه تغییر رمز ورود یک کاربر --}}
+                                    @can('users.edit')
                                     <button type="button" class="btn btn-sm btn-info text-dark"
                                         wire:click="openPasswordModal({{ $user->id }})"
                                         title="برای تغییر کلمه عبور این کاربر کلیک کنید">
                                         <i class="bi bi-key-fill"></i>
                                     </button>
+                                    @endcan
                                     {{-- دکمه حذف یک کاربر --}}
+                                    @can('users.delete')
                                     <button type="button" class="btn btn-sm btn-danger text-dark"
                                         wire:click="confirmDelete({{ $user->id }})"
                                         title="برای حذف این کاربر کلیک کنید">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty

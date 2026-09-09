@@ -123,10 +123,12 @@
                 <small class="text-muted">مدیریت و پیگیری کارهای روزانه</small>
             </div>
             <div>
+                @can('todos.create')
                 <button type="button" class="btn btn-primary" wire:click="openCreateModal">
                     <i class="bi bi-plus-circle"></i>
                     افزودن کار جدید
                 </button>
+                @endcan
             </div>
         </div>
 
@@ -193,24 +195,30 @@
                                 @endif
                             </td>
                             <td>
+                                @can('todos.edit')
                                 <button type="button"
                                     class="btn btn-sm {{ $todo->isCompleted() ? 'btn-success text-dark' : 'btn-success text-dark' }}"
                                     wire:click="toggleComplete({{ $todo->id }}"
                                     title="{{ $todo->isCompleted() ? 'برگرداندن به در انتظار' : 'تکمیل کردن' }}">
                                     <i class="bi {{ $todo->isCompleted() ? 'bi-arrow-counterclockwise' : 'bi-check-lg' }}"></i>
                                 </button>
+                                @endcan
                                 <button type="button" class="btn btn-sm btn-info text-dark"
                                     wire:click="openDetails({{ $todo->id }})" title="مشاهده جزئیات">
                                     <i class="bi bi-eye"></i>
                                 </button>
+                                @can('todos.edit')
                                 <button type="button" class="btn btn-sm btn-warning text-dark"
                                     wire:click="openEditModal({{ $todo->id }})" title="ویرایش">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
+                                @endcan
+                                @can('todos.delete')
                                 <button type="button" class="btn btn-sm btn-danger text-dark"
                                     wire:click="confirmDelete({{ $todo->id }})" title="حذف">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
+                                @endcan
                             </td>
                         </tr>
                     @empty

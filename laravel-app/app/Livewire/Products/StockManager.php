@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Products;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Product;
 use App\Models\StockMovement;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +12,7 @@ use Livewire\WithPagination;
 class StockManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -96,6 +98,8 @@ class StockManager extends Component
     */
     public function save(): void
     {
+        $this->authorizeAction('stocks.adjust');
+
         $data = $this->validate();
 
         if ($this->formType === 'sale' && $this->product->stock < $data['quantity']) {

@@ -100,11 +100,13 @@
                 </h3>
                 <small class="text-muted">مدیریت اطلاعات محصولات موجود در فروشگاه</small>
             </div>
+            @can('products.create')
             <button type="button" class="btn btn-primary" wire:click="openCreateModal"
                 title="افزودن محصول جدید به سیستم">
                 <i class="bi bi-plus-circle"></i>
                 افزودن محصول
             </button>
+            @endcan
         </div>
 
         <div class="card-body">
@@ -138,10 +140,12 @@
                                 </td>
                                 <td>
                                 {{--============ دکمه ویرایش کالا ============--}}
+                                    @can('products.edit')
                                     <button type="button" class="btn btn-sm btn-warning text-dark"
                                         wire:click="openEditModal({{ $product->id }})" title="ویرایش کالا">
                                         <i class="bi bi-pencil-fill"></i>
                                     </button>
+                                    @endcan
 
                                 {{--============ دکمه چاپ لیبل ============--}}
                                     <button type="button" class="btn btn-sm btn-info text-dark print-label-btn"
@@ -156,10 +160,12 @@
                                     </a>
 
                                 {{--================== دکمه حذف کالا ==================--}}
+                                    @can('products.delete')
                                     <button type="button" class="btn btn-danger text-dark btn-sm"
                                         wire:click="confirmDelete({{ $product->id }})" title="حذف این کالا">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty

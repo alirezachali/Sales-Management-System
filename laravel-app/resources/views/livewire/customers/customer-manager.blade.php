@@ -100,10 +100,12 @@
                     </button>
                 </a>
 
+                @can('customers.create')
                 <button type="button" class="btn btn-primary" wire:click="openCreateModal" title="افزودن مشتری جدید">
                     <i class="bi bi-person-plus"></i>
                     افزودن مشتری
                 </button>
+                @endcan
 
             </div>
         </div>
@@ -149,23 +151,29 @@
                                 @endif
                             </td>
                             <td>
+                                @can('customers.edit')
                                 <button type="button" class="btn btn-sm btn-warning text-dark"
                                     wire:click="openEditModal({{ $customer->id }})" title="ویرایش مشتری">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
+                                @endcan
                                 <button type="button" class="btn btn-sm btn-info text-dark"
                                     wire:click="openLedger({{ $customer->id }})" title="مشاهده گردش حساب مشتری">
                                     <i class="bi bi-wallet-fill"></i>
                                 </button>
+                                @can('customers.edit')
                                 <button type="button" class="btn btn-sm btn-secondary text-dark"
                                     wire:click="recalculateRole({{ $customer->id }})"
                                     title="بازمحاسبه‌ی رده‌ی این مشتری بر اساس آمار خرید فعلی">
                                     <i class="bi bi-arrow-repeat"></i>
                                 </button>
+                                @endcan
+                                @can('customers.delete')
                                 <button type="button" class="btn btn-sm btn-danger text-dark"
                                     wire:click="confirmDelete({{ $customer->id }})" title="حذف مشتری">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
+                                @endcan
                             </td>
                         </tr>
                     @empty

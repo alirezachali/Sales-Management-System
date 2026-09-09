@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Brands;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Brand;
 use App\Models\Supplier;
 use Illuminate\Validation\Rule;
@@ -11,6 +12,7 @@ use Livewire\WithPagination;
 class BrandManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     public string $search = '';
 
@@ -84,6 +86,8 @@ class BrandManager extends Component
      */
     public function save(): void
     {
+        $this->authorizeAction($this->brandId ? 'brands.edit' : 'brands.create');
+
         $validated = $this->validate();
 
         $supplierIds = $validated['selectedSuppliers'] ?? [];
@@ -114,6 +118,8 @@ class BrandManager extends Component
 
     public function delete(): void
     {
+        $this->authorizeAction('brands.delete');
+
         if ($this->deletingId) {
             Brand::findOrFail($this->deletingId)->delete();
             session()->flash('success', 'برند حذف شد.');

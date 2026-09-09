@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Categories;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Category;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -10,6 +11,7 @@ use Livewire\WithPagination;
 class CategoryManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -98,6 +100,8 @@ class CategoryManager extends Component
 
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'categories.edit' : 'categories.create');
+
         $this->validate();
 
         $data = [
@@ -135,6 +139,8 @@ class CategoryManager extends Component
 
     public function delete(): void
     {
+        $this->authorizeAction('categories.delete');
+
         if ($this->deletingId) {
             $category = Category::findOrFail($this->deletingId);
 

@@ -93,10 +93,12 @@
                 <small class="text-muted">مدیریت اطلاعات تامین‌کنندگان </small>
             </div>
 
+            @can('suppliers.create')
             <button class="btn btn-primary" wire:click="openCreateModal" title="افزودن تامین کننده جدید به سیستم">
                 <i class="bi bi-plus-circle"></i>
                 افزودن تامین کننده
             </button>
+            @endcan
         </div>
 
         <div class="card-body">
@@ -131,14 +133,18 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
+                                    @can('suppliers.edit')
                                     <button type="button" class="btn btn-sm btn-primary text-dark"
                                         wire:click="openEditModal({{ $supplier->id }})">
                                         <i class="bi bi-pencil-fill"></i> ویرایش
                                     </button>
+                                    @endcan
+                                    @can('suppliers.delete')
                                     <button type="button" class="btn btn-sm btn-danger text-dark"
                                         wire:click="confirmDelete({{ $supplier->id }})">
                                         <i class="bi bi-trash-fill"></i> حذف
                                     </button>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty

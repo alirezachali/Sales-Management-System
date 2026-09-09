@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Customers;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\CustomerRole;
 use Livewire\Component;
 
 class CustomerRoleManager extends Component
 {
+    use AuthorizesActions;
     public ?int $editingId = null;
 
     public string $name = '';
@@ -105,6 +107,8 @@ class CustomerRoleManager extends Component
 
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'customers.edit' : 'customers.create');
+
         $data = $this->validate();
 
         if ($this->editingId) {
@@ -127,6 +131,8 @@ class CustomerRoleManager extends Component
 
     public function delete(): void
     {
+        $this->authorizeAction('customers.delete');
+
         if ($this->deletingId) {
             CustomerRole::findOrFail($this->deletingId)->delete();
             session()->flash('success', 'رده باشگاه مشتریان حذف شد');

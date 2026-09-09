@@ -66,6 +66,30 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * آیا کاربر مجوز (permission) مشخصی دارد؟
+     * مجوزها به‌ازای هر نقش در کش نگه‌داری می‌شوند تا برای هر درخواست
+     * کوئری اضافه‌ای به دیتابیس زده نشود. کش هنگام ذخیره‌ی مجوزهای
+     * نقش باطل می‌شود (RolePermissionManager و RoleController).
+     */
+    public function hasPermission(string $name): bool
+    {
+        if ($this->role?->name === 'super-admin') {
+            return true;
+        }
+
+        if (! $this->role) {
+            return false;
+        }
+
+        $permissions = cache()->rememberForever(
+            "role-permissions-{$this->role_id}",
+            fn () => $this->role->permissions()->pluck('name')->all()
+        );
+
+        return in_array($name, $permissions, true);
+    }
+
     public function sales(): HasMany
     {
         return $this->hasMany(Sale::class);

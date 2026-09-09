@@ -141,6 +141,10 @@ class PermissionSeeder extends Seeder
                 'sort_order' => 9,
                 'permissions' => [
                     [
+                        'name' => 'pos.view',
+                        'display_name' => 'مشاهده صندوق فروش',
+                    ],
+                    [
                         'name' => 'sales.view',
                         'display_name' => 'مشاهده فاکتورهای فروش',
                     ],
@@ -562,6 +566,90 @@ class PermissionSeeder extends Seeder
                     [
                         'name' => 'cashbox.withdraw',
                         'display_name' => 'برداشت از صندوق',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'کارکنان',
+                'icon' => 'bi-person-badge',
+                'sort_order' => 24,
+                'permissions' => [
+                    [
+                        'name' => 'employees.view',
+                        'display_name' => 'مشاهده لیست کارکنان',
+                    ],
+                    [
+                        'name' => 'employees.create',
+                        'display_name' => 'ایجاد کارمند جدید',
+                    ],
+                    [
+                        'name' => 'employees.edit',
+                        'display_name' => 'ویرایش کارمند',
+                    ],
+                    [
+                        'name' => 'employees.delete',
+                        'display_name' => 'حذف کارمند',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'مدیریت مالی',
+                'icon' => 'bi-cash-coin',
+                'sort_order' => 25,
+                'permissions' => [
+                    [
+                        'name' => 'financial.view',
+                        'display_name' => 'مشاهده مدیریت مالی',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'بدهی ها',
+                'icon' => 'bi-journal-minus',
+                'sort_order' => 26,
+                'permissions' => [
+                    [
+                        'name' => 'debts.view',
+                        'display_name' => 'مشاهده مدیریت بدهی ها',
+                    ],
+                    [
+                        'name' => 'debts.create',
+                        'display_name' => 'ثبت بدهی جدید',
+                    ],
+                    [
+                        'name' => 'debts.edit',
+                        'display_name' => 'ویرایش بدهی',
+                    ],
+                    [
+                        'name' => 'debts.delete',
+                        'display_name' => 'حذف بدهی',
+                    ],
+                    [
+                        'name' => 'debts.settle',
+                        'display_name' => 'تسویه بدهی',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'لیست کارها',
+                'icon' => 'bi-check2-square',
+                'sort_order' => 27,
+                'permissions' => [
+                    [
+                        'name' => 'todos.view',
+                        'display_name' => 'مشاهده لیست کارها',
+                    ],
+                    [
+                        'name' => 'todos.create',
+                        'display_name' => 'ایجاد کار جدید',
+                    ],
+                    [
+                        'name' => 'todos.edit',
+                        'display_name' => 'ویرایش کار',
+                    ],
+                    [
+                        'name' => 'todos.delete',
+                        'display_name' => 'حذف کار',
                     ],
                 ],
             ],

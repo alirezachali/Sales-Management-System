@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Roles;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Permission;
 use App\Models\PermissionGroup;
 use App\Models\Role;
@@ -9,6 +10,8 @@ use Livewire\Component;
 
 class RolePermissionManager extends Component
 {
+    use AuthorizesActions;
+
     public Role $role;
 
     /** @var array<int, string> شناسه‌ی مجوزهای انتخاب‌شده */
@@ -16,6 +19,8 @@ class RolePermissionManager extends Component
 
     public function mount(Role $role): void
     {
+        $this->authorizeAction('roles.permissions');
+
         $this->role = $role;
 
         $this->selected = $role->permissions()
@@ -46,7 +51,12 @@ class RolePermissionManager extends Component
 
     public function save(): void
     {
+        $this->authorizeAction('roles.permissions');
+
         $this->role->permissions()->sync($this->selected);
+
+        /* کش مجوزهای نقش باید باطل شود تا تغییرات بلافاصله اعمال شوند */
+        cache()->forget("role-permissions-{$this->role->id}");
 
         session()->flash('success', 'مجوزهای نقش با موفقیت ذخیره شدند.');
     }

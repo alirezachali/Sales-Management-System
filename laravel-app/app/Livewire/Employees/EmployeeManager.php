@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Employees;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Employee;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -10,6 +11,7 @@ use Livewire\WithPagination;
 class EmployeeManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -164,6 +166,8 @@ class EmployeeManager extends Component
     */
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'employees.edit' : 'employees.create');
+
         $data = $this->validate();
         $data['base_salary'] = $data['base_salary'] !== null && $data['base_salary'] !== ''
             ? (float) $data['base_salary']
@@ -189,6 +193,8 @@ class EmployeeManager extends Component
     */
     public function delete(): void
     {
+        $this->authorizeAction('employees.delete');
+
         if ($this->deletingId) {
             Employee::findOrFail($this->deletingId)->delete();
             session()->flash('success', 'کارمند حذف شد');

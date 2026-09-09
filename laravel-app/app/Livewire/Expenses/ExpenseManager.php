@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Expenses;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Employee;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
@@ -13,6 +14,7 @@ use Livewire\WithPagination;
 class ExpenseManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -187,6 +189,8 @@ class ExpenseManager extends Component
     */
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'expenses.edit' : 'expenses.create');
+
         $data = $this->validate();
         $data['employee_id'] = $data['employee_id'] ?: null;
         $data['amount'] = (float) $data['amount'];
@@ -206,6 +210,8 @@ class ExpenseManager extends Component
 
     public function delete(): void
     {
+        $this->authorizeAction('expenses.delete');
+
         if ($this->deletingId) {
             Expense::findOrFail($this->deletingId)->delete();
             session()->flash('success', 'هزینه حذف شد');
@@ -273,6 +279,8 @@ class ExpenseManager extends Component
 
     public function saveCategory(): void
     {
+        $this->authorizeAction($this->categoryId ? 'expenses.edit' : 'expenses.create');
+
         $data = $this->validate($this->categoryRules(), $this->categoryMessages());
 
         $data['name'] = $data['category_name'];
@@ -297,6 +305,8 @@ class ExpenseManager extends Component
 
     public function deleteCategory(): void
     {
+        $this->authorizeAction('expenses.delete');
+
         if ($this->deletingCatId) {
             ExpenseCategory::findOrFail($this->deletingCatId)->delete();
             session()->flash('success', 'دسته‌بندی هزینه حذف شد');
