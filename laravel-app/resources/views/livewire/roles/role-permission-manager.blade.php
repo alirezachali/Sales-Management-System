@@ -30,6 +30,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
@@ -40,6 +41,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
@@ -50,6 +52,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
@@ -65,18 +68,26 @@
 
     <form wire:submit="save">
 
-    {{--======================== هدر صفحه ========================--}}
+    {{--=============================== هدر صفحه ===============================--}}
         <div class="card shadow-sm mb-4 border-3" wire:loading.class="opacity-50">
             <div class="card-header d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h3 class="fw-bold mb-1">
-                        دسترسی های رول :
+                    <h2 class="fw-bold mb-1">
+                        مجوزهای نقش:
                         <span class="badge bg-{{ $role->color ?? 'secondary' }} text-dark">
                             {{ $role->name }}
                             <i class="{{ $role->icon }}"></i>
                         </span>
-                    </h3>
-                    <small class="text-muted">مدیریت مجوزها و سطح دسترسی به بخش های سیستم توسط هر نقش</small>
+                    </h2>
+                    <div>
+                        <div>
+                            ویرایش و تعیین مجوز برای مشخص کردن سطح دسترسی نقش :       
+                            <span class="badge bg-info text-dark">
+                                {{ $role->display_name }}
+                            </span>
+                        </div>
+                    </div>
+                    
                 </div>
 
                 <div class="d-flex gap-3">
@@ -95,6 +106,8 @@
             </div>
         </div>
 
+       
+    {{--======================== کارت های گروه های مجوز ========================--}}
         <div class="permissions-grid">
 
             @foreach ($groups as $group)

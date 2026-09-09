@@ -29,6 +29,7 @@
     <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/footer.css') }}" rel="stylesheet">
     <link href="{{ asset('css/roles.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/back-to-top.css') }}" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
@@ -66,6 +67,16 @@
 <!-- Footer -->
 @include('partials.footer')
 
+<!-- دکمه بازگشت به بالای صفحه؛ بعد از اسکرول ظاهر می‌شود -->
+<button type="button" class="back-to-top"
+    x-data="{ visible: false }"
+    x-init="visible = window.scrollY > 300; window.addEventListener('scroll', () => visible = window.scrollY > 300, { passive: true })"
+    :class="{ 'is-visible': visible }"
+    @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    title="بازگشت به بالا"
+    aria-label="بازگشت به بالا">
+    <i class="bi bi-arrow-up"></i>
+</button>
 
 @yield('scripts')
 @stack('scripts')
