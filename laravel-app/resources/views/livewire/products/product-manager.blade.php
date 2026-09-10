@@ -66,7 +66,7 @@
 
                 <div class="col-md-7">
                     <input type="text" wire:model.live.debounce.400ms="search" class="form-control"
-                        placeholder="جستجو نام یا بارکد...">
+                        data-hotkey="products_search" placeholder="جستجو نام یا بارکد...">
                 </div>
 
                 <div class="col-md-3">
@@ -102,7 +102,7 @@
             </div>
             @can('products.create')
             <button type="button" class="btn btn-primary" wire:click="openCreateModal"
-                title="افزودن محصول جدید به سیستم">
+                data-hotkey="products_add" title="افزودن محصول جدید به سیستم">
                 <i class="bi bi-plus-circle"></i>
                 افزودن محصول
             </button>

@@ -80,6 +80,16 @@
 
 @yield('scripts')
 @stack('scripts')
+
+{{-- تنظیمات کلیدهای میانبر برای موتور JS --}}
+<script>
+    window.APP_HOTKEYS = @js([
+        'enabled' => in_array((string) setting('hotkeys_enabled', '1'), ['1', 'true', 'on'], true),
+        'keys' => hotkeyData(),
+    ]);
+</script>
+<script src="{{ asset('js/hotkeys.js') }}"></script>
+
 @livewireScripts
 </body>
 </html>

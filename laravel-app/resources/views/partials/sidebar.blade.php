@@ -62,7 +62,7 @@
         </li>
         @endcan
 
-        @can('settings.view')
+        {{-- @can('settings.view')
         <!-- تنظیمات -->
         <li>
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
@@ -70,7 +70,7 @@
                 <span>تنظیمات</span>
             </a>
         </li>
-        @endcan
+        @endcan --}}
 
         @can('users.view')
         <!-- کاربران -->

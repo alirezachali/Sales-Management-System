@@ -54,6 +54,8 @@ class SettingsManager extends Component
         'system_log', 'remember_login', 'maintenance_mode', 'developer_mode', 'enable_cache', 'check_update',
         // پشتیبان‌گیری
         'auto_backup', 'backup_before_restore',
+        // کلیدهای میانبر
+        'hotkeys_enabled',
     ];
 
     /*
@@ -63,7 +65,7 @@ class SettingsManager extends Component
     */
     protected function tabs(): array
     {
-        return ['store', 'sales', 'print', 'barcode', 'system', 'backup'];
+        return ['store', 'sales', 'print', 'barcode', 'system', 'hotkeys', 'backup'];
     }
 
     /*
@@ -142,6 +144,9 @@ class SettingsManager extends Component
             'backup_format' => 'zip',
             'auto_backup' => true,
             'backup_before_restore' => true,
+
+            // کلیدهای میانبر
+            'hotkeys_enabled' => true,
         ];
     }
 
@@ -149,8 +154,10 @@ class SettingsManager extends Component
     {
         $stored = Setting::pluck('value', 'key')->toArray();
 
+        $defaults = $this->defaults() + hotkeyDefaults();
+
         $data = [];
-        foreach ($this->defaults() as $key => $default) {
+        foreach ($defaults as $key => $default) {
             $value = array_key_exists($key, $stored) ? $stored[$key] : $default;
 
             if (in_array($key, $this->booleanKeys, true)) {

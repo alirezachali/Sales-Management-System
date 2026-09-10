@@ -1,10 +1,10 @@
 <nav class="top-navbar" dir="rtl">
     <div class="navbar-inner">
 
-        {{-- سمت راست: دکمه منوی همبرگری + برند فروشگاه --}}
+        {{--===== سمت راست: دکمه منوی همبرگری + برند فروشگاه =====--}}
         <div class="navbar-section">
 
-            {{-- دکمه باز/بستن سایدبار (با Alpine که همراه Livewire بارگذاری می‌شود) --}}
+            {{--===== دکمه باز/بستن سایدبار (با Alpine که همراه Livewire بارگذاری می‌شود) =====--}}
             <button type="button" class="nav-icon-btn" @click="toggleSidebar()"
                 :class="{ 'is-active': sidebarCollapsed }" title="باز و بستن منو" aria-label="باز و بستن منو">
                 <i class="bi bi-list"></i>
@@ -16,14 +16,14 @@
             </a>
         </div>
 
-        {{-- سمت چپ: منوی کاربر --}}
+        {{--===== سمت چپ: منوی کاربر =====--}}
         @auth
             <div class="navbar-section">
                 @php $avatarUrl = auth()->user()->avatar_url; @endphp
 
                 <div class="user-menu" x-data="{ open: false }" @keydown.escape.window="open = false">
 
-                    {{-- دکمه‌ی باز کردن منو با کلیک روی تصویر پروفایل --}}
+                    {{--===== دکمه‌ی باز کردن منو با کلیک روی تصویر پروفایل =====--}}
                     <button type="button" class="user-menu-toggle" @click="open = !open"
                         :class="{ 'is-open': open }" aria-haspopup="true" :aria-expanded="open.toString()">
                         @if ($avatarUrl)
@@ -35,11 +35,11 @@
                         <i class="bi bi-chevron-down user-menu-caret"></i>
                     </button>
 
-                    {{-- منوی بازشونده --}}
+                    {{--===== منوی بازشونده =====--}}
                     <div class="user-dropdown" x-show="open" x-cloak x-transition
                         @click.outside="open = false">
 
-                        {{-- سربرگ اطلاعات کاربر --}}
+                        {{--===== سربرگ اطلاعات کاربر =====--}}
                         <div class="user-dropdown-head">
                             @if ($avatarUrl)
                                 <img src="{{ $avatarUrl }}" class="dropdown-avatar" alt="avatar">
@@ -56,7 +56,7 @@
                             </div>
                         </div>
 
-                        {{-- سوییچ تغییر زبان فارسی / انگلیسی --}}
+                        {{--===== سوییچ تغییر زبان فارسی / انگلیسی =====--}}
                         <div class="lang-switch">
                             <span class="lang-switch-label">زبان برنامه</span>
                             <div class="lang-switch-btns" role="group" aria-label="تغییر زبان">
@@ -73,7 +73,7 @@
                             </div>
                         </div>
 
-                        {{-- سوییچ تغییر تم روشن / تیره --}}
+                        {{--===== سوییچ تغییر تم روشن / تیره =====--}}
                         <div class="theme-switch">
                             <span class="theme-switch-label">حالت نمایش</span>
                             <div class="theme-switch-btns" role="group" aria-label="تغییر تم">
@@ -92,21 +92,23 @@
 
                         <div class="dropdown-divider-line"></div>
 
-                        {{-- پروفایل --}}
+                        {{--===== پروفایل =====--}}
                         <a class="user-dropdown-item" href="#">
                             <i class="bi bi-person"></i>
                             <span>پروفایل</span>
                         </a>
 
-                        {{-- تنظیمات --}}
-                        <a class="user-dropdown-item" href="{{ route('settings.index') }}">
-                            <i class="bi bi-gear"></i>
-                            <span>تنظیمات</span>
-                        </a>
+                        {{--===== تنظیمات =====--}}
+                        @can('settings.view')
+                            <a class="user-dropdown-item" href="{{ route('settings.index') }}">
+                                <i class="bi bi-gear"></i>
+                                <span>تنظیمات</span>
+                            </a>
+                        @endcan
 
                         <div class="dropdown-divider-line"></div>
 
-                        {{-- خروج از سیستم --}}
+                        {{--===== خروج از سیستم =====--}}
                         <form action="{{ route('logout') }}" method="POST" class="m-0">
                             @csrf
                             <button type="submit" class="user-dropdown-item logout-item">

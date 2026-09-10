@@ -30,7 +30,8 @@
         },
         "files": [
             "app/Helpers/setting.php",
-            "app/Helpers/date.php"
+            "app/Helpers/date.php",
+            "app/Helpers/hotkeys.php"
     ]
     },
     "autoload-dev": {
