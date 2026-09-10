@@ -5,6 +5,21 @@
 
     var config = window.APP_HOTKEYS;
 
+    // نگاشت نام‌های نمایشی کلیدها به مقدار واقعی e.key
+    var keyAliases = {
+        esc: 'escape',
+        return: 'enter',
+        spacebar: 'space',
+        up: 'arrowup',
+        down: 'arrowdown',
+        left: 'arrowleft',
+        right: 'arrowright',
+        ins: 'insert',
+        del: 'delete',
+        pgup: 'pageup',
+        pgdn: 'pagedown',
+    };
+
     function parseCombo(str) {
         var parts = String(str).split('+').map(function (p) {
             return p.trim();
@@ -27,6 +42,7 @@
                 combo[reserved[lower]] = true;
             } else {
                 combo.key = lower === ' ' ? 'space' : lower;
+                combo.key = keyAliases[combo.key] || combo.key;
             }
         });
 

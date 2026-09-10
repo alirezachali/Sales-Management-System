@@ -816,8 +816,12 @@
 
                                                     let key = special[e.key] || e.key;
 
-                                                    if (/^F\d{1,2}$/.test(key)) {
-                                                        // کلیدهای تابعی بدون تغییر
+                                                    if (/^F\d{1,2}$/.test(key) ||
+                                                        ['Esc', 'Enter', 'Space', 'Up', 'Down', 'Left',
+                                                            'Right', 'Ins', 'Del', 'Home', 'End',
+                                                            'PageUp', 'PageDown'
+                                                        ].includes(key)) {
+                                                        // کلیدهای ویژه بدون تغییر
                                                     } else if (key.length === 1) {
                                                         key = key.toUpperCase();
                                                     } else {
@@ -830,7 +834,8 @@
                                                     if (e.shiftKey) mods.push('Shift');
                                                     if (e.metaKey) mods.push('Win');
 
-                                                    if (mods.length === 0 && !/^F\d{1,2}$/.test(key)) {
+                                                    if (mods.length === 0 && !/^F\d{1,2}$/.test(key) &&
+                                                        key !== 'Enter') {
                                                         return null;
                                                     }
 
