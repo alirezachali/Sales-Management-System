@@ -164,12 +164,15 @@
                                                 wire:change="updateItemPrice({{ $item['id'] }}, 'buy_price', $event.target.value)"
                                                 value="{{ $item['buy_price'] ?: $item['current_buy_price'] }}"
                                                 class="form-control">
-                                            <span class="input-group-text">{{ setting('currency', '') }}</span>
+                                            <span class="input-group-text">{{ setting('currency', 'تومان') }}</span>
                                         </div>
+
                                         @if ($item['buy_price'] != $item['current_buy_price'] && $item['buy_price'] != '')
+
                                             <small class="text-success d-block">
                                                 قبلی: {{ number_format($item['current_buy_price']) }}
                                             </small>
+
                                         @endif
                                     </td>
                                     <td>
@@ -178,7 +181,7 @@
                                                 wire:change="updateItemPrice({{ $item['id'] }}, 'sell_price', $event.target.value)"
                                                 value="{{ $item['sell_price'] ?: $item['current_sell_price'] }}"
                                                 class="form-control">
-                                            <span class="input-group-text">{{ setting('currency', '') }}</span>
+                                            <span class="input-group-text">{{ setting('currency', 'تومان') }}</span>
                                         </div>
                                         @if ($item['sell_price'] != $item['current_sell_price'] && $item['sell_price'] != '')
                                             <small class="text-success d-block">
@@ -188,14 +191,9 @@
                                     </td>
                                     <td class="text-end">
                                         {{ number_format(($item['quantity'] ?: 0) * ($item['buy_price'] ?: $item['current_buy_price'])) }}
-                                        {{ setting('currency', '') }}
+                                        {{ setting('currency', 'تومان') }}
                                     </td>
                                     <td>
-                                        {{-- <button type="button"
-                                            wire:click="openEditProductModal({{ $item['id'] }})"
-                                            class="btn btn-sm btn-warning text-dark" title="ویرایش محصول">
-                                            <i class="bi bi-pencil"></i>
-                                        </button> --}}
                                         <button type="button"
                                             wire:click="removeItem({{ $item['id'] }})"
                                             class="btn btn-sm btn-danger" title="حذف از لیست">
@@ -241,8 +239,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="d-grid gap-2">
-                            <button type="button" wire:click="save"
-                                class="btn btn-success btn-lg"
+                            <button type="button" wire:click="save" id="submitInvoice" class="btn btn-success btn-lg"
                                 wire:loading.attr="disabled" wire:target="save">
                                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                                 <i wire:loading.remove wire:target="save" class="bi bi-save"></i>
@@ -263,6 +260,7 @@
         </div>
     @endif
 
+    {{--==================== مودال افزودن محصول جدید ====================--}}
     @if ($showNewProductModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="product-new-modal">

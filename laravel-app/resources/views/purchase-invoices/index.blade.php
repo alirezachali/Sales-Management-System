@@ -33,4 +33,12 @@
             Livewire.hook('morph.updated', initPurchaseJalaliPicker);
         });
     </script>
+    <script>
+        // با فشردن کلید اینتر از صفحه کلید دکمه ثبت فاکتور خرید فشرده میشود
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('submitInvoice').click();
+            }
+        });
+    </script>
 @endsection
