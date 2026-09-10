@@ -35,6 +35,18 @@ if (! function_exists('hotkeyActions')) {
                 'default' => 'Esc',
                 'description' => 'فعال کردن دکمه انصراف و بستن مودال باز شده',
             ],
+            'customer_add' => [
+                'label' => 'افزودن مشتری جدید',
+                'page' => 'صفحه باشگاه مشتریان',
+                'default' => 'F3',
+                'description' => 'باز کردن مودال افزودن مشتری جدید در صفحه باشگاه مشتریان',
+            ],
+            'todo_add' => [
+                'label' => 'افزودن کار جدید',
+                'page' => 'صفحه لیست کارها',
+                'default' => 'F4',
+                'description' => 'باز کردن مودال افزودن کار جدید در صفحه لیست کارها',
+            ],
         ];
     }
 
@@ -54,6 +66,20 @@ if (! function_exists('hotkeyDefaults')) {
         }
 
         return $defaults;
+    }
+
+}
+
+if (! function_exists('hotkeyHint')) {
+
+    /**
+     * متن راهنمای کلید میانبر برای tooltip دکمه‌ها؛ در صورت ست نبودن کلید رشته خالی.
+     */
+    function hotkeyHint($action)
+    {
+        $combo = hotkeyData()[$action] ?? null;
+
+        return $combo ? ' (کلید میانبر: ' . $combo . ')' : '';
     }
 
 }

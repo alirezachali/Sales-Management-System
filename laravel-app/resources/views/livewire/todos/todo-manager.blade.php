@@ -124,7 +124,8 @@
             </div>
             <div>
                 @can('todos.create')
-                <button type="button" class="btn btn-primary" wire:click="openCreateModal">
+                <button type="button" class="btn btn-primary" wire:click="openCreateModal"
+                data-hotkey="todo_add" title="افزودن کار جدید به لیست کارها{{ hotkeyHint('todo_add') }}">
                     <i class="bi bi-plus-circle"></i>
                     افزودن کار جدید
                 </button>

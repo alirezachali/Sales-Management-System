@@ -66,7 +66,8 @@
 
                 <div class="col-md-7">
                     <input type="text" wire:model.live.debounce.400ms="search" class="form-control"
-                        data-hotkey="products_search" placeholder="جستجو نام یا بارکد...">
+                        data-hotkey="products_search" placeholder="جستجو نام یا بارکد..."
+                        title="جستجوی کالا{{ hotkeyHint('products_search') }}">
                 </div>
 
                 <div class="col-md-3">
@@ -102,10 +103,10 @@
             </div>
             @can('products.create')
             <button type="button" class="btn btn-primary" wire:click="openCreateModal"
-                data-hotkey="products_add" title="افزودن محصول جدید به سیستم">
+                data-hotkey="products_add" title="افزودن محصول جدید به سیستم{{ hotkeyHint('products_add') }}">
                 <i class="bi bi-plus-circle"></i>
                 افزودن محصول
-            </button>
+            </button> 
             @endcan
         </div>
 
@@ -201,7 +202,7 @@
                                 {{ $editingProductId ? 'ویرایش کالا' : 'افزودن کالا جدید' }}
                             </h5>
                             <button type="button" class="btn-close" wire:click="closeModals"
-                                title="بستن"></button>
+                                title="بستن{{ hotkeyHint('form_cancel') }}"></button>
                         </div>
 
                         <div class="modal-body">
@@ -295,11 +296,11 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" wire:click="closeModals"
-                                title="انصراف">
+                                title="انصراف{{ hotkeyHint('form_cancel') }}">
                                 انصراف
                             </button>
                             <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
-                                wire:target="save" title="ذخیره کالا">
+                                wire:target="save" title="ذخیره کالا{{ hotkeyHint('form_save') }}">
                                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                                 <i class="bi bi-save" wire:loading.remove wire:target="save"></i>
                                 {{ $editingProductId ? 'ذخیره تغییرات' : 'ذخیره کالا' }}
@@ -328,7 +329,8 @@
                         آیا از حذف این کالا مطمئن هستید؟ این عملیات قابل بازگشت نیست.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeModals">انصراف</button>
+                        <button type="button" class="btn btn-secondary" wire:click="closeModals"
+                            title="انصراف{{ hotkeyHint('form_cancel') }}">انصراف</button>
                         <button type="button" class="btn btn-danger" wire:click="delete"
                             wire:loading.attr="disabled" wire:target="delete">
                             <span wire:loading wire:target="delete" class="spinner-border spinner-border-sm"></span>

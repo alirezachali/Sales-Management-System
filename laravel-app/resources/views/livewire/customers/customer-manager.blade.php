@@ -101,7 +101,8 @@
                 </a>
 
                 @can('customers.create')
-                <button type="button" class="btn btn-primary" wire:click="openCreateModal" title="افزودن مشتری جدید">
+                <button type="button" class="btn btn-primary" wire:click="openCreateModal" 
+                data-hotkey="customer_add" title="افزودن مشتری جدید{{ hotkeyHint('customer_add') }}">
                     <i class="bi bi-person-plus"></i>
                     افزودن مشتری
                 </button>
