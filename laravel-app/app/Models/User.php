@@ -90,6 +90,21 @@ class User extends Authenticatable
         return in_array($name, $permissions, true);
     }
 
+    /**
+     * نام مسیر داشبورد متناسب با نقش کاربر.
+     * نقش‌های مدیر و مدیر کل (و هر نقش ناشناخته‌ی دیگر) داشبورد اصلی را
+     * می‌بینند و سایر نقش‌ها به داشبورد اختصاصی خودشان هدایت می‌شوند.
+     */
+    public function dashboardRouteName(): string
+    {
+        return match ($this->role?->name) {
+            Role::CASHIER    => 'dashboard.cashier',
+            Role::ACCOUNTANT => 'dashboard.accountant',
+            Role::WAREHOUSE  => 'dashboard.warehouse',
+            default          => 'dashboard',
+        };
+    }
+
     public function sales(): HasMany
     {
         return $this->hasMany(Sale::class);

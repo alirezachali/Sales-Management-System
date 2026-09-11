@@ -42,9 +42,17 @@ Route::post('logout', [LogoutController::class, 'logout'])->middleware('auth')->
 /* مسیر هایی که نیاز به احراز هویت دارند */
 Route::middleware('auth')->group(function () {
 
-    /* مسیر صفحه داشبورد مدیریتی */
+    /* مسیر صفحه داشبورد مدیریتی (نقش‌های مدیر و مدیر کل) */
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')
         ->middleware('can:dashboard.view');
+
+    /* داشبوردهای اختصاصی نقش‌های صندوقدار، حسابدار و انباردار
+       (کنترلر در صورت ناهماهنگی نقش، کاربر را به داشبورد خودش هدایت می‌کند) */
+    Route::get('dashboard/cashier', [DashboardController::class, 'cashier'])->name('dashboard.cashier');
+
+    Route::get('dashboard/accountant', [DashboardController::class, 'accountant'])->name('dashboard.accountant');
+
+    Route::get('dashboard/warehouse', [DashboardController::class, 'warehouse'])->name('dashboard.warehouse');
 
 
     Route::get('products', function () {return view('products.index');})->name('products.index')

@@ -35,7 +35,8 @@ class LoginController extends Controller
                 'last_login_at' => now(),
             ]);
 
-        return redirect()->intended(route('dashboard'));
+            /* هدایت کاربر بعد از ورود موفق به داشبورد متناسب با نقشش */
+            return redirect()->intended(route(Auth::user()->dashboardRouteName()));
         }
 
         throw ValidationException::withMessages([
