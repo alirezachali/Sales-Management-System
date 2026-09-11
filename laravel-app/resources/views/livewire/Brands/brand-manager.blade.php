@@ -1,11 +1,11 @@
-<div dir="rtl">
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
 {{--=================== نمایش پیغام‌های موفقیت ===================--}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="{{ __('brands.close') }}"></button>
         </div>
     @endif
 
@@ -14,7 +14,7 @@
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="{{ __('brands.close') }}"></button>
         </div>
     @endif
 
@@ -23,37 +23,40 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">تعداد برندها</div>
+                    <div class="subheader">{{ __('brands.stats.total') }}</div>
                     <div class="h1 mb-0">
                         {{ $brands->total() }}
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">برندهای فعال</div>
+                    <div class="subheader">{{ __('brands.stats.active') }}</div>
                     <div class="h1 mb-0 text-success">
                         {{-- {{ $activeCategories }} --}}1
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">برندهای غیرفعال</div>
+                    <div class="subheader">{{ __('brands.stats.inactive') }}</div>
                     <div class="h1 mb-0 text-danger">
                         {{-- {{ $inactiveCategories }} --}}0
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">برندهای بدون تامین کننده</div>
+                    <div class="subheader">{{ __('brands.stats.not_supplier') }}</div>
                     <div class="h1 mb-0 text-warning">
                         {{-- {{ $emptyCategories }} --}}0
                     </div>
@@ -73,7 +76,7 @@
                             <i class="bi bi-search"></i>
                         </span>
                         <input type="text" class="form-control" wire:model.live.debounce.400ms="search"
-                            placeholder="جستجو بر اساس نام برند">
+                            placeholder="{{ __('brands.search_placeholder') }}">
                     </div>
                 </div>
 
@@ -88,15 +91,15 @@
             <div>
                 <h3 class="fw-bold mb-1">
                     <i class="bi bi-bing text-primary"></i>
-                    مدیریت برندها
+                    {{ __('brands.manage_brands') }}
                 </h3>
-                <small class="text-muted">مدیریت اطلاعات برندها و تامین‌کنندگان مرتبط با هرکدام</small>
+                <small class="text-muted">{{ __('brands.manage_subtitle') }}</small>
             </div>
 
             @can('brands.create')
-            <button class="btn btn-primary" wire:click="openCreateModal" title="افزودن برند جدید به سیستم">
+            <button class="btn btn-primary" wire:click="openCreateModal" title="{{ __('brands.add_tooltip') }}">
                 <i class="bi bi-plus-circle"></i>
-                افزودن برند
+                {{ __('brands.add_brand') }}
             </button>
             @endcan
         </div>
@@ -106,12 +109,12 @@
                 <table class="table table-bordered table-hover align-middle mb-0">
                     <thead>
                         <tr>
-                            <th width="55">ردیف</th>
-                            <th>نام برند</th>
-                            <th>توضیحات</th>
-                            <th >تامین‌کنندگان</th>
-                            <th width="80">وضعیت</th>
-                            <th width="170">عملیات</th>
+                            <th width="55">{{ __('brands.table.row') }}</th>
+                            <th>{{ __('brands.table.name') }}</th>
+                            <th>{{ __('brands.table.description') }}</th>
+                            <th >{{ __('brands.table.suppliers') }}</th>
+                            <th width="80">{{ __('brands.table.status') }}</th>
+                            <th width="170">{{ __('brands.table.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,27 +127,29 @@
                                 </td>
                                 <td>
                                     <span class="badge bg-info-subtle text-info-emphasis">
-                                        {{ $brand->suppliers_count }} تامین‌کننده
+                                        {{ $brand->suppliers_count }} {{ __('brands.table.suppliers') }}
                                     </span>
                                 </td>
                                 <td>
                                     @if ($brand->is_active)
-                                        <span class="badge bg-success text-dark">فعال</span>
+                                        <span class="badge bg-success text-dark">{{ __('brands.active') }}</span>
                                     @else
-                                        <span class="badge bg-secondary text-dark">غیرفعال</span>
+                                        <span class="badge bg-secondary text-dark">{{ __('brands.inactive') }}</span>
                                     @endif
                                 </td>
                                 <td class="text-center">
                                     @can('brands.edit')
                                     <button type="button" class="btn btn-sm btn-primary text-dark"
-                                        wire:click="openEditModal({{ $brand->id }})">
-                                        <i class="bi bi-pencil-fill"></i> ویرایش
+                                        wire:click="openEditModal({{ $brand->id }})" title="{{ __('brands.edit_tooltip') }}">
+                                        <i class="bi bi-pencil-fill"></i>
+                                        {{ __('brands.table.edit') }}
                                     </button>
                                     @endcan
                                     @can('brands.delete')
                                     <button type="button" class="btn btn-sm btn-danger text-dark"
-                                        wire:click="confirmDelete({{ $brand->id }})">
-                                        <i class="bi bi-trash-fill"></i> حذف
+                                        wire:click="confirmDelete({{ $brand->id }})" title="{{ __('brands.delete_tooltip') }}">
+                                        <i class="bi bi-trash-fill"></i>
+                                        {{ __('brands.table.delete') }}
                                     </button>
                                     @endcan
                                 </td>
@@ -155,7 +160,7 @@
                                     @if ($search)
                                         نتیجه‌ای برای «{{ $search }}» پیدا نشد.
                                     @else
-                                        هیچ برندی ثبت نشده است.
+                                        {{ __('brands.empty_state') }}
                                     @endif
                                 </td>
                             </tr>
@@ -177,14 +182,14 @@
                     <form wire:submit="save">
                         <div class="modal-header">
                             <h5 class="modal-title">
-                                {{ $brandId ? 'ویرایش برند' : 'افزودن برند جدید' }}
+                                {{ $brandId ? __('brands.edit_modal_title') : __('brands.create_modal_title') }}
                             </h5>
                             <button type="button" class="btn-close" wire:click="closeModals"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label class="form-label">نام برند <span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('brands.name_label') }}<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
                                         wire:model="name">
                                     @error('name')
@@ -193,18 +198,18 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">مسیر / لینک لوگو</label>
+                                    <label class="form-label">{{ __('brands.logo_label') }}</label>
                                     <input type="text" class="form-control" wire:model="logo"
                                         placeholder="مثلاً: logos/brand.png">
                                 </div>
 
                                 <div class="col-12">
-                                    <label class="form-label">توضیحات</label>
+                                    <label class="form-label">{{ __('brands.description_label') }}</label>
                                     <textarea class="form-control" rows="2" wire:model="description"></textarea>
                                 </div>
 
                                 <div class="col-12">
-                                    <label class="form-label">تامین‌کنندگان این برند</label>
+                                    <label class="form-label">{{ __('brands.suppliers_label') }}</label>
                                     <div class="border rounded p-2" style="max-height: 220px; overflow-y: auto;">
                                         @forelse ($allSuppliers as $supplier)
                                             <div class="form-check">
@@ -216,26 +221,27 @@
                                                 </label>
                                             </div>
                                         @empty
-                                            <p class="text-muted small mb-0">هیچ تامین‌کننده فعالی ثبت نشده است.
+                                            <p class="text-muted small mb-0">
+                                                {{ __('brands.supplier_empty') }}
                                             </p>
                                         @endforelse
                                     </div>
-                                    <small class="text-muted">می‌تونی چند تامین‌کننده رو همزمان انتخاب کنی.</small>
+                                    <small class="text-muted">{{ __('brands.supplier_roll') }}</small>
                                 </div>
 
                                 <div class="col-12 form-check form-switch">
                                     <input type="checkbox" class="form-check-input" id="brand_is_active"
                                         wire:model="is_active">
-                                    <label class="form-check-label" for="brand_is_active">فعال</label>
+                                    <label class="form-check-label" for="brand_is_active">{{ __('brands.active') }}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeModals">انصراف</button>
+                            <button type="button" class="btn btn-secondary" wire:click="closeModals">{{ __('brands.cancel') }}</button>
                             <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
                                 wire:target="save">
                                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
-                                {{ $brandId ? 'ذخیره تغییرات' : 'ثبت برند' }}
+                                {{ $brandId ? __('brands.save_changes') : __('brands.save_brand') }}
                             </button>
                         </div>
                     </form>
@@ -251,19 +257,17 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-danger text-dark">
-                        <h5 class="modal-title">حذف برند</h5>
+                        <h5 class="modal-title">{{ __('brands.delete_modal_title') }}</h5>
                         <button type="button" class="btn-close" wire:click="closeModals"></button>
                     </div>
                     <div class="modal-body">
-                        آیا از حذف این برند مطمئن هستید؟ اگه این برند به تامین‌کننده یا محصول دیگه‌ای متصل باشه،
-                        ممکنه
-                        حذف با خطا مواجه بشه.
+                        {{ __('brands.delete_confirm') }}
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeModals">انصراف</button>
+                        <button type="button" class="btn btn-secondary" wire:click="closeModals">{{ __('brands.cancel') }}</button>
                         <button type="button" class="btn btn-danger" wire:click="delete"
                             wire:loading.attr="disabled">
-                            حذف
+                            {{ __('brands.table.delete') }}
                         </button>
                     </div>
                 </div>

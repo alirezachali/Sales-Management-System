@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'مدیریت دسته بندی محصولات')
+@section('title', __('categories.page_title'))
 @section('content')
 
     <div class="container-fluid">
