@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 /* مسیر اصلی */
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route(auth()->check() ? auth()->user()->dashboardRouteName() : 'login');
 });
 
 /*  |--------------------------------------------------|

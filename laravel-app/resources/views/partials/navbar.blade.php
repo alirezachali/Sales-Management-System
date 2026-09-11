@@ -10,7 +10,7 @@
                 <i class="bi bi-list"></i>
             </button>
 
-            <a class="navbar-brand" href="{{ route('dashboard') }}">
+            <a class="navbar-brand" href="{{ auth()->check() ? route(auth()->user()->dashboardRouteName()) : route('login') }}">
                 <img class="nav-logo" src="{{ storeLogo() }}" alt="Logo">
                 <span class="brand-name">{{ setting('store_name', 'فروشگاه') }}</span>
             </a>

@@ -2,6 +2,16 @@
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
         
+        @php $dashboardRoute = auth()->user()->dashboardRouteName(); @endphp
+        @if ($dashboardRoute !== 'dashboard')
+        <!-- داشبورد اختصاصی نقش کاربر جاری (صندوقدار/حسابدار/انباردار) -->
+        <li>
+            <a href="{{ route($dashboardRoute) }}" class="{{ request()->routeIs($dashboardRoute) ? 'active' : '' }}">
+                <i class="bi bi-speedometer2"></i>
+                <span>داشبورد</span>
+            </a>
+        </li>
+        @else
         @can('dashboard.view')
         <!-- داشبورد -->
         <li>
@@ -11,6 +21,7 @@
             </a>
         </li>
         @endcan
+        @endif
 
         @can('financial.view')
         <!-- گزارش مالی -->
