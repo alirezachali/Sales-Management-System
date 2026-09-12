@@ -3,17 +3,17 @@
 namespace App\Livewire\Dashboard;
 
 use App\Livewire\Concerns\AuthorizesActions;
+use App\Livewire\Concerns\HasTodoQuickAdd;
 use App\Models\CustomerAccountTransaction;
 use App\Models\Sale;
 use App\Models\SaleItem;
-use App\Models\Todo;
 use Carbon\Carbon;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class CashierOverview extends Component
 {
     use AuthorizesActions;
+    use HasTodoQuickAdd;
 
     /*
     |--------------------------------------------------------------------|
@@ -23,122 +23,6 @@ class CashierOverview extends Component
     | و بدون دخالت کاربر، هر چند ثانیه یک‌بار خودکار تازه شود.            |
     */
     public int $pollingSeconds = 30;
-
-    /*
-    |--------------------------------------------------------------------|
-    |              فیلدهای فرم افزودن کار جدید (مودال کارت کارها)          |
-    |--------------------------------------------------------------------|
-    */
-    public bool $showFormModal = false;
-    public string $title = '';
-    public ?string $description = null;
-    public string $priority = Todo::PRIORITY_MEDIUM;
-    /** تاریخ سررسید شمسی برای نمایش و انتخاب توسط کاربر (مثل 1405/06/11) */
-    public ?string $due_date_jalali = null;
-    public ?string $due_date = null;
-
-    public array $priorityLabels = [
-        'low' => 'کم',
-        'medium' => 'متوسط',
-        'high' => 'زیاد',
-    ];
-
-    public function openCreateModal(): void
-    {
-        $this->resetForm();
-        $this->showFormModal = true;
-    }
-
-    public function closeModals(): void
-    {
-        $this->showFormModal = false;
-        $this->resetForm();
-    }
-
-    private function resetForm(): void
-    {
-        $this->title = '';
-        $this->description = null;
-        $this->priority = Todo::PRIORITY_MEDIUM;
-        $this->due_date = null;
-        $this->due_date_jalali = null;
-        $this->resetErrorBag();
-    }
-
-    /*
-    |--------------------------------------------------------------------|
-    | همگام‌سازی تاریخ شمسی ورودی کاربر با تاریخ میلادی سمت سرور          |
-    |--------------------------------------------------------------------|
-    */
-    public function updatedDueDateJalali(): void
-    {
-        $val = trim((string) $this->due_date_jalali);
-
-        if ($val === '') {
-            $this->due_date = null;
-            $this->resetErrorBag('due_date_jalali');
-            return;
-        }
-
-        $gregorian = jalaliToGregorian($val);
-
-        if ($gregorian !== null) {
-            $this->due_date = $gregorian;
-            $this->resetErrorBag('due_date_jalali');
-        }
-    }
-
-    /** ثبت کار جدید؛ انجام‌دهنده‌ی کار خودِ همین صندوقدار است. */
-    public function save(): void
-    {
-        $this->authorizeAction('todos.create');
-
-        $val = trim((string) $this->due_date_jalali);
-
-        if ($val !== '') {
-            $gregorian = jalaliToGregorian($val);
-
-            if ($gregorian === null) {
-                $this->addError('due_date_jalali', 'تاریخ سررسید معتبر نیست. مثال درست: 1405/06/11');
-                return;
-            }
-
-            $this->due_date = $gregorian;
-        } else {
-            $this->due_date = null;
-        }
-
-        $data = $this->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'priority' => ['required', Rule::in(array_keys($this->priorityLabels))],
-        ]);
-
-        Todo::create([
-            'user_id' => auth()->id(),
-            'assigned_to' => auth()->id(),
-            'title' => $data['title'],
-            'description' => $data['description'] ?? null,
-            'status' => Todo::STATUS_PENDING,
-            'priority' => $data['priority'],
-            'due_date' => $this->due_date,
-        ]);
-
-        session()->flash('success', 'کار جدید با موفقیت ثبت شد');
-
-        $this->showFormModal = false;
-        $this->resetForm();
-    }
-
-    /** تکمیل/لغو تکمیل یک کار */
-    public function toggleComplete(int $id): void
-    {
-        $this->authorizeAction('todos.edit');
-
-        $todo = Todo::where('assigned_to', auth()->id())->findOrFail($id);
-        $todo->toggleComplete();
-    }
-
 
     /*
     |--------------------------------------------------------------------|
@@ -177,14 +61,9 @@ class CashierOverview extends Component
             ->get();
 
         // کارهای انجام‌نشده‌ی این کاربر برای نمایش در کارت لیست کارها
-        $todos = Todo::with('assignee')
-            ->where('assigned_to', $userId)
-            ->where('status', '!=', Todo::STATUS_COMPLETED)
-            ->latest()
-            ->take(10)
-            ->get();
+        $todos = $this->currentUserTodos();
 
-        // مشتریان بدهکار: مانده‌ی مثبت حساب (فروش/تنخواه‌نمای مثبت منهای
+        // مشتریان بدهکار: مانده‌ی مثبت حساب (فروش/تنظیم مثبت منهای
         // پرداخت‌ها و عودت‌ها)؛ دقیقاً همان منطقی که در سرویس
         // CustomerAccountService::balance استفاده شده.
         $debtors = CustomerAccountTransaction::query()
