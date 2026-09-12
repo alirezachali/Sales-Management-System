@@ -20,6 +20,8 @@ class Sale extends Model
         'discount',
         'final_price',
         'payment_type',
+        'paid_amount',
+        'change_amount',
     ];
 
     protected function casts(): array
@@ -28,6 +30,8 @@ class Sale extends Model
             'total_price' => 'decimal:2',
             'discount' => 'decimal:2',
             'final_price' => 'decimal:2',
+            'paid_amount' => 'decimal:2',
+            'change_amount' => 'decimal:2',
         ];
     }
 
