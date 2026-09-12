@@ -1,4 +1,3 @@
-<div class="line"></div>
 
 <div class="row">
     <span>جمع کل</span>
@@ -9,15 +8,6 @@
     <span>تخفیف</span>
     <span>{{ number_format($sale->discount) }}</span>
 </div>
-
-<div class="line"></div>
-
-<div class="row total">
-    <span>قابل پرداخت</span>
-    <span>{{ number_format($sale->final_price) }}</span>
-</div>
-
-<div class="line"></div>
 
 <div class="row">
     <span>نوع پرداخت</span>
@@ -32,19 +22,15 @@
                 کارت
             @break
 
-            @case('mixed')
-                ترکیبی
+            @case('credit')
+                نسیه
             @break
-
-            @default
-                {{ $sale->payment_type }}
+            
         @endswitch
     </span>
 </div>
 
-<div class="row">
-    <span>صندوق‌دار</span>
-    <span>{{ $sale->user->name ?? '-' }}</span>
+<div class="row total">
+    <span>قابل پرداخت</span>
+    <span>{{ number_format($sale->final_price) }}</span>
 </div>
-
-<div class="line"></div>

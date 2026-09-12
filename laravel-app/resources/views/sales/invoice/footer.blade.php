@@ -13,9 +13,9 @@
         <div>{{ $settings['website'] }}</div>
     @endif
 
-    @if (!empty($settings['phone']) && ($settings['print_phone'] ?? 0))
+    {{-- @if (!empty($settings['phone']) && ($settings['print_phone'] ?? 0))
         <div>{{ $settings['phone'] }}</div>
-    @endif
+    @endif --}}
 
-    <div>نسخه نرم افزار : 1.0</div>
+    {{-- <div>نسخه نرم افزار : 1.0</div> --}}
 </div>

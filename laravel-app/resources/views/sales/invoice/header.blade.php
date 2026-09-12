@@ -28,7 +28,7 @@
     <div class="row">
 
         <span>تاریخ:</span>
-        <span>{{ $sale->created_at->format('Y/m/d H:i') }}</span>
+        <span>{{ jalaliDateTime($sale->created_at) }}</span>
 
     </div>
 @endif
