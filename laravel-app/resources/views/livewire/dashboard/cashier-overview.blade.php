@@ -208,6 +208,54 @@
             </div>
         </div>
 
+        <!-- کارت مشتریان بدهکار -->
+        <div class="col-12">
+            <div class="card dashboard-card border-3">
+                <div class="card-header bg-danger text-dark opacity-70">
+                    <strong>
+                        <i class="bi bi-person-exclamation"></i>
+                        مشتریان بدهکار
+                    </strong>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>مشتری</th>
+                                <th>شماره تماس</th>
+                                <th>مبلغ کل بدهی</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($debtors as $debtor)
+                                <tr wire:key="customer-debtor-{{ $debtor->customer_id }}">
+                                    <td class="fw-bold">{{ $debtor->customer->full_name }}</td>
+                                    <td>
+                                        @if ($debtor->customer->mobile)
+                                            <span class="text-muted">{{ $debtor->customer->mobile }}</span>
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-danger-subtle text-danger-emphasis fs-6">
+                                            {{ number_format($debtor->debt_amount) }} {{ setting('currency', '') }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">
+                                        مشتری بدهکاری وجود ندارد.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     {{-- ============================ مودال افزودن کار جدید ============================ --}}

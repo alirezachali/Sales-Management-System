@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard;
 
 use App\Livewire\Concerns\AuthorizesActions;
+use App\Models\CustomerAccountTransaction;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\Todo;
@@ -183,12 +184,26 @@ class CashierOverview extends Component
             ->take(10)
             ->get();
 
+        // مشتریان بدهکار: مانده‌ی مثبت حساب (فروش/تنخواه‌نمای مثبت منهای
+        // پرداخت‌ها و عودت‌ها)؛ دقیقاً همان منطقی که در سرویس
+        // CustomerAccountService::balance استفاده شده.
+        $debtors = CustomerAccountTransaction::query()
+            ->selectRaw("customer_id, SUM(CASE WHEN type IN ('sale','adjustment') THEN amount ELSE -amount END) as debt_amount")
+            ->groupBy('customer_id')
+            ->havingRaw("SUM(CASE WHEN type IN ('sale','adjustment') THEN amount ELSE -amount END) > 0")
+            ->orderByDesc('debt_amount')
+            ->with('customer')
+            ->take(10)
+            ->get()
+            ->filter(fn ($row) => $row->customer !== null);
+
         return view('livewire.dashboard.cashier-overview', compact(
             'todaySales',
             'todayInvoices',
             'todayItemsSold',
             'latestSales',
             'todos',
+            'debtors',
         ));
     }
 }
