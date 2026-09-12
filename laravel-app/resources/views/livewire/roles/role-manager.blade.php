@@ -111,7 +111,7 @@
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover align-middle mb-0">
-                        <thead>
+                        <thead class="table-light">
                             <tr>
                                 <th width="50">ردیف</th>
                                 <th>نام نقش</th>

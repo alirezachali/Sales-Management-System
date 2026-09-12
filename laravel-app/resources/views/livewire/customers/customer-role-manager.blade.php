@@ -51,9 +51,9 @@
             </div>
         </div>
 
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
+                <thead class="table-light">
                     <tr>
                         <th width="40">ترتیب</th>
                         <th>عنوان رده</th>

@@ -73,16 +73,6 @@
         </li>
         @endcan
 
-        {{-- @can('settings.view')
-        <!-- تنظیمات -->
-        <li>
-            <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                <i class="bi bi-gear"></i>
-                <span>تنظیمات</span>
-            </a>
-        </li>
-        @endcan --}}
-
         @can('users.view')
         <!-- کاربران -->
         <li>
@@ -94,9 +84,9 @@
         @endcan
 
         @can('customers.view')
-        <!-- مشتریان -->
+        <!-- باشگاه مشتریان -->
         <li>
-            <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }} {{ request()->routeIs('customer-roles.*') ? 'active' : '' }}">
+            <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*', 'customer-debtors.*', 'customer-roles.*') ? 'active' : '' }}">
                 <i class="bi bi-person-standing-dress"></i>
                 <span>باشگاه مشتریان</span>
             </a>

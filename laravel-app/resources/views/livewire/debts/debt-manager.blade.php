@@ -105,7 +105,7 @@
 
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle">
-                <thead>
+                <thead class="table-light">
                     <tr>
                         <th width="40">#</th>
                         <th>عنوان</th>

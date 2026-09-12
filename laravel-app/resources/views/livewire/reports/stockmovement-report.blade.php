@@ -144,7 +144,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle">
-                    <thead class="table-dark">
+                    <thead class="table-light">
                         <tr>
                             <th width="40">ردیف</th>
                             <th width="80">نوع</th>

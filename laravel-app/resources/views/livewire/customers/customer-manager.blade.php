@@ -100,6 +100,13 @@
                     </button>
                 </a>
 
+                <a href="{{ route('customer-debtors.index') }}">
+                    <button class="btn btn-danger text-dark" title="مشاهده لیست مشتریان بدهکار">
+                        <i class="bi bi-person-exclamation"></i>
+                        مشتریان بدهکار
+                    </button>
+                </a>
+
                 @can('customers.create')
                 <button type="button" class="btn btn-primary" wire:click="openCreateModal" 
                 data-hotkey="customer_add" title="افزودن مشتری جدید{{ hotkeyHint('customer_add') }}">
@@ -111,9 +118,9 @@
             </div>
         </div>
 
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
+                <thead class="table-light">
                     <tr>
                         <th width="40">ردیف</th>
                         <th>نام مشتری</th>

@@ -385,7 +385,7 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle pos-cart-table mb-0">
-                        <thead>
+                        <thead class="table-light">
                             <tr>
                                 <th>کالا</th>
                                 <th>قیمت (تومان)</th>

@@ -154,6 +154,10 @@ Route::middleware('auth')->group(function () {
     Route::get('customer/roles', function () {return view('customers.roles.index');})->name('customer-roles.index')
         ->middleware('can:customers.view');
 
+    /* مسیر لیست مشتریان بدهکار (باشگاه مشتریان)  */
+    Route::get('customers/debtors', function () {return view('customers.debtors.index');})->name('customer-debtors.index')
+        ->middleware('can:customers.view');
+
     /* مسیر نمایش لیست تامین‌کنندگان */
     Route::get('/suppliers', function () {return view('suppliers.index');})->name('suppliers.index')
         ->middleware('can:suppliers.view');

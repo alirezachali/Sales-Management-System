@@ -104,7 +104,7 @@
 
         <div class="card-body">
             <table class="table table-bordered table-hover align-middle">
-                <thead>
+                <thead class="table-light">
                     <tr>
                         <th width="40">ردیف</th>
                         <th>نام کارمند</th>
