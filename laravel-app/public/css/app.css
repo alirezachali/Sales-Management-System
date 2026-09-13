@@ -1,3 +1,18 @@
+
+html,
+body{
+    width:98%;
+    height:auto;
+
+}
+
+body{
+    margin:0;
+    font-family:Vazirmatn,sans-serif;
+    background:radial-gradient(circle at top,#1a1919 0%,#171718 45%,#06070c 100%);
+    overflow:visible;
+}
+
 body a {
     text-decoration: none;
 }
@@ -22,5 +37,21 @@ body a:hover {
 [data-bs-theme="dark"] #purchase-inv-search-product {
     color: rgb(248, 246, 246);
     background-color: rgb(10, 10, 10);
+}
+
+.content {
+    flex: 1;
+    min-width: 0;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    min-height: calc(100vh - var(--nav-height, 64px));
+}
+[dir="ltr"] .content {
+    padding-left: 17px;
+    padding-right: 0;
+}
+[dir="rtl"] .content {
+    padding-left: 0;
+    padding-right: 17px;
 }
 

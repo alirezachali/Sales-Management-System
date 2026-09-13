@@ -3,13 +3,19 @@
 }
 
 .sidebar {
-    width: 270px;
     min-height: calc(100vh - var(--nav-height, 64px));
     /* background: rgba(34, 33, 33, 0.452); */
     border-inline-end: 1px solid rgba(68, 68, 68, 0.315);
     transition: width .25s ease;
     padding: 0px;
 }
+[dir="ltr"] .sidebar {
+    width: 270px;
+}
+[dir="rtl"] .sidebar {
+    width: 270px;
+}
+
 
 .sidebar-menu {
     list-style: none;
@@ -58,15 +64,7 @@
     flex-shrink: 0;
 }
 
-.content {
-    flex: 1;
-    min-width: 0;
-    padding-left: 0;
-    padding-right: 17px;
-    padding-top: 25px;
-    padding-bottom: 25px;
-    min-height: calc(100vh - var(--nav-height, 64px));
-}
+
 
 /* حالت جمع‌شده‌ی سایدبار */
 .sidebar.collapsed {

@@ -5,15 +5,15 @@
         <div class="card-header d-flex justify-content-between align-items-center mb-2">
             <h3 class="fw-bold mb-1">
                 <i class="bi bi-speedometer2 text-primary"></i>
-                داشبورد مدیریتی
+                {{ __('dash.admin.title') }}
             </h3>
             <small class="text-muted d-flex align-items-center gap-1">
                 <span wire:loading.flex wire:target="$refresh" class="align-items-center gap-1">
                     <span class="spinner-border spinner-border-sm"></span>
-                    در حال به‌روزرسانی...
+                    {{ __('dash.admin.update') }}
                 </span>
                 <span wire:loading.remove wire:target="$refresh">
-                    به‌صورت خودکار هر {{ $pollingSeconds }} ثانیه به‌روزرسانی می‌شود
+                    {{ __('dash.admin.update_cap') }}
                 </span>
             </small>
         </div>
@@ -27,7 +27,7 @@
                 <div class="card-body">
                     <!-- کارت آمار فروش امروز-->
                     <div class="dashboard-title">
-                        <h2>💰 فروش امروز</h2>
+                        <h2>💰 {{ __('dash.admin.card_1') }}</h2>
                     </div>
                     <!-- فروش امروز از دیتابیس-->
                     <div class="dashboard-number">
@@ -45,7 +45,7 @@
                 <div class="card-body">
                     <!-- کارت آمار فاکتورهای امروز-->
                     <div class="dashboard-title">
-                        <h2>🧾 فاکتورهای امروز</h2>
+                        <h2>🧾 {{ __('dash.admin.card_2') }}</h2>
                     </div>
                     <!-- تعداد فاکتورهای امروز از دیتابیس-->
                     <div class="dashboard-number">
@@ -60,7 +60,7 @@
             <div class="card dashboard-card border-3">
                 <div class="card-body">
                     <div class="dashboard-title">
-                        <h2> 📦 تعداد کالاها</h2>
+                        <h2> 📦 {{ __('dash.admin.card_3') }}</h2>
                     </div>
                     <!-- تعداد کالاها از دیتابیس-->
                     <div class="dashboard-number">
@@ -75,7 +75,7 @@
             <div class="card dashboard-card border-3">
                 <div class="card-body">
                     <div class="dashboard-title">
-                        <h2>⚠️ کالاهای کم موجود</h2>
+                        <h2>⚠️ {{ __('dash.admin.card_4') }}</h2>
                     </div>
                     <div class="dashboard-number">
                         <div class="h1 mb-0 text-danger">{{ $lowStockProducts }}</div>
