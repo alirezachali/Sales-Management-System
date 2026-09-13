@@ -53,7 +53,7 @@
 
         <div class="card-body table-responsive">
             <table class="table table-bordered table-hover align-middle">
-                <thead class="table-light">
+                <thead>
                     <tr>
                         <th width="40">ترتیب</th>
                         <th>عنوان رده</th>
@@ -176,6 +176,13 @@
                                     @error('discount_percent')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">امتیاز هر خرید (اختیاری)</label>
+                                    <input type="number" step="1" min="0" wire:model="points_per_amount"
+                                        class="form-control" placeholder="صفر = تنظیم عمومی">
+                                    <small class="text-muted">۱ امتیاز به‌ازای هر چند تومان خرید</small>
                                 </div>
 
                                 <div class="col-md-4">

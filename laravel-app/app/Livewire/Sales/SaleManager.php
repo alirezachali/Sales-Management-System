@@ -5,6 +5,7 @@ namespace App\Livewire\Sales;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Services\LoyaltyService;
 use App\Services\SaleService;
 use Livewire\Component;
 
@@ -38,6 +39,11 @@ class SaleManager extends Component
     public float $cardAmount = 0;      // ترکیبی: کارتخوان
 
     public string $creditPayMethod = 'cash'; // نسیه: روش پرداخت مبلغ پیش‌پرداخت
+
+    // امتیاز و وفاداری
+    public int $pointsToRedeem = 0;
+    public int $customerAvailablePoints = 0;
+    public int $pointValue = 100;
 
     // مودال‌ها
     public bool $showCheckoutModal = false;
@@ -92,6 +98,42 @@ class SaleManager extends Component
         $this->customerId = $customer->id;
         $this->customerName = $customer->full_name;
         $this->customerQuery = '';
+
+        $this->refreshCustomerPoints();
+    }
+
+    /**
+     * بارگذاری دوباره اطلاعات امتیاز مشتری انتخاب‌شده
+     */
+    public function refreshCustomerPoints(): void
+    {
+        $this->pointsToRedeem = 0;
+        $this->customerAvailablePoints = 0;
+
+        if (! $this->customerId) {
+            return;
+        }
+
+        $loyalty = app(LoyaltyService::class);
+        $customer = Customer::find($this->customerId);
+
+        if ($customer && $loyalty->enabled()) {
+            $this->customerAvailablePoints = $loyalty->availablePoints($customer);
+            $this->pointValue = $loyalty->pointValue();
+        }
+    }
+
+    public function updatedPointsToRedeem(): void
+    {
+        $this->pointsToRedeem = max(0, (int) $this->pointsToRedeem);
+    }
+
+    public function applyAllPoints(): void
+    {
+        $this->refreshCustomerPoints();
+
+        $maxPoints = (int) floor($this->subtotal / max(1, $this->pointValue));
+        $this->pointsToRedeem = min($this->customerAvailablePoints, $maxPoints);
     }
 
     public function clearCustomer(): void
@@ -99,6 +141,8 @@ class SaleManager extends Component
         $this->customerId = null;
         $this->customerName = null;
         $this->customerQuery = '';
+        $this->pointsToRedeem = 0;
+        $this->customerAvailablePoints = 0;
 
         // نسیه فقط برای مشتری ثبت‌شده معتبر است
         if ($this->paymentType === 'credit') {
@@ -211,9 +255,17 @@ class SaleManager extends Component
         return collect($this->cart)->sum(fn ($item) => $item['price'] * $item['quantity']);
     }
 
+    /**
+     * مبلغ تخفیف ناشی از امتیاز مصرف‌شده
+     */
+    public function getPointsDiscountProperty(): float
+    {
+        return min($this->pointsToRedeem * $this->pointValue, $this->subtotal);
+    }
+
     public function getFinalPriceProperty(): float
     {
-        return max(0, $this->subtotal - $this->discount);
+        return max(0, $this->subtotal - $this->discount - $this->pointsDiscount);
     }
 
     /**
@@ -348,6 +400,7 @@ class SaleManager extends Component
                 $this->paymentType,
                 $this->customerId,
                 $payments,
+                $this->pointsToRedeem,
             );
 
             session()->flash('success', 'فاکتور فروش با موفقیت ثبت شد.');
@@ -392,6 +445,8 @@ class SaleManager extends Component
         $this->customerId = null;
         $this->customerName = null;
         $this->customerQuery = '';
+        $this->pointsToRedeem = 0;
+        $this->customerAvailablePoints = 0;
         $this->resetErrorBag();
     }
 

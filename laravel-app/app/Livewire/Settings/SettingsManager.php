@@ -56,6 +56,8 @@ class SettingsManager extends Component
         'auto_backup', 'backup_before_restore',
         // کلیدهای میانبر
         'hotkeys_enabled',
+        // باشگاه مشتریان
+        'loyalty_enabled',
     ];
 
     /*
@@ -65,7 +67,7 @@ class SettingsManager extends Component
     */
     protected function tabs(): array
     {
-        return ['store', 'sales', 'print', 'barcode', 'system', 'hotkeys', 'backup'];
+        return ['store', 'sales', 'loyalty', 'print', 'barcode', 'system', 'hotkeys', 'backup'];
     }
 
     /*
@@ -144,6 +146,11 @@ class SettingsManager extends Component
             'backup_format' => 'zip',
             'auto_backup' => true,
             'backup_before_restore' => true,
+
+            // باشگاه مشتریان و امتیازات
+            'loyalty_enabled' => true,
+            'loyalty_amount_per_point' => 10000,
+            'loyalty_point_value' => 100,
 
             // کلیدهای میانبر
             'hotkeys_enabled' => true,
@@ -225,9 +232,12 @@ class SettingsManager extends Component
             'data.session_timeout' => ['nullable', 'integer', 'min:1'],
             'data.pagination_limit' => ['nullable', 'integer', 'min:1', 'max:200'],
 
-            'data.backup_path' => ['nullable', 'string', 'max:255'],
-            'data.backup_keep' => ['nullable', 'integer', 'min:1', 'max:365'],
-            'data.backup_format' => ['nullable', 'in:zip,sql'],
+        'data.backup_path' => ['nullable', 'string', 'max:255'],
+        'data.backup_keep' => ['nullable', 'integer', 'min:1', 'max:365'],
+        'data.backup_format' => ['nullable', 'in:zip,sql'],
+
+        'data.loyalty_amount_per_point' => ['nullable', 'integer', 'min:1'],
+        'data.loyalty_point_value' => ['nullable', 'integer', 'min:1'],
 
             'store_logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'store_favicon' => ['nullable', 'mimes:ico,png', 'max:512'],

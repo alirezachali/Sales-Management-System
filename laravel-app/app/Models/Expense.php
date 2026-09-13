@@ -18,6 +18,7 @@ class Expense extends Model
         'amount',
         'expense_date',
         'payment_method',
+        'cashbox_id',
         'description',
         'reference_number',
         'user_id',
@@ -67,6 +68,11 @@ class Expense extends Model
     public function purchaseInvoice(): BelongsTo
     {
         return $this->belongsTo(PurchaseInvoice::class);
+    }
+
+    public function cashbox(): BelongsTo
+    {
+        return $this->belongsTo(Cashbox::class);
     }
 
     // فیلتر هزینه‌های مربوط به یک دوره زمانی مشخص

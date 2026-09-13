@@ -4,98 +4,57 @@
 
 .sidebar {
     min-height: calc(100vh - var(--nav-height, 64px));
-    /* background: rgba(34, 33, 33, 0.452); */
-    border-inline-end: 1px solid rgba(68, 68, 68, 0.315);
+    border-inline-end: 1px solid rgba(148, 163, 184, 0.12);
+    background: linear-gradient(180deg, rgba(124, 92, 255, 0.045), rgba(62, 166, 255, 0.02));
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     transition: width .25s ease;
-    padding: 0px;
-}
-[dir="ltr"] .sidebar {
-    width: 270px;
-}
-[dir="rtl"] .sidebar {
-    width: 270px;
-}
-
-
-.sidebar-menu {
-    list-style: none;
-    padding: 5px;
-    margin: 5px;
-}
-
-.sidebar-menu li {
-    margin: 5px;
-}
-
-.sidebar-menu a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    border-radius: 10px;
-    color: rgb(17, 17, 17);
-    white-space: nowrap;
-    transition: background-color .2s ease, color .2s ease;
-}
-[data-bs-theme="dark"] .sidebar-menu a {
-    color: rgb(247, 243, 243);
-}
-
-
-.sidebar-menu a:hover {
-    background: rgb(8, 8, 8);
-    color: rgb(253, 251, 251);
-}
-[data-bs-theme="dark"] .sidebar-menu a:hover {
-    background: rgb(247, 245, 245);
-    color: rgb(8, 8, 8);
-}
-
-
-.sidebar-menu a.active {
-    background: #e6a417;
-    color: #1a1a1a;
-    font-weight: 600;
-}
-
-
-.sidebar-menu i {
-    font-size: 25px;
+    padding: 0;
+    position: sticky;
+    top: var(--nav-height, 64px);
+    height: calc(100vh - var(--nav-height, 64px));
+    overflow-y: auto;
+    overflow-x: hidden;
     flex-shrink: 0;
 }
 
-
-
-/* حالت جمع‌شده‌ی سایدبار */
-.sidebar.collapsed {
-    width: 70px;
+[dir="ltr"] .sidebar,
+[dir="rtl"] .sidebar {
+    width: 264px;
 }
 
-.sidebar.collapsed span {
+/* حالت جمع‌شده */
+.sidebar.collapsed {
+    width: 72px;
+}
+
+.sidebar.collapsed .sidebar-link span,
+.sidebar.collapsed .sidebar-section {
     display: none;
 }
 
-.sidebar.collapsed a {
+.sidebar.collapsed .sidebar-link {
     justify-content: center;
-    padding: 10px;
+    padding: 10px 0;
 }
 
-.sidebar.collapsed i {
-    font-size: 25px;
+.sidebar.collapsed .sidebar-link i {
+    margin: 0;
 }
 
-/* واکنش‌گرا: در موبایل سایدبار جمع می‌شود */
+/* موبایل */
 @media (max-width: 767.98px) {
     .sidebar {
-        width: 78px;
+        width: 72px;
     }
 
-    .sidebar span {
+    .sidebar .sidebar-link span,
+    .sidebar .sidebar-section {
         display: none;
     }
 
-    .sidebar a {
+    .sidebar .sidebar-link {
         justify-content: center;
-        padding: 10px;
+        padding: 10px 0;
     }
 }

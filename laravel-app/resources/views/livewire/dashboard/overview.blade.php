@@ -98,7 +98,6 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
-                                {{-- <th>فاکتور</th> --}}
                                 <th>فروشنده</th>
                                 <th>مبلغ</th>
                                 <th>تاریخ</th>
@@ -108,7 +107,6 @@
                         <tbody>
                             @forelse($latestSales as $sale)
                                 <tr wire:key="latest-sale-{{ $sale->id }}">
-                                    {{-- <td>{{ $sale->invoice_number }}</td> --}}
                                     <td>{{ $sale->user->name ?? '-' }}</td>
                                     <td>{{ number_format($sale->final_price) }}</td>
                                     <td>{{ jalaliDateTime($sale->created_at) }}</td>

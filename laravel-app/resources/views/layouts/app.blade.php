@@ -32,6 +32,9 @@
     <link href="{{ asset('css/back-to-top.css') }}" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    {{-- پوسته لوکس باید بعد از Tabler/vite بارگذاری شود --}}
+    <link href="{{ asset('css/luxury.css') }}" rel="stylesheet">
     
     @livewireStyles
 </head>

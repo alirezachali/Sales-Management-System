@@ -385,7 +385,7 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle pos-cart-table mb-0">
-                        <thead class="table-light">
+                        <thead>
                             <tr>
                                 <th>کالا</th>
                                 <th>قیمت (تومان)</th>
@@ -579,6 +579,35 @@
                                     @endif
                                 @endif
                             </div>
+
+                            {{-- ============ استفاده از امتیاز وفاداری ============ --}}
+                            @if ($customerId && $customerAvailablePoints > 0 && setting('loyalty_enabled', '1') == '1')
+                                <div class="mb-4 loyalty-box">
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                        <div>
+                                            <span class="fw-bold"><i class="bi bi-gem text-fuchsia me-1"></i>امتیاز قابل استفاده:
+                                                {{ number_format($customerAvailablePoints) }}</span>
+                                            <div class="text-muted small">هر امتیاز = {{ number_format($pointValue) }} تومان تخفیف</div>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <input type="number" min="0" max="{{ $customerAvailablePoints }}"
+                                                class="form-control form-control-sm text-center" style="width:120px"
+                                                wire:model.live.debounce.400ms="pointsToRedeem">
+                                            <button type="button" class="btn btn-sm btn-fuchsia text-white rounded-pill"
+                                                wire:click="applyAllPoints"
+                                                title="حداکثر امتیاز مجاز برای این فاکتور">
+                                                <i class="bi bi-stars me-1"></i>حداکثر
+                                            </button>
+                                        </div>
+                                    </div>
+                                    @if ($pointsToRedeem > 0)
+                                        <div class="alert alert-fuchsia mt-2 mb-0 py-2 small d-flex justify-content-between">
+                                            <span><i class="bi bi-ticket-perforated me-1"></i>تخفیف امتیازی:</span>
+                                            <strong>{{ number_format($this->pointsDiscount) }} تومان</strong>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
 
                             {{-- ============ روش پرداخت ============ --}}
                             <label class="form-label fw-bold">

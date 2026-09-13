@@ -15,11 +15,21 @@ class TodoManagerTest extends TestCase
 
     private function createUser(string $name = 'مدیر'): User
     {
+        $role = \App\Models\Role::create([
+            'name' => 'role_' . uniqid(),
+            'display_name' => $name,
+        ]);
+
+        $role->permissions()->attach(
+            \App\Models\Permission::where('name', 'like', 'todos.%')->pluck('id')->all()
+        );
+
         return User::create([
             'name' => $name,
             'username' => 'user_' . uniqid(),
             'email' => uniqid() . '@example.com',
             'password' => 'password',
+            'role_id' => $role->id,
         ]);
     }
 

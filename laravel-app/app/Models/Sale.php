@@ -20,8 +20,11 @@ class Sale extends Model
         'discount',
         'final_price',
         'payment_type',
+        'cashbox_id',
         'paid_amount',
         'change_amount',
+        'status',
+        'cancel_reason',
     ];
 
     protected function casts(): array
@@ -75,5 +78,25 @@ class Sale extends Model
     {
         // تعریف رابطه یان این مدل با مدل پرداخت
         return $this->hasMany(Payment::class);
+    }
+
+    public function cashbox(): BelongsTo
+    {
+        return $this->belongsTo(Cashbox::class);
+    }
+
+    public function isCancelled(): bool
+    {
+        return $this->status === 'cancelled';
+    }
+
+    public function statusText(): string
+    {
+        return $this->isCancelled() ? 'لغو شده' : 'موفق';
+    }
+
+    public function statusColor(): string
+    {
+        return $this->isCancelled() ? 'danger' : 'success';
     }
 }

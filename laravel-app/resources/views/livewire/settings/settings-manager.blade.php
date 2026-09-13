@@ -75,6 +75,14 @@
                     </li>
 
                     <li class="nav-item">
+                        <button type="button" class="nav-link m-1 @if ($activeTab === 'loyalty') active @endif"
+                            wire:click="selectTab('loyalty')">
+                            <i class="bi bi-gem text-warning m-2"></i>
+                            باشگاه امتیازات
+                        </button>
+                    </li>
+
+                    <li class="nav-item">
                         <button type="button" class="nav-link m-1 @if ($activeTab === 'print') active @endif"
                             wire:click="selectTab('print')">
                             <i class="bi bi-printer text-warning m-2"></i>
@@ -339,6 +347,45 @@
                                         </div>
                                     </div>
 
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- ============================ تب تنظیمات باشگاه امتیازات ============================ --}}
+                    @if ($activeTab === 'loyalty')
+                        <div class="card border-4 shadow-sm">
+                            <div class="card-header">
+                                <strong>
+                                    <i class="bi bi-gem"></i>
+                                    باشگاه امتیازات مشتریان
+                                </strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-4">
+                                    <div class="col-md-4">
+                                        <label class="form-label">هر امتیاز به‌ازای خرید (تومان)</label>
+                                        <input type="number" class="form-control"
+                                            wire:model="data.loyalty_amount_per_point">
+                                        <small class="text-muted">مثلاً ۱۰۰۰۰ یعنی هر ۱۰ هزار تومان خرید = ۱ امتیاز</small>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">ارزش هر امتیاز (تومان)</label>
+                                        <input type="number" class="form-control"
+                                            wire:model="data.loyalty_point_value">
+                                        <small class="text-muted">هنگام تبدیل امتیاز به تخفیف در صندوق</small>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-check form-switch mt-4">
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="data.loyalty_enabled" id="loyalty_enabled">
+                                            <label class="form-check-label" for="loyalty_enabled">
+                                                فعال‌سازی سیستم امتیازدهی
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

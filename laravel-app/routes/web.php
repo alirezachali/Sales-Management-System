@@ -197,4 +197,40 @@ Route::middleware('auth')->group(function () {
     /* مسیر نمایش لیست برندها */
     Route::resource('brands', BrandController::class)
         ->middleware('can:brands.view');
+
+    /*  |--------------------------------------------------|
+     |   فیچرهای جدید: انبار، صندوق، حقوق، امتیاز، سود    |
+     |--------------------------------------------------|*/
+
+    /* مدیریت انبارها */
+    Route::get('warehouses', function () {return view('warehouses.index');})->name('warehouses.index')
+        ->middleware('can:warehouses.view');
+
+    /* انتقال بین انبار */
+    Route::get('transfers', function () {return view('warehouses.transfers');})->name('transfers.index')
+        ->middleware('can:transfers.view');
+
+    /* انبارگردانی */
+    Route::get('stock-counts', function () {return view('warehouses.counts');})->name('counts.index')
+        ->middleware('can:counts.view');
+
+    /* مدیریت صندوق‌ها */
+    Route::get('cashboxes', function () {return view('cashboxes.index');})->name('cashboxes.index')
+        ->middleware('can:cashboxes.view');
+
+    /* حضور و غیاب کارکنان */
+    Route::get('attendance', function () {return view('employees.attendance');})->name('attendance.index')
+        ->middleware('can:attendance.view');
+
+    /* حقوق و دستمزد */
+    Route::get('payrolls', function () {return view('employees.payrolls');})->name('payrolls.index')
+        ->middleware('can:payrolls.view');
+
+    /* گزارش سود و زیان */
+    Route::get('reports.profit', function () {return view('reports.profit');})->name('reports.profit')
+        ->middleware('can:reports.profit');
+
+    /* باشگاه امتیازات مشتریان */
+    Route::get('loyalty', function () {return view('customers.loyalty');})->name('loyalty.index')
+        ->middleware('can:loyalty.view');
 });

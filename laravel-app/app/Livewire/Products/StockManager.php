@@ -5,6 +5,8 @@ namespace App\Livewire\Products;
 use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Product;
 use App\Models\StockMovement;
+use App\Models\Warehouse;
+use App\Services\WarehouseService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -28,10 +30,13 @@ class StockManager extends Component
     public bool $showFormModal = false;
     public $quantity = null;
     public ?string $description = null;
+    public string $warehouse_id = '';
 
     public function mount(Product $product): void
     {
         $this->product = $product;
+
+        $this->warehouse_id = (string) (Warehouse::getDefaultId() ?? '');
 
         // اگر از دکمه‌های «ورود کالا» / «خروج کالا» در صفحه‌ی لیست محصولات آمده باشیم،
         // مودال مربوطه بلافاصله باز می‌شود (مثلاً ?action=purchase یا ?action=sale)
@@ -48,6 +53,7 @@ class StockManager extends Component
         return [
             'quantity' => ['required', 'numeric', 'min:0.001'],
             'description' => ['nullable', 'string'],
+            'warehouse_id' => ['required', 'exists:warehouses,id'],
         ];
     }
 
@@ -56,6 +62,7 @@ class StockManager extends Component
         return [
             'quantity.required' => 'وارد کردن مقدار الزامی است.',
             'quantity.min' => 'مقدار باید بزرگ‌تر از صفر باشد.',
+            'warehouse_id.required' => 'انتخاب انبار الزامی است.',
         ];
     }
 
@@ -88,6 +95,7 @@ class StockManager extends Component
     {
         $this->quantity = null;
         $this->description = null;
+        $this->warehouse_id = (string) (Warehouse::getDefaultId() ?? '');
         $this->resetErrorBag();
     }
 
@@ -96,38 +104,44 @@ class StockManager extends Component
     |                          ثبت ورود/خروج کالا                        |
     |--------------------------------------------------------------------|
     */
-    public function save(): void
+    public function save(WarehouseService $warehouseService): void
     {
         $this->authorizeAction('stocks.adjust');
 
         $data = $this->validate();
 
-        if ($this->formType === 'sale' && $this->product->stock < $data['quantity']) {
-            $this->addError('quantity', 'موجودی کالا کافی نیست.');
-            return;
+        $warehouseId = (int) $data['warehouse_id'];
+
+        if ($this->formType === 'sale') {
+            $available = (float) DB::table('product_warehouse_stocks')
+                ->where('product_id', $this->product->id)
+                ->where('warehouse_id', $warehouseId)
+                ->value('quantity');
+
+            if ($available < $data['quantity']) {
+                $this->addError('quantity', 'موجودی این کالا در انبار انتخابی کافی نیست (موجود: '.rtrim(rtrim(number_format($available, 3, '.', ''), '0'), '.').').');
+
+                return;
+            }
         }
 
-        DB::transaction(function () use ($data) {
-            if ($this->formType === 'purchase') {
-                $this->product->increment('stock', $data['quantity']);
-
-                StockMovement::create([
-                    'product_id' => $this->product->id,
-                    'type' => 'purchase',
-                    'quantity' => $data['quantity'],
-                    'description' => $data['description'] ?? 'ورود کالا از خرید',
-                ]);
-            } else {
-                $this->product->decrement('stock', $data['quantity']);
-
-                StockMovement::create([
-                    'product_id' => $this->product->id,
-                    'type' => 'sale',
-                    'quantity' => $data['quantity'],
-                    'description' => $data['description'] ?? 'فروش کالا',
-                ]);
-            }
-        });
+        if ($this->formType === 'purchase') {
+            $warehouseService->addToWarehouse(
+                $this->product,
+                $warehouseId,
+                (float) $data['quantity'],
+                'purchase',
+                $data['description'] ?: 'ورود کالا از خرید',
+            );
+        } else {
+            $warehouseService->removeFromWarehouse(
+                $this->product,
+                $warehouseId,
+                (float) $data['quantity'],
+                'sale',
+                $data['description'] ?: 'فروش/خروج کالا',
+            );
+        }
 
         $this->product->refresh();
 
@@ -145,11 +159,18 @@ class StockManager extends Component
     {
         $movements = $this->product
             ->stockMovements()
+            ->with('warehouse:id,name')
             ->latest()
             ->paginate(20);
 
         return view('livewire.products.stock-manager', [
             'movements' => $movements,
+            'warehouses' => Warehouse::where('is_active', true)->orderBy('is_default', 'desc')->orderBy('name')->get(['id', 'name']),
+            'warehouseStocks' => $this->product
+                ->warehouseStocks()
+                ->with('warehouse:id,name')
+                ->where('quantity', '!=', 0)
+                ->get(),
         ]);
     }
 
@@ -230,6 +251,9 @@ class StockManager extends Component
             'purchase' => 'خرید',
             'sale' => 'فروش',
             'adjust' => 'اصلاح',
+            'transfer' => 'انتقال بین انبار',
+            'count' => 'انبارگردانی',
+            'return' => 'مرجوعی',
             default => $type,
         };
     }

@@ -92,12 +92,13 @@
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle">
 
-                    <thead class="table-light">
+                    <thead>
                         <tr>
                             <th width="300">تاریخ</th>
                             <th width="150">نوع عملیات</th>
                             <th width="150">مقدار</th>
                             <th>توضیحات</th>
+                            <th>انبار</th>
                         </tr>
                     </thead>
 
@@ -122,6 +123,14 @@
                                         @case('adjust')
                                             <span class="badge bg-warning text-dark">اصلاح</span>
                                         @break
+
+                                        @case('transfer')
+                                            <span class="badge bg-primary-subtle text-primary-emphasis">انتقال</span>
+                                        @break
+
+                                        @case('return')
+                                            <span class="badge bg-secondary text-dark">مرجوعی</span>
+                                        @break
                                     @endswitch
                                 </td>
                                 <td>
@@ -129,10 +138,11 @@
                                     <span>{{ $product->unit }}</span>
                                 </td>
                                 <td>{{ $movement->description }}</td>
+                                <td class="small text-muted">{{ $movement->warehouse?->name ?? '—' }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center py-4 text-muted">
+                                <td colspan="5" class="text-center py-4 text-muted">
                                     هیچ گردشی برای این کالا ثبت نشده است.
                                 </td>
                             </tr>
@@ -178,6 +188,29 @@
                                 موجودی فعلی:
                                 <strong class="text-info">{{ $product->formatted_stock }}{{ $product->unit }}</strong>
                                 
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">انبار</label>
+                                <select class="form-select @error('warehouse_id') is-invalid @enderror"
+                                    wire:model="warehouse_id">
+                                    @foreach ($warehouses as $wh)
+                                        <option value="{{ $wh->id }}">{{ $wh->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('warehouse_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                @if (count($warehouseStocks) > 0)
+                                    <div class="form-text">
+                                        توزیع موجودی:
+                                        @foreach ($warehouseStocks as $ws)
+                                            <span class="badge bg-info-subtle text-info-emphasis mt-1">
+                                                {{ $ws->warehouse?->name }}: {{ rtrim(rtrim(number_format((float) $ws->quantity, 3, '.', ''), '0'), '.') }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="mb-3">

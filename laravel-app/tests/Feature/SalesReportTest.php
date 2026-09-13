@@ -16,11 +16,21 @@ class SalesReportTest extends TestCase
 
     private function createUser(): User
     {
+        $role = \App\Models\Role::create([
+            'name' => 'role_' . uniqid(),
+            'display_name' => 'مدیر',
+        ]);
+
+        $role->permissions()->attach(
+            \App\Models\Permission::whereIn('name', ['reports.sales', 'reports.view', 'sales.view'])->pluck('id')->all()
+        );
+
         return User::create([
             'name' => 'مدیر',
             'username' => 'admin_' . uniqid(),
             'email' => uniqid() . '@example.com',
             'password' => 'password',
+            'role_id' => $role->id,
         ]);
     }
 

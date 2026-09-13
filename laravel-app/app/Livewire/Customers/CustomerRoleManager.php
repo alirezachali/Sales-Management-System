@@ -16,6 +16,7 @@ class CustomerRoleManager extends Component
     public string $color = 'secondary';
     public $sort_order = 0;
     public $discount_percent = 0;
+    public $points_per_amount = 0;
     public $min_purchase_count = 0;
     public $min_purchase_amount = 0;
     public ?string $description = null;
@@ -34,6 +35,7 @@ class CustomerRoleManager extends Component
             'color' => ['required', 'string', 'max:30'],
             'sort_order' => ['required', 'integer', 'min:0'],
             'discount_percent' => ['required', 'numeric', 'min:0', 'max:100'],
+            'points_per_amount' => ['nullable', 'integer', 'min:0'],
             'min_purchase_count' => ['required', 'integer', 'min:0'],
             'min_purchase_amount' => ['required', 'numeric', 'min:0'],
             'description' => ['nullable', 'string'],
@@ -66,6 +68,7 @@ class CustomerRoleManager extends Component
         $this->color = $role->color;
         $this->sort_order = $role->sort_order;
         $this->discount_percent = $role->discount_percent;
+        $this->points_per_amount = $role->points_per_amount;
         $this->min_purchase_count = $role->min_purchase_count;
         $this->min_purchase_amount = $role->min_purchase_amount;
         $this->description = $role->description;
@@ -97,6 +100,7 @@ class CustomerRoleManager extends Component
         $this->color = 'secondary';
         $this->sort_order = 0;
         $this->discount_percent = 0;
+        $this->points_per_amount = 0;
         $this->min_purchase_count = 0;
         $this->min_purchase_amount = 0;
         $this->description = null;

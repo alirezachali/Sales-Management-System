@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\Business\ProductNotFoundException;
+use App\Models\Customer;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Sale;
@@ -17,14 +18,22 @@ class SaleService
 
     private CustomerAccountService $customerAccountService;
 
+    private CashboxService $cashboxService;
+
+    private LoyaltyService $loyaltyService;
+
     public function __construct(
         StockService $stockService,
         SaleCalculator $calculator,
         CustomerAccountService $customerAccountService,
+        CashboxService $cashboxService,
+        LoyaltyService $loyaltyService,
     ) {
         $this->stockService = $stockService;
         $this->calculator = $calculator;
         $this->customerAccountService = $customerAccountService;
+        $this->cashboxService = $cashboxService;
+        $this->loyaltyService = $loyaltyService;
     }
 
     /**
@@ -32,6 +41,7 @@ class SaleService
      *
      * @param  array  $cart  آرایه‌ی آیتم‌های سبد [['id' => .., 'quantity' => ..], ...]
      * @param  array  $payments  تقسیم‌بندی پرداخت‌ها [['type' => 'cash|card', 'amount' => ..], ...]
+     * @param  int  $pointsToRedeem  تعداد امتیاز قابل تبدیل به تخفیف (اختیاری)
      */
     public function checkout(
         array $cart,
@@ -39,6 +49,7 @@ class SaleService
         string $paymentType = 'cash',
         ?int $customerId = null,
         array $payments = [],
+        int $pointsToRedeem = 0,
     ): Sale {
         return DB::transaction(function () use (
             $cart,
@@ -46,6 +57,7 @@ class SaleService
             $paymentType,
             $customerId,
             $payments,
+            $pointsToRedeem,
         ) {
             $productIds = collect($cart)
                 ->pluck('id')
@@ -59,6 +71,43 @@ class SaleService
                 ->keyBy('id');
 
             $total = $this->calculator->total($cart, $products);
+
+            // تبدیل امتیاز مشتری به تخفیف (در همین تراکنش ثبت می‌شود)
+            $pointsValue = 0.0;
+
+            if ($pointsToRedeem > 0) {
+                if (! $customerId) {
+                    throw new \InvalidArgumentException(
+                        'برای استفاده از امتیاز باید مشتری انتخاب شده باشد.'
+                    );
+                }
+
+                $customer = Customer::query()
+                    ->whereKey($customerId)
+                    ->lockForUpdate()
+                    ->first();
+
+                if (! $customer) {
+                    throw new \InvalidArgumentException('مشتری یافت نشد.');
+                }
+
+                $pointsValue = $pointsToRedeem * $this->loyaltyService->pointValue();
+
+                if ($pointsValue > $total - $discount) {
+                    throw new \InvalidArgumentException(
+                        'مبلغ تخفیف امتیازی بیشتر از مبلغ قابل پرداخت فاکتور است.'
+                    );
+                }
+
+                $this->loyaltyService->redeem(
+                    $customer,
+                    $pointsToRedeem,
+                    null,
+                    'تخفیف امتیازی در لحظه فروش',
+                );
+
+                $discount += $pointsValue;
+            }
 
             $finalPrice = $total - $discount;
 
@@ -140,6 +189,8 @@ class SaleService
                     );
             }
 
+            $cashbox = $this->cashboxService->resolveCashboxFor($paymentType);
+
             $sale = Sale::create([
                 'invoice_number' => 'INV-'.now()->format('YmdHis'),
                 'user_id' => auth()->id() ?? 1,
@@ -148,8 +199,10 @@ class SaleService
                 'discount' => $discount,
                 'final_price' => $finalPrice,
                 'payment_type' => $paymentType,
+                'cashbox_id' => $cashbox?->id,
                 'paid_amount' => min($paidAmount, $finalPrice),
                 'change_amount' => $changeAmount,
+                'status' => 'completed',
             ]);
 
             // ثبت تیکه‌های پرداخت (نقدی / کارتخوان)
@@ -164,6 +217,9 @@ class SaleService
                     'amount' => $amount,
                 ]);
             }
+
+            // ثبت واریزی‌ها در صندوق‌ها
+            $this->cashboxService->recordSale($sale);
 
             if ($paymentType === 'credit') {
                 $this->customerAccountService->addDebt(
@@ -209,6 +265,7 @@ class SaleService
                     'product_id' => $product->id,
                     'quantity' => $quantity,
                     'unit_price' => $price,
+                    'cost_price' => (float) $product->buy_price,
                     'line_total' => $lineTotal,
                 ]);
 
@@ -218,6 +275,20 @@ class SaleService
                     $quantity,
                     'فروش کالا'
                 );
+            }
+
+            // کسب امتیاز وفاداری برای مشتری ثبت‌شده
+            if ($sale->customer_id) {
+                $customer = $sale->customer;
+
+                if ($customer) {
+                    $this->loyaltyService->earn(
+                        $customer,
+                        $this->loyaltyService->pointsForAmount((float) $sale->final_price, $customer),
+                        $sale,
+                        'کسب امتیاز از فاکتور '.$sale->invoice_number,
+                    );
+                }
             }
 
             return $sale;
