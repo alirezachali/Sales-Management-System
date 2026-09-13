@@ -13,6 +13,10 @@ body{
     overflow:visible;
 }
 
+.modal .modal-content {
+    border-radius: 20px;
+}
+
 body a {
     text-decoration: none;
 }
