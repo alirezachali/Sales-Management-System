@@ -8,16 +8,16 @@
         <li>
             <a href="{{ route($dashboardRoute) }}" class="{{ request()->routeIs($dashboardRoute) ? 'active' : '' }}">
                 <i class="bi bi-speedometer2"></i>
-                <span>داشبورد</span>
+                <span>{{ __('sidebar.dashboard') }}</span>
             </a>
         </li>
         @else
         @can('dashboard.view')
-        <!-- داشبورد -->
+        <!-- داشبورد مدیریت-->
         <li>
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i class="bi bi-speedometer2"></i>
-                <span>داشبورد</span>
+                <span>{{ __('sidebar.dashboard') }}</span>
             </a>
         </li>
         @endcan
@@ -28,7 +28,7 @@
         <li>
             <a href="{{ route('financial.index') }}" class="{{ request()->routeIs('financial.*') ? 'active' : '' }}">
                 <i class="bi bi-bank"></i>
-                <span>مدیریت مالی</span>
+                <span>{{ __('sidebar.financial_manage') }}</span>
             </a>
         </li>
         @endcan
@@ -38,7 +38,7 @@
         <li>
             <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
                 <i class="bi bi-box-seam"></i>
-                <span>محصولات</span>
+                <span>{{ __('sidebar.products') }}</span>
             </a>
         </li>
         @endcan
@@ -48,7 +48,7 @@
         <li>
             <a href="{{ route('purchase-invoices.index') }}" class="{{ request()->routeIs('purchase-invoices.*') ? 'active' : '' }}">
                 <i class="bi bi-file-earmark-plus"></i>
-                <span>ثبت فاکتور خرید</span>
+                <span>{{ __('sidebar.reg_purchase_invoice') }}</span>
             </a>
         </li>
         @endcan
@@ -58,7 +58,7 @@
         <li>
             <a href="{{ route('categories.index') }}" class="{{ request()->routeIs('categories.*') ? 'active' : '' }}">
                 <i class="bi bi-grid"></i>
-                <span>دسته‌بندی ها</span>
+                <span>{{ __('sidebar.categories') }}</span>
             </a>
         </li>
         @endcan
@@ -68,7 +68,7 @@
         <li>
             <a href="{{ route('pos.index') }}" class="{{ request()->routeIs('pos.*') ? 'active' : '' }}">
                 <i class="bi bi-cart-check"></i>
-                <span>صندوق فروش</span>
+                <span>{{ __('sidebar.sales_counter') }}</span>
             </a>
         </li>
         @endcan
@@ -78,7 +78,7 @@
         <li>
             <a href="{{ route('users.index') }}" class="{{ request()->routeIs('users.*') ? 'active' : '' }} {{ request()->routeIs('roles.*') ? 'active' : '' }}">
                 <i class="bi bi-person-video"></i>
-                <span>کاربران</span>
+                <span>{{ __('sidebar.users') }}</span>
             </a>
         </li>
         @endcan
@@ -88,7 +88,7 @@
         <li>
             <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*', 'customer-debtors.*', 'customer-roles.*') ? 'active' : '' }}">
                 <i class="bi bi-person-standing-dress"></i>
-                <span>باشگاه مشتریان</span>
+                <span>{{ __('sidebar.customer_club') }}</span>
             </a>
         </li>
         @endcan
@@ -98,7 +98,7 @@
         <li>
             <a href="{{ route('brands.index') }}" class="{{ request()->routeIs('brands.*') ? 'active' : '' }}">
                 <i class="bi bi-bing"></i>
-                <span>برندها</span>
+                <span>{{ __('sidebar.brands') }}</span>
             </a>
         </li>
         @endcan
@@ -108,7 +108,7 @@
         <li>
             <a href="{{ route('suppliers.index') }}" class="{{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
                 <i class="bi bi-bus-front-fill"></i>
-                <span>تامین کنندگان</span>
+                <span>{{ __('sidebar.suppliers') }}</span>
             </a>
         </li>
         @endcan
@@ -118,7 +118,7 @@
         <li>
             <a href="{{ route('employees.index') }}" class="{{ request()->routeIs('employees.*') ? 'active' : '' }}">
                 <i class="bi bi-person-badge"></i>
-                <span>مدیریت کارکنان</span>
+                <span>{{ __('sidebar.employee_manage') }}</span>
             </a>
         </li>
         @endcan
@@ -128,7 +128,7 @@
         <li>
             <a href="{{ route('expenses.index') }}" class="{{ request()->routeIs('expenses.*') ? 'active' : '' }}">
                 <i class="bi bi-wallet2"></i>
-                <span>مدیریت هزینه‌ها</span>
+                <span>{{ __('sidebar.cost_manage') }}</span>
             </a>
         </li>
         @endcan
@@ -138,7 +138,7 @@
         <li>
             <a href="{{ route('todos.index') }}" class="{{ request()->routeIs('todos.*') ? 'active' : '' }}">
                 <i class="bi bi-check2-square"></i>
-                <span>لیست کارها</span>
+                <span>{{ __('sidebar.todo') }}</span>
             </a>
         </li>
         @endcan
@@ -148,7 +148,7 @@
         <li>
             <a href="{{ route('reports.sales') }}" class="{{ request()->routeIs('reports.sales') ? 'active' : '' }}">
                 <i class="bi bi-clipboard-data"></i>
-                <span>گزارش فروش</span>
+                <span>{{ __('sidebar.sales_report') }}</span>
             </a>
         </li>
         @endcan
@@ -158,7 +158,7 @@
         <li>
             <a href="{{ route('reports.purchases') }}" class="{{ request()->routeIs('reports.purchases') ? 'active' : '' }}">
                 <i class="bi bi-archive"></i>
-                <span>گزارش خرید</span>
+                <span>{{ __('sidebar.purchases_report') }}</span>
             </a>
         </li>
         @endcan
@@ -168,7 +168,7 @@
         <li>
             <a href="{{ route('reports.stockmovements') }}" class="{{ request()->routeIs('reports.stockmovements') ? 'active' : '' }}">
                 <i class="bi bi-archive"></i>
-                <span>انبارگردانی</span>
+                <span>{{ __('sidebar.warehouse_manage') }}</span>
             </a>
         </li>
         @endcan
@@ -178,7 +178,7 @@
         <li>
             <a href="{{ route('debts.index') }}" class="{{ request()->routeIs('debts.*') ? 'active' : '' }}">
                 <i class="bi bi-journal-minus"></i>
-                <span>مدیریت بدهی ها</span>
+                <span>{{ __('sidebar.debt_manage') }}</span>
             </a>
         </li>
         @endcan
