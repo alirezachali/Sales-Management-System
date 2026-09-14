@@ -74,23 +74,15 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <h3 class="fw-bold mb-1">
-                    <i class="bi bi-person-exclamation text-danger"></i>
+                    <i class="bi bi-person-exclamation text-fuchsia"></i>
                     مشتریان بدهکار
                 </h3>
                 <small class="text-muted">لیست مشتریانی که حساب نسیه‌ی آن‌ها تسویه نشده است</small>
             </div>
-            <div class="d-flex gap-3">
-                <a href="{{ route('customers.index') }}">
-                    <button class="btn btn-info text-dark" title="بازگشت به باشگاه مشتریان">
-                        <i class="bi bi-arrow-right"></i>
-                        بازگشت
-                    </button>
-                </a>
-            </div>
         </div>
 
         <div class="card-body table-responsive">
-            <table class="table table-bordered table-hover align-middle">
+            <table class="table table-hover align-middle">
                 <thead>
                     <tr>
                         <th width="50">ردیف</th>

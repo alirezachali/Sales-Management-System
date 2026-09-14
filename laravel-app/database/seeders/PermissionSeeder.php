@@ -227,6 +227,22 @@ class PermissionSeeder extends Seeder
                         'name' => 'customers.balance',
                         'display_name' => 'بالانس مشتری',
                     ],
+                    [
+                        'name' => 'customers.debtors',
+                        'display_name' => 'مشاهده مشتریان بدهکار',
+                    ],
+                    [
+                        'name' => 'customers.roles_view',
+                        'display_name' => 'مشاهده رده های باشگاه مشتریان',
+                    ],
+                    [
+                        'name' => 'customers.roles_add',
+                        'display_name' => 'افزودن رده جدید به باشگاه مشتریان',
+                    ],
+                    [
+                        'name' => 'customers.roles_edit',
+                        'display_name' => 'ویرایش رده های باشگاه مشتریان',
+                    ],
                 ],
             ],
             [

@@ -34,10 +34,16 @@
                 $salesItems[] = ['route' => 'pos.index', 'label' => __('sidebar.sales_counter'), 'icon' => 'bi-cash-stack', 'is' => 'pos.*'];
             }
             if (auth()->user()->hasPermission('customers.view')) {
-                $salesItems[] = ['route' => 'customers.index', 'label' => __('sidebar.customer_club'), 'icon' => 'bi-person-vcard', 'is' => 'customers.*', 'active' => request()->routeIs('customers.*', 'customer-debtors.*', 'customer-roles.*')];
+                $salesItems[] = ['route' => 'customers.index', 'label' => __('sidebar.customer_club'), 'icon' => 'bi-person-vcard', 'is' => 'customers.*'];
             }
             if (auth()->user()->hasPermission('loyalty.view')) {
                 $salesItems[] = ['route' => 'loyalty.index', 'label' => __('sidebar.loyalty'), 'icon' => 'bi-gem', 'is' => 'loyalty.*'];
+            }
+            if (auth()->user()->hasPermission('customers.debtors')) {
+                $salesItems[] = ['route' => 'customer-debtors.index', 'label' => __('sidebar.customer_debtors'), 'icon' => 'bi-person-exclamation', 'is' => 'customer-debtors.*'];
+            }
+            if (auth()->user()->hasPermission('customers.roles_view')) {
+                $salesItems[] = ['route' => 'customer-roles.index', 'label' => __('sidebar.customer_club_roles'), 'icon' => 'bi-award', 'is' => 'customer-roles.*'];
             }
         @endphp
         @if (count($salesItems))

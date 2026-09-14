@@ -55,7 +55,7 @@
     </div>
 
 {{--=================== فیلترها ===================--}}
-    <div class="card mb-4 border-3">
+    <div class="card mb-4">
         <div class="card-body">
             <div class="row g-2">
                 <div class="col-md-7">
@@ -81,31 +81,17 @@
     </div>
 
 {{--============================ جدول مشتریان ============================--}}
-    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
+    <div class="card shadow-sm" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
             <h3 class="fw-bold mb-1">
-                <i class="bi bi-person-standing-dress text-primary"></i>
+                <i class="bi bi-person-standing-dress text-fuchsia"></i>
                 باشگاه مشتریان
             </h3>
             <small class="text-muted">مدیریت اطلاعات مشتریان و رده های باشگاه مشتریان</small>
             </div>
-            <div class="d-flex gap-3">
-
-                <a href="{{ route('customer-roles.index') }}">
-                    <button class="btn btn-info text-dark" title="مدیریت رده‌های باشگاه مشتریان">
-                        <i class="bi bi-award"></i>
-                        مدیریت رده‌های باشگاه
-                    </button>
-                </a>
-
-                <a href="{{ route('customer-debtors.index') }}">
-                    <button class="btn btn-danger text-dark" title="مشاهده لیست مشتریان بدهکار">
-                        <i class="bi bi-person-exclamation"></i>
-                        مشتریان بدهکار
-                    </button>
-                </a>
+            <div class="d-flex">
 
                 @can('customers.create')
                 <button type="button" class="btn btn-primary" wire:click="openCreateModal" 
@@ -119,17 +105,17 @@
         </div>
 
         <div class="card-body table-responsive">
-            <table class="table table-bordered table-hover align-middle">
+            <table class="table table-hover align-middle">
                 <thead>
                     <tr>
-                        <th width="40">ردیف</th>
+                        <th width="80">ردیف</th>
                         <th>نام مشتری</th>
-                        <th width="90">موبایل</th>
-                        <th width="100">رده باشگاه</th>
-                        <th width="60">تعداد خرید</th>
-                        <th>مبلغ کل خرید</th>
-                        <th width="80">وضعیت</th>
-                        <th width="160">عملیات</th>
+                        <th width="150">موبایل</th>
+                        <th width="150">رده</th>
+                        {{-- <th width="60">تعداد خرید</th> --}}
+                        {{-- <th>مبلغ کل خرید</th> --}}
+                        <th width="120">وضعیت</th>
+                        <th width="200">عملیات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -140,44 +126,42 @@
                             <td>{{ $customer->mobile }}</td>
                             <td>
                                 @if ($customer->role)
-                                    <span class="badge bg-{{ $customer->role->color }} text-dark">
-                                        <i class="bi {{ $customer->role->icon }}"></i>
-                                        {{ $customer->role->name }}
+                                    <span class="badge bg-{{ $customer->role->color }}-subtle text-{{ $customer->role->color }}-emphasis">
+                                        <i class="bi {{ $customer->role->icon }}"></i> {{ $customer->role->name }}
                                     </span>
                                 @else
-                                    <span class="badge bg-secondary-lt text-dark">بدون رده</span>
+                                    <span class="text-muted">—</span>
                                 @endif
                             </td>
-                            <td>{{ number_format($customer->purchase_count) }}</td>
-                            <td>{{ number_format($customer->total_purchase_amount) }} {{ setting('currency', '') }}
-                            </td>
+                            {{-- <td>{{ number_format($customer->purchase_count) }}</td> --}}
+                            {{-- <td>{{ number_format($customer->total_purchase_amount) }} {{ setting('currency', '') }}</td> --}}
                             <td>
                                 @if ($customer->is_active)
-                                    <span class="badge bg-success text-dark">فعال</span>
+                                    <span class="badge bg-success-subtle text-success-emphasis">فعال</span>
                                 @else
-                                    <span class="badge bg-danger text-dark">غیرفعال</span>
+                                    <span class="badge bg-danger-subtle text-danger-emphasis">غیرفعال</span>
                                 @endif
                             </td>
                             <td>
                                 @can('customers.edit')
-                                <button type="button" class="btn btn-sm btn-warning text-dark"
+                                <button type="button" class="btn btn-sm btn-outline-warning"
                                     wire:click="openEditModal({{ $customer->id }})" title="ویرایش مشتری">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
                                 @endcan
-                                <button type="button" class="btn btn-sm btn-info text-dark"
+                                <button type="button" class="btn btn-sm btn-outline-info"
                                     wire:click="openLedger({{ $customer->id }})" title="مشاهده گردش حساب مشتری">
                                     <i class="bi bi-wallet-fill"></i>
                                 </button>
                                 @can('customers.edit')
-                                <button type="button" class="btn btn-sm btn-secondary text-dark"
+                                <button type="button" class="btn btn-sm btn-outline-secondary"
                                     wire:click="recalculateRole({{ $customer->id }})"
                                     title="بازمحاسبه‌ی رده‌ی این مشتری بر اساس آمار خرید فعلی">
                                     <i class="bi bi-arrow-repeat"></i>
                                 </button>
                                 @endcan
                                 @can('customers.delete')
-                                <button type="button" class="btn btn-sm btn-danger text-dark"
+                                <button type="button" class="btn btn-sm btn-outline-danger"
                                     wire:click="confirmDelete({{ $customer->id }})" title="حذف مشتری">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>

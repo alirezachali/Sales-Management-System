@@ -11,6 +11,8 @@ return [
     'roles' => 'نقش‌ها و دسترسی‌ها',
     'settings' => 'تنظیمات',
     'customer_club' => 'باشگاه مشتریان',
+    'customer_club_roles' => 'مدیریت رده های باشگاه',
+    'customer_debtors' => 'مشتریان بدهکار',
     'brands' => 'برندها',
     'suppliers' => 'تامین کنندگان',
     'employee_manage' => 'مدیریت کارکنان',

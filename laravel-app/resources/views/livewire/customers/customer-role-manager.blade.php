@@ -25,26 +25,19 @@
 
             <div>
                 <h3 class="fw-bold mb-1">
-                    <i class="bi bi-award-fill text-primary"></i>
+                    <i class="bi bi-award-fill text-fuchsia"></i>
                     رده‌های باشگاه مشتریان
                 </h3>
                 <small class="text-muted">مدیریت رده های باشگاه مشتریان و مدیریت درصد تخفیف برای هر رده</small>
             </div>
 
-            <div class="d-flex gap-3">
+            <div class="d-flex">
 
-                <a href="{{ route('customers.index') }}">
-                    <button class="btn btn-info text-dark" title="بازگشت به لیست مشتریان">
-                        <i class="bi bi-arrow-right"></i>
-                        بازگشت
-                    </button>
-                </a>
-
-                @can('customers.create')
+                @can('customers.roles_add')
                 <button type="button" class="btn btn-primary" wire:click="openCreateModal"
                     title="افزودن رده جدید به باشگاه مشتریان">
                     <i class="bi bi-plus-circle"></i>
-                    رده جدید
+                    افزودن رده جدید
                 </button>
                 @endcan
 
@@ -52,7 +45,7 @@
         </div>
 
         <div class="card-body table-responsive">
-            <table class="table table-bordered table-hover align-middle">
+            <table class="table table-hover align-middle">
                 <thead>
                     <tr>
                         <th width="40">ترتیب</th>
@@ -70,36 +63,33 @@
                         <tr wire:key="role-{{ $role->id }}">
                             <td>{{ $role->sort_order }}</td>
                             <td>
-                                <span class="badge bg-{{ $role->color }} text-dark">
+                                <span class="badge bg-{{ $role->color }}-subtle text-{{ $role->color }}-emphasis">
                                     <i class="bi {{ $role->icon }}"></i>
                                     {{ $role->name }}
                                 </span>
-                                @if ($role->is_default)
-                                    <span class="badge bg-light text-dark border">پیش‌فرض</span>
-                                @endif
                             </td>
                             <td>{{ number_format($role->min_purchase_count) }} خرید</td>
                             <td>{{ number_format($role->min_purchase_amount) }} {{ setting('currency', '') }}</td>
-                            <td>{{ $role->discount_percent }}٪</td>
+                            <td class="text-fuchsia">{{ $role->discount_percent }}٪</td>
                             <td>
-                                <span class="badge bg-info text-dark">{{ $role->customers_count }} نفر</span>
+                                <span class="badge bg-info-subtle text-info-emphasis">{{ $role->customers_count }} نفر</span>
                             </td>
                             <td>
                                 @if ($role->is_active)
-                                    <span class="badge bg-success text-dark">فعال</span>
+                                    <span class="badge bg-success-subtle text-success-emphasis">فعال</span>
                                 @else
-                                    <span class="badge bg-danger text-dark">غیرفعال</span>
+                                    <span class="badge bg-danger-subtle text-danger-emphasis">غیرفعال</span>
                                 @endif
                             </td>
                             <td>
-                                @can('customers.edit')
-                                <button type="button" class="btn btn-sm btn-warning text-dark"
+                                @can('customers.roles_edit')
+                                <button type="button" class="btn btn-sm btn-outline-warning"
                                     wire:click="openEditModal({{ $role->id }})" title="ویرایش رده">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
                                 @endcan
-                                @can('customers.delete')
-                                <button type="button" class="btn btn-sm btn-danger text-dark"
+                                @can('customers.roles_edit')
+                                <button type="button" class="btn btn-sm btn-outline-danger"
                                     wire:click="confirmDelete({{ $role->id }})" title="حذف رده">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>

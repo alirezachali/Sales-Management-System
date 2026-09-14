@@ -59,3 +59,24 @@ body a:hover {
     padding-right: 17px;
 }
 
+
+/* ---------- صفحه‌بندی ---------- */
+.pagination .page-link {
+    border-radius: 10px !important;
+    margin: 0 3px;
+    border: 1px solid var(--lux-border) !important;
+    background: transparent !important;
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--lux-gradient) !important;
+    border: none !important;
+}
+
+
+
+/* ---------- فوتر/برند ---------- */
+.page-header {
+    border-bottom: none !important;
+    margin-bottom: 24px;
+}

@@ -152,11 +152,11 @@ Route::middleware('auth')->group(function () {
 
     /* مسیر مدیریت رده‌های باشگاه مشتریان  */
     Route::get('customer/roles', function () {return view('customers.roles.index');})->name('customer-roles.index')
-        ->middleware('can:customers.view');
+        ->middleware('can:customers.roles_view');
 
     /* مسیر لیست مشتریان بدهکار (باشگاه مشتریان)  */
     Route::get('customers/debtors', function () {return view('customers.debtors.index');})->name('customer-debtors.index')
-        ->middleware('can:customers.view');
+        ->middleware('can:customers.debtors');
 
     /* مسیر نمایش لیست تامین‌کنندگان */
     Route::get('/suppliers', function () {return view('suppliers.index');})->name('suppliers.index')
