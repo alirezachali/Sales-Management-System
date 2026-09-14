@@ -35,6 +35,11 @@ Route::middleware('guest')->group(function () {
 /* مسیر خروج کاربر از برنامه */
 Route::post('logout', [LogoutController::class, 'logout'])->middleware('auth')->name('logout');
 
+/* Profile page: /profile/{username} */
+Route::get('profile/{username}', function (string $username) {
+    return view('profile.index', ['username' => $username]);
+})->middleware('auth')->name('profile.show');
+
 
 /*  |--------------------------------------------------|
     |      Authenticated Route       |

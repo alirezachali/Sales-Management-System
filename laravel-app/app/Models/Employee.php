@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Carbon\Carbon;
 
 class Employee extends Model
@@ -18,6 +19,7 @@ class Employee extends Model
         'mobile',
         'national_code',
         'job_title',
+        'address',
         'hired_at',
         'base_salary',
         'is_active',
@@ -98,5 +100,13 @@ class Employee extends Model
     public function expenses(): HasMany
     {
         return $this->hasMany(Expense::class);
+    }
+
+    /**
+     * حساب کاربری متصل به این کارمند (اگر ساخته شده باشد).
+     */
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class);
     }
 }
