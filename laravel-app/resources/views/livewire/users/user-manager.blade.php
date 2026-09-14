@@ -259,11 +259,12 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">نام کاربری <span class="text-danger">*</span></label>
-                                    <input type="text" wire:model="username"
-                                        class="form-control @error('username') is-invalid @enderror">
+                                    <input type="text" wire:model="username" dir="ltr"
+                                        class="form-control text-end @error('username') is-invalid @enderror">
                                     @error('username')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                    <small class="text-muted">فقط حروف انگلیسی، عدد و . _ -</small>
                                 </div>
 
                                 <div class="col-md-6">
@@ -287,6 +288,26 @@
                                     @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">کارمند متصل</label>
+                                    <select wire:model="employee_id"
+                                        class="form-select @error('employee_id') is-invalid @enderror">
+                                        <option value="">بدون اتصال</option>
+                                        @foreach ($employees as $employee)
+                                            <option value="{{ $employee->id }}">
+                                                {{ $employee->first_name }} {{ $employee->last_name }}
+                                                @if ($employee->national_code)
+                                                    — {{ $employee->national_code }}
+                                                @endif
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('employee_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">کد ملی و آدرس این کاربر از پرونده کارمند انتخاب‌شده خوانده می‌شود.</small>
                                 </div>
 
                                 <div class="col-md-6">

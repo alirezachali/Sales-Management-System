@@ -31,6 +31,7 @@ class User extends Authenticatable
         'avatar',
         'password',
         'role_id',
+        'employee_id',
         'is_active',
         'last_login_at',
         'remember_token',
@@ -64,6 +65,15 @@ class User extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * کارمندی که این حساب کاربری به آن متصل است (اختیاری).
+     * اطلاعاتی مثل کد ملی و آدرس از همین رکورد خوانده می‌شود.
+     */
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
     }
 
     /**
@@ -121,11 +131,23 @@ class User extends Authenticatable
      */
     public function getAvatarUrlAttribute(): ?string
     {
+        // از asset() استفاده می‌شود (نه Storage::url) تا آدرس بر اساس هاست/پورت
+        // فعلی درخواست ساخته شود و به APP_URL گره نخورد.
         if ($this->avatar && Storage::disk('public')->exists($this->avatar)) {
-            return Storage::disk('public')->url($this->avatar);
+            return asset('storage/' . $this->avatar);
         }
 
         return null;
+    }
+
+    /**
+     * حروف اول نام و نام خانوادگی؛ برای نمایش در دایره پروفایل وقتی تصویر وجود ندارد.
+     */
+    public function getInitialsAttribute(): string
+    {
+        $parts = preg_split('/\s+/u', trim($this->name) ?: '?', -1, PREG_SPLIT_NO_EMPTY);
+
+        return collect($parts)->take(2)->map(fn ($p) => mb_substr($p, 0, 1))->implode(' ');
     }
 
     /**

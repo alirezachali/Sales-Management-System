@@ -233,6 +233,15 @@
                                     <input type="text" wire:model="job_title" class="form-control">
                                 </div>
 
+                                <div class="col-md-8">
+                                    <label class="form-label">آدرس</label>
+                                    <textarea wire:model="address" rows="1"
+                                        class="form-control @error('address') is-invalid @enderror"></textarea>
+                                    @error('address')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                                 <div class="col-md-4">
                                     <label class="form-label">تاریخ استخدام</label>
                                     <input type="date" wire:model="hired_at" class="form-control">

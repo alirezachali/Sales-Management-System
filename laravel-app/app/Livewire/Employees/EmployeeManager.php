@@ -34,6 +34,7 @@ class EmployeeManager extends Component
     public ?string $mobile = null;
     public ?string $national_code = null;
     public ?string $job_title = null;
+    public ?string $address = null;
     public ?string $hired_at = null;
     public ?string $base_salary = null;
     public ?string $notes = null;
@@ -82,6 +83,7 @@ class EmployeeManager extends Component
                     : Rule::unique('employees', 'national_code'),
             ],
             'job_title' => ['nullable', 'string', 'max:150'],
+            'address' => ['nullable', 'string', 'max:500'],
             'hired_at' => ['nullable', 'date'],
             'base_salary' => ['nullable', 'numeric', 'min:0'],
             'notes' => ['nullable', 'string'],
@@ -121,6 +123,7 @@ class EmployeeManager extends Component
         $this->mobile = $employee->mobile;
         $this->national_code = $employee->national_code;
         $this->job_title = $employee->job_title;
+        $this->address = $employee->address;
         $this->hired_at = $employee->hired_at ? $employee->hired_at->toDateString() : null;
         $this->base_salary = $employee->base_salary;
         $this->notes = $employee->notes;
@@ -152,6 +155,7 @@ class EmployeeManager extends Component
         $this->mobile = null;
         $this->national_code = null;
         $this->job_title = null;
+        $this->address = null;
         $this->hired_at = null;
         $this->base_salary = null;
         $this->notes = null;

@@ -95,7 +95,7 @@
                         <div class="dropdown-divider-line"></div>
 
                         {{--===== پروفایل =====--}}
-                        <a class="user-dropdown-item" href="#">
+                        <a class="user-dropdown-item" href="{{ route('profile.show', auth()->user()->username) }}">
                             <i class="bi bi-person"></i>
                             <span>{{ __('navbar.profile') }}</span>
                         </a>
