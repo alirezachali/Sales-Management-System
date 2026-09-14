@@ -131,8 +131,10 @@ class User extends Authenticatable
      */
     public function getAvatarUrlAttribute(): ?string
     {
+        // از asset() استفاده می‌شود (نه Storage::url) تا آدرس بر اساس هاست/پورت
+        // فعلی درخواست ساخته شود و به APP_URL گره نخورد.
         if ($this->avatar && Storage::disk('public')->exists($this->avatar)) {
-            return Storage::disk('public')->url($this->avatar);
+            return asset('storage/' . $this->avatar);
         }
 
         return null;
