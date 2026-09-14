@@ -15,6 +15,11 @@
     --lux-border: rgba(148, 163, 184, 0.16);
     --lux-glow: 0 8px 32px rgba(0, 0, 0, 0.45);
     --nav-height: 64px;
+    /* باعث می‌شود ویجت‌های نیتیو مثل لیست بازشوی select در تم تیره رندر شوند */
+    color-scheme: dark;
+    /* رنگ زمینه و متن لیست بازشوی select در حالت دارک */
+    --lux-dropdown-bg: #101528;
+    --lux-dropdown-text: #e2e8f0;
 }
 
 [data-bs-theme="light"] {
@@ -23,6 +28,10 @@
     --lux-surface: rgba(255, 255, 255, 0.72);
     --lux-border: rgba(15, 23, 42, 0.09);
     --lux-glow: 0 8px 28px rgba(30, 41, 59, 0.10);
+    color-scheme: light;
+    /* رنگ زمینه و متن لیست بازشوی select در حالت لایت */
+    --lux-dropdown-bg: #ffffff;
+    --lux-dropdown-text: #1e293b;
 }
 
 /* ---------- پس‌زمینه کهکشانی ---------- */
@@ -204,7 +213,7 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
     border: 1px solid var(--lux-border) !important;
     background: rgba(255, 255, 255, 0.05) !important;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    color: rgb(3, 3, 3);
+    /* color: rgb(6, 109, 245); */
 }
 
 [data-bs-theme="light"] .form-control,
@@ -215,6 +224,12 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 .form-control:focus, .form-select:focus {
     border-color: rgba(124, 92, 255, 0.6) !important;
     box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.14) !important;
+}
+
+/* لیست بازشوی select: هر تم رنگ خودش را دارد تا متن گزینه‌ها نخوانده نشود */
+.form-select option {
+    background: var(--lux-dropdown-bg);
+    color: var(--lux-dropdown-text);
 }
 
 .input-group-text {
