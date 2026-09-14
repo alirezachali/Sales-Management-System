@@ -96,7 +96,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <h3 class="fw-bold mb-1">
-                    <i class="bi bi-box-seam-fill text-primary"></i>
+                    <i class="bi bi-box-seam-fill text-fuchsia"></i>
                     مدیریت محصولات
                 </h3>
                 <small class="text-muted">مدیریت اطلاعات محصولات موجود در فروشگاه</small>
@@ -112,61 +112,61 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle">
+                <table class="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th width="130">بارکد</th>
                             <th>نام کالا</th>
                             <th>دسته بندی</th>
-                            <th width="130">قیمت فروش</th>
-                            <th width="90">موجودی</th>
-                            <th width="160">عملیات</th>
+                            <th width="130">قیمت ({{ setting('currency', 'تومان') }})</th>
+                            <th width="100">موجودی</th>
+                            <th width="130">عملیات</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($products as $product)
                             <tr wire:key="product-{{ $product->id }}">
                                 <td>{{ $loop->iteration + ($products->currentPage() - 1) * $products->perPage() }}</td>
-                                <td>{{ $product->barcode }}</td>
+                                <td class="text-fuchsia-emphasis">{{ $product->barcode }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->category?->name }}</td>
-                                <td>
+                                <td class="text-success-emphasis">
                                     {{ number_format($product->sell_price) }}
-                                    <span>{{ setting('currency', '') }}</span>
+                                    {{-- <span>{{ setting('currency', '') }}</span> --}}
                                 </td>
                                 <td>
                                     {{ $product->formatted_stock }}
-                                    <span class="badge bg-secondary text-light">{{ $product->unit }}</span>
+                                    <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ $product->unit }}</span>
                                 </td>
                                 <td>
                                 {{--============ دکمه ویرایش کالا ============--}}
                                     @can('products.edit')
-                                    <button type="button" class="btn btn-sm btn-warning text-dark"
+                                    <button type="button" class="btn btn-sm btn-outline-warning"
                                         wire:click="openEditModal({{ $product->id }})" title="ویرایش کالا">
                                         <i class="bi bi-pencil-fill"></i>
                                     </button>
                                     @endcan
 
                                 {{--============ دکمه چاپ لیبل ============--}}
-                                    <button type="button" class="btn btn-sm btn-info text-dark print-label-btn"
+                                    <button type="button" class="btn btn-sm btn-outline-info print-label-btn"
                                         data-id="{{ $product->id }}" title="چاپ لیبل">
                                         <i class="bi bi-printer-fill"></i>
                                     </button>
 
                                 {{--====== دکمه مشاهده موجودی و ورود و خروج این کالا به انبار ======--}}
-                                    <a href="{{ route('products.stock', $product) }}" class="btn btn-sm btn-light"
+                                    <a href="{{ route('products.stock', $product) }}" class="btn btn-sm btn-outline-light"
                                         title="مشاهده سوابق ورود و خروج این کالا به انبار">
                                         <i class="bi bi-boxes"></i>
                                     </a>
 
                                 {{--================== دکمه حذف کالا ==================--}}
-                                    @can('products.delete')
+                                    {{-- @can('products.delete')
                                     <button type="button" class="btn btn-danger text-dark btn-sm"
                                         wire:click="confirmDelete({{ $product->id }})" title="حذف این کالا">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
-                                    @endcan
+                                    @endcan --}}
                                 </td>
                             </tr>
                         @empty

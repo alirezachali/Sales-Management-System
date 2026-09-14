@@ -89,15 +89,15 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle mb-0">
+                <table class="table table-hover align-middle mb-0">
                     <thead>
                         <tr>
-                            <th width="55">{{ __('categories.table.row') }}</th>
+                            <th width="70">{{ __('categories.table.row') }}</th>
                             <th>{{ __('categories.table.name') }}</th>
                             <th>{{ __('categories.table.description') }}</th>
-                            <th width="80">{{ __('categories.table.products_count') }}</th>
-                            <th width="200">{{ __('categories.table.created_at') }}</th>
-                            <th width="80">{{ __('categories.table.status') }}</th>
+                            <th width="90">{{ __('categories.table.products_count') }}</th>
+                            <th width="170">{{ __('categories.table.created_at') }}</th>
+                            <th width="100">{{ __('categories.table.status') }}</th>
                             <th width="100">{{ __('categories.table.actions') }}</th>
                         </tr>
                     </thead>
@@ -120,11 +120,11 @@
                                 {{-- تعداد کالا --}}
                                 <td>
                                     @if ($category->products_count)
-                                        <span class="badge bg-info text-dark">
+                                        <span class="badge bg-info-subtle text-info-emphasis">
                                             {{ $category->products_count }}
                                         </span>
                                     @else
-                                        <span class="badge bg-secondary text-dark">0</span>
+                                        <span class="badge bg-secondary-subtle text-secondary-emphasis">0</span>
                                     @endif
                                 </td>
                                 {{-- تاریخ ایجاد --}}
@@ -132,21 +132,21 @@
                                     {{-- وضعیت --}}
                                 <td>
                                     @if ($category->is_active)
-                                        <span class="badge bg-success text-dark">{{ __('categories.active') }}</span>
+                                        <span class="badge bg-success-subtle text-success-emphasis">{{ __('categories.active') }}</span>
                                     @else
-                                        <span class="badge bg-danger text-dark">{{ __('categories.inactive') }}</span>
+                                        <span class="badge bg-danger-subtle text-danger-emphasis">{{ __('categories.inactive') }}</span>
                                     @endif
                                 </td>
                                 {{-- عملیات --}}
                                 <td>
                                     @can('categories.edit')
-                                    <button type="button" class="btn btn-sm btn-warning text-dark"
+                                    <button type="button" class="btn btn-sm btn-outline-warning"
                                         wire:click="openEditModal({{ $category->id }})" title="{{ __('categories.edit_tooltip') }}">
                                         <i class="bi bi-pencil-fill"></i>
                                     </button>
                                     @endcan
                                     @can('categories.delete')
-                                    <button type="button" class="btn btn-sm btn-danger text-dark"
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
                                         wire:click="confirmDelete({{ $category->id }})" title="{{ __('categories.delete_tooltip') }}">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>
