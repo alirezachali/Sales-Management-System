@@ -105,20 +105,14 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <h3 class="fw-bold mb-1">
-                    <i class="bi bi-person-video text-primary"></i>
+                    <i class="bi bi-person-video text-fuchsia"></i>
                     مدیریت کاربران
                 </h3>
                 <small class="text-muted">مدیریت اطلاعات کاربران سیستم</small>
             </div>
 
             <div class="d-flex gap-3">
-                <a href="{{ route('roles.index') }}">
-                    <button class="btn btn-info text-dark" title=" مدیریت نقش‌هاو مجوزهای دسترسی آنها">
-                        <i class="bi bi-shield-lock"></i>
-                        مدیریت نقش‌ها
-                    </button>
-                </a>
-
+                
                 @can('users.create')
                 <button class="btn btn-primary" wire:click="openCreateModal"
                     title="برای افزودن کاربر جدید به سیستم کلیک کنید">
@@ -132,16 +126,16 @@
 
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle mb-0">
+                <table class="table table-hover align-middle mb-0">
                     <thead>
                         <tr>
-                            <th width="50">ردیف</th>
+                            <th width="60">ردیف</th>
                             <th>نام</th>
                             <th width="130">نام کاربری</th>
-                            <th width="90">وضعیت</th>
-                            <th width="120">نقش</th>
-                            <th width="220">آخرین ورود</th>
-                            <th width="140">عملیات</th>
+                            <th width="100">وضعیت</th>
+                            <th width="130">نقش</th>
+                            <th width="200">آخرین ورود</th>
+                            <th width="160">عملیات</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -152,13 +146,13 @@
                                 <td>{{ $user->username }}</td>
                                 <td>
                                     @if ($user->is_active)
-                                        <span class="badge bg-success text-dark">فعال</span>
+                                        <span class="badge bg-success-subtle text-success-emphasis">فعال</span>
                                     @else
-                                        <span class="badge bg-danger text-dark">غیرفعال</span>
+                                        <span class="badge bg-danger-subtle text-danger-emphasis">غیرفعال</span>
                                     @endif
                                 </td>
                                 <td>
-                                    <span class="badge bg-primary text-dark">
+                                    <span class="badge bg-primary-subtle text-primary-emphasis">
                                         {{ $user->role?->display_name ?? '-' }}
                                     </span>
                                 </td>
@@ -166,7 +160,7 @@
                                 <td>
                                     {{-- دکمه ویرایش مشخصات یک کاربر --}}
                                     @can('users.edit')
-                                    <button type="button" class="btn btn-sm btn-warning text-dark"
+                                    <button type="button" class="btn btn-sm btn-outline-warning"
                                         wire:click="openEditModal({{ $user->id }})"
                                         title="برای ویرایش این کاربر کلیک کنید">
                                         <i class="bi bi-pencil-fill"></i>
@@ -174,7 +168,7 @@
                                     @endcan
                                     {{-- دکمه تغییر رمز ورود یک کاربر --}}
                                     @can('users.edit')
-                                    <button type="button" class="btn btn-sm btn-info text-dark"
+                                    <button type="button" class="btn btn-sm btn-outline-info"
                                         wire:click="openPasswordModal({{ $user->id }})"
                                         title="برای تغییر کلمه عبور این کاربر کلیک کنید">
                                         <i class="bi bi-key-fill"></i>
@@ -182,7 +176,7 @@
                                     @endcan
                                     {{-- دکمه حذف یک کاربر --}}
                                     @can('users.delete')
-                                    <button type="button" class="btn btn-sm btn-danger text-dark"
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
                                         wire:click="confirmDelete({{ $user->id }})"
                                         title="برای حذف این کاربر کلیک کنید">
                                         <i class="bi bi-trash-fill"></i>

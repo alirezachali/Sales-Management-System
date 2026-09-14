@@ -1,6 +1,6 @@
 <div dir="rtl">
 
-{{--============ نمایش پیغام‌های موفقیت ============--}}
+    {{-- ============ نمایش پیغام‌های موفقیت ============ --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
@@ -9,7 +9,7 @@
         </div>
     @endif
 
-{{--============ نمایش پیغام‌های خطا ============--}}
+    {{-- ============ نمایش پیغام‌های خطا ============ --}}
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -19,7 +19,7 @@
     @endif
 
 
-{{--================== کارت‌های آماری ==================--}}
+    {{-- ================== کارت‌های آماری ================== --}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
@@ -63,7 +63,7 @@
         </div>
     </div>
 
-{{--================== کارت جستجو ==================--}}
+    {{-- ================== کارت جستجو ================== --}}
     <div class="card glass-card mb-4 border-3">
         <div class="card-body">
             <div class="input-group">
@@ -76,109 +76,100 @@
         </div>
     </div>
 
-{{--============================== هدر صفحه ==============================--}}
-    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
+    {{-- ============================== جدول لیست نقش ها ============================== --}}
+    <div class="card shadow-sm" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="fw-bold mb-1">
-                    <i class="bi bi-shield-lock-fill text-primary"></i>
+                    <i class="bi bi-shield-lock-fill text-fuchsia"></i>
                     مدیریت نقش‌ها
                 </h3>
                 <small class="text-muted">مدیریت نقش‌های کاربران سیستم و مجوزهای دسترسی به هر بخش</small>
             </div>
-            <div class="d-flex gap-3">
-
-                <a href="{{ route('users.index') }}">
-                    <button class="btn btn-info text-dark" title="بازگشت به لیست کاربران">
-                        <i class="bi bi-arrow-right"></i>
-                        بازگشت
-                    </button>
-                </a>
+            <div class="d-flex">
 
                 @can('roles.create')
-                <button class="btn btn-primary" wire:click="openCreateModal"
-                    title="برای افزودن نقش جدید به سیستم کلیک کنید">
-                    <i class="bi bi-plus-circle"></i>
-                    افزودن نقش
-                </button>
+                    <button class="btn btn-primary" wire:click="openCreateModal"
+                        title="برای افزودن نقش جدید به سیستم کلیک کنید">
+                        <i class="bi bi-plus-circle"></i>
+                        افزودن نقش
+                    </button>
                 @endcan
 
             </div>
         </div>
 
-    {{--============================== جدول لیست نقش ها ==============================--}}
-        <div class="card shadow-sm" wire:loading.class="opacity-50">
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover align-middle mb-0">
-                        <thead>
-                            <tr>
-                                <th width="50">ردیف</th>
-                                <th>نام نقش</th>
-                                <th width="150">شناسه</th>
-                                <th>توضیحات</th>
-                                <th width="90">تعداد کاربران</th>
-                                <th width="130">عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($roles as $role)
-                                <tr wire:key="role-{{ $role->id }}">
-                                    <td>{{ $loop->iteration + ($roles->currentPage() - 1) * $roles->perPage() }}</td>
-                                    <td>{{ $role->display_name }}</td>
-                                    <td>
-                                        <span class="badge bg-{{ $role->color ?? 'secondary' }} text-dark">
-                                            {{ $role->name }}
-                                            <i class="{{ $role->icon }}"></i>
-                                        </span>
-                                    </td>
-                                    <td>{{ $role->description }}</td>
-                                    <td>
-                                        <span class="badge bg-info text-dark">{{ $role->users_count }}</span>
-                                    </td>
-                                    <td>
-                                        {{-- دکمه ویرایش یک نقش --}}
-                                        @can('roles.edit')
-                                        <button type="button" class="btn btn-sm btn-warning text-dark"
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th width="60">ردیف</th>
+                            <th>نام نقش</th>
+                            <th width="160">شناسه</th>
+                            <th>توضیحات</th>
+                            <th width="100">تعداد کاربران</th>
+                            <th width="160">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($roles as $role)
+                            <tr wire:key="role-{{ $role->id }}">
+                                <td>{{ $loop->iteration + ($roles->currentPage() - 1) * $roles->perPage() }}</td>
+                                <td>{{ $role->display_name }}</td>
+                                <td>
+                                    <span class="badge bg-{{ $role->color ?? 'secondary' }}-subtle text-{{ $role->color ?? 'secondary' }}-emphasis">
+                                        {{ $role->name }}
+                                        <i class="{{ $role->icon }}"></i>
+                                    </span>
+                                </td>
+                                <td>{{ $role->description }}</td>
+                                <td>
+                                    <span class="badge bg-info-subtle text-info-emphasis">{{ $role->users_count }}</span>
+                                </td>
+                                <td>
+                                    {{-- دکمه ویرایش یک نقش --}}
+                                    @can('roles.edit')
+                                        <button type="button" class="btn btn-sm btn-outline-warning"
                                             wire:click="openEditModal({{ $role->id }})"
                                             title="برای ویرایش این نقش کلیک کنید">
                                             <i class="bi bi-pencil-fill"></i>
                                         </button>
-                                        @endcan
-                                        {{-- دکمه حذف یک نقش --}}
-                                        @can('roles.delete')
-                                        <button type="button" class="btn btn-sm btn-danger text-dark"
+                                    @endcan
+                                    {{-- دکمه حذف یک نقش --}}
+                                    @can('roles.delete')
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
                                             wire:click="confirmDelete({{ $role->id }})"
                                             title="برای حذف این نقش کلیک کنید">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
-                                        @endcan
-                                        {{-- دکمه ویرایش مجوزهای یک نقش --}}
-                                        @can('roles.permissions')
-                                        <a href="{{ route('roles.permissions', $role) }}" class="btn btn-sm btn-info text-dark"
+                                    @endcan
+                                    {{-- دکمه ویرایش مجوزهای یک نقش --}}
+                                    @can('roles.permissions')
+                                        <a href="{{ route('roles.permissions', $role) }}"
+                                            class="btn btn-sm btn-outline-info"
                                             title="برای ویرایش مجوز های این نقش کلیک کنید">
                                             <i class="bi bi-shield-lock-fill"></i>
                                         </a>
-                                        @endcan
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center py-5 text-muted">
-                                        هیچ نقشی ثبت نشده است.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                                    @endcan
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    هیچ نقشی ثبت نشده است.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
 
         <div class="mt-3">{{ $roles->links() }}</div>
     </div>
 
-{{-- ================================== مودال افزودن/ویرایش نقش ================================== --}}
+    {{-- ================================== مودال افزودن/ویرایش نقش ================================== --}}
     @if ($showFormModal)
         <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="role-form-modal">
@@ -264,7 +255,7 @@
         </div>
     @endif
 
-{{-- ======================================== مودال تایید حذف ======================================== --}}
+    {{-- ======================================== مودال تایید حذف ======================================== --}}
     @if ($showDeleteModal)
         <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="role-delete-modal">
