@@ -204,6 +204,7 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
     border: 1px solid var(--lux-border) !important;
     background: rgba(255, 255, 255, 0.05) !important;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    color: rgb(3, 3, 3);
 }
 
 [data-bs-theme="light"] .form-control,
