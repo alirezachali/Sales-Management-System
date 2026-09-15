@@ -378,7 +378,7 @@
                                     <tbody>
                                         @forelse ($ledgerTransactions as $transaction)
                                             <tr wire:key="ledger-{{ $transaction->id }}">
-                                                <td>{{ $transaction->created_at }}</td>
+                                                <td>{{ jalaliDateTime($transaction->created_at) }}</td>
                                                 <td>
                                                     @switch($transaction->type)
                                                         @case('sale')

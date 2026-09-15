@@ -157,7 +157,7 @@
                                         @else
                                             <i class="bi bi-check-circle-fill text-success"></i>
                                         @endif
-                                        {{ $debt->due_date->format('Y/m/d') }}
+                                        {{ jalaliDate($debt->due_date) }}
                                     </span>
                                 @else
                                     <span class="text-muted">—</span>
