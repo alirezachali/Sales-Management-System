@@ -13,6 +13,7 @@ return [
     'customer_club' => 'باشگاه مشتریان',
     'customer_club_roles' => 'مدیریت رده های باشگاه',
     'customer_debtors' => 'مشتریان بدهکار',
+    'customer_purchases' => 'خریدهای مشتریان',
     'brands' => 'برندها',
     'suppliers' => 'تامین کنندگان',
     'employee_manage' => 'مدیریت کارکنان',

@@ -13,6 +13,7 @@ return [
     'customer_club' => 'Customer Club',
     'customer_club_roles' => 'Club Roles Management',
     'customer_debtors' => 'Debt Customers',
+    'customer_purchases' => 'Customer Purchases',
     'brands' => 'Brands',
     'suppliers' => 'Suppliers',
     'employee_manage' => 'Employees',

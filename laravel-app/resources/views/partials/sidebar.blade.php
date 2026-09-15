@@ -42,6 +42,9 @@
             if (auth()->user()->hasPermission('customers.debtors')) {
                 $salesItems[] = ['route' => 'customer-debtors.index', 'label' => __('sidebar.customer_debtors'), 'icon' => 'bi-person-exclamation', 'is' => 'customer-debtors.*'];
             }
+            if (auth()->user()->hasPermission('customers.view')) {
+                $salesItems[] = ['route' => 'customer-purchases.index', 'label' => __('sidebar.customer_purchases'), 'icon' => 'bi-bag-check', 'is' => 'customer-purchases.*'];
+            }
             if (auth()->user()->hasPermission('customers.roles_view')) {
                 $salesItems[] = ['route' => 'customer-roles.index', 'label' => __('sidebar.customer_club_roles'), 'icon' => 'bi-award', 'is' => 'customer-roles.*'];
             }

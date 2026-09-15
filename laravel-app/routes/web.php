@@ -163,6 +163,11 @@ Route::middleware('auth')->group(function () {
     Route::get('customers/debtors', function () {return view('customers.debtors.index');})->name('customer-debtors.index')
         ->middleware('can:customers.debtors');
 
+    /* مسیر لیست خریدهای مشتریان */
+    Route::get('customers/purchases', function () {return view('customers.purchases.index');})->name('customer-purchases.index')
+        ->middleware('can:customers.view');
+
+
     /* مسیر نمایش لیست تامین‌کنندگان */
     Route::get('/suppliers', function () {return view('suppliers.index');})->name('suppliers.index')
         ->middleware('can:suppliers.view');
