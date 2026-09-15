@@ -1,9 +1,20 @@
 <div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
+    {{-- پیام موفقیت --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <i class="bi bi-check-circle-fill me-2"></i>
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
+        </div>
+    @endif
+
+    {{-- پیام خطا --}}
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
@@ -22,26 +33,31 @@
 
     <div class="card border-0 shadow-sm">
         <div class="card-header">
-            <h3 class="fw-bold mb-1"><i class="bi bi-calendar-check text-primary"></i> حضور و غیاب کارکنان</h3>
-            <small class="text-muted">روی هر خانه کلیک کنید تا سابقه‌ی آن روز ثبت/ویرایش شود. رنگ‌ها:
-                <span class="badge att-legend att-present">حاضر</span>
-                <span class="badge att-legend att-absent">غایب</span>
-                <span class="badge att-legend att-leave">مرخصی</span>
-                <span class="badge att-legend att-half">نیمه‌وقت</span>
-                <span class="badge att-legend att-holiday">تعطیل</span>
-            </small>
+            <div>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-calendar-check text-primary"></i>
+                    حضور و غیاب کارکنان
+                </h3>
+                <small class="text-muted">روی هر خانه کلیک کنید تا سابقه‌ی آن روز ثبت/ویرایش شود. رنگ‌ها:
+                    <span class="badge att-legend att-present">حاضر</span>
+                    <span class="badge att-legend att-absent">غایب</span>
+                    <span class="badge att-legend att-leave">مرخصی</span>
+                    <span class="badge att-legend att-half">نیمه‌وقت</span>
+                    <span class="badge att-legend att-holiday">تعطیل</span>
+                </small>
+            </div>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-sm table-bordered align-middle mb-0 attendance-grid">
                     <thead>
                         <tr>
-                            <th style="min-width:100px" class="sticky-col">کارمند</th>
+                            <th style="min-width:100px" class="sticky-col">نام کارمند</th>
                             @foreach ($days as $day)
                                 <th class="text-center p-1" style="width:26px">{{ $day }}</th>
                             @endforeach
-                            <th class="text-center">حاضر</th>
-                            <th class="text-center">غایب</th>
+                            {{-- <th class="text-center">حاضر</th> --}}
+                            {{-- <th class="text-center">غایب</th> --}}
                             {{-- <th class="text-center">اضافه‌کار</th> --}}
                             <th class="text-center" style="width:40px">گزارش</th>
                         </tr>
@@ -83,17 +99,21 @@
                                         </div>
                                     </td>
                                 @endforeach
-                                <td class="text-center"><span
-                                        class="badge bg-success-subtle text-success-emphasis">{{ $sum->present_days ?? 0 }}</span>
-                                </td>
-                                <td class="text-center"><span
-                                        class="badge bg-danger-subtle text-danger-emphasis">{{ $sum->absent_days ?? 0 }}</span>
-                                </td>
+                                {{-- <td class="text-center">
+                                    <span class="badge bg-success-subtle text-success-emphasis">
+                                        {{ $sum->present_days ?? 0 }}
+                                    </span>
+                                </td> --}}
+                                {{-- <td class="text-center">
+                                    <span class="badge bg-danger-subtle text-danger-emphasis">
+                                        {{ $sum->absent_days ?? 0 }}
+                                    </span>
+                                </td> --}}
                                 {{-- <td class="text-center small">
                                     {{ number_format((float) ($sum->total_overtime ?? 0), 1) }}
                                 </td> --}}
                                 <td class="text-center p-0">
-                                    <button type="button" class="btn btn-sm btn-outline-primary border-0"
+                                    <button type="button" class="btn btn-sm btn-outline-primary"
                                         title="گزارش کامل ماه" wire:click="openReport({{ $employee->id }})">
                                         <i class="bi bi-file-earmark-text"></i>
                                     </button>

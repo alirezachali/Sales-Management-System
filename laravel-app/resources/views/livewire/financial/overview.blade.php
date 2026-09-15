@@ -1,4 +1,4 @@
-<div dir="rtl">
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
     <div class="card shadow-sm border-3 mb-4" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
