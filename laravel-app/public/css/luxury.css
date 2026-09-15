@@ -314,11 +314,37 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 .att-cell:hover { transform: scale(1.18); filter: brightness(1.15); }
 
 .att-empty { background: rgba(148, 163, 184, 0.10); }
-.att-present { background: linear-gradient(135deg, #16a34a, #4ade80); }
-.att-absent  { background: linear-gradient(135deg, #dc2626, #f87171); }
-.att-leave   { background: linear-gradient(135deg, #d97706, #fbbf24); }
-.att-half    { background: linear-gradient(135deg, #0284c7, #38bdf8); }
-.att-holiday { background: linear-gradient(135deg, #64748b, #94a3b8); }
+.att-present {
+    background: linear-gradient(135deg, #16a34a, #4ade80) !important;
+    color: #fff !important;
+}
+
+.att-absent {
+    background: linear-gradient(135deg, #dc2626, #f87171) !important;
+    color: #fff !important;
+}
+
+.att-leave {
+    background: linear-gradient(135deg, #d97706, #fbbf24) !important;
+    color: #fff !important;
+}
+
+.att-half {
+    background: linear-gradient(135deg, #0284c7, #38bdf8) !important;
+    color: #fff !important;
+}
+
+.att-holiday {
+    background: linear-gradient(135deg, #64748b, #94a3b8) !important;
+    color: #fff !important;
+}
+
+/* نشان‌های راهنمای رنگ و گزارش */
+.badge.att-legend {
+    font-weight: 600;
+    border-radius: 7px;
+    padding: .32em .55em;
+}
 
 /* ---------- نمودار روند ---------- */
 .trend-chart {

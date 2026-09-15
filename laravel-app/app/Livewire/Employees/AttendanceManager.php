@@ -18,8 +18,6 @@ class AttendanceManager extends Component
 
     public string $employeeFilter = '';
 
-    public array $records = []; // product of employee_id => date => record
-
     // فرم ثبت سریع
     public ?int $formEmployeeId = null;
     public string $formDateJalali = '';
@@ -29,8 +27,13 @@ class AttendanceManager extends Component
     public $formLateMinutes = 0;
     public $formOvertimeHours = 0;
     public ?string $formNotes = null;
+    public bool $formApplyToAll = false;
 
     public bool $showFormModal = false;
+
+    // مودال گزارش کامل ماه
+    public bool $showReportModal = false;
+    public ?int $reportEmployeeId = null;
 
     public function mount(): void
     {
@@ -76,6 +79,7 @@ class AttendanceManager extends Component
         $this->formEmployeeId = $employeeId;
         $this->formStatus = 'present';
         $this->formDateJalali = Verta::now()->format('Y-m-d');
+        $this->formApplyToAll = false;
         $this->showFormModal = true;
     }
 
@@ -89,8 +93,8 @@ class AttendanceManager extends Component
 
         if ($record) {
             $this->formStatus = $record->status;
-            $this->formCheckIn = $record->check_in;
-            $this->formCheckOut = $record->check_out;
+            $this->formCheckIn = $this->normalizeTime($record->check_in);
+            $this->formCheckOut = $this->normalizeTime($record->check_out);
             $this->formLateMinutes = (float) $record->late_minutes;
             $this->formOvertimeHours = (float) $record->overtime_hours;
             $this->formNotes = $record->notes;
@@ -100,6 +104,7 @@ class AttendanceManager extends Component
         }
 
         $this->formDateJalali = gregorianToJalaliInput($date) ?? $date;
+        $this->formApplyToAll = false;
         $this->showFormModal = true;
     }
 
@@ -114,6 +119,9 @@ class AttendanceManager extends Component
 
             return;
         }
+
+        $this->formCheckIn = $this->normalizeTime($this->formCheckIn);
+        $this->formCheckOut = $this->normalizeTime($this->formCheckOut);
 
         $this->validate([
             'formStatus' => ['required', Rule::in(['present', 'absent', 'leave', 'half', 'holiday'])],
@@ -135,13 +143,129 @@ class AttendanceManager extends Component
             ],
         );
 
-        session()->flash('success', 'سابقه حضور ثبت شد.');
+        $message = 'سابقه حضور ثبت شد.';
+
+        if ($this->formStatus === 'holiday' && $this->formApplyToAll) {
+            $existing = AttendanceRecord::where('date', $gregorian)->pluck('employee_id')->all();
+
+            $missingIds = Employee::active()
+                ->whereNotIn('id', $existing)
+                ->pluck('id');
+
+            if ($missingIds->isNotEmpty()) {
+                DB::transaction(function () use ($missingIds, $gregorian) {
+                    $now = now();
+                    $rows = $missingIds->map(fn ($id) => [
+                        'employee_id' => $id,
+                        'date' => $gregorian,
+                        'status' => 'holiday',
+                        'notes' => $this->formNotes,
+                        'late_minutes' => 0,
+                        'overtime_hours' => 0,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ])->all();
+
+                    AttendanceRecord::insert($rows);
+                });
+
+                $message = 'تعطیلی برای '.($missingIds->count() + 1).' کارمند ثبت شد.';
+            }
+        }
+
+        session()->flash('success', $message);
         $this->showFormModal = false;
     }
 
     public function closeModals(): void
     {
         $this->showFormModal = false;
+        $this->showReportModal = false;
+    }
+
+    private function normalizeTime(?string $value): ?string
+    {
+        $value = trim((string) $value);
+
+        if ($value === '') {
+            return null;
+        }
+
+        // تبدیل ارقام فارسی/عربی به لاتین
+        $value = str_replace(['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹',
+            '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'], range(0, 9), $value);
+
+        if (preg_match('/^(\d{1,2}):(\d{1,2})(:\d{1,2})?$/', $value, $m)) {
+            return str_pad($m[1], 2, '0', STR_PAD_LEFT).':'.str_pad($m[2], 2, '0', STR_PAD_LEFT);
+        }
+
+        return $value;
+    }
+
+    public function openReport(int $employeeId): void
+    {
+        $this->reportEmployeeId = $employeeId;
+        $this->showReportModal = true;
+    }
+
+    public function buildReport(): array
+    {
+        if (! $this->showReportModal || ! $this->reportEmployeeId) {
+            return ['reportRows' => collect(), 'reportEmployee' => null, 'reportTotals' => []];
+        }
+
+        $employee = Employee::find($this->reportEmployeeId,
+            ['id', 'first_name', 'last_name', 'job_title']);
+
+        [$start, $end] = $this->monthRangeSafe();
+        $daysInMonth = $this->daysInMonthSafe();
+
+        $records = AttendanceRecord::where('employee_id', $this->reportEmployeeId)
+            ->whereBetween('date', [$start, $end])
+            ->get()
+            ->keyBy(fn ($r) => $r->date->format('Y-m-d'));
+
+        $rows = collect();
+        for ($d = 1; $d <= $daysInMonth; $d++) {
+            $jalali = $this->monthJalali . '-' . str_pad((string) $d, 2, '0', STR_PAD_LEFT);
+            $greg = \Hekmatinasser\Verta\Verta::parse($jalali)->toCarbon()->toDateString();
+            $rec = $records->get($greg);
+
+            $worked = null;
+            if ($rec?->check_in && $rec?->check_out) {
+                $in = \Carbon\Carbon::parse($greg . ' ' . $rec->check_in);
+                $out = \Carbon\Carbon::parse($greg . ' ' . $rec->check_out);
+                if ($out->lt($in)) {
+                    $out->addDay();
+                }
+                $worked = round($in->diffInHours($out), 2);
+            }
+
+            $rows->push([
+                'day' => $d,
+                'jalali' => $jalali,
+                'weekday' => \Hekmatinasser\Verta\Verta::parse($jalali)->format('l'),
+                'rec' => $rec,
+                'worked' => $worked,
+            ]);
+        }
+
+        $totals = [
+            'present' => $rows->filter(fn ($r) => $r['rec']?->status === 'present')->count(),
+            'absent' => $rows->filter(fn ($r) => $r['rec']?->status === 'absent')->count(),
+            'leave' => $rows->filter(fn ($r) => $r['rec']?->status === 'leave')->count(),
+            'half' => $rows->filter(fn ($r) => $r['rec']?->status === 'half')->count(),
+            'holiday' => $rows->filter(fn ($r) => $r['rec']?->status === 'holiday')->count(),
+            'overtime' => round($rows->sum(fn ($r) => (float) ($r['rec']->overtime_hours ?? 0)), 2),
+            'late' => round($rows->sum(fn ($r) => (float) ($r['rec']->late_minutes ?? 0)), 1),
+            'worked' => round($rows->sum(fn ($r) => (float) ($r['worked'] ?? 0)), 2),
+        ];
+
+        return [
+            'reportRows' => $rows,
+            'reportEmployee' => $employee,
+            'reportTotals' => $totals,
+        ];
     }
 
     public function render()
@@ -186,6 +310,7 @@ class AttendanceManager extends Component
             'start' => $start,
             'end' => $end,
             'monthTitle' => $monthTitle,
+            ...$this->buildReport(),
         ]);
     }
 

@@ -35,5 +35,27 @@
             initAttendanceJalaliPicker();
             Livewire.hook('morph.updated', initAttendanceJalaliPicker);
         });
+
+        // ورودی ساعت ۲۴ ساعته: فقط رقم و دونقطه، درج خودکار :
+        function bindTime24(el) {
+            if (el.dataset.time24Bound) return;
+            el.dataset.time24Bound = '1';
+            el.addEventListener('input', () => {
+                let v = el.value.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+                    .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+                    .replace(/[^\d:]/g, '').replace(/:/g, '');
+                if (v.length >= 5) v = v.slice(0, 5);
+                el.value = v.length > 2 ? v.slice(0, 2) + ':' + v.slice(2) : v;
+            });
+        }
+
+        document.querySelectorAll('.time-24').forEach(bindTime24);
+        document.addEventListener('livewire:navigated', () =>
+            document.querySelectorAll('.time-24').forEach(bindTime24));
+        Livewire.on('att-modal-open', () =>
+            document.querySelectorAll('.time-24').forEach(bindTime24));
+        const attObserver = new MutationObserver(() =>
+            document.querySelectorAll('.time-24').forEach(bindTime24));
+        attObserver.observe(document.body, { childList: true, subtree: true });
     </script>
 @endsection
