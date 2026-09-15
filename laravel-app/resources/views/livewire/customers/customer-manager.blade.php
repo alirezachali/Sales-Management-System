@@ -112,8 +112,8 @@
                         <th>نام مشتری</th>
                         <th width="150">موبایل</th>
                         <th width="150">رده</th>
-                        {{-- <th width="60">تعداد خرید</th> --}}
-                        {{-- <th>مبلغ کل خرید</th> --}}
+                        <th width="60">تعداد خرید</th>
+                        <th>مبلغ کل خرید</th>
                         <th width="120">وضعیت</th>
                         <th width="200">عملیات</th>
                     </tr>
@@ -133,8 +133,8 @@
                                     <span class="text-muted">—</span>
                                 @endif
                             </td>
-                            {{-- <td>{{ number_format($customer->purchase_count) }}</td> --}}
-                            {{-- <td>{{ number_format($customer->total_purchase_amount) }} {{ setting('currency', '') }}</td> --}}
+                            <td>{{ number_format($customer->purchase_count) }}</td>
+                            <td>{{ number_format($customer->total_purchase_amount) }} {{ setting('currency', '') }}</td>
                             <td>
                                 @if ($customer->is_active)
                                     <span class="badge bg-success-subtle text-success-emphasis">فعال</span>
