@@ -30,7 +30,10 @@ class DebtManager extends Component
     public string $creditor_type = 'other';
     public ?int $supplier_id = null;
     public string $amount = '';
+    /** تاریخ میلادی برای پردازش سمت سرور */
     public string $due_date = '';
+    /** تاریخ شمسی برای نمایش و انتخاب توسط کاربر (مثل 1405/06/11) */
+    public string $due_date_jalali = '';
     public string $notes = '';
 
     // Payment
@@ -49,6 +52,7 @@ class DebtManager extends Component
             'supplier_id'    => 'nullable|exists:suppliers,id',
             'amount'         => 'required|integer|min:1',
             'due_date'       => 'nullable|date',
+            'due_date_jalali' => 'nullable|string',
             'notes'          => 'nullable|string|max:1000',
         ];
     }
@@ -81,14 +85,66 @@ class DebtManager extends Component
         $this->supplier_id  = $debt->supplier_id;
         $this->amount       = (string) $debt->amount;
         $this->due_date     = $debt->due_date ? $debt->due_date->format('Y-m-d') : '';
+        $this->due_date_jalali = $debt->due_date ? (gregorianToJalaliInput($debt->due_date) ?? '') : '';
         $this->notes        = $debt->notes ?? '';
         $this->showModal    = true;
+    }
+
+    /*
+    |--------------------------------------------------------------------|
+    | همگام‌سازی تاریخ شمسی ورودی کاربر با تاریخ میلادی سمت سرور          |
+    |--------------------------------------------------------------------|
+    */
+    public function updatedDueDateJalali(): void
+    {
+        $val = trim($this->due_date_jalali);
+
+        if ($val === '') {
+            $this->due_date = '';
+            $this->resetErrorBag('due_date_jalali');
+            return;
+        }
+
+        $gregorian = jalaliToGregorian($val);
+
+        if ($gregorian !== null) {
+            $this->due_date = $gregorian;
+            $this->resetErrorBag('due_date_jalali');
+        }
+    }
+
+    /** تبدیل ورودی شمسی به میلادی؛ در صورت نامعتبر بودن خطای فارسی ثبت می‌کند */
+    private function syncDueDate(): bool
+    {
+        $val = trim($this->due_date_jalali);
+
+        if ($val === '') {
+            $this->due_date = '';
+            return true;
+        }
+
+        $gregorian = jalaliToGregorian($val);
+
+        if ($gregorian === null) {
+            $this->addError('due_date_jalali', 'تاریخ سررسید معتبر نیست. مثال درست: 1405/06/11');
+            return false;
+        }
+
+        $this->due_date = $gregorian;
+        // نرمال‌سازی قالب نمایش (مثل 1405/6/1 به 1405/06/01)
+        $this->due_date_jalali = gregorianToJalaliInput($gregorian) ?? $this->due_date_jalali;
+
+        return true;
     }
 
     // Save (add or edit)
     public function save(): void
     {
         $this->authorizeAction($this->editingId ? 'debts.edit' : 'debts.create');
+
+        if (! $this->syncDueDate()) {
+            return;
+        }
 
         $this->validate();
 
@@ -183,6 +239,7 @@ class DebtManager extends Component
         $this->supplier_id   = null;
         $this->amount        = '';
         $this->due_date      = '';
+        $this->due_date_jalali = '';
         $this->notes         = '';
         $this->resetErrorBag();
     }

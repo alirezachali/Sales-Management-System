@@ -298,10 +298,11 @@
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">تاریخ سررسید</label>
-                                <input type="date" wire:model="due_date"
-                                    class="form-control @error('due_date') is-invalid @enderror">
-                                @error('due_date')
+                                <label class="form-label">تاریخ سررسید (شمسی)</label>
+                                <input type="text" wire:model="due_date_jalali" data-jdp
+                                    autocomplete="off" inputmode="numeric" placeholder="1405/06/11"
+                                    class="form-control @error('due_date_jalali') is-invalid @enderror">
+                                @error('due_date_jalali')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

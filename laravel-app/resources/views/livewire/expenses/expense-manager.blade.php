@@ -285,10 +285,11 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">تاریخ هزینه</label>
-                                    <input type="date" wire:model="expense_date"
-                                        class="form-control @error('expense_date') is-invalid @enderror">
-                                    @error('expense_date')
+                                    <label class="form-label">تاریخ هزینه (شمسی)</label>
+                                    <input type="text" wire:model="expense_date_jalali" data-jdp
+                                        autocomplete="off" inputmode="numeric" placeholder="1405/06/11"
+                                        class="form-control @error('expense_date_jalali') is-invalid @enderror">
+                                    @error('expense_date_jalali')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

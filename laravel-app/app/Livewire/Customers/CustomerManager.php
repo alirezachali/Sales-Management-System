@@ -36,7 +36,10 @@ class CustomerManager extends Component
     public string $mobile = '';
     public ?string $phone = null;
     public ?string $national_code = null;
+    /** تاریخ میلادی برای پردازش سمت سرور */
     public ?string $birth_date = null;
+    /** تاریخ شمسی برای نمایش و انتخاب توسط کاربر (مثل 1380/05/10) */
+    public ?string $birth_date_jalali = null;
     public ?string $gender = null;
     public ?string $province = null;
     public ?string $city = null;
@@ -87,6 +90,7 @@ class CustomerManager extends Component
             'phone' => ['nullable', 'string', 'max:20'],
             'national_code' => ['nullable', 'string', 'max:20'],
             'birth_date' => ['nullable', 'date'],
+            'birth_date_jalali' => ['nullable', 'string'],
             'gender' => ['nullable', 'in:male,female'],
             'province' => ['nullable', 'string', 'max:100'],
             'city' => ['nullable', 'string', 'max:100'],
@@ -130,6 +134,7 @@ class CustomerManager extends Component
         $this->phone = $customer->phone;
         $this->national_code = $customer->national_code;
         $this->birth_date = $customer->birth_date ? (string) $customer->birth_date : null;
+        $this->birth_date_jalali = $customer->birth_date ? gregorianToJalaliInput($customer->birth_date) : null;
         $this->gender = $customer->gender;
         $this->province = $customer->province;
         $this->city = $customer->city;
@@ -174,6 +179,7 @@ class CustomerManager extends Component
         $this->phone = null;
         $this->national_code = null;
         $this->birth_date = null;
+        $this->birth_date_jalali = null;
         $this->gender = null;
         $this->province = null;
         $this->city = null;
@@ -187,6 +193,53 @@ class CustomerManager extends Component
 
     /*
     |--------------------------------------------------------------------|
+    | همگام‌سازی تاریخ شمسی ورودی کاربر با تاریخ میلادی سمت سرور          |
+    |--------------------------------------------------------------------|
+    */
+    public function updatedBirthDateJalali(): void
+    {
+        $val = trim((string) $this->birth_date_jalali);
+
+        if ($val === '') {
+            $this->birth_date = null;
+            $this->resetErrorBag('birth_date_jalali');
+            return;
+        }
+
+        $gregorian = jalaliToGregorian($val);
+
+        if ($gregorian !== null) {
+            $this->birth_date = $gregorian;
+            $this->resetErrorBag('birth_date_jalali');
+        }
+    }
+
+    /** تبدیل ورودی شمسی به میلادی؛ ورودی خالی یعنی بدون تاریخ. در صورت نامعتبر بودن false برمی‌گرداند. */
+    private function syncBirthDate(): bool
+    {
+        $val = trim((string) $this->birth_date_jalali);
+
+        if ($val === '') {
+            $this->birth_date = null;
+            return true;
+        }
+
+        $gregorian = jalaliToGregorian($val);
+
+        if ($gregorian === null) {
+            $this->addError('birth_date_jalali', 'تاریخ تولد معتبر نیست. مثال درست: 1380/05/10');
+            return false;
+        }
+
+        $this->birth_date = $gregorian;
+        // نرمال‌سازی قالب نمایش (مثل 1380/5/1 به 1380/05/01)
+        $this->birth_date_jalali = gregorianToJalaliInput($gregorian) ?? $this->birth_date_jalali;
+
+        return true;
+    }
+
+    /*
+    |--------------------------------------------------------------------|
     |                          ذخیره (افزودن/ویرایش)                      |
     |--------------------------------------------------------------------|
     */
@@ -194,7 +247,13 @@ class CustomerManager extends Component
     {
         $this->authorizeAction($this->editingId ? 'customers.edit' : 'customers.create');
 
+        if (! $this->syncBirthDate()) {
+            return;
+        }
+
         $data = $this->validate();
+        // ستون birth_date_jalali در دیتابیس وجود ندارد؛ فقط birth_date میلادی ذخیره می‌شود
+        unset($data['birth_date_jalali']);
         $data['customer_role_id'] = $data['customer_role_id'] ?: null;
 
         if ($this->editingId) {

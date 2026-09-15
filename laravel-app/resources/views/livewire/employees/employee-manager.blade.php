@@ -243,8 +243,13 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">تاریخ استخدام</label>
-                                    <input type="date" wire:model="hired_at" class="form-control">
+                                    <label class="form-label">تاریخ استخدام (شمسی)</label>
+                                    <input type="text" wire:model="hired_at_jalali" data-jdp
+                                        autocomplete="off" inputmode="numeric" placeholder="1405/06/11"
+                                        class="form-control @error('hired_at_jalali') is-invalid @enderror">
+                                    @error('hired_at_jalali')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-4">
