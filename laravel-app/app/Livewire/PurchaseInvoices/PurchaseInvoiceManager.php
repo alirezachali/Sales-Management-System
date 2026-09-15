@@ -8,10 +8,11 @@ use App\Models\ExpenseCategory;
 use App\Models\Product;
 use App\Models\PurchaseInvoice;
 use App\Models\PurchaseItem;
-use App\Models\StockMovement;
 use App\Models\Supplier;
 use App\Models\Debt;
+use App\Models\Warehouse;
 use App\Services\BarcodeService;
+use App\Services\WarehouseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -23,6 +24,7 @@ class PurchaseInvoiceManager extends Component
     /** تاریخ شمسی برای نمایش و انتخاب توسط کاربر (مثل 1405/06/11) */
     public string $purchase_date_jalali = '';
     public string $supplier_id = '';
+    public string $warehouse_id = '';
     public string $payment_method = 'cash';
     public ?string $notes = null;
 
@@ -52,8 +54,10 @@ class PurchaseInvoiceManager extends Component
             'purchase_date' => ['required', 'date'],
             'purchase_date_jalali' => ['required', 'string'],
             'supplier_id' => ['required', 'exists:suppliers,id'],
+            'warehouse_id' => ['required', 'exists:warehouses,id'],
             'payment_method' => ['required', Rule::in(['cash', 'card', 'transfer', 'credit', 'other'])],
             'notes' => ['nullable', 'string'],
+
         ];
     }
 
@@ -64,6 +68,7 @@ class PurchaseInvoiceManager extends Component
             'purchase_date.required' => 'وارد کردن تاریخ خرید الزامی است.',
             'purchase_date.date' => 'تاریخ خرید معتبر نیست.',
             'supplier_id.required' => 'انتخاب تامین‌کننده الزامی است.',
+            'warehouse_id.required' => 'انتخاب انبار الزامی است.',
         ];
     }
 
@@ -92,6 +97,7 @@ class PurchaseInvoiceManager extends Component
     {
         $this->purchase_date = now()->toDateString();
         $this->purchase_date_jalali = gregorianToJalaliInput($this->purchase_date) ?? '';
+        $this->warehouse_id = (string) (Warehouse::getDefaultId() ?? '');
     }
 
     /*
@@ -130,6 +136,7 @@ class PurchaseInvoiceManager extends Component
     {
         return view('livewire.purchase-invoices.purchase-invoice-manager', [
             'suppliers' => Supplier::active()->orderBy('name')->get(['id', 'name', 'company_name']),
+            'warehouses' => Warehouse::where('is_active', true)->orderByDesc('is_default')->orderBy('name')->get(['id', 'name', 'code', 'is_default']),
             'categories' => Category::orderBy('name')->get(['id', 'name']),
         ]);
     }
@@ -252,7 +259,7 @@ class PurchaseInvoiceManager extends Component
         $this->new_barcode = $barcodeService->generate();
     }
 
-    public function saveNewProduct(): void
+    public function saveNewProduct(WarehouseService $warehouseService): void
     {
         $this->validate($this->productRules());
 
@@ -262,19 +269,23 @@ class PurchaseInvoiceManager extends Component
             'category_id' => $this->new_category_id ?: null,
             'buy_price' => $this->new_buy_price,
             'sell_price' => $this->new_sell_price,
-            'stock' => $this->new_stock,
+            'stock' => 0,
             'unit' => $this->new_unit,
             'is_active' => $this->new_is_active == '1',
         ]);
 
-        if ($product->stock > 0) {
-            StockMovement::create([
-                'product_id' => $product->id,
-                'type' => 'initial',
-                'quantity' => $product->stock,
-                'description' => 'موجودی اولیه کالا از فاکتور خرید',
-                'user_id'        => auth()->id(),
-            ]);
+        $initialStock = (float) ($this->new_stock ?: 0);
+
+        if ($initialStock > 0 && ($warehouseId = (int) $this->warehouse_id)) {
+            $warehouseService->addToWarehouse(
+                $product,
+                $warehouseId,
+                $initialStock,
+                'initial',
+                'موجودی اولیه کالا از فاکتور خرید',
+            );
+        } elseif ($initialStock > 0) {
+            $product->increment('stock', $initialStock);
         }
 
         $this->addProductToInvoice($product);
@@ -357,9 +368,13 @@ class PurchaseInvoiceManager extends Component
             DB::transaction(function () {
                 $totalAmount = 0;
                 $invoiceNumber = $this->generateInvoiceNumber();
+                $warehouseId = (int) $this->warehouse_id;
+                $warehouseService = app(WarehouseService::class);
+
                 // ثبت در جدول فاکتورهای خرید
                 $purchaseInvoice = PurchaseInvoice::create([
                     'supplier_id'    => $this->supplier_id,
+                    'warehouse_id'   => $warehouseId,
                     'purchase_date'  => $this->purchase_date,
                     'invoice_number' => $invoiceNumber,
                     'total_amount'   => 0,
@@ -396,16 +411,15 @@ class PurchaseInvoiceManager extends Component
                         'sell_price' => $sellPrice,
                     ]);
 
-                    $product->increment('stock', $quantity);
-
-                    // ثبت در جدول ورودی و خروجی کالا
-                    StockMovement::create([
-                        'product_id'  => $product->id,
-                        'type'        => 'purchase',
-                        'quantity'    => $quantity,
-                        'description' => 'خرید از ' . $purchaseInvoice->supplier->name . ' - فاکتور: ' . $invoiceNumber,
-                        'user_id'        => auth()->id(),
-                    ]);
+                    // افزودن کالا به انبار انتخاب‌شده (موجودی انبار + موجودی کل + ثبت گردش)
+                    $warehouseService->addToWarehouse(
+                        $product,
+                        $warehouseId,
+                        $quantity,
+                        'purchase',
+                        'خرید از ' . $purchaseInvoice->supplier->name . ' - فاکتور: ' . $invoiceNumber,
+                        auth()->id(),
+                    );
                 }
 
                 $purchaseInvoice->update(['total_amount' => $totalAmount]);
@@ -460,6 +474,7 @@ class PurchaseInvoiceManager extends Component
         $this->purchase_date = now()->toDateString();
         $this->purchase_date_jalali = gregorianToJalaliInput($this->purchase_date) ?? '';
         $this->supplier_id = '';
+        $this->warehouse_id = (string) (Warehouse::getDefaultId() ?? '');
         $this->payment_method = 'cash';
         $this->notes = null;
         $this->product_barcode = '';

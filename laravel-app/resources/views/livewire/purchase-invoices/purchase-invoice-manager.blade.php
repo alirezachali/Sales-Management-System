@@ -38,7 +38,7 @@
                     @enderror
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label">تامین کننده</label>
                     <select wire:model="supplier_id"
                         class="form-select @error('supplier_id') is-invalid @enderror">
@@ -58,11 +58,30 @@
                 </div>
 
                 <div class="col-md-2">
+                    <label class="form-label">انتخاب انبار</label>
+                    <select wire:model="warehouse_id"
+                        class="form-select @error('warehouse_id') is-invalid @enderror">
+                        <option value="">انتخاب کنید...</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}">
+                                {{ $warehouse->name }}
+                                @if ($warehouse->is_default)
+                                    (پیش‌فرض)
+                                @endif
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('warehouse_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-2">
                     <label class="form-label">شماره فاکتور</label>
                     <input type="text" class="form-control" value="{{ $this->nextInvoiceNumber }}" readonly>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="form-label">روش پرداخت</label>
                     <select wire:model="payment_method" class="form-select">
                         <option value="cash">نقدی</option>
@@ -91,12 +110,12 @@
                     <input type="text" wire:model="product_barcode" wire:keydown.enter="processBarcode"
                         class="form-control" placeholder="بارکد را اسکن یا وارد کنید">
                 </div>
-                <div class="col-md-6 position-relative">
+                <div class="col-md-6">
                     <label class="form-label">یا جستجوی نام کالا</label>
                     <input type="text" wire:model.live.debounce.300ms="product_search"
                         class="form-control" placeholder="نام کالا را جستجو کنید" autocomplete="off">
                     @if (!empty($searchResults))
-                        <ul class="list-group position-absolute" id="purchase-inv-search-product">
+                        <ul class="list-group" id="purchase-inv-search-product">
                             @foreach ($searchResults as $result)
                                 <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                                     wire:click="selectSearchResult({{ $result['id'] }})">
