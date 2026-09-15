@@ -96,7 +96,7 @@ class UserManager extends Component
                 Rule::unique('users', 'username')->ignore($this->editingId),
             ],
             'email'     => [
-                'nullable', 'email',
+                'required', 'email',
                 Rule::unique('users', 'email')->ignore($this->editingId),
             ],
             'phone'     => ['nullable', 'string', 'max:20'],
@@ -118,6 +118,7 @@ class UserManager extends Component
             'username.unique'    => 'این نام کاربری قبلاً ثبت شده است.',
             'username.regex'     => 'نام کاربری فقط می‌تواند شامل حروف انگلیسی، عدد، نقطه، خط تیره و زیرخط باشد.',
             'email.email'        => 'ایمیل وارد شده معتبر نیست.',
+            'email.required'     => 'وارد کردن ایمیل الزامی است.',
             'email.unique'       => 'این ایمیل قبلاً ثبت شده است.',
             'role_id.required'   => 'انتخاب نقش الزامی است.',
             'role_id.exists'     => 'نقش انتخاب‌شده معتبر نیست.',

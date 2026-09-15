@@ -282,7 +282,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="form-label">ایمیل</label>
+                                    <label class="form-label">ایمیل <span class="text-danger">*</span></label>
                                     <input type="email" wire:model="email"
                                         class="form-control @error('email') is-invalid @enderror">
                                     @error('email')
