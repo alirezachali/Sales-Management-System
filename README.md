@@ -8,15 +8,6 @@
 * Saving customer details and assigning subscription codes to them for offline orders.
 
 ---
-### ScreenShot
-
-> Dashboard
-![picture alt](/ScreenShot/Dashboard.png "Dashboard Page")
-
-> Database
-![picture alt](/ScreenShot/database.png "Database")
-
----
 
 ### How to install on the local system
 
