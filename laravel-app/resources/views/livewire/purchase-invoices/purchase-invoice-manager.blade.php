@@ -96,12 +96,13 @@
         </div>
     </div>
 
-    <div class="card shadow-sm border-3 mb-4">
+    <div class="card shadow-sm border-3 mb-4" style="z-index: 2;">
         <div class="card-header">
             <h5 class="mb-0">
                 <i class="bi bi-search"></i>
                 جستجو و افزودن کالا
             </h5>
+
         </div>
         <div class="card-body">
             <div class="row g-3 align-items-end">
@@ -110,12 +111,12 @@
                     <input type="text" wire:model="product_barcode" wire:keydown.enter="processBarcode"
                         class="form-control" placeholder="بارکد را اسکن یا وارد کنید">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 position-relative">
                     <label class="form-label">یا جستجوی نام کالا</label>
                     <input type="text" wire:model.live.debounce.300ms="product_search"
                         class="form-control" placeholder="نام کالا را جستجو کنید" autocomplete="off">
                     @if (!empty($searchResults))
-                        <ul class="list-group" id="purchase-inv-search-product">
+                        <ul class="list-group position-absolute" id="purchase-inv-search-product">
                             @foreach ($searchResults as $result)
                                 <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                                     wire:click="selectSearchResult({{ $result['id'] }})">
@@ -136,7 +137,7 @@
         </div>
     </div>
 
-    <div class="card shadow-sm border-3">
+    <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">
                 <i class="bi bi-cart3"></i>
