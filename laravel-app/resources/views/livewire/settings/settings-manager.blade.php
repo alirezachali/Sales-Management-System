@@ -37,7 +37,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <h3 class="fw-bold mb-1">
-                    <i class="bi bi-gear-fill text-primary"></i>
+                    <i class="bi bi-gear-fill text-fuchsia"></i>
                     تنظیمات سیستم
                 </h3>
                 <small class="text-muted">
@@ -59,65 +59,65 @@
                 <ul class="nav nav-tabs mb-4">
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'store') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'store') active @endif"
                             wire:click="selectTab('store')">
-                            <i class="bi bi-shop text-warning m-2"></i>
+                            <i class="bi bi-shop"></i>
                             اطلاعات فروشگاه
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'sales') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'sales') active @endif"
                             wire:click="selectTab('sales')">
-                            <i class="bi bi-receipt text-warning m-2"></i>
+                            <i class="bi bi-receipt"></i>
                             فروش
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'loyalty') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'loyalty') active @endif"
                             wire:click="selectTab('loyalty')">
-                            <i class="bi bi-gem text-warning m-2"></i>
+                            <i class="bi bi-gem"></i>
                             باشگاه امتیازات
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'print') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'print') active @endif"
                             wire:click="selectTab('print')">
-                            <i class="bi bi-printer text-warning m-2"></i>
+                            <i class="bi bi-printer"></i>
                             چاپ
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'barcode') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'barcode') active @endif"
                             wire:click="selectTab('barcode')">
-                            <i class="bi bi-upc-scan text-warning m-2"></i>
+                            <i class="bi bi-upc-scan"></i>
                             بارکد و لیبل
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'system') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'system') active @endif"
                             wire:click="selectTab('system')">
-                            <i class="bi bi-cpu text-warning m-2"></i>
+                            <i class="bi bi-cpu"></i>
                             سیستم
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'hotkeys') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'hotkeys') active @endif"
                             wire:click="selectTab('hotkeys')">
-                            <i class="bi bi-keyboard text-warning m-2"></i>
+                            <i class="bi bi-keyboard"></i>
                             کلیدهای میانبر
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'backup') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'backup') active @endif"
                             wire:click="selectTab('backup')">
-                            <i class="bi bi-database text-warning m-2"></i>
+                            <i class="bi bi-database"></i>
                             پشتیبان گیری
                         </button>
                     </li>

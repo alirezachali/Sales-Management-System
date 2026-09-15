@@ -462,3 +462,24 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 
 .alerts-empty i { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; }
 
+
+.nav-tabs .nav-link {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 20px;
+    border: 1px solid rgb(90, 89, 89);
+    border-bottom: 0;
+    margin-left: 10px;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #e4e1e4;
+    background-color: #1c1d1d7e;
+}
+
+.nav-tabs .nav-link.active {
+    background: var(--lux-gradient) !important;
+    box-shadow: 0 6px 20px rgba(124, 92, 255, 0.35);
+    font-weight: 800;
+    color: #202124;
+}
+
