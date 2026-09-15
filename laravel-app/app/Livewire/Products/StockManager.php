@@ -194,7 +194,7 @@ class StockManager extends Component
             $this->product->stockMovements()->latest()->chunk(500, function ($movements) use ($handle) {
                 foreach ($movements as $movement) {
                     fputcsv($handle, [
-                        $movement->created_at->format('Y-m-d H:i'),
+                        jalaliDateTime($movement->created_at),
                         $this->movementTypeLabel($movement->type),
                         $movement->quantity,
                         $this->product->unit,
@@ -229,7 +229,7 @@ class StockManager extends Component
             $product->stockMovements()->latest()->chunk(500, function ($movements) use ($product) {
                 foreach ($movements as $movement) {
                     echo '<tr>'
-                        . '<td>' . e($movement->created_at->format('Y-m-d H:i')) . '</td>'
+                        . '<td>' . e(jalaliDateTime($movement->created_at)) . '</td>'
                         . '<td>' . e($this->movementTypeLabel($movement->type)) . '</td>'
                         . '<td>' . e($movement->quantity) . '</td>'
                         . '<td>' . e($product->unit) . '</td>'

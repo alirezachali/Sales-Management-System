@@ -239,8 +239,13 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">تاریخ تولد</label>
-                                    <input type="date" wire:model="birth_date" class="form-control">
+                                    <label class="form-label">تاریخ تولد (شمسی)</label>
+                                    <input type="text" wire:model="birth_date_jalali" data-jdp
+                                        autocomplete="off" inputmode="numeric" placeholder="1380/05/10"
+                                        class="form-control @error('birth_date_jalali') is-invalid @enderror">
+                                    @error('birth_date_jalali')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-4">
@@ -378,7 +383,7 @@
                                     <tbody>
                                         @forelse ($ledgerTransactions as $transaction)
                                             <tr wire:key="ledger-{{ $transaction->id }}">
-                                                <td>{{ $transaction->created_at }}</td>
+                                                <td>{{ jalaliDateTime($transaction->created_at) }}</td>
                                                 <td>
                                                     @switch($transaction->type)
                                                         @case('sale')

@@ -96,7 +96,8 @@
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label class="form-label">تاریخ (شمسی)</label>
-                                    <input type="text" class="form-control @error('formDateJalali') is-invalid @enderror" wire:model="formDateJalali" placeholder="1405-06-01">
+                                    <input type="text" class="form-control @error('formDateJalali') is-invalid @enderror" wire:model="formDateJalali" data-jdp
+                                        autocomplete="off" inputmode="numeric" placeholder="1405-06-01">
                                     @error('formDateJalali')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                 </div>
                                 <div class="col-12">

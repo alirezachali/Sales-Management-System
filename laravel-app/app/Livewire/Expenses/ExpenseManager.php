@@ -38,7 +38,10 @@ class ExpenseManager extends Component
     public string $expense_category_id = '';
     public ?string $employee_id = null;
     public ?string $amount = null;
+    /** تاریخ میلادی برای پردازش سمت سرور */
     public ?string $expense_date = null;
+    /** تاریخ شمسی برای نمایش و انتخاب توسط کاربر (مثل 1405/06/11) */
+    public ?string $expense_date_jalali = null;
     public string $payment_method = 'cash';
     public ?string $description = null;
     public ?string $reference_number = null;
@@ -95,6 +98,7 @@ class ExpenseManager extends Component
             'employee_id' => ['nullable', 'exists:employees,id'],
             'amount' => ['required', 'numeric', 'min:0'],
             'expense_date' => ['required', 'date'],
+            'expense_date_jalali' => ['required', 'string'],
             'payment_method' => ['required', Rule::in(array_keys(Expense::PAYMENT_METHODS))],
             'description' => ['nullable', 'string'],
             'reference_number' => ['nullable', 'string', 'max:50'],
@@ -109,6 +113,7 @@ class ExpenseManager extends Component
             'amount.required' => 'وارد کردن مبلغ الزامی است.',
             'amount.min' => 'مبلغ نمی‌تواند منفی باشد.',
             'expense_date.required' => 'وارد کردن تاریخ هزینه الزامی است.',
+            'expense_date_jalali.required' => 'وارد کردن تاریخ هزینه الزامی است.',
         ];
     }
 
@@ -133,6 +138,7 @@ class ExpenseManager extends Component
         $this->employee_id = $expense->employee_id ? (string) $expense->employee_id : null;
         $this->amount = $expense->amount;
         $this->expense_date = $expense->expense_date->toDateString();
+        $this->expense_date_jalali = gregorianToJalaliInput($this->expense_date) ?? '';
         $this->payment_method = $expense->payment_method;
         $this->description = $expense->description;
         $this->reference_number = $expense->reference_number;
@@ -176,10 +182,43 @@ class ExpenseManager extends Component
         $this->employee_id = null;
         $this->amount = null;
         $this->expense_date = now()->toDateString();
+        $this->expense_date_jalali = gregorianToJalaliInput($this->expense_date) ?? '';
         $this->payment_method = 'cash';
         $this->description = null;
         $this->reference_number = null;
         $this->resetErrorBag();
+    }
+
+    /*
+    |--------------------------------------------------------------------|
+    | همگام‌سازی تاریخ شمسی ورودی کاربر با تاریخ میلادی سمت سرور          |
+    |--------------------------------------------------------------------|
+    */
+    public function updatedExpenseDateJalali(): void
+    {
+        $gregorian = jalaliToGregorian($this->expense_date_jalali);
+
+        if ($gregorian !== null) {
+            $this->expense_date = $gregorian;
+            $this->resetErrorBag('expense_date_jalali');
+        }
+    }
+
+    /** تبدیل ورودی شمسی به میلادی؛ در صورت نامعتبر بودن خطای فارسی ثبت می‌کند */
+    private function syncExpenseDate(): bool
+    {
+        $gregorian = jalaliToGregorian($this->expense_date_jalali);
+
+        if ($gregorian === null) {
+            $this->addError('expense_date_jalali', 'تاریخ هزینه معتبر نیست. مثال درست: 1405/06/11');
+            return false;
+        }
+
+        $this->expense_date = $gregorian;
+        // نرمال‌سازی قالب نمایش (مثل 1405/6/1 به 1405/06/01)
+        $this->expense_date_jalali = gregorianToJalaliInput($gregorian) ?? $this->expense_date_jalali;
+
+        return true;
     }
 
     /*
@@ -191,7 +230,13 @@ class ExpenseManager extends Component
     {
         $this->authorizeAction($this->editingId ? 'expenses.edit' : 'expenses.create');
 
+        if (! $this->syncExpenseDate()) {
+            return;
+        }
+
         $data = $this->validate();
+        // ستون expense_date_jalali در دیتابیس وجود ندارد؛ فقط expense_date میلادی ذخیره می‌شود
+        unset($data['expense_date_jalali']);
         $data['employee_id'] = $data['employee_id'] ?: null;
         $data['amount'] = (float) $data['amount'];
 
