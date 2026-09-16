@@ -7,9 +7,9 @@
         </div>
     @endif
 
-    <div class="card shadow-sm border-3 mb-4" wire:loading.class="opacity-50">
+    <div class="card shadow-sm mb-4">
 
-        <div class="card-header d-flex justify-content-between align-items-center mb-2">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="fw-bold mb-1">
                 <i class="bi bi-cash-stack text-success"></i>
                 داشبورد صندوقدار
@@ -39,7 +39,7 @@
     <div class="row g-3 mb-4">
 
         <div class="col-lg-4 col-md-6">
-            <div class="card dashboard-card border-3">
+            <div class="card dashboard-card">
                 <div class="card-body">
                     <!-- کارت آمار فروش امروز همین صندوقدار -->
                     <div class="dashboard-title">
@@ -55,7 +55,7 @@
         </div>
 
         <div class="col-lg-4 col-md-6">
-            <div class="card dashboard-card border-3">
+            <div class="card dashboard-card">
                 <div class="card-body">
                     <!-- کارت آمار فاکتورهای امروز همین صندوقدار -->
                     <div class="dashboard-title">
@@ -69,7 +69,7 @@
         </div>
 
         <div class="col-lg-4 col-md-6">
-            <div class="card dashboard-card border-3">
+            <div class="card dashboard-card">
                 <div class="card-body">
                     <!-- کارت آمار کالاهای فروش‌رفته امروز توسط همین صندوقدار -->
                     <div class="dashboard-title">
@@ -88,8 +88,8 @@
 
         <!-- کارت آخرین فروش‌ها -->
         <div class="col-md-6">
-            <div class="card dashboard-card border-3">
-                <div class="card-header bg-warning text-dark opacity-70">
+            <div class="card dashboard-card">
+                <div class="card-header">
                     <strong>آخرین فروش‌ها</strong>
                 </div>
                 <div class="table-responsive">
@@ -133,8 +133,8 @@
 
         <!-- کارت مشتریان بدهکار -->
         <div class="col-12">
-            <div class="card dashboard-card border-3">
-                <div class="card-header bg-danger text-dark opacity-70">
+            <div class="card dashboard-card">
+                <div class="card-header">
                     <strong>
                         <i class="bi bi-person-exclamation"></i>
                         مشتریان بدهکار

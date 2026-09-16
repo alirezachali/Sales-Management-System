@@ -3,7 +3,7 @@
     <div class="col-12">
         <div class="card dashboard-card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <strong>🧒 کاربران</strong>
+                <strong>🧒 وضعیت کاربران</strong>
                 <small>
                     <span class="badge bg-success-subtle text-success-emphasis">آنلاین: {{ $users->filter->isOnline()->count() }}</span>
                 </small>
@@ -40,7 +40,7 @@
                                     @if ($user->isOnline())
                                         <span class="badge bg-success-subtle text-success-emphasis">🟢 آنلاین</span>
                                     @elseif ($seen = $user->lastSeen())
-                                        <span class="badge bg-secondary">{{ relativeTimeFa($seen) }}</span>
+                                        <span class="badge bg-secondary-subtle">{{ relativeTimeFa($seen) }}</span>
                                     @else
                                         <span class="text-muted">هنوز وارد نشده</span>
                                     @endif

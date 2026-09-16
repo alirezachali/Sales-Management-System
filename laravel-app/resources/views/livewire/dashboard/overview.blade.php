@@ -92,7 +92,7 @@
         <div class="col-md-6">
             <div class="card dashboard-card">
                 <div class="card-header">
-                    <strong>🛍️ آخرین فروش‌ها</strong>
+                    <strong>🛍️ آخرین فاکتورهای فروش</strong>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
@@ -137,7 +137,7 @@
                 <div class="col-12">
                     <div class="card dashboard-card">
                         <div class="card-header">
-                            ⚠️ لیست کالاهای کم‌موجود
+                            ⚠️ لیست کالاهای درحال اتمام موجودی
                         </div>
                         <div class="list-group list-group-flush">
                             @forelse($lowStockList as $product)
@@ -145,7 +145,7 @@
                                     wire:key="low-stock-{{ $product->id }}">
                                     <span>{{ $product->name }}</span>
                                     <span class="badge bg-danger-subtle text-danger-emphasis">
-                                        {{ $product->formatted_stock }}
+                                        موجودی فعلی >> {{ $product->formatted_stock }}
                                         <span>{{ $product->unit }}</span>
                                     </span>
                                 </div>
@@ -231,7 +231,7 @@
             <div class="card dashboard-card">
                 <div class="card-header">
                     <strong>
-                       📈 نمودار فروش ۳۰ روز اخیر
+                       📈 نمودار مبلغ فروش ۳۰ روز گذشته
                     </strong>
                 </div>
                 {{-- wire:ignore باعث می‌شود کنواس با هر poll دوباره ساخته نشود؛

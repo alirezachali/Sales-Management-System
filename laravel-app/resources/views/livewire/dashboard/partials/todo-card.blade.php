@@ -1,7 +1,7 @@
 {{-- کارت «لیست کارهای من» + مودال افزودن کار جدید؛ بین داشبوردهای نقش‌ها مشترک است --}}
 <div class="col-md-6">
-    <div class="card dashboard-card border-3">
-        <div class="card-header bg-info text-dark d-flex justify-content-between align-items-center opacity-70">
+    <div class="card dashboard-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <strong>
                 <i class="bi bi-card-checklist text-primary"></i>
                 لیست کارهای من
