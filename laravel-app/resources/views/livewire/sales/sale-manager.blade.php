@@ -1,279 +1,5 @@
 <div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
-    {{-- ======================================================
-         استایل‌های اختصاصی صندوق فروش
-    ======================================================= --}}
-    <style>
-        :root {
-            --pos-radius: 12px;
-        }
-
-        .pos-card {
-            border: 3px solid var(--tblr-border-color, rgba(120, 130, 155, .18));
-            border-radius: var(--pos-radius);
-            box-shadow: 0 6px 24px rgba(20, 30, 60, .06);
-            overflow: hidden;
-        }
-
-        .pos-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: .75rem;
-            padding: .9rem 1.15rem;
-            /* border-bottom: 1px solid var(--tblr-border-color, rgba(120, 130, 155, .14)); */
-            background: linear-gradient(135deg, rgba(32, 107, 196, .07), rgba(32, 107, 196, .01));
-        }
-
-        .pos-card-header .pos-title {
-            font-weight: 800;
-            font-size: 1rem;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-        }
-
-        /* فیلدهای بارکد و جستجو */
-        .pos-scan-input {
-            border-radius: 10px !important;
-            font-size: 1rem;
-        }
-
-        .pos-input-group .input-group-text {
-            border-radius: 0 12px 12px 0;
-            background: rgba(8, 8, 8, 0.212);
-            border-color: var(--tblr-border-color, rgba(120, 130, 155, .2));
-        }
-
-        /* نتایج جستجوی کالا */
-        .pos-search-results {
-            max-height: 260px;
-            overflow-y: auto;
-            border: 1px solid var(--tblr-border-color, rgba(120, 130, 155, .2));
-            border-radius: 14px;
-            margin-top: .6rem;
-            background: var(--tblr-bg-surface, #fff);
-        }
-
-        .pos-product-item {
-            border: 0;
-            border-bottom: 2px dashed var(--tblr-border-color, rgba(120, 130, 155, .15));
-            padding: .55rem .85rem;
-            transition: background .15s ease;
-        }
-
-        .pos-product-item:last-child {
-            border-bottom: 0;
-        }
-
-        .pos-product-item:hover {
-            background: rgba(32, 107, 196, .07);
-        }
-
-        /* جدول سبد */
-        .pos-cart-table thead th {
-            background: rgba(32, 107, 196, .06);
-            font-size: .8rem;
-            font-weight: 700;
-            color: var(--tblr-muted, #6c7a91);
-            border-bottom: 0;
-            white-space: nowrap;
-        }
-
-        .pos-cart-table td {
-            vertical-align: middle;
-        }
-
-        .pos-qty-btn {
-            width: 30px;
-            height: 30px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-        }
-
-        .pos-qty-value {
-            min-width: 42px;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .pos-price-input {
-            width: 120px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        /* جمع‌بندی */
-        .pos-summary-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            font-size: .95rem;
-        }
-
-        .pos-grand-total {
-            background: linear-gradient(135deg, rgba(32, 107, 196, .12), rgba(24, 145, 48, .1));
-            border-radius: 20px;
-            padding: .85rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .pos-pay-btn {
-            border-radius: 20px;
-            font-weight: 900;
-            padding: .8rem;
-            font-size: 20px;
-            box-shadow: 0 8px 20px rgba(24, 145, 48, .25);
-        }
-
-        .pos-cart-empty {
-            padding: 2.5rem 1rem;
-            color: var(--tblr-muted, #8a94a6);
-        }
-
-        .pos-cart-empty i {
-            font-size: 20px;
-            opacity: .35;
-            display: block;
-            margin-bottom: .5rem;
-        }
-
-        /* ============ مودال پرداخت ============ */
-        .pos-modal .modal-content {
-            border-radius: 20px;
-            border: 0;
-        }
-
-        .pay-card {
-            border: 2px solid var(--tblr-border-color, rgba(120, 130, 155, .22));
-            border-radius: 16px;
-            padding: .8rem .4rem;
-            text-align: center;
-            cursor: pointer;
-            background: var(--tblr-bg-surface, #fff);
-            transition: all .18s ease;
-            user-select: none;
-            width: 100%;
-        }
-
-        .pay-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(32, 107, 196, .45);
-        }
-
-        .pay-card .pay-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 13px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.35rem;
-            margin-bottom: .4rem;
-        }
-
-        .pay-card .pay-label {
-            font-weight: 700;
-            font-size: .85rem;
-        }
-
-        .pay-card.active {
-            border-color: var(--pos-pay-color, #206bc4);
-            background: color-mix(in srgb, var(--pos-pay-color, #206bc4) 10%, transparent);
-            box-shadow: 0 6px 16px color-mix(in srgb, var(--pos-pay-color, #206bc4) 25%, transparent);
-        }
-
-        .pay-card.active .pay-label {
-            color: var(--pos-pay-color, #206bc4);
-        }
-
-        .pay-card.disabled {
-            opacity: .45;
-            cursor: not-allowed;
-        }
-
-        .pay-cash   { --pos-pay-color: #189130; }
-        .pay-card-2 { --pos-pay-color: #206bc4; }
-        .pay-credit { --pos-pay-color: #d63d62; }
-        .pay-mixed  { --pos-pay-color: #8b5cf6; }
-
-        /* جستجوی مشتری */
-        .cust-results {
-            max-height: 190px;
-            overflow-y: auto;
-            /* border: 1px solid rgba(122, 248, 5, 0.966); */
-            border-radius: 8px;
-            margin-top: .35rem;
-            /* background: #f8f6f6; */
-        }
-
-        .cust-item {
-            padding: .5rem .8rem;
-            cursor: pointer;
-            /* border-bottom: 1px dashed rgba(8, 8, 8, 0.966); */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            /* border-radius: 8px; */
-        }
-
-        .cust-item:last-child { 
-            border-bottom: 0;
-        }
-
-        .cust-item:hover {
-            /* background: rgb(236, 7, 167); */
-        }
-
-        .cust-chip {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: .5rem;
-            /* border: 1px solid rgb(3, 116, 255); */
-            /* background: rgb(32, 106, 196); */
-            border-radius: 8px;
-            padding: .5rem .8rem;
-        }
-
-        /* سوییچ روش پرداخت پیش‌پرداخت نسیه */
-        .mini-pay-toggle {
-            display: inline-flex;
-            border: 1px solid rgba(120, 130, 155, .3);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .mini-pay-toggle button {
-            border: 0;
-            background: transparent;
-            padding: .35rem .7rem;
-            font-size: .8rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: .3rem;
-            color: #6c7a91;
-        }
-
-        .mini-pay-toggle button.active-cash {
-            background: rgba(24, 145, 48, .15);
-            color: #189130;
-        }
-
-        .mini-pay-toggle button.active-card {
-            background: rgba(32, 107, 196, .15);
-            color: #206bc4;
-        }
-    </style>
-
 
     {{-- پیام موفقیت --}}
     @if (session('success'))
@@ -294,13 +20,15 @@
     @endif
 
     {{-- Page Header --}}
-    <div class="pos-card mb-3">
-        <div class="pos-card-header">
-            <h3 class="pos-title">
-                <i class="bi bi-cart-check-fill text-primary"></i>
-                فروش (صندوق)
-            </h3>
+    <div class="card mb-3">
+        <div class="card-header">
+            <div>
+                <h3>
+                    <i class="bi bi-cart-check-fill text-primary"></i>
+                    صندوق فــــــــروش
+                </h3>
             <small class="text-muted d-none d-sm-inline">سبد خرید مشتری و صدور فاکتور خرید</small>
+            </div>
         </div>
     </div>
 
@@ -313,11 +41,11 @@
         <div class="col-lg-7">
 
             {{-- جستجو و افزودن کالا --}}
-            <div class="pos-card mb-3">
-                <div class="pos-card-header">
-                    <h5 class="pos-title text-primary">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5>
                         <i class="bi bi-plus-circle-fill"></i>
-                        افزودن کالا
+                        افزودن کـــــالا
                     </h5>
                     @if (count($cart))
                         <span class="badge bg-primary-lt rounded-pill">
@@ -328,16 +56,16 @@
                 <div class="card-body">
                     <div class="row g-2">
                         <div class="col-md-6">
-                            <div class="input-group pos-input-group">
-                                <input type="text" class="form-control pos-scan-input"
+                            <div class="input-group">
+                                <input type="text" class="form-control"
                                     placeholder="اسکن یا وارد کردن بارکد…" wire:model="barcode"
                                     wire:keydown.enter="addByBarcode" autofocus>
                                 <span class="input-group-text"><i class="bi bi-upc-scan text-primary"></i></span>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="input-group pos-input-group">
-                                <input type="text" class="form-control pos-scan-input"
+                            <div class="input-group">
+                                <input type="text" class="form-control"
                                     wire:model.live.debounce.400ms="search" placeholder="جستجو نام یا بارکد کالا…">
                                 <span class="input-group-text"><i class="bi bi-search text-info"></i></span>
                             </div>
@@ -345,10 +73,10 @@
                     </div>
 
                     @if ($search && $products->count())
-                        <div class="pos-search-results list-group list-group-flush">
+                        <div class="list-group list-group-flush">
                             @foreach ($products as $product)
                                 <button type="button"
-                                    class="list-group-item list-group-item-action pos-product-item d-flex justify-content-between align-items-center"
+                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                                     wire:click="addProduct({{ $product->id }})">
                                     <span>
                                         <i class="bi bi-box-seam text-muted ms-1"></i>
@@ -372,12 +100,12 @@
             </div>
 
             {{-- سبد فروش --}}
-            <div class="pos-card">
-                <div class="pos-card-header">
-                    <h5 class="pos-title text-success mb-0">
+            <div class="card">
+                <div class="card-header">
+                    <h4>
                         <i class="bi bi-bag-fill"></i>
-                        سبد خرید مشتری
-                    </h5>
+                        سبـــــد خرید مشــتری
+                    </h4>
                     @if (count($cart))
                         <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"
                             wire:click="clearCart" wire:confirm="آیا از پاک کردن کل سبد خرید مطمئن هستید؟">
@@ -386,7 +114,7 @@
                     @endif
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle pos-cart-table mb-0">
+                    <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
                                 <th>کالا</th>
@@ -406,18 +134,18 @@
                                         </small>
                                     </td>
                                     <td>
-                                        <input type="number" min="0" step="any" class="form-control form-control-sm pos-price-input"
+                                        <input type="number" min="0" step="any" class="form-control form-control-sm"
                                             value="{{ $item['price'] }}"
                                             wire:change="updatePrice({{ $item['id'] }}, $event.target.value)">
                                     </td>
                                     <td class="text-center">
                                         <div class="d-inline-flex align-items-center gap-1">
-                                            <button class="btn btn-sm btn-danger text-dark border pos-qty-btn" type="button"
+                                            <button class="btn btn-sm btn-outline-danger" type="button"
                                                 wire:click="decrementQty({{ $item['id'] }})">
                                                 <i class="bi bi-dash-lg"></i>
                                             </button>
                                             <span class="pos-qty-value">{{ $item['quantity'] }}</span>
-                                            <button class="btn btn-sm btn-success text-dark border pos-qty-btn" type="button"
+                                            <button class="btn btn-sm btn-outline-success" type="button"
                                                 wire:click="incrementQty({{ $item['id'] }})">
                                                 <i class="bi bi-plus-lg"></i>
                                             </button>
@@ -433,7 +161,7 @@
                                         {{ number_format($item['price'] * $item['quantity']) }}
                                     </td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-danger text-dark border"
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
                                             wire:click="removeFromCart({{ $item['id'] }})" title="حذف کالا">
                                             <i class="bi bi-trash3"></i>
                                         </button>
@@ -442,7 +170,7 @@
                             @empty
                                 <tr>
                                     <td colspan="5">
-                                        <div class="pos-cart-empty text-center">
+                                        <div class="text-center">
                                             <i class="bi bi-basket2"></i>
                                             سبد فروش خالی است.<br>
                                             <small>با بارکدخوان یا جستجو کالا اضافه کنید.</small>
@@ -458,12 +186,12 @@
 
         {{--=============== ستون جمع‌بندی و پرداخت ===============--}}
         <div class="col-lg-5">
-            <div class="pos-card">
-                <div class="pos-card-header">
-                    <h5 class="pos-title text-primary mb-0">
+            <div class="card">
+                <div class="card-header">
+                    <h4>
                         <i class="bi bi-receipt-cutoff"></i>
-                        جمع‌بندی فاکتور
-                    </h5>
+                        جمع‌بندی فاکـــــــتور
+                    </h4>
                 </div>
                 <div class="card-body">
                     <div class="mb-2">
@@ -472,13 +200,13 @@
                             wire:model.live.debounce.500ms="discount" placeholder="0">
                     </div>
 
-                    <div class="pos-summary-line">
+                    <div class="">
                         <span class="text-muted">جمع کل ({{ number_format(count($cart)) }} قلم)</span>
                         <strong>{{ number_format($this->subtotal) }}</strong>
                     </div>
 
                     @if ($discount > 0)
-                        <div class="pos-summary-line text-success">
+                        <div class="text-success">
                             <span>تخفیف</span>
                             <strong>{{ number_format(min($discount, $this->subtotal)) }}</strong>
                         </div>
@@ -486,14 +214,14 @@
 
                     <hr class="my-2">
 
-                    <div class="pos-grand-total mb-3">
+                    <div class=" mb-3">
                         <span class="fw-bold">مبلغ قابل پرداخت</span>
                         <strong class="fs-4 text-success">{{ number_format($this->finalPrice) }}
                             <small class="fw-normal">تومان</small>
                         </strong>
                     </div>
 
-                    <button type="button" class="btn btn-success text-dark pos-pay-btn w-100"
+                    <button type="button" class="btn btn-success text-dark w-100"
                         wire:click="openCheckoutModal" @if (empty($cart)) disabled @endif>
                         <i class="bi bi-cash-coin me-4"></i>
                         پرداخت و ثبت فاکتور
@@ -619,43 +347,43 @@
                             <div class="row g-2 mb-1">
                                 <div class="col-3">
                                     <button type="button"
-                                        class="pay-card pay-cash {{ $paymentType === 'cash' ? 'active' : '' }}"
+                                        class="pay-card {{ $paymentType === 'cash' ? 'active' : '' }}"
                                         wire:click="setPaymentType('cash')">
-                                        <span class="pay-icon" style="background: rgba(24,145,48,.12); color:#189130;">
+                                        <span class="icon" style="background: rgba(24,145,48,.12); color:#189130;">
                                             <i class="bi bi-cash-stack"></i>
                                         </span>
-                                        <div class="pay-label">نقدی</div>
+                                        <div class="label">نقدی</div>
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="pay-card pay-card-2 {{ $paymentType === 'card' ? 'active' : '' }}"
+                                        class="pay-card {{ $paymentType === 'card' ? 'active' : '' }}"
                                         wire:click="setPaymentType('card')">
-                                        <span class="pay-icon" style="background: rgba(32,107,196,.12); color:#206bc4;">
+                                        <span class="icon" style="background: rgba(32,107,196,.12); color:#206bc4;">
                                             <i class="bi bi-credit-card-fill"></i>
                                         </span>
-                                        <div class="pay-label">کارتخوان</div>
+                                        <div class="label">کارتخوان</div>
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="pay-card pay-credit {{ $paymentType === 'credit' ? 'active' : '' }} {{ !$customerId ? 'disabled' : '' }}"
+                                        class="pay-card {{ $paymentType === 'credit' ? 'active' : '' }} {{ !$customerId ? 'disabled' : '' }}"
                                         @if ($customerId) wire:click="setPaymentType('credit')" @endif
                                         title="{{ $customerId ? '' : 'نسیه فقط برای مشتری ثبت‌شده امکان‌پذیر است' }}">
-                                        <span class="pay-icon" style="background: rgba(214,61,98,.12); color:#d63d62;">
+                                        <span class="icon" style="background: rgba(214,61,98,.12); color:#d63d62;">
                                             <i class="bi bi-clock-history"></i>
                                         </span>
-                                        <div class="pay-label">نسیه</div>
+                                        <div class="label">نسیه</div>
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="pay-card pay-mixed {{ $paymentType === 'mixed' ? 'active' : '' }}"
+                                        class="pay-card {{ $paymentType === 'mixed' ? 'active' : '' }}"
                                         wire:click="setPaymentType('mixed')">
-                                        <span class="pay-icon" style="background: rgba(139,92,246,.12); color:#8b5cf6;">
+                                        <span class="icon" style="background: rgba(139,92,246,.12); color:#8b5cf6;">
                                             <i class="bi bi-shuffle"></i>
                                         </span>
-                                        <div class="pay-label">ترکیبی</div>
+                                        <div class="label">ترکیبی</div>
                                     </button>
                                 </div>
                             </div>
