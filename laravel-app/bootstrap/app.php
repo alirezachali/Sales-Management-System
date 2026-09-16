@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // اعمال زبان برنامه در هر درخواست وب بر اساس تنظیم system_language
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
+            \App\Http\Middleware\TrackUserOnline::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

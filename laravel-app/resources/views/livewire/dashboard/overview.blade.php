@@ -159,56 +159,7 @@
                 </div>
 
                 <!-- کارت کاربران -->
-                <div class="col-12">
-                    <div class="card dashboard-card border-3">
-                        <div class="card-header bg-success text-dark opacity-70">
-                            <strong>👤 کاربران</strong>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>نام کاربری</th>
-                                        <th>نقش</th>
-                                        <th>آخرین ورود</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($users as $user)
-                                        <tr wire:key="user-{{ $user->id }}">
-                                            <td>{{ $user->username }}</td>
-                                            <td>
-                                                @if ($user->role)
-                                                    <span class="badge bg-warning text-dark"
-                                                        style="background-color: {{ $user->role->color ?? '#6c757d' }}">
-                                                        {{ $user->role->display_name ?? $user->role->name }}
-                                                    </span>
-                                                @else
-                                                    <span class="text-muted">-</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($user->isOnline())
-                                                    <span class="badge bg-success">آنلاین</span>
-                                                @elseif($user->last_login_at)
-                                                    {{ jalaliDateTime($user->last_login_at) }}
-                                                @else
-                                                    <span class="text-muted">هنوز وارد نشده</span>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="3" class="text-center">
-                                                کاربری یافت نشد.
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <livewire:dashboard.users-online-card />
 
                 <!-- کارت کارهای در حال انجام -->
         <div class="col-12">

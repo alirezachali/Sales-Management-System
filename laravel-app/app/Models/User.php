@@ -34,6 +34,7 @@ class User extends Authenticatable
         'employee_id',
         'is_active',
         'last_login_at',
+        'last_seen_at',
         'remember_token',
     ];
 
@@ -58,6 +59,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_login_at' => 'datetime',
+            'last_seen_at' => 'datetime',
             'is_active' => 'boolean',
         ];
     }
@@ -158,5 +160,21 @@ class User extends Authenticatable
     public function isOnline(): bool
     {
         return Cache::has('user-online-' . $this->id);
+    }
+
+    /**
+     * تازه‌ترین زمانی که کاربر در سیستم دیده شده؛ برای نمایش «۲ دقیقه پیش».
+     * تا وقتی کلید آنلاین در کش زنده است همان دقیق‌ترین مقدار است،
+     * وگرنه از ستون last_seen_at خوانده می‌شود.
+     */
+    public function lastSeen(): ?\Illuminate\Support\Carbon
+    {
+        $cached = Cache::get('user-online-' . $this->id);
+
+        if ($cached !== null) {
+            return \Illuminate\Support\Carbon::parse($cached);
+        }
+
+        return $this->last_seen_at ?? $this->last_login_at;
     }
 }

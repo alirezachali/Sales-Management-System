@@ -5,7 +5,6 @@ namespace App\Livewire\Dashboard;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Todo;
-use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Livewire\Component;
@@ -54,10 +53,8 @@ class Overview extends Component
             ->take(10)
             ->get();
             
-            // لیست کاربران به‌همراه نقش‌شان برای کارت «کاربران» در داشبورد.
-        $users = User::with('role')
-            ->orderBy('name')
-            ->get();
+        // کارت کاربران به‌صورت کامپوننت مستقل (dashboard.users-online-card) رندر می‌شود.
+
 
         // کارهای در حال انجام برای نمایش در کارت داشبورد
         $inProgressTodos = Todo::where('status', 'in_progress')
@@ -82,7 +79,6 @@ class Overview extends Component
             'lowStockList',
             'labels',
             'chartData',
-            'users',
             'inProgressTodos',
         ));
     }

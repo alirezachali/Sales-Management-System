@@ -134,3 +134,33 @@ if (! function_exists('gregorianToJalaliInput')) {
     }
 
 }
+
+if (! function_exists('relativeTimeFa')) {
+
+    /*
+    |------------------------------------------------------------------|
+    | زمان نسبی فارسی برای نمایش «۲ دقیقه پیش» / «۱ ساعت پیش»          |
+    |------------------------------------------------------------------|
+    */
+    function relativeTimeFa($date): ?string
+    {
+        if (empty($date)) {
+            return null;
+        }
+
+        try {
+            $text = \Illuminate\Support\Carbon::parse($date)
+                ->locale('fa')
+                ->diffForHumans();
+
+            return str_replace(
+                ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],
+                $text,
+            );
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+
+}

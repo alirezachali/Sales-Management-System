@@ -17,14 +17,22 @@ use Symfony\Component\HttpFoundation\Response;
 | User::isOnline() مقدار true برمی‌گرداند. اگر کاربر سیستم را ترک کند
 | (تب را ببندد یا غیرفعال بماند)، پس از انقضای کش به‌صورت خودکار
 | «آفلاین» محسوب می‌شود؛ بدون نیاز به رویداد جداگانه برای خروج.
+|
+| برای اینکه بعد از آفلاین شدن هم بتوان «چند دقیقه پیش» را نمایش داد،
+| ستون last_seen_at در دیتابیس نگه‌داشته می‌شود (حداکثر یک بار در دقیقه
+| برای هر کاربر، تا فشار روی دیتابیس زیاد نشود).
 |--------------------------------------------------------------------------
 */
 class TrackUserOnline
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()) {
-            Cache::put('user-online-' . $request->user()->id, true, now()->addMinutes(2));
+        if ($user = $request->user()) {
+            Cache::put('user-online-' . $user->id, now()->toDateTimeString(), now()->addMinutes(2));
+
+            if (Cache::add('user-seen-db-' . $user->id, true, 60)) {
+                $user->forceFill(['last_seen_at' => now()])->saveQuietly();
+            }
         }
 
         return $next($request);

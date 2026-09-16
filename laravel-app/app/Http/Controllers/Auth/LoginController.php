@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -33,7 +34,10 @@ class LoginController extends Controller
 
             Auth::user()->update([
                 'last_login_at' => now(),
+                'last_seen_at' => now(),
             ]);
+
+            Cache::put('user-online-' . Auth::id(), now()->toDateTimeString(), now()->addMinutes(2));
 
             /* هدایت کاربر بعد از ورود موفق به داشبورد متناسب با نقشش */
             return redirect()->intended(route(Auth::user()->dashboardRouteName()));
