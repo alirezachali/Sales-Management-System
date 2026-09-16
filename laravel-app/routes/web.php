@@ -243,4 +243,15 @@ Route::middleware('auth')->group(function () {
     /* باشگاه امتیازات مشتریان */
     Route::get('loyalty', function () {return view('customers.loyalty');})->name('loyalty.index')
         ->middleware('can:loyalty.view');
+
+    /*  |--------------------------------------------------|
+     |          پیام‌ها: ارسال پیام مدیر به کاربران         |
+     |--------------------------------------------------|*/
+
+    /* صندوق پیام‌های کاربر؛ هر کاربر فقط پیام‌های خودش را می‌بیند */
+    Route::get('inbox', function () {return view('messages.inbox');})->name('messages.inbox');
+
+    /* صفحه مدیریت پیام‌های ارسالی (مخصوص مدیر) */
+    Route::get('messages', function () {return view('messages.index');})->name('messages.index')
+        ->middleware('can:messages.view');
 });

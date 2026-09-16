@@ -43,4 +43,6 @@ return [
     'payrolls' => 'Payroll',
     'profit_report' => 'Profit & Loss',
     'loyalty' => 'Loyalty Points',
+    'messages' => 'Messages',
+    'my_messages' => 'My Messages',
 ];
