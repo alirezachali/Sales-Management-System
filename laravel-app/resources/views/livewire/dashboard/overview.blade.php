@@ -90,9 +90,9 @@
 
         <!-- کارت آخرین فروش‌ها-->
         <div class="col-md-6">
-            <div class="card dashboard-card border-3">
-                <div class="card-header bg-warning text-dark opacity-70">
-                    <strong>آخرین فروش‌ها</strong>
+            <div class="card dashboard-card">
+                <div class="card-header">
+                    <strong>🛍️ آخرین فروش‌ها</strong>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
@@ -113,7 +113,7 @@
                                     <td>
                                         <a href="{{ route('invoice', $sale) }}" target="_blank"
                                             class="btn btn-sm btn-outline-primary">
-                                            👁️
+                                            🧾
                                         </a>
                                     </td>
                                 </tr>
@@ -135,18 +135,18 @@
 
                 <!-- کارت لیست کالاهای کم‌موجود-->
                 <div class="col-12">
-                    <div class="card dashboard-card border-3">
-                        <div class="card-header bg-danger opacity-70">
-                            ⚠️ لیست کالاهای کم‌موجودی
+                    <div class="card dashboard-card">
+                        <div class="card-header">
+                            ⚠️ لیست کالاهای کم‌موجود
                         </div>
                         <div class="list-group list-group-flush">
                             @forelse($lowStockList as $product)
                                 <div class="list-group-item d-flex justify-content-between"
                                     wire:key="low-stock-{{ $product->id }}">
                                     <span>{{ $product->name }}</span>
-                                    <span class="badge bg-danger text-dark">
+                                    <span class="badge bg-danger-subtle text-danger-emphasis">
                                         {{ $product->formatted_stock }}
-                                        <span class="text-dark">{{ $product->unit }}</span>
+                                        <span>{{ $product->unit }}</span>
                                     </span>
                                 </div>
                             @empty
@@ -163,14 +163,13 @@
 
                 <!-- کارت کارهای در حال انجام -->
         <div class="col-12">
-            <div class="card dashboard-card border-3">
-                <div class="card-header bg-info text-dark d-flex justify-content-between align-items-center opacity-70">
+            <div class="card dashboard-card">
+                <div class="card-header d-flex justify-content-between align-items-center opacity-70">
                     <strong>
-                        <i class="bi bi-hourglass-split text-warning"></i>
-                        کارهای در حال انجام
+                       ✅ لیست وظیفه‌های درحال انجام
                     </strong>
                     <a href="{{ route('todos.index') }}" class="btn btn-sm btn-primary">
-                        مشاهده همه
+                        مشاهده‌همه
                     </a>
                 </div>
                 <div class="table-responsive">
@@ -189,19 +188,19 @@
                                     <td class="fw-bold">{{ $todo->title }}</td>
                                     <td>
                                         @if ($todo->assignee)
-                                            <span class="badge bg-secondary text-dark">{{ $todo->assignee->name }}</span>
+                                            <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ $todo->assignee->name }}</span>
                                         @else
                                             <span class="text-muted">—</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <span class="badge bg-{{ $todo->priority_color }} text-dark">
+                                        <span class="badge bg-{{ $todo->priority_color }}-subtle text-{{ $todo->priority_color }}-emphasis">
                                             {{ $todo->priority_label }}
                                         </span>
                                     </td>
                                     <td>
                                         @if ($todo->due_date)
-                                            <span class="{{ $todo->due_date->isPast() ? 'text-danger fw-bold' : '' }}">
+                                            <span class="{{ $todo->due_date->isPast() ? 'text-danger-emphasis fw-bold' : '' }}">
                                                 {{ jalaliDate($todo->due_date) }}
                                             </span>
                                         @else
@@ -229,10 +228,10 @@
 
         <!-- کارت نمودار فروش 30 روز گذشته-->
         <div class="col-md-12">
-            <div class="card dashboard-card border-3">
-                <div class="card-header bg-secondary text-dark opacity-70">
+            <div class="card dashboard-card">
+                <div class="card-header">
                     <strong>
-                        نمودار فروش ۳۰ روز اخیر
+                       📈 نمودار فروش ۳۰ روز اخیر
                     </strong>
                 </div>
                 {{-- wire:ignore باعث می‌شود کنواس با هر poll دوباره ساخته نشود؛
