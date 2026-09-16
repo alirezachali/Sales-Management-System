@@ -814,6 +814,25 @@ class PermissionSeeder extends Seeder
                     ],
                 ],
             ],
+            [
+                'name' => 'پیام‌ها',
+                'icon' => 'bi-envelope-paper',
+                'sort_order' => 32,
+                'permissions' => [
+                    [
+                        'name' => 'messages.view',
+                        'display_name' => 'مشاهده پیام‌های ارسالی',
+                    ],
+                    [
+                        'name' => 'messages.create',
+                        'display_name' => 'ارسال پیام به کاربران',
+                    ],
+                    [
+                        'name' => 'messages.delete',
+                        'display_name' => 'حذف پیام ارسالی',
+                    ],
+                ],
+            ],
         ];
 
         foreach ($modules as $module) {

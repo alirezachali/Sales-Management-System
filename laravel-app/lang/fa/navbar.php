@@ -7,6 +7,7 @@ return [
     'lang_title' => 'تغییر زبان',
     'theme_btn' => 'تم',
     'theme_light_title' => 'حالت روشن',
+    'messages' => 'پیام‌های من',
     'theme_dark_title' => 'حالت تیره',
     'profile' => 'پروفایل',
     'settings' => 'تنظیمات',

@@ -217,6 +217,9 @@
             if (auth()->user()->hasPermission('roles.view')) {
                 $systemItems[] = ['route' => 'roles.index', 'label' => __('sidebar.roles'), 'icon' => 'bi-shield-lock', 'active' => request()->routeIs('roles.*')];
             }
+            if (auth()->user()->hasPermission('messages.view')) {
+                $systemItems[] = ['route' => 'messages.index', 'label' => __('sidebar.messages'), 'icon' => 'bi-envelope-paper', 'active' => request()->routeIs('messages.index')];
+            }
             if (auth()->user()->hasPermission('settings.view')) {
                 $systemItems[] = ['route' => 'settings.index', 'label' => __('sidebar.settings'), 'icon' => 'bi-gear', 'active' => request()->routeIs('settings.*')];
             }

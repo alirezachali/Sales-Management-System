@@ -21,7 +21,7 @@
 {{--================== کارت‌های آماری ==================--}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">تعداد کل مجوزها</div>
                     <div class="h1 mb-0">
@@ -32,7 +32,7 @@
         </div>
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">مجوزهای ست‌شده برای این نقش</div>
                     <div class="h1 mb-0 text-success">
@@ -43,7 +43,7 @@
         </div>
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">مجوزهای باقی‌مانده (ست‌نشده)</div>
                     <div class="h1 mb-0 text-danger">
@@ -54,7 +54,7 @@
         </div>
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">گروه‌های دارای حداقل یک مجوز فعال</div>
                     <div class="h1 mb-0 text-warning">
@@ -81,13 +81,13 @@
                     </h2>
                     <div>
                         <div>
-                            ویرایش و تعیین مجوز برای مشخص کردن سطح دسترسی نقش :       
+                            ویرایش و تعیین مجوز برای مشخص کردن سطح دسترسی نقش :
                             <span class="badge bg-info text-dark">
                                 {{ $role->display_name }}
                             </span>
                         </div>
                     </div>
-                    
+
                 </div>
 
                 <div class="d-flex gap-3">
@@ -106,15 +106,15 @@
             </div>
         </div>
 
-       
+
     {{--======================== کارت های گروه های مجوز ========================--}}
         <div class="permissions-grid">
 
             @foreach ($groups as $group)
                 <div class="permission-column">
-                    <div class="card shadow-sm border-3">
+                    <div class="card shadow-sm">
 
-                        <div class="card-header d-flex justify-content-between align-items-center bg-secondary text-dark">
+                        <div class="card-header d-flex justify-content-between align-items-center text-fuchsia">
                             <strong>
                                 <i class="bi {{ $group->icon }}"></i>
                                 {{ $group->name }}
@@ -134,8 +134,8 @@
                             <div class="form-check form-switch m-0">
                                 <input class="form-check-input" type="checkbox" id="group-{{ $group->id }}"
                                     wire:click="toggleGroup({{ $group->id }})" @checked($groupAllChecked)>
-                                <label class="form-check-label small" for="group-{{ $group->id }}">
-                                    همه
+                                <label class="form-check-label small text-muted" for="group-{{ $group->id }}">
+                                    انخاب همه
                                 </label>
                             </div>
                         </div>
