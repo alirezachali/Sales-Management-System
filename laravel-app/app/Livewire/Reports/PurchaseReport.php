@@ -3,9 +3,9 @@
 namespace App\Livewire\Reports;
 
 use App\Models\PurchaseInvoice;
-use App\Models\StockMovement;
-use Illuminate\Support\Collection;
+// use App\Models\StockMovement;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -16,6 +16,7 @@ class PurchaseReport extends Component
 
     protected string $paginationTheme = 'bootstrap';
 
+    
     /*
      * |--------------------------------------------------------------------|
      * |                              فیلترها                                |
@@ -25,18 +26,20 @@ class PurchaseReport extends Component
     public ?string $dateTo = null;
     public string $dateFromJalali = '';
     public string $dateToJalali = '';
-    public string $filterType = ''; // 'invoice', 'entry', 'exit'
+    public string $filterType = '';  // 'invoice', 'entry', 'exit'
     public string $filterPaymentMethod = '';
-
     public array $dateErrors = [];
 
-    // public array $paymentMethodLabels = [
-    //     'cash' => 'نقدی',
-    //     'card' => 'کارت',
-    //     'transfer' => 'کارت به کارت / حواله',
-    //     'credit' => 'نسیه',
-    //     'other' => 'سایر',
-    // ];
+    public bool $showDetailsModal = false;
+    public ?int $detailsId = null;
+
+    public array $paymentMethodLabels = [
+        'cash' => 'نقدی',
+        'card' => 'کارت',
+        'transfer' => 'کارت به کارت / حواله',
+        'credit' => 'نسیه',
+        'other' => 'سایر',
+    ];
 
     public function updatedDateFromJalali(): void
     {
@@ -97,67 +100,54 @@ class PurchaseReport extends Component
         $this->resetPage();
     }
 
+    public function openDetails(int $id): void
+    {
+        $this->detailsId = $id;
+        $this->showDetailsModal = true;
+    }
+
+    public function closeDetails(): void
+    {
+        $this->showDetailsModal = false;
+        $this->detailsId = null;
+    }
+
     public function render()
     {
         // --- 1. دریافت فاکتورهای خرید ---
-        // $invoiceQuery = PurchaseInvoice::query()
-        //     ->with(['supplier', 'user'])
-        //     ->when($this->dateFrom, fn ($q) => $q->whereDate('purchase_date', '>=', $this->dateFrom))
-        //     ->when($this->dateTo, fn ($q) => $q->whereDate('purchase_date', '<=', $this->dateTo));
-
-        // --- 2. دریافت گردش‌های انبار ---
-        $movementQuery = StockMovement::query()
-            ->with(['product', 'user'])
-            ->when($this->dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
-            ->when($this->dateTo, fn ($q) => $q->whereDate('created_at', '<=', $this->dateTo));
+        $invoiceQuery = PurchaseInvoice::query()
+            ->with(['supplier', 'user'])
+            ->when($this->dateFrom, fn($q) => $q->whereDate('purchase_date', '>=', $this->dateFrom))
+            ->when($this->dateTo, fn($q) => $q->whereDate('purchase_date', '<=', $this->dateTo));
 
         // فیلتر نوع operação
         if ($this->filterType === 'initial') {
             $movementQuery->where('type', 'initial');
-            
         } elseif ($this->filterType === 'purchase') {
             $movementQuery->where('type', 'purchase');
-            
         } elseif ($this->filterType === 'sale') {
             $movementQuery->where('type', 'sale');
         }
 
         // Execute both queries
-        // $invoices = $invoiceQuery->get();
-        $movements = $movementQuery->get();
+        $invoices = $invoiceQuery->get();
 
         // --- 3. تبدیل هر کدوم به فرم یکنواخت و ترکیب ---
         $records = collect();
 
         // Add invoices
-        // foreach ($invoices as $invoice) {
-        //     $records->push([
-        //         'id' => $invoice->id,
-        //         'type' => 'invoice',
-        //         'description' => 'فاکتور خرید از ' . $invoice->supplier->name,
-        //         'related_name' => $invoice->supplier->name,
-        //         'date' => \Hekmatinasser\Verta\Verta::parse($invoice->purchase_date)->format('Y/m/d'),
-        //         'quantity' => 1,
-        //         'total_amount' => $invoice->total_amount,
-        //         'payment_method' => $invoice->payment_method,
-        //         'user_name' => $invoice->user?->name ?? '',
-        //         'operation' => 'خرید',
-        //     ]);
-        // }
-
-        // Add movements
-        foreach ($movements as $movement) {
+        foreach ($invoices as $invoice) {
             $records->push([
-                'id' => $movement->id,
-                'type' => $movement->type, // 'purchase' or 'sale'
-                'description' => $movement->description,
-                'related_name' => $movement->product?->name ?? '',
-                'date' => \Hekmatinasser\Verta\Verta::parse($movement->created_at)->format('Y/m/d'),
-                'quantity' => $movement->quantity,
-                'total_amount' => null,
-                'payment_method' => null,
-                'user_name' => $movement->user?->name ?? '',
-                'operation' => $movement->type,
+                'id' => $invoice->id,
+                'supplier' => $invoice->supplier->name,
+                'date' => \Hekmatinasser\Verta\Verta::parse($invoice->purchase_date)->format('Y/m/d'),
+                'invoice_number' => $invoice->invoice_number,
+                'total_amount' => $invoice->total_amount,
+                'paid_amount' => $invoice->paid_amount,
+                'payment_method' => $invoice->payment_method,
+                'user_name' => $invoice->user?->name ?? '',
+                'status' => $invoice->status,
+                'notes' => $invoice->notes,
             ]);
         }
 
@@ -185,45 +175,53 @@ class PurchaseReport extends Component
             ['path' => request()->url()]
         );
 
-        $totals = $this->calculateTotals($movements);
+        $totals = $this->calculateTotals($invoices);
+
+        $detailsInvoice = null;
+        if ($this->showDetailsModal && $this->detailsId) {
+            $detailsInvoice = PurchaseInvoice::query()
+                ->with(['supplier', 'user', 'items.product'])
+                ->find($this->detailsId);
+        }
 
         return view('livewire.reports.purchase-report', [
             'records' => $paginator,
             'totals' => $totals,
+            'detailsInvoice' => $detailsInvoice,
         ]);
     }
 
     /*
-     |--------------------------------------------------------------------|
+     * |--------------------------------------------------------------------|
      * |                         محاسبه جمع کل                               |
      * |--------------------------------------------------------------------|
      */
-    private function calculateTotals($movements): object
+    private function calculateTotals($invoices): object
     {
-        // $invoiceCount = $invoices->count();
-        // $invoiceTotal = $invoices->sum(fn ($i) => (float) ($i->total_amount ?? 0));
+        $invoiceCount = $invoices->count();
+        $invoiceTotal = $invoices->sum(fn($i) => (float) ($i->total_amount ?? 0));
 
-        $movementCount = $movements->count(); 
+        // $movementCount = $movements->count();
 
         // Count purchase movements (entry)
-        $entryCount = $movements->where('type', 'purchase')->count();
+        $entryCount = $invoices->where('type', 'purchase')->count();
         // Count sale movements (exit)
-        $exitCount = $movements->where('type', 'sale')->count();
+        $exitCount = $invoices->where('type', 'sale')->count();
         // Count purchase movements (initial)
-        $initialCount = $movements->where('type', 'initial')->count();
+        $initialCount = $invoices->where('type', 'initial')->count();
 
         return (object) [
-            // 'count' => $movementCount,
-            // 'invoice_count' => $invoiceCount,
-            'movement_count' => $movementCount,
+            'invoice_count' => $invoiceCount,
+            // 'movement_count' => $movementCount,
             'entry_count' => $entryCount,
             'exit_count' => $exitCount,
             'initial_count' => $initialCount,
         ];
     }
 
+
     /*
-     |--------------------------------------------------------------------|
+     * |--------------------------------------------------------------------|
      * |                         خروجی اکسل و CSV                             |
      * |--------------------------------------------------------------------|
      */
@@ -235,8 +233,8 @@ class PurchaseReport extends Component
         //     ->when($this->dateTo, fn ($q) => $q->whereDate('purchase_date', '<=', $this->dateTo));
 
         $movementQuery = StockMovement::query()
-            ->when($this->dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
-            ->when($this->dateTo, fn ($q) => $q->whereDate('created_at', '<=', $this->dateTo));
+            ->when($this->dateFrom, fn($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
+            ->when($this->dateTo, fn($q) => $q->whereDate('created_at', '<=', $this->dateTo));
 
         if ($this->filterType === 'purchase') {
             $movementQuery->where('type', 'purchase');
@@ -275,7 +273,7 @@ class PurchaseReport extends Component
             ]);
         }
 
-        return $records->sortByDesc(fn ($r) => strtotime(str_replace('/', '-', $r['date'])))->values();
+        return $records->sortByDesc(fn($r) => strtotime(str_replace('/', '-', $r['date'])))->values();
     }
 
     public function exportCsv(): StreamedResponse
@@ -306,11 +304,11 @@ class PurchaseReport extends Component
             // Add totals row
             $totals = $this->calculateTotals(
                 // PurchaseInvoice::query()
-                    // ->when($this->dateFrom, fn ($q) => $q->whereDate('purchase_date', '>=', $this->dateFrom))
-                    // ->when($this->dateTo, fn ($q) => $q->whereDate('purchase_date', '<=', $this->dateTo)),
+                // ->when($this->dateFrom, fn ($q) => $q->whereDate('purchase_date', '>=', $this->dateFrom))
+                // ->when($this->dateTo, fn ($q) => $q->whereDate('purchase_date', '<=', $this->dateTo)),
                 StockMovement::query()
-                    ->when($this->dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
-                    ->when($this->dateTo, fn ($q) => $q->whereDate('created_at', '<=', $this->dateTo))
+                    ->when($this->dateFrom, fn($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
+                    ->when($this->dateTo, fn($q) => $q->whereDate('created_at', '<=', $this->dateTo))
             );
 
             fputcsv($handle, [

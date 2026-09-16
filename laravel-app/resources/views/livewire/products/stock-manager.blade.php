@@ -1,8 +1,8 @@
-<div dir="rtl">
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
     {{-- پیام موفقیت --}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
@@ -11,7 +11,7 @@
 
     {{-- پیام خطا --}}
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
@@ -31,14 +31,14 @@
 
         <div class="card-body">
             <div class="card-header d-flex justify-content-between align-items-center">
-                {{-- نمایش پیغام موجودی فعلی --}}
+            {{--======= نمایش پیغام موجودی فعلی =======--}}
                 <div class="alert alert-info mb-3">
                     موجودی فعلی:
                     <strong>{{ $product->formatted_stock }}{{ $product->unit }}</strong>
                     
                 </div>
 
-                {{-- دکمه‌های ورود، خروج و خروجی گزارش --}}
+            {{--====== دکمه‌های ورود، خروج و خروجی گزارش ======--}}
                 <div class="d-flex align-items-center gap-2">
 
                     <button type="button" class="btn btn-sm btn-outline-success" wire:click="openAddStockModal"
@@ -54,7 +54,7 @@
 
                     <div class="vr mx-1 d-none d-sm-block" style="opacity:.15;"></div>
 
-                    {{-- دراپ‌داون خروجی گزارش (اکسل / CSV) --}}
+                {{--====== دراپ‌داون خروجی گزارش (اکسل / CSV) ======--}}
                     <div class="dropdown">
                         <button type="button"
                             class="btn btn-sm btn-outline-primary dropdown-toggle d-flex align-items-center gap-1"
@@ -98,6 +98,7 @@
                             <th width="150">نوع عملیات</th>
                             <th width="150">مقدار</th>
                             <th>توضیحات</th>
+                            <th>انبار</th>
                         </tr>
                     </thead>
 
@@ -122,6 +123,14 @@
                                         @case('adjust')
                                             <span class="badge bg-warning text-dark">اصلاح</span>
                                         @break
+
+                                        @case('transfer')
+                                            <span class="badge bg-primary-subtle text-primary-emphasis">انتقال</span>
+                                        @break
+
+                                        @case('return')
+                                            <span class="badge bg-secondary text-dark">مرجوعی</span>
+                                        @break
                                     @endswitch
                                 </td>
                                 <td>
@@ -129,10 +138,11 @@
                                     <span>{{ $product->unit }}</span>
                                 </td>
                                 <td>{{ $movement->description }}</td>
+                                <td class="small text-muted">{{ $movement->warehouse?->name ?? '—' }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center py-4 text-muted">
+                                <td colspan="5" class="text-center py-4 text-muted">
                                     هیچ گردشی برای این کالا ثبت نشده است.
                                 </td>
                             </tr>
@@ -147,9 +157,9 @@
         </div>
     </div>
 
-    {{-- ============================ مودال ورود/خروج کالا ============================ --}}
+{{-- ================================== مودال ورود/خروج کالا ================================== --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="stock-form-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -178,6 +188,29 @@
                                 موجودی فعلی:
                                 <strong class="text-info">{{ $product->formatted_stock }}{{ $product->unit }}</strong>
                                 
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">انبار</label>
+                                <select class="form-select @error('warehouse_id') is-invalid @enderror"
+                                    wire:model="warehouse_id">
+                                    @foreach ($warehouses as $wh)
+                                        <option value="{{ $wh->id }}">{{ $wh->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('warehouse_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                @if (count($warehouseStocks) > 0)
+                                    <div class="form-text">
+                                        توزیع موجودی:
+                                        @foreach ($warehouseStocks as $ws)
+                                            <span class="badge bg-info-subtle text-info-emphasis mt-1">
+                                                {{ $ws->warehouse?->name }}: {{ rtrim(rtrim(number_format((float) $ws->quantity, 3, '.', ''), '0'), '.') }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="mb-3">

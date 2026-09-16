@@ -13,14 +13,13 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
 /* مسیر اصلی */
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route(auth()->check() ? auth()->user()->dashboardRouteName() : 'login');
 });
 
 /*  |--------------------------------------------------|
@@ -32,138 +31,227 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [LoginController::class, 'login']);
 });
 
+
 /* مسیر خروج کاربر از برنامه */
 Route::post('logout', [LogoutController::class, 'logout'])->middleware('auth')->name('logout');
+
+/* Profile page: /profile/{username} */
+Route::get('profile/{username}', function (string $username) {
+    return view('profile.index', ['username' => $username]);
+})->middleware('auth')->name('profile.show');
+
 
 /*  |--------------------------------------------------|
     |      Authenticated Route       |
     |--------------------------------------------------|*/
 /* مسیر هایی که نیاز به احراز هویت دارند */
 Route::middleware('auth')->group(function () {
-    /* مسیر صفحه داشبورد مدیریتی */
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::group([], function () {
-        /* مسیر صفحه لیست محصولات - یک ویوی Blade معمولی که کامپوننت Livewire را
-           با تگ <livewire:products.product-manager /> در خودش جای می‌دهد (دقیقاً
-           همان الگوی ماژول تامین‌کنندگان در suppliers.index). جستجو، فیلتر، افزودن،
-           ویرایش و حذف همه بدون رفرش صفحه انجام می‌شوند. */
-        Route::get('products', function () {
-            return view('products.index');
-        })->name('products.index');
+    /* مسیر صفحه داشبورد مدیریتی (نقش‌های مدیر و مدیر کل) */
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')
+        ->middleware('can:dashboard.view');
 
-        Route::get('purchase-invoices', function () {
-            return view('purchase-invoices.index');
-        })->name('purchase-invoices.index');
-        /* بقیه‌ی مسیرهای resource همچنان از طریق کنترلر (برای سازگاری با لینک‌های قدیمی) */
-        Route::resource('products', ProductController::class)->except(['show', 'index']);
-        Route::get('products/{product}/stock', function (\App\Models\Product $product) {
-            return view('products.stock', compact('product'));
-        })->name('products.stock');
-        /* مسیرهای زیر دیگر از رابط جدید استفاده نمی‌شوند (ورود/خروج کالا الان از طریق
-           همان صفحه‌ی products.stock و به‌صورت مودال زنده انجام می‌شود) ولی برای
-           سازگاری با لینک‌های قدیمی حذف نشده‌اند. */
-        Route::post('products/{product}/stock', [ProductController::class, 'storeStock'])->name('products.stock.store');
-        Route::get('products/{product}/stock/sale', [ProductController::class, 'createSale'])->name('products.sale.create');
-        Route::post('products/{product}/stock/sale', [ProductController::class, 'storeSale'])->name('products.sale.store');
-        Route::get('products/{product}/stock/create', [ProductController::class, 'createStock'])->name('products.stock.create');
-        /* مسیر جنراتور بارکد برای محصولات جدید بدون بارکد خاصی از */
-        Route::get('products/generate-barcode', [BarcodeController::class, 'generate'])->name('products.generate.barcode');
-        /* مسیر چاپ لیبل محصولات */
-        Route::get('products/{product}/label', [LabelController::class, 'show'])->name('products.label');
-    });
+    /* داشبوردهای اختصاصی نقش‌های صندوقدار، حسابدار و انباردار
+       (کنترلر در صورت ناهماهنگی نقش، کاربر را به داشبورد خودش هدایت می‌کند) */
+    Route::get('dashboard/cashier', [DashboardController::class, 'cashier'])->name('dashboard.cashier');
 
-    Route::group([], function () {
-        /* مسیر صفحه صندوق فروش */
-        Route::get('pos', [SaleController::class, 'index'])->name('pos.index');
-        Route::get('pos/product', [SaleController::class, 'findProduct'])->name('pos.product');
-        Route::post('pos/checkout', [SaleController::class, 'checkout'])->name('pos.checkout');
-    });
+    Route::get('dashboard/accountant', [DashboardController::class, 'accountant'])->name('dashboard.accountant');
+
+    Route::get('dashboard/warehouse', [DashboardController::class, 'warehouse'])->name('dashboard.warehouse');
+
+
+    Route::get('products', function () {return view('products.index');})->name('products.index')
+        ->middleware('can:products.view');
+
+    Route::get('purchase-invoices', function () {return view('purchase-invoices.index');})->name('purchase-invoices.index')
+        ->middleware('can:purchases.view');
+
+    /* بقیه‌ی مسیرهای resource همچنان از طریق کنترلر (برای سازگاری با لینک‌های قدیمی) */
+    Route::resource('products', ProductController::class)->except(['show', 'index'])
+        ->middleware('can:products.edit');
+
+    Route::get('products/{product}/stock', function (\App\Models\Product $product) 
+        {return view('products.stock', compact('product'));})
+            ->name('products.stock')->middleware('can:stocks.view');
+  
+    Route::post('products/{product}/stock', [ProductController::class, 'storeStock'])->name('products.stock.store')
+        ->middleware('can:stocks.adjust,product');
+
+    Route::get('products/{product}/stock/sale', [ProductController::class, 'createSale'])->name('products.sale.create');
+    
+    Route::post('products/{product}/stock/sale', [ProductController::class, 'storeSale'])->name('products.sale.store');
+    
+    Route::get('products/{product}/stock/create', [ProductController::class, 'createStock'])->name('products.stock.create');
+    
+    /* مسیر جنراتور بارکد برای محصولات جدید بدون بارکد خاصی از */
+    Route::get('products/generate-barcode', [BarcodeController::class, 'generate'])->name('products.generate.barcode');
+
+    /* مسیر چاپ لیبل محصولات */
+    Route::get('products/{product}/label', [LabelController::class, 'show'])->name('products.label');
+
+ 
+    /* مسیر صفحه صندوق فروش */
+    Route::get('pos', [SaleController::class, 'index'])->name('pos.index')
+        ->middleware('can:pos.view');
+
+    Route::get('pos/product', [SaleController::class, 'findProduct'])->name('pos.product')
+        ->middleware('can:pos.view');
+
+    Route::post('pos/checkout', [SaleController::class, 'checkout'])->name('pos.checkout')
+        ->middleware('can:sales.create');
+
 
     /* مسیر نمایش فاکتور فروش بعد از خرید مشتری */
-    Route::get('invoice/{sale}', [SaleController::class, 'invoice'])->name('invoice');
+    Route::get('invoice/{sale}', [SaleController::class, 'invoice'])->name('invoice')
+        ->middleware('can:sales.view');
 
-    Route::group([], function () {
-        /* مسیر صفحه تنظیمات */
-        Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
-        /* مسیر ذخیره تنظیمات جدید */
-        Route::post('settings', [SettingController::class, 'update'])->name('settings.update');
-    });
+
+    /* مسیر صفحه تنظیمات */
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index')
+        ->middleware('can:settings.view');
+
+    /* مسیر ذخیره تنظیمات جدید */
+    Route::post('settings', [SettingController::class, 'update'])->name('settings.update')
+        ->middleware('can:settings.edit');
+
 
     /* مسیر تغییر زبان برنامه (کلیک روی پرچم در منوی ناوبری) */
     Route::get('locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
     /* مسیر صفحه لیست دسته بندی های محصولات */
-    Route::resource('categories', CategoryController::class);
+    Route::resource('categories', CategoryController::class)
+        ->middleware('can:categories.view');
 
-    Route::group([], function () {
-        /* مسیر لیست کاربران */
-        Route::resource('users', UserController::class)->except('show');
-        /* مسیر تغییر رمزعبور کاربر */
-        Route::put('users/{user}/password', [UserController::class, 'updatePassword'])->name('users.password');
-        /* مسیر لیست نقش ها */
 
-        Route::resource('user/roles', RoleController::class)->except('show');
-        /* مسیر ویرایش مجوزهای مربوط به هر نقش کاربر */
-        Route::get('user/roles/{role}/permissions', [RoleController::class, 'permissions'])->name('roles.permissions');
-        Route::post('user/roles/{role}/permissions', [RoleController::class, 'syncPermissions'])->name('roles.permissions.sync');
-    });
+    /* مسیر لیست کاربران */
+    Route::resource('users', UserController::class)->except('show')
+        ->middleware('can:users.view');
 
-    Route::group([], function () {
-        /* مسیر صفحه‌ی باشگاه مشتریان - کامپوننت Livewire (جستجو، فیلتر رده،
-           افزودن، ویرایش، حذف و گردش حساب، همه بدون رفرش صفحه) */
-        Route::get('customers', function () {
-            return view('customers.index');
-        })->name('customers.index');
-        /* بقیه‌ی مسیرهای resource همچنان از طریق کنترلر (برای سازگاری با لینک‌های قدیمی) */
-        Route::resource('customers', CustomerController::class)->except(['show', 'index']);
-        /* مسیر جستجوی مشتریان (استفاده‌شده در ماژول فروش/pos) */
-        Route::get('customers/search', [CustomerController::class, 'search'])->name('customers.search');
+    /* مسیر تغییر رمزعبور کاربر */
+    Route::put('users/{user}/password', [UserController::class, 'updatePassword'])->name('users.password')
+        ->middleware('can:users.edit');
 
-        /* مسیر مدیریت رده‌های باشگاه مشتریان - کامپوننت Livewire
-           (افزودن/ویرایش/حذف همگی داخل کامپوننت CustomerRoleManager انجام می‌شود) */
-        Route::get('customer/roles', function () {
-            return view('customers.roles.index');
-        })->name('customer-roles.index');
-    });
+    /* مسیر لیست نقش ها */
+    Route::resource('user/roles', RoleController::class)->except('show')
+        ->middleware('can:roles.view');
 
-    // مسیر نمایش لیست تامین‌کنندگان
-    // این خط رو داخل routes/web.php اضافه کن (به‌جای Route::resource قبلی برای suppliers)
+    /* مسیر ویرایش مجوزهای مربوط به هر نقش کاربر */
+    Route::get('user/roles/{role}/permissions', [RoleController::class, 'permissions'])->name('roles.permissions')
+        ->middleware('can:roles.permissions');
 
-Route::get('/suppliers', function () {
-    return view('suppliers.index');
-})->name('suppliers.index')->middleware('auth');
+    Route::post('user/roles/{role}/permissions', [RoleController::class, 'syncPermissions'])->name('roles.permissions.sync')
+        ->middleware('can:roles.permissions');
+    
 
-    // مسیر نمایش لیست کارکنان
-    Route::get('employees', function () {
-        return view('employees.index');
-    })->name('employees.index');
+    /* مسیر صفحه‌ی باشگاه مشتریان  */
+    Route::get('customers', function () {return view('customers.index');})->name('customers.index')
+        ->middleware('can:customers.view');
 
-    // مسیر نمایش لیست هزینه‌ها
-    Route::get('expenses', function () {
-        return view('expenses.index');
-    })->name('expenses.index');
+    /* بقیه‌ی مسیرهای resource همچنان از طریق کنترلر (برای سازگاری با لینک‌های قدیمی) */
+    Route::resource('customers', CustomerController::class)->except(['show', 'index'])
+        ->middleware('can:customers.view');
 
-    // مسیر لیست کارها
-    Route::get('todos', function () {
-        return view('todos.index');
-    })->name('todos.index');
+    /* مسیر جستجوی مشتریان (استفاده‌شده در ماژول فروش/pos) */
+    Route::get('customers/search', [CustomerController::class, 'search'])->name('customers.search')
+        ->middleware('can:customers.view');
 
-    // مسیر گزارش فروش
-     Route::get('reports.sales', function () {
-        return view('reports.sales');
-    })->name('reports.sales');
+    /* مسیر مدیریت رده‌های باشگاه مشتریان  */
+    Route::get('customer/roles', function () {return view('customers.roles.index');})->name('customer-roles.index')
+        ->middleware('can:customers.roles_view');
 
-    // مسیر گزارش ورود و خروج کالا 
-     Route::get('reports.purchases', function () {
-        return view('reports.purchases');
-    })->name('reports.purchases');
+    /* مسیر لیست مشتریان بدهکار (باشگاه مشتریان)  */
+    Route::get('customers/debtors', function () {return view('customers.debtors.index');})->name('customer-debtors.index')
+        ->middleware('can:customers.debtors');
 
-    // مسیر مدیریت مالی
-    Route::get('financial', function () {
-        return view('financial.index');
-    })->name('financial.index');
+    /* مسیر لیست خریدهای مشتریان */
+    Route::get('customers/purchases', function () {return view('customers.purchases.index');})->name('customer-purchases.index')
+        ->middleware('can:customers.view');
 
-    // مسیر نمایش لیست برندها
-    Route::resource('brands', BrandController::class);
+
+    /* مسیر نمایش لیست تامین‌کنندگان */
+    Route::get('/suppliers', function () {return view('suppliers.index');})->name('suppliers.index')
+        ->middleware('can:suppliers.view');
+
+    /* مسیر نمایش لیست کارکنان */
+    Route::get('employees', function () {return view('employees.index');})->name('employees.index')
+        ->middleware('can:employees.view');
+
+    /* مسیر نمایش لیست هزینه‌ها */
+    Route::get('expenses', function () {return view('expenses.index');})->name('expenses.index')
+        ->middleware('can:expenses.view');
+
+    /* مسیر لیست کارها */
+    Route::get('todos', function () {return view('todos.index');})->name('todos.index')
+        ->middleware('can:todos.view');
+
+    /* مسیر گزارش فروش */
+    Route::get('reports.sales', function () {return view('reports.sales');})->name('reports.sales')
+        ->middleware('can:reports.sales');
+
+    /* مسیر گزارش فاکتورهای خرید */
+    Route::get('reports.purchases', function () {return view('reports.purchases');})->name('reports.purchases')
+        ->middleware('can:reports.purchases');
+
+    /* مسیر گزارش ورود و خروج کالا */
+    Route::get('reports.stockmovements', function () {return view('reports.stockmovements');})->name('reports.stockmovements')
+        ->middleware('can:reports.view');
+
+    /* مسیر مدیریت مالی */
+    Route::get('financial', function () {return view('financial.index');})->name('financial.index')
+        ->middleware('can:financial.view');
+
+    /* مسیر مدیریت بدهی ها */
+    Route::get('debts', function () {return view('debts.index');})->name('debts.index')
+        ->middleware('can:debts.view');
+
+    /* مسیر نمایش لیست برندها */
+    Route::resource('brands', BrandController::class)
+        ->middleware('can:brands.view');
+
+    /*  |--------------------------------------------------|
+     |   فیچرهای جدید: انبار، صندوق، حقوق، امتیاز، سود    |
+     |--------------------------------------------------|*/
+
+    /* مدیریت انبارها */
+    Route::get('warehouses', function () {return view('warehouses.index');})->name('warehouses.index')
+        ->middleware('can:warehouses.view');
+
+    /* انتقال بین انبار */
+    Route::get('transfers', function () {return view('warehouses.transfers');})->name('transfers.index')
+        ->middleware('can:transfers.view');
+
+    /* انبارگردانی */
+    Route::get('stock-counts', function () {return view('warehouses.counts');})->name('counts.index')
+        ->middleware('can:counts.view');
+
+    /* مدیریت صندوق‌ها */
+    Route::get('cashboxes', function () {return view('cashboxes.index');})->name('cashboxes.index')
+        ->middleware('can:cashboxes.view');
+
+    /* حضور و غیاب کارکنان */
+    Route::get('attendance', function () {return view('employees.attendance');})->name('attendance.index')
+        ->middleware('can:attendance.view');
+
+    /* حقوق و دستمزد */
+    Route::get('payrolls', function () {return view('employees.payrolls');})->name('payrolls.index')
+        ->middleware('can:payrolls.view');
+
+    /* گزارش سود و زیان */
+    Route::get('reports.profit', function () {return view('reports.profit');})->name('reports.profit')
+        ->middleware('can:reports.profit');
+
+    /* باشگاه امتیازات مشتریان */
+    Route::get('loyalty', function () {return view('customers.loyalty');})->name('loyalty.index')
+        ->middleware('can:loyalty.view');
+
+    /*  |--------------------------------------------------|
+     |          پیام‌ها: ارسال پیام مدیر به کاربران         |
+     |--------------------------------------------------|*/
+
+    /* صندوق پیام‌های کاربر؛ هر کاربر فقط پیام‌های خودش را می‌بیند */
+    Route::get('inbox', function () {return view('messages.inbox');})->name('messages.inbox');
+
+    /* صفحه مدیریت پیام‌های ارسالی (مخصوص مدیر) */
+    Route::get('messages', function () {return view('messages.index');})->name('messages.index')
+        ->middleware('can:messages.view');
 });

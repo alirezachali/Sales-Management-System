@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Todos;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Todo;
 use App\Models\User;
 use Illuminate\Validation\Rule;
@@ -11,6 +12,7 @@ use Livewire\WithPagination;
 class TodoManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -230,6 +232,8 @@ class TodoManager extends Component
     */
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'todos.edit' : 'todos.create');
+
         if (! $this->syncDueDate()) {
             return;
         }
@@ -255,6 +259,8 @@ class TodoManager extends Component
 
     public function delete(): void
     {
+        $this->authorizeAction('todos.delete');
+
         if ($this->deletingId) {
             Todo::findOrFail($this->deletingId)->delete();
             session()->flash('success', 'کار حذف شد');
@@ -272,6 +278,8 @@ class TodoManager extends Component
     */
     public function toggleComplete(int $id): void
     {
+        $this->authorizeAction('todos.edit');
+
         $todo = Todo::findOrFail($id);
         $todo->toggleComplete();
     }

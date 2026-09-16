@@ -18,6 +18,10 @@ class CustomerRole extends Model
 
         'discount_percent',
 
+        'points_per_amount',
+
+        'points_expiry_days',
+
         'min_purchase_count',
 
         'min_purchase_amount',

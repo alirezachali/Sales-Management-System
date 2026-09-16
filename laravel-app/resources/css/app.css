@@ -3,17 +3,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
 
 
-:root {
-    --woxilon-dark: #111111;
-    --woxilon-accent: #f58923;
-    --woxilon-accent-hover: #d1a758;
-    --btn-primary: #e6c71a;
-    --btn-primary-hover: #e0e411;
-    --btn-border: #070707;
-    --btn-border-hover: #0a0a0a;
-}
-
-
 /* فونت */
 body {
     font-family: 'Vazirmatn', sans-serif;
@@ -21,19 +10,6 @@ body {
     padding-bottom: 42px;
 }
 
-
-/* دکمه اصلی */
-.btn-primary {
-    background: var(--btn-primary);
-    border-color: var(--btn-border);
-    color: #111;
-}
-
-.btn-primary:hover {
-    background: var(--btn-primary-hover);
-    border-color: var(--btn-border-hover);
-    color: #111;
-}
 
 .page-header {
     border-bottom: 4px solid #f38f0c;

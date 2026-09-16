@@ -1,75 +1,89 @@
-<div dir="rtl">
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
+    {{-- پیام موفقیت --}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
+    {{-- پیام خطا --}}
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
     {{-- کارت‌های آماری --}}
     <div class="row row-cards mb-4">
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-primary">{{ $counts['total'] }}</div>
-                    <div class="subheader">همه</div>
+                    <div class="h2 mb-0 text-primary">
+                        {{ $counts['total'] }}
+                    </div>
+                    <div class="subheader">تعداد کل</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-warning">{{ $counts['pending'] }}</div>
+                    <div class="h2 mb-0 text-warning">
+                        {{ $counts['pending'] }}
+                    </div>
                     <div class="subheader">در انتظار</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-info">{{ $counts['in_progress'] }}</div>
+                    <div class="h2 mb-0 text-info">
+                        {{ $counts['in_progress'] }}
+                    </div>
                     <div class="subheader">در حال انجام</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-success">{{ $counts['completed'] }}</div>
+                    <div class="h2 mb-0 text-success">
+                        {{ $counts['completed'] }}
+                    </div>
                     <div class="subheader">تکمیل شده</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-danger">{{ $counts['high_priority_pending'] }}</div>
+                    <div class="h2 mb-0 text-danger">
+                        {{ $counts['high_priority_pending'] }}
+                    </div>
                     <div class="subheader">اولویت بالا</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-secondary">{{ $counts['due_soon'] }}</div>
+                    <div class="h2 mb-0 text-secondary">
+                        {{ $counts['due_soon'] }}
+                    </div>
                     <div class="subheader">نزدیک سررسید</div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- فیلترها --}}
-    <div class="card mb-4 border-3">
+    {{--=========== فیلترها ============--}}
+    <div class="card mb-4">
         <div class="card-body">
             <div class="row g-2">
                 <div class="col-md-3">
@@ -109,8 +123,8 @@
         </div>
     </div>
 
-    {{-- جدول کارها --}}
-    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
+    {{--============================== جدول کارها ==============================--}}
+    <div class="card shadow-sm" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
@@ -121,16 +135,19 @@
                 <small class="text-muted">مدیریت و پیگیری کارهای روزانه</small>
             </div>
             <div>
-                <button type="button" class="btn btn-primary" wire:click="openCreateModal">
+                @can('todos.create')
+                <button type="button" class="btn btn-primary" wire:click="openCreateModal"
+                data-hotkey="todo_add" title="افزودن کار جدید به لیست کارها{{ hotkeyHint('todo_add') }}">
                     <i class="bi bi-plus-circle"></i>
                     افزودن کار جدید
                 </button>
+                @endcan
             </div>
         </div>
 
         <div class="card-body table-responsive">
-            <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
+            <table class="table table-hover align-middle">
+                <thead>
                     <tr>
                         <th width="40">ردیف</th>
                         <th>عنوان</th>
@@ -191,24 +208,30 @@
                                 @endif
                             </td>
                             <td>
+                                @can('todos.edit')
                                 <button type="button"
-                                    class="btn btn-sm {{ $todo->isCompleted() ? 'btn-success text-dark' : 'btn-success text-dark' }}"
+                                    class="btn btn-sm {{ $todo->isCompleted() ? 'btn-outline-success' : 'btn-outline-success' }}"
                                     wire:click="toggleComplete({{ $todo->id }}"
                                     title="{{ $todo->isCompleted() ? 'برگرداندن به در انتظار' : 'تکمیل کردن' }}">
                                     <i class="bi {{ $todo->isCompleted() ? 'bi-arrow-counterclockwise' : 'bi-check-lg' }}"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-info text-dark"
+                                @endcan
+                                <button type="button" class="btn btn-sm btn-outline-info"
                                     wire:click="openDetails({{ $todo->id }})" title="مشاهده جزئیات">
                                     <i class="bi bi-eye"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-warning text-dark"
+                                @can('todos.edit')
+                                <button type="button" class="btn btn-sm btn-outline-warning"
                                     wire:click="openEditModal({{ $todo->id }})" title="ویرایش">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-danger text-dark"
+                                @endcan
+                                @can('todos.delete')
+                                <button type="button" class="btn btn-sm btn-outline-danger"
                                     wire:click="confirmDelete({{ $todo->id }})" title="حذف">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
+                                @endcan
                             </td>
                         </tr>
                     @empty
@@ -225,9 +248,9 @@
         </div>
     </div>
 
-    {{-- ============================ مودال افزودن/ویرایش ============================ --}}
+{{-- =================================== مودال افزودن/ویرایش =================================== --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);">
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <form wire:submit="save">
                     <div class="modal-content">
@@ -329,12 +352,12 @@
         </div>
     @endif
 
-    {{-- ============================ مودال جزئیات ============================ --}}
+{{-- ====================================== مودال جزئیات ====================================== --}}
     @if ($showDetailsModal && $detailsTodo)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);">
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-info text-dark">
                         <h5 class="modal-title">
                             <i class="bi bi-card-checklist"></i>
                             جزئیات کار
@@ -397,12 +420,12 @@
         </div>
     @endif
 
-    {{-- ============================ مودال تایید حذف ============================ --}}
+{{-- ==================================== مودال تایید حذف ==================================== --}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);">
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-danger text-dark">
                         <h5 class="modal-title">حذف کار</h5>
                         <button type="button" class="btn-close" wire:click="closeModals"></button>
                     </div>

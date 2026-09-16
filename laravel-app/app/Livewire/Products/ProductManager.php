@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Products;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\StockMovement;
@@ -13,6 +14,7 @@ use Livewire\WithPagination;
 class ProductManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -168,6 +170,8 @@ class ProductManager extends Component
     */
     public function save(): void
     {
+        $this->authorizeAction($this->editingProductId ? 'products.edit' : 'products.create');
+
         $data = $this->validate();
         $data['category_id'] = $data['category_id'] ?: null;
 
@@ -203,6 +207,8 @@ class ProductManager extends Component
     */
     public function delete(): void
     {
+        $this->authorizeAction('products.delete');
+
         if ($this->deletingId) {
             Product::findOrFail($this->deletingId)->delete();
             session()->flash('success', 'کالا با موفقیت حذف شد');

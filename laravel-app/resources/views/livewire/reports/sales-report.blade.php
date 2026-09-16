@@ -1,23 +1,24 @@
-<div dir="rtl">
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
-    {{-- Success/Error Alerts --}}
+    {{-- پیام موفقیت --}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
+    {{-- پیام خطا --}}
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
-    {{-- کارت‌های آماری --}}
+{{--============ کارت‌های آماری ============--}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
@@ -59,7 +60,7 @@
         </div>
     </div>
 
-    {{-- فیلترها --}}
+{{--================== فیلترها ==================--}}
     <div class="card mb-4 border-3">
         <div class="card-body">
             <div class="row g-2 align-items-end">
@@ -103,7 +104,7 @@
         </div>
     </div>
 
-    {{-- جدول فروش‌ها --}}
+{{--======================== جدول فروش‌ها ========================--}}
     <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
@@ -132,7 +133,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle">
-                    <thead class="table-dark">
+                    <thead>
                         <tr>
                             <th width="40">ردیف</th>
                             <th>شماره فاکتور</th>

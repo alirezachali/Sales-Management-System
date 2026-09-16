@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Financial;
+namespace App\Livewire\Financial; 
 
 use App\Models\Expense;
 use App\Models\Product;

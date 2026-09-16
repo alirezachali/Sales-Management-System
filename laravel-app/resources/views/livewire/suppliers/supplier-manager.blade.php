@@ -1,16 +1,17 @@
-<div dir="rtl">
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
-    {{-- Success/Error Alerts --}}
+    {{-- پیام موفقیت --}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
+    {{-- پیام خطا --}}
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
@@ -93,10 +94,12 @@
                 <small class="text-muted">مدیریت اطلاعات تامین‌کنندگان </small>
             </div>
 
+            @can('suppliers.create')
             <button class="btn btn-primary" wire:click="openCreateModal" title="افزودن تامین کننده جدید به سیستم">
                 <i class="bi bi-plus-circle"></i>
                 افزودن تامین کننده
             </button>
+            @endcan
         </div>
 
         <div class="card-body">
@@ -131,14 +134,18 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
+                                    @can('suppliers.edit')
                                     <button type="button" class="btn btn-sm btn-primary text-dark"
                                         wire:click="openEditModal({{ $supplier->id }})">
                                         <i class="bi bi-pencil-fill"></i> ویرایش
                                     </button>
+                                    @endcan
+                                    @can('suppliers.delete')
                                     <button type="button" class="btn btn-sm btn-danger text-dark"
                                         wire:click="confirmDelete({{ $supplier->id }})">
                                         <i class="bi bi-trash-fill"></i> حذف
                                     </button>
+                                    @endcan
                                 </td>
                             </tr>
                         @empty
@@ -156,9 +163,9 @@
         </div>
     </div>
 
-    {{-- مودال ساخت / ویرایش (یک مودال مشترک، بدون وابستگی به Bootstrap JS) --}}
+{{--====================================== مودال ساخت / ویرایش ==================================--}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);" wire:key="form-modal">
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);" wire:key="form-modal">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <form wire:submit="save">
@@ -305,13 +312,13 @@
         </div>
     @endif
 
-    {{-- مودال تایید حذف --}}
+{{--==================================== مودال تایید حذف ====================================--}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="delete-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-danger text-dark">
                         <h5 class="modal-title">حذف تامین‌کننده</h5>
                         <button type="button" class="btn-close" wire:click="closeModals"></button>
                     </div>

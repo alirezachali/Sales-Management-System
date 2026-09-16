@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Users;
 
+use App\Livewire\Concerns\AuthorizesActions;
+use App\Models\Employee;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
@@ -14,6 +16,7 @@ class UserManager extends Component
 {
     use WithPagination;
     use WithFileUploads;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -36,6 +39,7 @@ class UserManager extends Component
     public ?string $email = null;
     public ?string $phone = null;
     public string $role_id = '';
+    public string $employee_id = '';
     public bool $is_active = true;
 
     // تصویر پروفایل (آپلود موقت) و مسیر تصویر فعلی هنگام ویرایش
@@ -88,16 +92,17 @@ class UserManager extends Component
         return [
             'name'      => ['required', 'string', 'max:255'],
             'username'  => [
-                'required', 'string', 'max:100',
+                'required', 'string', 'max:100', 'regex:/^[a-zA-Z0-9._-]+$/',
                 Rule::unique('users', 'username')->ignore($this->editingId),
             ],
             'email'     => [
-                'nullable', 'email',
+                'required', 'email',
                 Rule::unique('users', 'email')->ignore($this->editingId),
             ],
             'phone'     => ['nullable', 'string', 'max:20'],
             'avatar'    => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'role_id'   => ['required', 'exists:roles,id'],
+            'employee_id' => ['nullable', 'exists:employees,id'],
             'is_active' => ['boolean'],
             'password'  => $this->editingId
                 ? ['nullable']
@@ -111,10 +116,13 @@ class UserManager extends Component
             'name.required'      => 'وارد کردن نام الزامی است.',
             'username.required'  => 'وارد کردن نام کاربری الزامی است.',
             'username.unique'    => 'این نام کاربری قبلاً ثبت شده است.',
+            'username.regex'     => 'نام کاربری فقط می‌تواند شامل حروف انگلیسی، عدد، نقطه، خط تیره و زیرخط باشد.',
             'email.email'        => 'ایمیل وارد شده معتبر نیست.',
+            'email.required'     => 'وارد کردن ایمیل الزامی است.',
             'email.unique'       => 'این ایمیل قبلاً ثبت شده است.',
             'role_id.required'   => 'انتخاب نقش الزامی است.',
             'role_id.exists'     => 'نقش انتخاب‌شده معتبر نیست.',
+            'employee_id.exists' => 'کارمند انتخاب‌شده معتبر نیست.',
             'avatar.image'       => 'فایل انتخابی باید یک تصویر باشد.',
             'avatar.mimes'       => 'فرمت مجاز تصویر: jpg, jpeg, png, webp',
             'avatar.max'         => 'حجم تصویر نباید بیشتر از ۲ مگابایت باشد.',
@@ -145,6 +153,7 @@ class UserManager extends Component
         $this->email     = $user->email;
         $this->phone     = $user->phone;
         $this->role_id   = (string) $user->role_id;
+        $this->employee_id = (string) ($user->employee_id ?? '');
         $this->is_active = (bool) $user->is_active;
 
         // تصویر فعلی برای نمایش پیش‌نمایش؛ آپلود موقت خالی می‌شود
@@ -161,6 +170,8 @@ class UserManager extends Component
 
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'users.edit' : 'users.create');
+
         $this->validate();
 
         $data = [
@@ -169,6 +180,7 @@ class UserManager extends Component
             'email'     => $this->email ?: null,
             'phone'     => $this->phone ?: null,
             'role_id'   => $this->role_id,
+            'employee_id' => $this->employee_id ?: null,
             'is_active' => $this->is_active,
         ];
 
@@ -220,6 +232,8 @@ class UserManager extends Component
 
     public function updatePassword(): void
     {
+        $this->authorizeAction('users.edit');
+
         $this->validate([
             'new_password' => ['required', 'confirmed', 'min:6'],
         ], [
@@ -254,6 +268,8 @@ class UserManager extends Component
 
     public function delete(): void
     {
+        $this->authorizeAction('users.delete');
+
         if ($this->deletingId) {
             // امکان حذف کاربری که وارد سیستم شده وجود ندارد
             if ($this->deletingId === auth()->id()) {
@@ -297,6 +313,7 @@ class UserManager extends Component
         $this->email     = null;
         $this->phone     = null;
         $this->role_id   = '';
+        $this->employee_id = '';
         $this->is_active = true;
         $this->avatar = null;
         $this->currentAvatar = null;
@@ -324,6 +341,7 @@ class UserManager extends Component
         return view('livewire.users.user-manager', [
             'users'      => $query->latest()->paginate(15),
             'roles'      => Role::orderBy('display_name')->get(),
+            'employees'  => \App\Models\Employee::orderBy('first_name')->get(['id', 'first_name', 'last_name', 'national_code']),
             'totalUsers' => User::count(),
         ]);
     }

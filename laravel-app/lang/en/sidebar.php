@@ -1,0 +1,48 @@
+<?php
+
+return [
+    'dashboard' => 'Dashboard',
+    'financial_manage' => 'Financial Management',
+    'products' => 'Products',
+    'reg_purchase_invoice' => 'Register Purchase Invoice',
+    'categories' => 'Categories',
+    'sales_counter' => 'Sales Counter (POS)',
+    'users' => 'Users',
+    'roles' => 'Roles & Permissions',
+    'settings' => 'Settings',
+    'customer_club' => 'Customer Club',
+    'customer_club_roles' => 'Club Roles Management',
+    'customer_debtors' => 'Debt Customers',
+    'customer_purchases' => 'Customer Purchases',
+    'brands' => 'Brands',
+    'suppliers' => 'Suppliers',
+    'employee_manage' => 'Employees',
+    'cost_manage' => 'Expenses',
+    'todo' => 'To-Do List',
+    'sales_report' => 'Sales Report',
+    'purchases_report' => 'Purchases Report',
+    'warehouse_manage' => 'Stock Movements',
+    'debt_manage' => 'Debts',
+
+    /* Menu groups */
+    'group_main' => 'Main',
+    'group_sales' => 'Sales & Customers',
+    'group_warehouse' => 'Warehouse & Goods',
+    'group_purchase' => 'Purchasing',
+    'group_finance' => 'Finance',
+    'group_hr' => 'Human Resources',
+    'group_reports' => 'Reports & Tasks',
+    'group_system' => 'System',
+
+    /* New features */
+    'warehouses' => 'Warehouses',
+    'transfers' => 'Stock Transfers',
+    'stock_counts' => 'Stock Counts',
+    'cashboxes' => 'Cashboxes',
+    'attendance' => 'Attendance',
+    'payrolls' => 'Payroll',
+    'profit_report' => 'Profit & Loss',
+    'loyalty' => 'Loyalty Points',
+    'messages' => 'Messages',
+    'my_messages' => 'My Messages',
+];

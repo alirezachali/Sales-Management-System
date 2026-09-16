@@ -1,8 +1,8 @@
-<div dir="rtl">
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
     {{-- پیام موفقیت --}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
@@ -11,7 +11,7 @@
 
     {{-- پیام خطا --}}
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
@@ -107,12 +107,13 @@
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
                 <h3 class="fw-bold mb-1">
-                    <i class="bi bi-wallet2 text-danger"></i>
+                    <i class="bi bi-wallet2 text-primary"></i>
                     مدیریت هزینه‌ها
                 </h3>
                 <small class="text-muted">ثبت و پیگیری هزینه‌ها و دسته‌بندی آن‌ها</small>
             </div>
             <div class="d-flex gap-2 flex-wrap">
+                @can('expenses.create')
                 <button type="button" class="btn btn-info text-dark" wire:click="openCategoryCreateModal"
                     title="مدیریت دسته‌بندی هزینه‌ها">
                     <i class="bi bi-tags"></i>
@@ -122,78 +123,86 @@
                     <i class="bi bi-plus-circle"></i>
                     ثبت هزینه
                 </button>
+                @endcan
             </div>
         </div>
 
         <div class="card-body">
-            <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th width="40">ردیف</th>
-                        <th width="160">عنوان</th>
-                        <th width="70">دسته‌بندی</th>
-                        <th width="100">کارمند</th>
-                        <th width="135">تاریخ</th>
-                        <th width="60">روش پرداخت</th>
-                        <th width="130">مبلغ</th>
-                        <th width="120">عملیات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($expenses as $expense)
-                        <tr wire:key="expense-{{ $expense->id }}">
-                            <td>{{ $loop->iteration + ($expenses->currentPage() - 1) * $expenses->perPage() }}</td>
-                            <td>
-                                <div class="fw-bold">{{ $expense->title }}</div>
-                                @if ($expense->reference_number)
-                                    <small class="text-muted">مرجع: {{ $expense->reference_number }}</small>
-                                @endif
-                            </td>
-                            <td>
-                                <span class="badge bg-secondary text-dark">{{ $expense->category?->name }}</span>
-                            </td>
-                            <td>
-                                @if ($expense->employee)
-                                    <span class="badge bg-info text-dark">{{ $expense->employee->full_name }}</span>
-                                @else
-                                    <span class="text-muted">—</span>
-                                @endif
-                            </td>
-                            <td>{{ jalaliDate($expense->expense_date) }}</td>
-                            <td>{{ $expense->payment_method_text }}</td>
-                            <td class="fw-bold text-danger">
-                                {{ number_format($expense->amount) }} {{ setting('currency', '') }}
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-secondary text-dark"
-                                    wire:click="openDetails({{ $expense->id }})" title="مشاهده جزئیات">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-warning text-dark"
-                                    wire:click="openEditModal({{ $expense->id }})" title="ویرایش هزینه">
-                                    <i class="bi bi-pencil-fill"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-danger text-dark"
-                                    wire:click="confirmDelete({{ $expense->id }})" title="حذف هزینه">
-                                    <i class="bi bi-trash-fill"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    @empty
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead>
                         <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">
-                                هیچ هزینه‌ای ثبت نشده است.
-                            </td>
+                            <th width="40">ردیف</th>
+                            <th width="160">عنوان</th>
+                            <th width="70">دسته‌بندی</th>
+                            <th width="100">کارمند</th>
+                            <th width="135">تاریخ</th>
+                            <th width="60">روش پرداخت</th>
+                            <th width="130">مبلغ</th>
+                            <th width="120">عملیات</th>
                         </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse ($expenses as $expense)
+                            <tr wire:key="expense-{{ $expense->id }}">
+                                <td>{{ $loop->iteration + ($expenses->currentPage() - 1) * $expenses->perPage() }}</td>
+                                <td>
+                                    <div class="fw-bold">{{ $expense->title }}</div>
+                                    @if ($expense->reference_number)
+                                        <small class="text-muted">مرجع: {{ $expense->reference_number }}</small>
+                                    @endif
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary text-dark">{{ $expense->category?->name }}</span>
+                                </td>
+                                <td>
+                                    @if ($expense->employee)
+                                        <span
+                                            class="badge bg-info text-dark">{{ $expense->employee->full_name }}</span>
+                                    @else
+                                        <span class="text-muted">—</span>
+                                    @endif
+                                </td>
+                                <td>{{ jalaliDate($expense->expense_date) }}</td>
+                                <td>{{ $expense->payment_method_text }}</td>
+                                <td class="fw-bold text-danger">
+                                    {{ number_format($expense->amount) }} {{ setting('currency', '') }}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-secondary text-dark"
+                                        wire:click="openDetails({{ $expense->id }})" title="مشاهده جزئیات">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    @can('expenses.edit')
+                                    <button type="button" class="btn btn-sm btn-warning text-dark"
+                                        wire:click="openEditModal({{ $expense->id }})" title="ویرایش هزینه">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+                                    @endcan
+                                    @can('expenses.delete')
+                                    <button type="button" class="btn btn-sm btn-danger text-dark"
+                                        wire:click="confirmDelete({{ $expense->id }})" title="حذف هزینه">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                    @endcan
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">
+                                    هیچ هزینه‌ای ثبت نشده است.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
             <div class="mt-3">{{ $expenses->links() }}</div>
         </div>
     </div>
 
-    {{-- کارت پرهزینه‌ترین دسته‌بندی‌های این ماه --}}
+{{--================= کارت پرهزینه‌ترین دسته‌بندی‌های این ماه =================--}}
     @if ($topCategories->isNotEmpty())
         <div class="card mt-4 border-3">
             <div class="card-header">
@@ -210,7 +219,8 @@
                             {{ $tc->category?->name ?? 'بدون دسته' }}
                         </span>
                         <div class="progress flex-grow-1" style="height: 12px;">
-                            <div class="progress-bar bg-warning" style="width: {{ $maxTotal > 0 ? ($tc->total / $maxTotal) * 100 : 0 }}%"></div>
+                            <div class="progress-bar bg-warning"
+                                style="width: {{ $maxTotal > 0 ? ($tc->total / $maxTotal) * 100 : 0 }}%"></div>
                         </div>
                         <span class="fw-bold text-nowrap">
                             {{ number_format($tc->total) }} {{ setting('currency', '') }}
@@ -221,9 +231,9 @@
         </div>
     @endif
 
-    {{-- ============================ مودال افزودن/ویرایش هزینه ============================ --}}
+{{-- =================================== مودال افزودن/ویرایش هزینه =================================== --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="expense-form-modal">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <form wire:submit="save">
@@ -233,7 +243,8 @@
                             <h5 class="modal-title">
                                 {{ $editingId ? 'ویرایش هزینه' : 'ثبت هزینه جدید' }}
                             </h5>
-                            <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
+                            <button type="button" class="btn-close" wire:click="closeModals"
+                                title="بستن"></button>
                         </div>
 
                         <div class="modal-body">
@@ -274,10 +285,11 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">تاریخ هزینه</label>
-                                    <input type="date" wire:model="expense_date"
-                                        class="form-control @error('expense_date') is-invalid @enderror">
-                                    @error('expense_date')
+                                    <label class="form-label">تاریخ هزینه (شمسی)</label>
+                                    <input type="text" wire:model="expense_date_jalali" data-jdp
+                                        autocomplete="off" inputmode="numeric" placeholder="1405/06/11"
+                                        class="form-control @error('expense_date_jalali') is-invalid @enderror">
+                                    @error('expense_date_jalali')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -332,13 +344,13 @@
         </div>
     @endif
 
-    {{-- ============================ مودال جزئیات هزینه ============================ --}}
+{{-- =================================== مودال جزئیات هزینه =================================== --}}
     @if ($showDetailsModal && $detailsExpense)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="expense-details-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-ingo text-dark">
                         <h5 class="modal-title">
                             <i class="bi bi-receipt"></i>
                             جزئیات هزینه
@@ -397,13 +409,13 @@
         </div>
     @endif
 
-    {{-- ============================ مودال تایید حذف هزینه ============================ --}}
+{{-- =================================== مودال تایید حذف هزینه =================================== --}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="expense-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-danger text-dark">
                         <h5 class="modal-title">حذف هزینه</h5>
                         <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
                     </div>
@@ -419,9 +431,9 @@
         </div>
     @endif
 
-    {{-- ============================ مودال افزودن/ویرایش دسته‌بندی ============================ --}}
+{{-- =================================== مودال افزودن/ویرایش دسته‌بندی =================================== --}}
     @if ($showCategoryModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="expense-category-form-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <form wire:submit="saveCategory">
@@ -431,7 +443,8 @@
                             <h5 class="modal-title">
                                 {{ $categoryId ? 'ویرایش دسته‌بندی' : 'افزودن دسته‌بندی هزینه' }}
                             </h5>
-                            <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
+                            <button type="button" class="btn-close" wire:click="closeModals"
+                                title="بستن"></button>
                         </div>
 
                         <div class="modal-body">
@@ -481,13 +494,13 @@
         </div>
     @endif
 
-    {{-- ============================ مودال تایید حذف دسته‌بندی ============================ --}}
+{{-- =================================== مودال تایید حذف دسته‌بندی =================================== --}}
     @if ($showCategoryDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="expense-category-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-danger text-dark">
                         <h5 class="modal-title">حذف دسته‌بندی</h5>
                         <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
                     </div>

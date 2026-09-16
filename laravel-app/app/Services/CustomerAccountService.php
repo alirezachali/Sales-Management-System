@@ -22,6 +22,24 @@ class CustomerAccountService
         ]);
     }
 
+    /**
+     * ثبت پرداخت مشتری (تهاتر بخشی از بدهی نسیه)
+     */
+    public function addPayment(
+        Sale $sale,
+        float $amount,
+        string $description = 'پرداخت'
+    ): CustomerAccountTransaction {
+        return CustomerAccountTransaction::create([
+            'customer_id' => $sale->customer_id,
+            'type' => 'payment',
+            'amount' => $amount,
+            'reference_type' => Sale::class,
+            'reference_id' => $sale->id,
+            'description' => $description,
+        ]);
+    }
+
     public function balance(int $customerId): float
     {
         $transactions = CustomerAccountTransaction::where(

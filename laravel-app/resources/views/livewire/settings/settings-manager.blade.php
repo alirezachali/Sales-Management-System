@@ -1,17 +1,17 @@
-<div dir="rtl">
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
-    {{-- Success Alert --}}
+    {{-- پیام موفقیت --}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
-    {{-- Error Alert --}}
+    {{-- پیام خطا --}}
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
@@ -37,7 +37,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <h3 class="fw-bold mb-1">
-                    <i class="bi bi-gear-fill text-primary"></i>
+                    <i class="bi bi-gear-fill text-fuchsia"></i>
                     تنظیمات سیستم
                 </h3>
                 <small class="text-muted">
@@ -59,49 +59,65 @@
                 <ul class="nav nav-tabs mb-4">
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'store') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'store') active @endif"
                             wire:click="selectTab('store')">
-                            <i class="bi bi-shop text-warning m-2"></i>
+                            <i class="bi bi-shop"></i>
                             اطلاعات فروشگاه
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'sales') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'sales') active @endif"
                             wire:click="selectTab('sales')">
-                            <i class="bi bi-receipt text-warning m-2"></i>
+                            <i class="bi bi-receipt"></i>
                             فروش
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'print') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'loyalty') active @endif"
+                            wire:click="selectTab('loyalty')">
+                            <i class="bi bi-gem"></i>
+                            باشگاه امتیازات
+                        </button>
+                    </li>
+
+                    <li class="nav-item">
+                        <button type="button" class="nav-link @if ($activeTab === 'print') active @endif"
                             wire:click="selectTab('print')">
-                            <i class="bi bi-printer text-warning m-2"></i>
+                            <i class="bi bi-printer"></i>
                             چاپ
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'barcode') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'barcode') active @endif"
                             wire:click="selectTab('barcode')">
-                            <i class="bi bi-upc-scan text-warning m-2"></i>
+                            <i class="bi bi-upc-scan"></i>
                             بارکد و لیبل
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'system') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'system') active @endif"
                             wire:click="selectTab('system')">
-                            <i class="bi bi-cpu text-warning m-2"></i>
+                            <i class="bi bi-cpu"></i>
                             سیستم
                         </button>
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link m-1 @if ($activeTab === 'backup') active @endif"
+                        <button type="button" class="nav-link @if ($activeTab === 'hotkeys') active @endif"
+                            wire:click="selectTab('hotkeys')">
+                            <i class="bi bi-keyboard"></i>
+                            کلیدهای میانبر
+                        </button>
+                    </li>
+
+                    <li class="nav-item">
+                        <button type="button" class="nav-link @if ($activeTab === 'backup') active @endif"
                             wire:click="selectTab('backup')">
-                            <i class="bi bi-database text-warning m-2"></i>
+                            <i class="bi bi-database"></i>
                             پشتیبان گیری
                         </button>
                     </li>
@@ -109,7 +125,7 @@
 
                 <div class="tab-content">
 
-                    {{-- ============================ اطلاعات فروشگاه ============================ --}}
+                    {{-- ============================ تب تنظیمات اطلاعات فروشگاه ============================ --}}
                     @if ($activeTab === 'store')
                         <div class="row">
                             <div class="col-lg-8">
@@ -219,7 +235,7 @@
                         </div>
                     @endif
 
-                    {{-- ============================ فروش ============================ --}}
+                    {{-- ============================ تب تنظیمات فروش ============================ --}}
                     @if ($activeTab === 'sales')
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
@@ -336,7 +352,46 @@
                         </div>
                     @endif
 
-                    {{-- ============================ چاپ ============================ --}}
+                    {{-- ============================ تب تنظیمات باشگاه امتیازات ============================ --}}
+                    @if ($activeTab === 'loyalty')
+                        <div class="card border-4 shadow-sm">
+                            <div class="card-header">
+                                <strong>
+                                    <i class="bi bi-gem"></i>
+                                    باشگاه امتیازات مشتریان
+                                </strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-4">
+                                    <div class="col-md-4">
+                                        <label class="form-label">هر امتیاز به‌ازای خرید (تومان)</label>
+                                        <input type="number" class="form-control"
+                                            wire:model="data.loyalty_amount_per_point">
+                                        <small class="text-muted">مثلاً ۱۰۰۰۰ یعنی هر ۱۰ هزار تومان خرید = ۱ امتیاز</small>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">ارزش هر امتیاز (تومان)</label>
+                                        <input type="number" class="form-control"
+                                            wire:model="data.loyalty_point_value">
+                                        <small class="text-muted">هنگام تبدیل امتیاز به تخفیف در صندوق</small>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-check form-switch mt-4">
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="data.loyalty_enabled" id="loyalty_enabled">
+                                            <label class="form-check-label" for="loyalty_enabled">
+                                                فعال‌سازی سیستم امتیازدهی
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- ============================ تب تنظیمات چاپ ============================ --}}
                     @if ($activeTab === 'print')
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
@@ -441,7 +496,7 @@
                         </div>
                     @endif
 
-                    {{-- ============================ بارکد و لیبل ============================ --}}
+                    {{-- ============================ تب تنظیمات بارکد و لیبل ============================ --}}
                     @if ($activeTab === 'barcode')
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
@@ -544,7 +599,7 @@
                         </div>
                     @endif
 
-                    {{-- ============================ سیستم ============================ --}}
+                    {{-- ============================ تب تنظیمات سیستم ============================ --}}
                     @if ($activeTab === 'system')
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
@@ -664,7 +719,185 @@
                         </div>
                     @endif
 
-                    {{-- ============================ پشتیبان‌گیری ============================ --}}
+                     {{-- ============================ تب تنظیمات کلیدهای میانبر ============================ --}}
+                    @if ($activeTab === 'hotkeys')
+                        <div class="card border-4 shadow-sm">
+                            <div class="card-header">
+                                <strong>
+                                    <i class="bi bi-keyboard"></i>
+                                    کلیدهای میانبر
+                                </strong>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="form-check form-switch mb-4">
+                                    <input class="form-check-input" type="checkbox"
+                                        wire:model="data.hotkeys_enabled" id="hotkeys_enabled">
+                                    <label class="form-check-label" for="hotkeys_enabled">
+                                        فعال بودن کلیدهای میانبر
+                                    </label>
+                                </div>
+
+                                <div class="alert alert-info d-flex align-items-center">
+                                    <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+                                    <div>
+                                        برای تعیین کلید، روی کادر مربوطه کلیک کنید و ترکیب دلخواه
+                                        (مثلاً <code>Ctrl+Alt+N</code> یا <code>F2</code>) را فشار دهید.
+                                        برای غیرفعال کردن یک میانبر، روی دکمه «×» کنار آن کلیک کنید.
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover align-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>اقدام</th>
+                                                <th>صفحه</th>
+                                                <th width="220">کلید میانبر</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (hotkeyActions() as $id => $action)
+                                                <tr wire:key="hotkey-row-{{ $id }}">
+                                                    <td>
+                                                        <div class="fw-bold">{{ $action['label'] }}</div>
+                                                        <small
+                                                            class="text-muted">{{ $action['description'] }}</small>
+                                                    </td>
+                                                    <td>{{ $action['page'] }}</td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <input type="text" readonly
+                                                                id="hotkey_input_{{ $id }}"
+                                                                wire:model="data.hotkey_{{ $id }}"
+                                                                class="form-control hotkey-capture text-center"
+                                                                data-hotkey-target="data.hotkey_{{ $id }}"
+                                                                placeholder="کلیدی ست نشده"
+                                                                title="برای تعیین کلید کلیک کنید">
+                                                            <button type="button"
+                                                                class="btn btn-outline-danger hotkey-clear"
+                                                                data-target="hotkey_input_{{ $id }}"
+                                                                wire:click="$set('data.hotkey_{{ $id }}', '')"
+                                                                title="حذف این کلید میانبر">
+                                                                <i class="bi bi-x-lg"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div wire:ignore.self>
+                                    @script
+                                        <script>
+                                            if (!window.__hotkeySettingsBound) {
+                                                window.__hotkeySettingsBound = true;
+
+                                                document.addEventListener('click', function(e) {
+                                                    const input = e.target.closest('.hotkey-capture');
+                                                    if (!input) return;
+
+                                                    input.dataset.capturing = '1';
+                                                    input.value = 'کلید مورد نظر را فشار دهید...';
+                                                    input.focus();
+                                                });
+
+                                                document.addEventListener('keydown', function(e) {
+                                                    const input = document.activeElement;
+                                                    if (!input || !input.classList || !input.classList.contains('hotkey-capture')) {
+                                                        return;
+                                                    }
+
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+
+                                                    if (input.dataset.capturing !== '1') {
+                                                        return;
+                                                    }
+
+                                                    if (['Control', 'Alt', 'Shift', 'Meta', 'CapsLock', 'Tab'].includes(e.key)) {
+                                                        return;
+                                                    }
+
+                                                    if (e.key === 'Escape') {
+                                                        $wire.set(input.dataset.hotkeyTarget, input
+                                                            .getAttribute('data-original') || '');
+                                                        input.value = input.getAttribute('data-original') || '';
+                                                        delete input.dataset.capturing;
+                                                        input.blur();
+                                                        return;
+                                                    }
+
+                                                    const combo = hotkeyComboFromEvent(e);
+
+                                                    if (combo) {
+                                                        input.value = combo;
+                                                        input.setAttribute('data-original', combo);
+                                                        $wire.set(input.dataset.hotkeyTarget, combo);
+                                                    }
+
+                                                    delete input.dataset.capturing;
+                                                }, true);
+
+                                                document.addEventListener('focusout', function(e) {
+                                                    const input = e.target.closest ? e.target.closest('.hotkey-capture') : null;
+                                                    if (!input || input.dataset.capturing !== '1') return;
+
+                                                    input.value = input.getAttribute('data-original') || '';
+                                                    delete input.dataset.capturing;
+                                                });
+
+                                                window.hotkeyComboFromEvent = function(e) {
+                                                    const special = {
+                                                        ' ': 'Space',
+                                                        'ArrowUp': 'Up',
+                                                        'ArrowDown': 'Down',
+                                                        'ArrowLeft': 'Left',
+                                                        'ArrowRight': 'Right',
+                                                        'Escape': 'Esc',
+                                                        'Enter': 'Enter',
+                                                    };
+
+                                                    let key = special[e.key] || e.key;
+
+                                                    if (/^F\d{1,2}$/.test(key) ||
+                                                        ['Esc', 'Enter', 'Space', 'Up', 'Down', 'Left',
+                                                            'Right', 'Ins', 'Del', 'Home', 'End',
+                                                            'PageUp', 'PageDown'
+                                                        ].includes(key)) {
+                                                        // کلیدهای ویژه بدون تغییر
+                                                    } else if (key.length === 1) {
+                                                        key = key.toUpperCase();
+                                                    } else {
+                                                        return null;
+                                                    }
+
+                                                    const mods = [];
+                                                    if (e.ctrlKey) mods.push('Ctrl');
+                                                    if (e.altKey) mods.push('Alt');
+                                                    if (e.shiftKey) mods.push('Shift');
+                                                    if (e.metaKey) mods.push('Win');
+
+                                                    if (mods.length === 0 && !/^F\d{1,2}$/.test(key) &&
+                                                        key !== 'Enter') {
+                                                        return null;
+                                                    }
+
+                                                    return mods.concat(key).join('+');
+                                                };
+                                            }
+                                        </script>
+                                    @endscript
+                                </div>
+
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- ============================ تب تنظیمات پشتیبان‌گیری ============================ --}}
                     @if ($activeTab === 'backup')
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
@@ -778,7 +1011,7 @@
 
                                 <hr class="my-4">
 
-                                {{-- فهرست نسخه‌های پشتیبان موجود --}}
+                                {{--===== فهرست نسخه‌های پشتیبان موجود =====--}}
                                 <h5 class="mb-3">
                                     <i class="bi bi-clock-history"></i>
                                     نسخه‌های پشتیبان موجود

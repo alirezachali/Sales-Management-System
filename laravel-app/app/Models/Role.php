@@ -8,6 +8,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Role extends Model
 {
+    /** نام نقش مدیر کل که به تمام بخش‌ها دسترسی دارد */
+    public const SUPER_ADMIN = 'super-admin';
+
+    public const ADMIN = 'admin';
+
+    public const CASHIER = 'cashier';
+
+    public const WAREHOUSE = 'warehouse';
+
+    public const ACCOUNTANT = 'accountant';
+
     protected $fillable = [
         'name',
         'display_name',

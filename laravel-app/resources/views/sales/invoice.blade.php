@@ -12,7 +12,6 @@
     @include('sales.invoice.totals')
     @include('sales.invoice.footer')
 </div>
-<div style="margin-top:10px"> {{ now()->format('Y/m/d H:i:s') }} </div>
 
 <script>
 window.onload = function () {

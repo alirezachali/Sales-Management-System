@@ -66,7 +66,7 @@ class SaleController extends Controller
             $data['discount'] ?? 0,
             $data['payment_type'],
             $data['customer_id'] ?? null,
-            $data['paid_amount'],
+            $data['payments'] ?? [],
         );
 
         return response()->json([

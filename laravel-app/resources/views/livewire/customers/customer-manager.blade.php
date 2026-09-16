@@ -1,23 +1,24 @@
 <div dir="rtl">
 
-    {{-- Success/Error Alerts --}}
+{{--=================== نمایش پیغام‌های موفقیت ===================--}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
+{{--=================== نمایش پیغام‌های خطا ===================--}}
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
-    {{-- کارت‌های آماری --}}
+{{--=================== کارت‌های آماری ===================--}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
@@ -53,8 +54,8 @@
         </div>
     </div>
 
-    {{-- فیلترها --}}
-    <div class="card mb-4 border-3">
+{{--=================== فیلترها ===================--}}
+    <div class="card mb-4">
         <div class="card-body">
             <div class="row g-2">
                 <div class="col-md-7">
@@ -79,46 +80,42 @@
         </div>
     </div>
 
-    {{-- جدول مشتریان --}}
-    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
+{{--============================ جدول مشتریان ============================--}}
+    <div class="card shadow-sm" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
             <h3 class="fw-bold mb-1">
-                <i class="bi bi-person-standing-dress text-primary"></i>
+                <i class="bi bi-person-standing-dress text-fuchsia"></i>
                 باشگاه مشتریان
             </h3>
             <small class="text-muted">مدیریت اطلاعات مشتریان و رده های باشگاه مشتریان</small>
             </div>
-            <div class="d-flex gap-3">
+            <div class="d-flex">
 
-                <a href="{{ route('customer-roles.index') }}">
-                    <button class="btn btn-info text-dark" title="مدیریت رده‌های باشگاه مشتریان">
-                        <i class="bi bi-award"></i>
-                        مدیریت رده‌های باشگاه
-                    </button>
-                </a>
-
-                <button type="button" class="btn btn-primary" wire:click="openCreateModal" title="افزودن مشتری جدید">
+                @can('customers.create')
+                <button type="button" class="btn btn-primary" wire:click="openCreateModal" 
+                data-hotkey="customer_add" title="افزودن مشتری جدید{{ hotkeyHint('customer_add') }}">
                     <i class="bi bi-person-plus"></i>
                     افزودن مشتری
                 </button>
+                @endcan
 
             </div>
         </div>
 
-        <div class="card-body">
-            <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
+        <div class="card-body table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
                     <tr>
-                        <th width="40">ردیف</th>
+                        <th width="80">ردیف</th>
                         <th>نام مشتری</th>
-                        <th width="90">موبایل</th>
-                        <th width="100">رده باشگاه</th>
+                        <th width="150">موبایل</th>
+                        <th width="150">رده</th>
                         <th width="60">تعداد خرید</th>
                         <th>مبلغ کل خرید</th>
-                        <th width="80">وضعیت</th>
-                        <th width="160">عملیات</th>
+                        <th width="120">وضعیت</th>
+                        <th width="200">عملیات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,42 +126,46 @@
                             <td>{{ $customer->mobile }}</td>
                             <td>
                                 @if ($customer->role)
-                                    <span class="badge bg-{{ $customer->role->color }} text-dark">
-                                        <i class="bi {{ $customer->role->icon }}"></i>
-                                        {{ $customer->role->name }}
+                                    <span class="badge bg-{{ $customer->role->color }}-subtle text-{{ $customer->role->color }}-emphasis">
+                                        <i class="bi {{ $customer->role->icon }}"></i> {{ $customer->role->name }}
                                     </span>
                                 @else
-                                    <span class="badge bg-secondary-lt text-dark">بدون رده</span>
+                                    <span class="text-muted">—</span>
                                 @endif
                             </td>
                             <td>{{ number_format($customer->purchase_count) }}</td>
-                            <td>{{ number_format($customer->total_purchase_amount) }} {{ setting('currency', '') }}
-                            </td>
+                            <td>{{ number_format($customer->total_purchase_amount) }} {{ setting('currency', '') }}</td>
                             <td>
                                 @if ($customer->is_active)
-                                    <span class="badge bg-success text-dark">فعال</span>
+                                    <span class="badge bg-success-subtle text-success-emphasis">فعال</span>
                                 @else
-                                    <span class="badge bg-danger text-dark">غیرفعال</span>
+                                    <span class="badge bg-danger-subtle text-danger-emphasis">غیرفعال</span>
                                 @endif
                             </td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-warning text-dark"
+                                @can('customers.edit')
+                                <button type="button" class="btn btn-sm btn-outline-warning"
                                     wire:click="openEditModal({{ $customer->id }})" title="ویرایش مشتری">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-info text-dark"
+                                @endcan
+                                <button type="button" class="btn btn-sm btn-outline-info"
                                     wire:click="openLedger({{ $customer->id }})" title="مشاهده گردش حساب مشتری">
                                     <i class="bi bi-wallet-fill"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-secondary text-dark"
+                                @can('customers.edit')
+                                <button type="button" class="btn btn-sm btn-outline-secondary"
                                     wire:click="recalculateRole({{ $customer->id }})"
                                     title="بازمحاسبه‌ی رده‌ی این مشتری بر اساس آمار خرید فعلی">
                                     <i class="bi bi-arrow-repeat"></i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-danger text-dark"
+                                @endcan
+                                @can('customers.delete')
+                                <button type="button" class="btn btn-sm btn-outline-danger"
                                     wire:click="confirmDelete({{ $customer->id }})" title="حذف مشتری">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
+                                @endcan
                             </td>
                         </tr>
                     @empty
@@ -181,9 +182,9 @@
         </div>
     </div>
 
-    {{-- ============================ مودال افزودن/ویرایش مشتری ============================ --}}
+{{-- =============================== مودال افزودن/ویرایش مشتری =============================== --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="customer-form-modal">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <form wire:submit="save">
@@ -238,8 +239,13 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">تاریخ تولد</label>
-                                    <input type="date" wire:model="birth_date" class="form-control">
+                                    <label class="form-label">تاریخ تولد (شمسی)</label>
+                                    <input type="text" wire:model="birth_date_jalali" data-jdp
+                                        autocomplete="off" inputmode="numeric" placeholder="1380/05/10"
+                                        class="form-control @error('birth_date_jalali') is-invalid @enderror">
+                                    @error('birth_date_jalali')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-4">
@@ -315,13 +321,13 @@
         </div>
     @endif
 
-    {{-- ============================ مودال تایید حذف ============================ --}}
+{{-- =================================== مودال تایید حذف ==================================== --}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="customer-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-danger text-dark">
                         <h5 class="modal-title">حذف مشتری</h5>
                         <button type="button" class="btn-close" wire:click="closeModals" title="بستن"></button>
                     </div>
@@ -337,13 +343,13 @@
         </div>
     @endif
 
-    {{-- ============================ مودال گردش حساب مشتری ============================ --}}
+{{-- ================================= مودال گردش حساب مشتری ================================= --}}
     @if ($showLedgerModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="customer-ledger-modal">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-info text-dark">
                         <h5 class="modal-title">
                             <i class="bi bi-wallet2"></i>
                             گردش حساب:
@@ -377,7 +383,7 @@
                                     <tbody>
                                         @forelse ($ledgerTransactions as $transaction)
                                             <tr wire:key="ledger-{{ $transaction->id }}">
-                                                <td>{{ $transaction->created_at }}</td>
+                                                <td>{{ jalaliDateTime($transaction->created_at) }}</td>
                                                 <td>
                                                     @switch($transaction->type)
                                                         @case('sale')

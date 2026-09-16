@@ -1,60 +1,64 @@
-<div dir="rtl">
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
-    {{-- نمایش پیغام‌های موفقیت / خطا --}}
+    {{-- پیام موفقیت --}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
+    {{-- پیام خطا --}}
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
-    {{-- کارت‌های آماری --}}
+{{--================== کارت‌های آماری ==================--}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">تعداد کل مجوزها</div>
                     <div class="h1 mb-0">
-                        {{-- {{ $totalCategories }} --}}97
+                        {{ $totalPermissions }}
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
-                    <div class="subheader">مجوزهای فعال</div>
+                    <div class="subheader">مجوزهای ست‌شده برای این نقش</div>
                     <div class="h1 mb-0 text-success">
-                        {{-- {{ $activeCategories }} --}}97
+                        {{ $selectedCount }}
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
-                    <div class="subheader">مجوزهای غیرفعال</div>
+                    <div class="subheader">مجوزهای باقی‌مانده (ست‌نشده)</div>
                     <div class="h1 mb-0 text-danger">
-                        {{-- {{ $inactiveCategories }} --}}0
+                        {{ $remainingCount }}
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
-                    <div class="subheader">تعداد گروه های مجوز</div>
+                    <div class="subheader">گروه‌های دارای حداقل یک مجوز فعال</div>
                     <div class="h1 mb-0 text-warning">
-                        {{-- {{ $emptyCategories }} --}}23
+                        {{ $touchedGroupsCount }}
                     </div>
                 </div>
             </div>
@@ -64,18 +68,26 @@
 
     <form wire:submit="save">
 
-        {{-- هدر صفحه --}}
+    {{--=============================== هدر صفحه ===============================--}}
         <div class="card shadow-sm mb-4 border-3" wire:loading.class="opacity-50">
             <div class="card-header d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h3 class="fw-bold mb-1">
-                        دسترسی های رول :
+                    <h2 class="fw-bold mb-1">
+                        مجوزهای نقش:
                         <span class="badge bg-{{ $role->color ?? 'secondary' }} text-dark">
                             {{ $role->name }}
                             <i class="{{ $role->icon }}"></i>
                         </span>
-                    </h3>
-                    <small class="text-muted">مدیریت مجوزها و سطح دسترسی به بخش های سیستم توسط هر نقش</small>
+                    </h2>
+                    <div>
+                        <div>
+                            ویرایش و تعیین مجوز برای مشخص کردن سطح دسترسی نقش :
+                            <span class="badge bg-info text-dark">
+                                {{ $role->display_name }}
+                            </span>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="d-flex gap-3">
@@ -94,13 +106,15 @@
             </div>
         </div>
 
+
+    {{--======================== کارت های گروه های مجوز ========================--}}
         <div class="permissions-grid">
 
             @foreach ($groups as $group)
                 <div class="permission-column">
-                    <div class="card shadow-sm border-3">
+                    <div class="card shadow-sm">
 
-                        <div class="card-header d-flex justify-content-between align-items-center bg-secondary text-dark">
+                        <div class="card-header d-flex justify-content-between align-items-center text-fuchsia">
                             <strong>
                                 <i class="bi {{ $group->icon }}"></i>
                                 {{ $group->name }}
@@ -120,8 +134,8 @@
                             <div class="form-check form-switch m-0">
                                 <input class="form-check-input" type="checkbox" id="group-{{ $group->id }}"
                                     wire:click="toggleGroup({{ $group->id }})" @checked($groupAllChecked)>
-                                <label class="form-check-label small" for="group-{{ $group->id }}">
-                                    همه
+                                <label class="form-check-label small text-muted" for="group-{{ $group->id }}">
+                                    انخاب همه
                                 </label>
                             </div>
                         </div>

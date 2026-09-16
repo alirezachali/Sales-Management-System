@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Permission;
 use App\Models\PermissionGroup;
+use App\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -141,6 +142,10 @@ class PermissionSeeder extends Seeder
                 'sort_order' => 9,
                 'permissions' => [
                     [
+                        'name' => 'pos.view',
+                        'display_name' => 'مشاهده صندوق فروش',
+                    ],
+                    [
                         'name' => 'sales.view',
                         'display_name' => 'مشاهده فاکتورهای فروش',
                     ],
@@ -221,6 +226,22 @@ class PermissionSeeder extends Seeder
                     [
                         'name' => 'customers.balance',
                         'display_name' => 'بالانس مشتری',
+                    ],
+                    [
+                        'name' => 'customers.debtors',
+                        'display_name' => 'مشاهده مشتریان بدهکار',
+                    ],
+                    [
+                        'name' => 'customers.roles_view',
+                        'display_name' => 'مشاهده رده های باشگاه مشتریان',
+                    ],
+                    [
+                        'name' => 'customers.roles_add',
+                        'display_name' => 'افزودن رده جدید به باشگاه مشتریان',
+                    ],
+                    [
+                        'name' => 'customers.roles_edit',
+                        'display_name' => 'ویرایش رده های باشگاه مشتریان',
                     ],
                 ],
             ],
@@ -565,6 +586,253 @@ class PermissionSeeder extends Seeder
                     ],
                 ],
             ],
+            [
+                'name' => 'کارکنان',
+                'icon' => 'bi-person-badge',
+                'sort_order' => 24,
+                'permissions' => [
+                    [
+                        'name' => 'employees.view',
+                        'display_name' => 'مشاهده لیست کارکنان',
+                    ],
+                    [
+                        'name' => 'employees.create',
+                        'display_name' => 'ایجاد کارمند جدید',
+                    ],
+                    [
+                        'name' => 'employees.edit',
+                        'display_name' => 'ویرایش کارمند',
+                    ],
+                    [
+                        'name' => 'employees.delete',
+                        'display_name' => 'حذف کارمند',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'مدیریت مالی',
+                'icon' => 'bi-cash-coin',
+                'sort_order' => 25,
+                'permissions' => [
+                    [
+                        'name' => 'financial.view',
+                        'display_name' => 'مشاهده مدیریت مالی',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'بدهی ها',
+                'icon' => 'bi-journal-minus',
+                'sort_order' => 26,
+                'permissions' => [
+                    [
+                        'name' => 'debts.view',
+                        'display_name' => 'مشاهده مدیریت بدهی ها',
+                    ],
+                    [
+                        'name' => 'debts.create',
+                        'display_name' => 'ثبت بدهی جدید',
+                    ],
+                    [
+                        'name' => 'debts.edit',
+                        'display_name' => 'ویرایش بدهی',
+                    ],
+                    [
+                        'name' => 'debts.delete',
+                        'display_name' => 'حذف بدهی',
+                    ],
+                    [
+                        'name' => 'debts.settle',
+                        'display_name' => 'تسویه بدهی',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'لیست کارها',
+                'icon' => 'bi-check2-square',
+                'sort_order' => 27,
+                'permissions' => [
+                    [
+                        'name' => 'todos.view',
+                        'display_name' => 'مشاهده لیست کارها',
+                    ],
+                    [
+                        'name' => 'todos.create',
+                        'display_name' => 'ایجاد کار جدید',
+                    ],
+                    [
+                        'name' => 'todos.edit',
+                        'display_name' => 'ویرایش کار',
+                    ],
+                    [
+                        'name' => 'todos.delete',
+                        'display_name' => 'حذف کار',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'انبارها',
+                'icon' => 'bi-buildings',
+                'sort_order' => 28,
+                'permissions' => [
+                    [
+                        'name' => 'warehouses.view',
+                        'display_name' => 'مشاهده انبارها',
+                    ],
+                    [
+                        'name' => 'warehouses.create',
+                        'display_name' => 'ایجاد انبار جدید',
+                    ],
+                    [
+                        'name' => 'warehouses.edit',
+                        'display_name' => 'ویرایش انبار',
+                    ],
+                    [
+                        'name' => 'warehouses.delete',
+                        'display_name' => 'حذف انبار',
+                    ],
+                    [
+                        'name' => 'transfers.view',
+                        'display_name' => 'مشاهده انتقالات بین انبار',
+                    ],
+                    [
+                        'name' => 'transfers.create',
+                        'display_name' => 'ایجاد انتقال بین انبار',
+                    ],
+                    [
+                        'name' => 'transfers.receive',
+                        'display_name' => 'تأیید دریافت انتقال',
+                    ],
+                    [
+                        'name' => 'counts.view',
+                        'display_name' => 'مشاهده انبارگردانی',
+                    ],
+                    [
+                        'name' => 'counts.create',
+                        'display_name' => 'شروع انبارگردانی',
+                    ],
+                    [
+                        'name' => 'counts.edit',
+                        'display_name' => 'ویرایش برگه انبارگردانی',
+                    ],
+                    [
+                        'name' => 'counts.finalize',
+                        'display_name' => 'نهایی کردن انبارگردانی',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'صندوق‌ها',
+                'icon' => 'bi-safe',
+                'sort_order' => 29,
+                'permissions' => [
+                    [
+                        'name' => 'cashboxes.view',
+                        'display_name' => 'مشاهده صندوق‌ها',
+                    ],
+                    [
+                        'name' => 'cashboxes.create',
+                        'display_name' => 'ایجاد صندوق جدید',
+                    ],
+                    [
+                        'name' => 'cashboxes.edit',
+                        'display_name' => 'ویرایش صندوق',
+                    ],
+                    [
+                        'name' => 'cashboxes.delete',
+                        'display_name' => 'حذف صندوق',
+                    ],
+                    [
+                        'name' => 'cashboxes.deposit',
+                        'display_name' => 'واریز به صندوق',
+                    ],
+                    [
+                        'name' => 'cashboxes.withdraw',
+                        'display_name' => 'برداشت از صندوق',
+                    ],
+                    [
+                        'name' => 'cashboxes.transfer',
+                        'display_name' => 'انتقال وجه بین صندوق‌ها',
+                    ],
+                    [
+                        'name' => 'cashboxes.adjust',
+                        'display_name' => 'اصلاح موجودی صندوق',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'حقوق و دستمزد',
+                'icon' => 'bi-cash-coin',
+                'sort_order' => 30,
+                'permissions' => [
+                    [
+                        'name' => 'payrolls.view',
+                        'display_name' => 'مشاهده حقوق و دستمزد',
+                    ],
+                    [
+                        'name' => 'payrolls.create',
+                        'display_name' => 'محاسبه فیش حقوقی',
+                    ],
+                    [
+                        'name' => 'payrolls.edit',
+                        'display_name' => 'ویرایش فیش حقوقی',
+                    ],
+                    [
+                        'name' => 'payrolls.approve',
+                        'display_name' => 'تأیید فیش حقوقی',
+                    ],
+                    [
+                        'name' => 'payrolls.pay',
+                        'display_name' => 'پرداخت حقوق',
+                    ],
+                    [
+                        'name' => 'attendance.view',
+                        'display_name' => 'مشاهده حضور و غیاب',
+                    ],
+                    [
+                        'name' => 'attendance.edit',
+                        'display_name' => 'ثبت و ویرایش حضور و غیاب',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'باشگاه امتیازات',
+                'icon' => 'bi-gem',
+                'sort_order' => 31,
+                'permissions' => [
+                    [
+                        'name' => 'loyalty.view',
+                        'display_name' => 'مشاهده امتیازات مشتریان',
+                    ],
+                    [
+                        'name' => 'loyalty.redeem',
+                        'display_name' => 'استفاده از امتیاز مشتری',
+                    ],
+                    [
+                        'name' => 'loyalty.adjust',
+                        'display_name' => 'تنظیم دستی امتیاز',
+                    ],
+                ],
+            ],
+            [
+                'name' => 'پیام‌ها',
+                'icon' => 'bi-envelope-paper',
+                'sort_order' => 32,
+                'permissions' => [
+                    [
+                        'name' => 'messages.view',
+                        'display_name' => 'مشاهده پیام‌های ارسالی',
+                    ],
+                    [
+                        'name' => 'messages.create',
+                        'display_name' => 'ارسال پیام به کاربران',
+                    ],
+                    [
+                        'name' => 'messages.delete',
+                        'display_name' => 'حذف پیام ارسالی',
+                    ],
+                ],
+            ],
         ];
 
         foreach ($modules as $module) {
@@ -588,6 +856,41 @@ class PermissionSeeder extends Seeder
                         'display_name' => $permission['display_name'],
                     ]
                 );
+            }
+        }
+
+        /*
+         * اعطای هوشمند مجوزهای جدید به نقش‌های پیش‌فرض:
+         * هر مجوزی که تا الان به هیچ نقشی نداده شده، بر اساس الگوی نام به
+         * نقش‌های مناسب اضافه می‌شود (super-admin همیشه همه‌کاره است).
+         */
+        $roleMap = [
+            'admin' => ['*'],
+            'cashier' => ['cashboxes.*', 'loyalty.*', 'pos.*', 'sales.*'],
+            'accountant' => ['cashboxes.*', 'payrolls.*', 'attendance.view', 'financial.view', 'reports.*'],
+            'warehouse' => ['warehouses.view', 'transfers.*', 'counts.*', 'stocks.*'],
+        ];
+
+        foreach ($roleMap as $roleName => $patterns) {
+            $role = Role::where('name', $roleName)->first();
+
+            if (! $role) {
+                continue;
+            }
+
+            $granted = $role->permissions()->pluck('permissions.id')->all();
+
+            $candidateIds = Permission::query()
+                ->whereNotIn('id', $granted)
+                ->pluck('id', 'name')
+                ->filter(fn (int $id, string $name) => collect($patterns)
+                    ->contains(fn (string $pattern) => $pattern === $name || fnmatch($pattern, $name)))
+                ->values()
+                ->all();
+
+            if ($candidateIds) {
+                $role->permissions()->attach($candidateIds);
+                cache()->forget("role-permissions-{$role->id}");
             }
         }
     }

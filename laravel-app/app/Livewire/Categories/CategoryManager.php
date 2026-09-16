@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Categories;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Category;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -10,6 +11,7 @@ use Livewire\WithPagination;
 class CategoryManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -66,9 +68,9 @@ class CategoryManager extends Component
     protected function messages(): array
     {
         return [
-            'name.required' => 'وارد کردن نام دسته‌بندی الزامی است.',
-            'name.unique'   => 'این نام دسته‌بندی قبلاً ثبت شده است.',
-            'name.max'      => 'نام دسته‌بندی نمی‌تواند بیشتر از ۱۰۰ کاراکتر باشد.',
+            'name.required' => __('categories.validation.name_required'),
+            'name.unique'   => __('categories.validation.name_unique'),
+            'name.max'      => __('categories.validation.name_max'),
         ];
     }
 
@@ -98,6 +100,8 @@ class CategoryManager extends Component
 
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'categories.edit' : 'categories.create');
+
         $this->validate();
 
         $data = [
@@ -108,10 +112,10 @@ class CategoryManager extends Component
 
         if ($this->editingId) {
             Category::findOrFail($this->editingId)->update($data);
-            session()->flash('success', 'دسته‌بندی با موفقیت ویرایش شد.');
+            session()->flash('success', __('categories.messages.updated'));
         } else {
             Category::create($data);
-            session()->flash('success', 'دسته‌بندی با موفقیت ایجاد شد.');
+            session()->flash('success', __('categories.messages.created'));
         }
 
         $this->showFormModal = false;
@@ -135,12 +139,14 @@ class CategoryManager extends Component
 
     public function delete(): void
     {
+        $this->authorizeAction('categories.delete');
+
         if ($this->deletingId) {
             $category = Category::findOrFail($this->deletingId);
 
             // دسته‌بندی دارای کالا قابل حذف نیست
             if ($category->products()->exists()) {
-                session()->flash('error', 'این دسته‌بندی دارای کالا است و قابل حذف نیست.');
+                session()->flash('error', __('categories.messages.delete_blocked'));
                 $this->showDeleteModal = false;
                 $this->deletingId = null;
 
@@ -148,7 +154,7 @@ class CategoryManager extends Component
             }
 
             $category->delete();
-            session()->flash('success', 'دسته‌بندی با موفقیت حذف شد.');
+            session()->flash('success', __('categories.messages.deleted'));
         }
 
         $this->showDeleteModal = false;

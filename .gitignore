@@ -33,3 +33,5 @@ auth.json
 .vscode
 .vscode/settings.json
 .kilo
+
+.ohmyagent

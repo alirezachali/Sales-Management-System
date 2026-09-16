@@ -19,7 +19,7 @@ class CheckoutRequest extends FormRequest
             'cart' => [
                 'required',
                 'array',
-                'min:1'
+                'min:1',
             ],
             'cart.*.id' => [
                 'required',
@@ -39,10 +39,18 @@ class CheckoutRequest extends FormRequest
             // روش پرداخت حتما باید انتخاب شود
             'payment_type' => [
                 'required',
-                Rule::in(['cash', 'card', 'credit']),
+                Rule::in(['cash', 'card', 'mixed', 'credit']),
             ],
-            'paid_amount' => [
-                'required',
+            'payments' => [
+                'nullable',
+                'array',
+            ],
+            'payments.*.type' => [
+                'required_with:payments',
+                Rule::in(['cash', 'card']),
+            ],
+            'payments.*.amount' => [
+                'required_with:payments',
                 'numeric',
                 'min:0',
             ],

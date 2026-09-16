@@ -1,0 +1,51 @@
+/* ============ دکمه بازگشت به بالای صفحه ============ */
+
+/* کل صفحه اسکرول نرم داشته باشد */ 
+html {
+    scroll-behavior: smooth;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 50px;
+    /* در چیدمان RTL سمت راستِ پایین صفحه */
+    right: 165px;
+    z-index: 1050;
+
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 50%;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(5, 5, 5, 0.527);
+    color: #fcf9f9;
+    font-size: 30px;
+    line-height: 1;
+
+    box-shadow: 0 4px 9px rgba(10, 10, 10, 0.507);
+
+    /* انیمیشن ظاهر/محو شدن */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px) scale(.85);
+    transition: opacity .5s ease, transform .6s ease, visibility .5s ease, background-color .5s ease;
+}
+
+.back-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.back-to-top:hover {
+    background: color-mix(in srgb, var(--bs-primary) 85%, #000);
+    transform: translateY(-3px);
+}
+
+.back-to-top:active {
+    transform: translateY(0) scale(.92);
+}

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Roles;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Role;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -10,6 +11,7 @@ use Livewire\WithPagination;
 class RoleManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -93,6 +95,8 @@ class RoleManager extends Component
 
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'roles.edit' : 'roles.create');
+
         $validated = $this->validate();
 
         if ($this->editingId) {
@@ -124,6 +128,8 @@ class RoleManager extends Component
 
     public function delete(): void
     {
+        $this->authorizeAction('roles.delete');
+
         if ($this->deletingId) {
             $role = Role::findOrFail($this->deletingId);
 

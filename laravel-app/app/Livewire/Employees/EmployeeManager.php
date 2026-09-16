@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Employees;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Employee;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -10,6 +11,7 @@ use Livewire\WithPagination;
 class EmployeeManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -32,7 +34,11 @@ class EmployeeManager extends Component
     public ?string $mobile = null;
     public ?string $national_code = null;
     public ?string $job_title = null;
+    public ?string $address = null;
+    /** تاریخ میلادی برای پردازش سمت سرور */
     public ?string $hired_at = null;
+    /** تاریخ شمسی برای نمایش و انتخاب توسط کاربر (مثل 1405/06/11) */
+    public ?string $hired_at_jalali = null;
     public ?string $base_salary = null;
     public ?string $notes = null;
     public bool $is_active = true;
@@ -80,7 +86,9 @@ class EmployeeManager extends Component
                     : Rule::unique('employees', 'national_code'),
             ],
             'job_title' => ['nullable', 'string', 'max:150'],
+            'address' => ['nullable', 'string', 'max:500'],
             'hired_at' => ['nullable', 'date'],
+            'hired_at_jalali' => ['nullable', 'string'],
             'base_salary' => ['nullable', 'numeric', 'min:0'],
             'notes' => ['nullable', 'string'],
             'is_active' => ['boolean'],
@@ -119,7 +127,9 @@ class EmployeeManager extends Component
         $this->mobile = $employee->mobile;
         $this->national_code = $employee->national_code;
         $this->job_title = $employee->job_title;
+        $this->address = $employee->address;
         $this->hired_at = $employee->hired_at ? $employee->hired_at->toDateString() : null;
+        $this->hired_at_jalali = $employee->hired_at ? gregorianToJalaliInput($employee->hired_at) : null;
         $this->base_salary = $employee->base_salary;
         $this->notes = $employee->notes;
         $this->is_active = (bool) $employee->is_active;
@@ -150,11 +160,60 @@ class EmployeeManager extends Component
         $this->mobile = null;
         $this->national_code = null;
         $this->job_title = null;
+        $this->address = null;
         $this->hired_at = null;
+        $this->hired_at_jalali = null;
         $this->base_salary = null;
         $this->notes = null;
         $this->is_active = true;
         $this->resetErrorBag();
+    }
+
+    /*
+    |--------------------------------------------------------------------|
+    | همگام‌سازی تاریخ شمسی ورودی کاربر با تاریخ میلادی سمت سرور          |
+    |--------------------------------------------------------------------|
+    */
+    public function updatedHiredAtJalali(): void
+    {
+        $val = trim((string) $this->hired_at_jalali);
+
+        if ($val === '') {
+            $this->hired_at = null;
+            $this->resetErrorBag('hired_at_jalali');
+            return;
+        }
+
+        $gregorian = jalaliToGregorian($val);
+
+        if ($gregorian !== null) {
+            $this->hired_at = $gregorian;
+            $this->resetErrorBag('hired_at_jalali');
+        }
+    }
+
+    /** تبدیل ورودی شمسی به میلادی؛ ورودی خالی یعنی بدون تاریخ. در صورت نامعتبر بودن false برمی‌گرداند. */
+    private function syncHiredAt(): bool
+    {
+        $val = trim((string) $this->hired_at_jalali);
+
+        if ($val === '') {
+            $this->hired_at = null;
+            return true;
+        }
+
+        $gregorian = jalaliToGregorian($val);
+
+        if ($gregorian === null) {
+            $this->addError('hired_at_jalali', 'تاریخ استخدام معتبر نیست. مثال درست: 1405/06/11');
+            return false;
+        }
+
+        $this->hired_at = $gregorian;
+        // نرمال‌سازی قالب نمایش (مثل 1405/6/1 به 1405/06/01)
+        $this->hired_at_jalali = gregorianToJalaliInput($gregorian) ?? $this->hired_at_jalali;
+
+        return true;
     }
 
     /*
@@ -164,7 +223,15 @@ class EmployeeManager extends Component
     */
     public function save(): void
     {
+        $this->authorizeAction($this->editingId ? 'employees.edit' : 'employees.create');
+
+        if (! $this->syncHiredAt()) {
+            return;
+        }
+
         $data = $this->validate();
+        // ستون hired_at_jalali در دیتابیس وجود ندارد؛ فقط hired_at میلادی ذخیره می‌شود
+        unset($data['hired_at_jalali']);
         $data['base_salary'] = $data['base_salary'] !== null && $data['base_salary'] !== ''
             ? (float) $data['base_salary']
             : 0;
@@ -189,6 +256,8 @@ class EmployeeManager extends Component
     */
     public function delete(): void
     {
+        $this->authorizeAction('employees.delete');
+
         if ($this->deletingId) {
             Employee::findOrFail($this->deletingId)->delete();
             session()->flash('success', 'کارمند حذف شد');

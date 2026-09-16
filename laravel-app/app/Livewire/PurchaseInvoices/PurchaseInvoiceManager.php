@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\PurchaseInvoices;
+namespace App\Livewire\PurchaseInvoices; 
 
 use App\Models\Category;
 use App\Models\Expense;
@@ -8,9 +8,11 @@ use App\Models\ExpenseCategory;
 use App\Models\Product;
 use App\Models\PurchaseInvoice;
 use App\Models\PurchaseItem;
-use App\Models\StockMovement;
 use App\Models\Supplier;
+use App\Models\Debt;
+use App\Models\Warehouse;
 use App\Services\BarcodeService;
+use App\Services\WarehouseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -22,6 +24,7 @@ class PurchaseInvoiceManager extends Component
     /** تاریخ شمسی برای نمایش و انتخاب توسط کاربر (مثل 1405/06/11) */
     public string $purchase_date_jalali = '';
     public string $supplier_id = '';
+    public string $warehouse_id = '';
     public string $payment_method = 'cash';
     public ?string $notes = null;
 
@@ -51,8 +54,10 @@ class PurchaseInvoiceManager extends Component
             'purchase_date' => ['required', 'date'],
             'purchase_date_jalali' => ['required', 'string'],
             'supplier_id' => ['required', 'exists:suppliers,id'],
+            'warehouse_id' => ['required', 'exists:warehouses,id'],
             'payment_method' => ['required', Rule::in(['cash', 'card', 'transfer', 'credit', 'other'])],
             'notes' => ['nullable', 'string'],
+
         ];
     }
 
@@ -63,6 +68,7 @@ class PurchaseInvoiceManager extends Component
             'purchase_date.required' => 'وارد کردن تاریخ خرید الزامی است.',
             'purchase_date.date' => 'تاریخ خرید معتبر نیست.',
             'supplier_id.required' => 'انتخاب تامین‌کننده الزامی است.',
+            'warehouse_id.required' => 'انتخاب انبار الزامی است.',
         ];
     }
 
@@ -91,6 +97,7 @@ class PurchaseInvoiceManager extends Component
     {
         $this->purchase_date = now()->toDateString();
         $this->purchase_date_jalali = gregorianToJalaliInput($this->purchase_date) ?? '';
+        $this->warehouse_id = (string) (Warehouse::getDefaultId() ?? '');
     }
 
     /*
@@ -129,6 +136,7 @@ class PurchaseInvoiceManager extends Component
     {
         return view('livewire.purchase-invoices.purchase-invoice-manager', [
             'suppliers' => Supplier::active()->orderBy('name')->get(['id', 'name', 'company_name']),
+            'warehouses' => Warehouse::where('is_active', true)->orderByDesc('is_default')->orderBy('name')->get(['id', 'name', 'code', 'is_default']),
             'categories' => Category::orderBy('name')->get(['id', 'name']),
         ]);
     }
@@ -251,7 +259,7 @@ class PurchaseInvoiceManager extends Component
         $this->new_barcode = $barcodeService->generate();
     }
 
-    public function saveNewProduct(): void
+    public function saveNewProduct(WarehouseService $warehouseService): void
     {
         $this->validate($this->productRules());
 
@@ -261,18 +269,23 @@ class PurchaseInvoiceManager extends Component
             'category_id' => $this->new_category_id ?: null,
             'buy_price' => $this->new_buy_price,
             'sell_price' => $this->new_sell_price,
-            'stock' => $this->new_stock,
+            'stock' => 0,
             'unit' => $this->new_unit,
             'is_active' => $this->new_is_active == '1',
         ]);
 
-        if ($product->stock > 0) {
-            StockMovement::create([
-                'product_id' => $product->id,
-                'type' => 'initial',
-                'quantity' => $product->stock,
-                'description' => 'موجودی اولیه کالا از فاکتور خرید',
-            ]);
+        $initialStock = (float) ($this->new_stock ?: 0);
+
+        if ($initialStock > 0 && ($warehouseId = (int) $this->warehouse_id)) {
+            $warehouseService->addToWarehouse(
+                $product,
+                $warehouseId,
+                $initialStock,
+                'initial',
+                'موجودی اولیه کالا از فاکتور خرید',
+            );
+        } elseif ($initialStock > 0) {
+            $product->increment('stock', $initialStock);
         }
 
         $this->addProductToInvoice($product);
@@ -355,16 +368,21 @@ class PurchaseInvoiceManager extends Component
             DB::transaction(function () {
                 $totalAmount = 0;
                 $invoiceNumber = $this->generateInvoiceNumber();
+                $warehouseId = (int) $this->warehouse_id;
+                $warehouseService = app(WarehouseService::class);
+
+                // ثبت در جدول فاکتورهای خرید
                 $purchaseInvoice = PurchaseInvoice::create([
-                    'supplier_id' => $this->supplier_id,
-                    'purchase_date' => $this->purchase_date,
+                    'supplier_id'    => $this->supplier_id,
+                    'warehouse_id'   => $warehouseId,
+                    'purchase_date'  => $this->purchase_date,
                     'invoice_number' => $invoiceNumber,
-                    'total_amount' => 0,
-                    'paid_amount' => 0,
+                    'total_amount'   => 0,
+                    'paid_amount'    => 0,
                     'payment_method' => $this->payment_method,
-                    'status' => 'completed',
-                    'notes' => $this->notes,
-                    'user_id' => auth()->id(),
+                    'status'         => 'completed',
+                    'notes'          => $this->notes,
+                    'user_id'        => auth()->id(),
                 ]);
 
                 foreach ($this->items as $item) {
@@ -377,48 +395,66 @@ class PurchaseInvoiceManager extends Component
 
                     $totalAmount += $itemTotal;
 
+                    // ثبت در جدول آیتم های خرید
                     PurchaseItem::create([
                         'purchase_invoice_id' => $purchaseInvoice->id,
-                        'product_id' => $product->id,
-                        'quantity' => $quantity,
-                        'buy_price' => $buyPrice,
-                        'sell_price' => $sellPrice,
-                        'total' => $itemTotal,
+                        'product_id'          => $product->id,
+                        'quantity'            => $quantity,
+                        'buy_price'           => $buyPrice,
+                        'sell_price'          => $sellPrice,
+                        'total'               => $itemTotal,
                     ]);
 
+                    // بروزرسانی قیمت خرید و فروش در جدول محصولات
                     $product->update([
-                        'buy_price' => $buyPrice,
+                        'buy_price'  => $buyPrice,
                         'sell_price' => $sellPrice,
                     ]);
 
-                    $product->increment('stock', $quantity);
-
-                    StockMovement::create([
-                        'product_id' => $product->id,
-                        'type' => 'purchase',
-                        'quantity' => $quantity,
-                        'description' => 'خرید از ' . $purchaseInvoice->supplier->name . ' - فاکتور شماره: ' . $invoiceNumber,
-                    ]);
+                    // افزودن کالا به انبار انتخاب‌شده (موجودی انبار + موجودی کل + ثبت گردش)
+                    $warehouseService->addToWarehouse(
+                        $product,
+                        $warehouseId,
+                        $quantity,
+                        'purchase',
+                        'خرید از ' . $purchaseInvoice->supplier->name . ' - فاکتور: ' . $invoiceNumber,
+                        auth()->id(),
+                    );
                 }
 
                 $purchaseInvoice->update(['total_amount' => $totalAmount]);
 
+                // ساخت دسته بندی برای مدیریت هزینه ها
                 $purchaseCategory = ExpenseCategory::firstOrCreate(
-                    ['name' => 'خرید'],
+                    ['name'        => 'خرید کالا '],
                     ['description' => 'هزینه‌های مربوط به خرید کالا', 'is_active' => true]
                 );
 
+                // ثبت خودکار در لیست هزینه ها
                 Expense::create([
                     'expense_category_id' => $purchaseCategory->id,
-                    'title' => 'خرید کالا از ' . $purchaseInvoice->supplier->name . ' - فاکتور شماره: ' . $invoiceNumber,
-                    'amount' => $totalAmount,
-                    'expense_date' => $this->purchase_date,
-                    'payment_method' => $this->payment_method,
-                    'description' => 'ثبت خودکار از فاکتور خرید شماره: ' . $invoiceNumber,
-                    'reference_number' => $invoiceNumber,
-                    'user_id' => auth()->id(),
+                    'title'               => 'خرید از ' . $purchaseInvoice->supplier->name . ' - فاکتور: ' . $invoiceNumber,
+                    'amount'              => $totalAmount,
+                    'expense_date'        => $this->purchase_date,
+                    'payment_method'      => $this->payment_method,
+                    'description'         => 'ثبت خودکار از فاکتور خرید شماره: ' . $invoiceNumber,
+                    'reference_number'    => $invoiceNumber,
+                    'user_id'             => auth()->id(),
                     'purchase_invoice_id' => $purchaseInvoice->id,
                 ]);
+
+                // ثبت خودکار بدهی در صورت انتخاب روش پرداخت نسیه
+                if ($purchaseInvoice->payment_method === 'credit'){
+                    Debt::create([
+                        'title'         => 'بدهی خرید کالا از:' . $purchaseInvoice->supplier->name,
+                        'creditor_name' => $purchaseInvoice->supplier->name,
+                        'creditor_type' => 'supplier',
+                        'supplier_id'   => $this->supplier_id,
+                        'amount'        => $totalAmount,
+                        'due_date'      => null,
+                        'notes'         => 'ثبت خودکار از فاکتور خرید نسیه',
+                    ]);
+                }
             });
 
             session()->flash('success', 'فاکتور خرید با موفقیت ثبت شد.');
@@ -432,11 +468,13 @@ class PurchaseInvoiceManager extends Component
         }
     }
 
+    // تازه سازی صفحه ثبت فاکتور خرید بعد از عملیات
     private function resetForm(): void
     {
         $this->purchase_date = now()->toDateString();
         $this->purchase_date_jalali = gregorianToJalaliInput($this->purchase_date) ?? '';
         $this->supplier_id = '';
+        $this->warehouse_id = (string) (Warehouse::getDefaultId() ?? '');
         $this->payment_method = 'cash';
         $this->notes = null;
         $this->product_barcode = '';

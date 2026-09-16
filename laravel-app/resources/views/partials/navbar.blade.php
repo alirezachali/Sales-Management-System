@@ -1,29 +1,34 @@
-<nav class="top-navbar" dir="rtl">
+<nav class="top-navbar" dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
     <div class="navbar-inner">
 
-        {{-- سمت راست: دکمه منوی همبرگری + برند فروشگاه --}}
+        {{--===== سمت راست: دکمه منوی همبرگری + برند فروشگاه =====--}}
         <div class="navbar-section">
 
-            {{-- دکمه باز/بستن سایدبار (با Alpine که همراه Livewire بارگذاری می‌شود) --}}
+            {{--===== دکمه باز/بستن سایدبار (با Alpine که همراه Livewire بارگذاری می‌شود) =====--}}
             <button type="button" class="nav-icon-btn" @click="toggleSidebar()"
-                :class="{ 'is-active': sidebarCollapsed }" title="باز و بستن منو" aria-label="باز و بستن منو">
+                :class="{ 'is-active': sidebarCollapsed }" title="{{ __('navbar.sidebar_menu_btn') }}" aria-label="{{ __('navbar.sidebar_menu_btn') }}">
                 <i class="bi bi-list"></i>
             </button>
 
-            <a class="navbar-brand" href="{{ route('dashboard') }}">
+            <a class="navbar-brand" href="{{ auth()->check() ? route(auth()->user()->dashboardRouteName()) : route('login') }}">
                 <img class="nav-logo" src="{{ storeLogo() }}" alt="Logo">
-                <span class="brand-name">{{ setting('store_name', 'فروشگاه') }}</span>
+                <span class="brand-name">{{ setting('store_name', __('navbar.store_def_name')) }}</span>
             </a>
         </div>
 
-        {{-- سمت چپ: منوی کاربر --}}
+        {{--===== سمت چپ: منوی کاربر =====--}}
         @auth
             <div class="navbar-section">
+                {{-- زنگ پیام‌های مدیر --}}
+                <livewire:messages.messages-bell />
+
+                {{-- زنگ هشدارهای هوشمند --}}
+                <livewire:alerts-bell />
                 @php $avatarUrl = auth()->user()->avatar_url; @endphp
 
                 <div class="user-menu" x-data="{ open: false }" @keydown.escape.window="open = false">
 
-                    {{-- دکمه‌ی باز کردن منو با کلیک روی تصویر پروفایل --}}
+                    {{--===== دکمه‌ی باز کردن منو با کلیک روی تصویر پروفایل =====--}}
                     <button type="button" class="user-menu-toggle" @click="open = !open"
                         :class="{ 'is-open': open }" aria-haspopup="true" :aria-expanded="open.toString()">
                         @if ($avatarUrl)
@@ -35,11 +40,11 @@
                         <i class="bi bi-chevron-down user-menu-caret"></i>
                     </button>
 
-                    {{-- منوی بازشونده --}}
+                    {{--===== منوی بازشونده =====--}}
                     <div class="user-dropdown" x-show="open" x-cloak x-transition
                         @click.outside="open = false">
 
-                        {{-- سربرگ اطلاعات کاربر --}}
+                        {{--===== سربرگ اطلاعات کاربر =====--}}
                         <div class="user-dropdown-head">
                             @if ($avatarUrl)
                                 <img src="{{ $avatarUrl }}" class="dropdown-avatar" alt="avatar">
@@ -56,10 +61,10 @@
                             </div>
                         </div>
 
-                        {{-- سوییچ تغییر زبان فارسی / انگلیسی --}}
+                        {{--===== سوییچ تغییر زبان فارسی / انگلیسی =====--}}
                         <div class="lang-switch">
-                            <span class="lang-switch-label">زبان برنامه</span>
-                            <div class="lang-switch-btns" role="group" aria-label="تغییر زبان">
+                            <span class="lang-switch-label">{{ __('navbar.lang_label') }}</span>
+                            <div class="lang-switch-btns" role="group" aria-label="{{ __('navbar.lang_title') }}">
                                 <a href="{{ route('locale.switch', 'fa') }}"
                                     class="lang-btn {{ app()->getLocale() === 'fa' ? 'active' : '' }}"
                                     title="فارسی" aria-label="فارسی">
@@ -73,18 +78,18 @@
                             </div>
                         </div>
 
-                        {{-- سوییچ تغییر تم روشن / تیره --}}
+                        {{--===== سوییچ تغییر تم روشن / تیره =====--}}
                         <div class="theme-switch">
-                            <span class="theme-switch-label">حالت نمایش</span>
+                            <span class="theme-switch-label">{{ __('navbar.theme_btn') }}</span>
                             <div class="theme-switch-btns" role="group" aria-label="تغییر تم">
                                 <button type="button" class="theme-btn" @click="setTheme('light')"
-                                    :class="{ 'active': theme === 'light' }" title="حالت روشن"
-                                    aria-label="حالت روشن">
+                                    :class="{ 'active': theme === 'light' }" title="{{ __('navbar.theme_light_title') }}"
+                                    aria-label="{{ __('navbar.theme_light_title') }}">
                                     <i class="bi bi-sun-fill"></i>
                                 </button>
                                 <button type="button" class="theme-btn" @click="setTheme('dark')"
-                                    :class="{ 'active': theme === 'dark' }" title="حالت تیره"
-                                    aria-label="حالت تیره">
+                                    :class="{ 'active': theme === 'dark' }" title="{{ __('navbar.theme_dark_title') }}"
+                                    aria-label="{{ __('navbar.theme_dark_title') }}">
                                     <i class="bi bi-moon-stars-fill"></i>
                                 </button>
                             </div>
@@ -92,26 +97,40 @@
 
                         <div class="dropdown-divider-line"></div>
 
-                        {{-- پروفایل --}}
-                        <a class="user-dropdown-item" href="#">
+                        {{--===== پروفایل =====--}}
+                        <a class="user-dropdown-item" href="{{ route('profile.show', auth()->user()->username) }}">
                             <i class="bi bi-person"></i>
-                            <span>پروفایل</span>
+                            <span>{{ __('navbar.profile') }}</span>
                         </a>
 
-                        {{-- تنظیمات --}}
-                        <a class="user-dropdown-item" href="{{ route('settings.index') }}">
-                            <i class="bi bi-gear"></i>
-                            <span>تنظیمات</span>
+                        {{--===== پیام‌های من =====--}}
+                        @php $unreadMessages = auth()->user()->unreadMessagesCount(); @endphp
+                        <a class="user-dropdown-item" href="{{ route('messages.inbox') }}">
+                            <i class="bi bi-envelope"></i>
+                            <span>
+                                {{ __('navbar.messages') }}
+                                @if ($unreadMessages > 0)
+                                    ({{ $unreadMessages }})
+                                @endif
+                            </span>
                         </a>
+
+                        {{--===== تنظیمات =====--}}
+                        @can('settings.view')
+                            <a class="user-dropdown-item" href="{{ route('settings.index') }}">
+                                <i class="bi bi-gear"></i>
+                                <span>{{ __('navbar.settings') }}</span>
+                            </a>
+                        @endcan
 
                         <div class="dropdown-divider-line"></div>
 
-                        {{-- خروج از سیستم --}}
+                        {{--===== خروج از سیستم =====--}}
                         <form action="{{ route('logout') }}" method="POST" class="m-0">
                             @csrf
                             <button type="submit" class="user-dropdown-item logout-item">
                                 <i class="bi bi-box-arrow-right"></i>
-                                <span>خروج از سیستم</span>
+                                <span>{{ __('navbar.logout_btn') }}</span>
                             </button>
                         </form>
 

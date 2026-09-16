@@ -4,63 +4,51 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\Models\StockMovement;
+use App\Models\Warehouse;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\Business\InsufficientStockException;
 
 class StockService
 {
-    // کم کردن موجودی کالا
+    public function __construct(
+        protected WarehouseService $warehouseService,
+    ) {}
+
+    // کم کردن موجودی کالا (پیش‌فرض: از انبار پیش‌فرض)
     public function remove(
         Product $product,
         float $quantity,
-        string $description = 'فروش کالا'
+        string $description = 'فروش کالا',
+        ?int $warehouseId = null,
     ): void {
 
         $this->ensureAvailable($product, $quantity);
 
-        $product->decrement('stock', $quantity);
-
-        // ثبت کاهش موجودی در دیتابیس
-        StockMovement::create([
-            'product_id'  => $product->id,
-            'type'        => 'sale',
-            'quantity'    => $quantity,
-            'description' => $description,
-        ]);
+        $this->warehouseService->removeFromWarehouse(
+            $product,
+            $warehouseId ?: (Warehouse::getDefaultId() ?? 0),
+            $quantity,
+            'sale',
+            $description,
+        );
     }
 
     public function add(
         Product $product,
         float $quantity,
-        string $type='purchase',
-        string $description='ورود کالا'
-    )
-    {
-        DB::transaction(function () use (
+        string $type = 'purchase',
+        string $description = 'ورود کالا',
+        ?int $warehouseId = null,
+    ) {
+        $this->warehouseService->addToWarehouse(
             $product,
+            $warehouseId ?: (Warehouse::getDefaultId() ?? 0),
             $quantity,
             $type,
-            $description
-        ) {
-
-            $product->increment('stock',$quantity);
-
-            StockMovement::create([
-
-                'product_id'=>$product->id,
-
-                'type'=>$type,
-
-                'quantity'=>$quantity,
-
-                'description'=>$description,
-
-            ]);
-
-        });
-
+            $description,
+        );
     }
-    
+
     // چک کردن موجودی کالا
     public function ensureAvailable(
         Product $product,

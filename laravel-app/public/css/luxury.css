@@ -1,0 +1,511 @@
+/* ============================================================
+   پوسته مدرن و لوکس — Aurora / Glassmorphism
+   روی Tabler سوار می‌شود و کل رابط را یکدست بازطراحی می‌کند.
+   ============================================================ */
+
+:root {
+    --lux-accent-1: #7c5cff;
+    --lux-accent-2: #3ea6ff;
+    --lux-accent-3: #d946ef;
+    --lux-gradient: linear-gradient(135deg, var(--lux-accent-1), var(--lux-accent-2));
+    --lux-gradient-warm: linear-gradient(135deg, var(--lux-accent-3), var(--lux-accent-1));
+    --lux-bg-0: #070a14;
+    --lux-bg-1: #0b1120;
+    --lux-surface: rgba(255, 255, 255, 0.045);
+    --lux-border: rgba(148, 163, 184, 0.16);
+    --lux-glow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    --nav-height: 64px;
+    /* باعث می‌شود ویجت‌های نیتیو مثل لیست بازشوی select در تم تیره رندر شوند */
+    color-scheme: dark;
+    /* رنگ زمینه و متن لیست بازشوی select در حالت دارک */
+    --lux-dropdown-bg: #101528;
+    --lux-dropdown-text: #e2e8f0;
+}
+
+[data-bs-theme="light"] {
+    --lux-bg-0: #eef1fb;
+    --lux-bg-1: #f6f8ff;
+    --lux-surface: rgba(255, 255, 255, 0.72);
+    --lux-border: rgba(15, 23, 42, 0.09);
+    --lux-glow: 0 8px 28px rgba(30, 41, 59, 0.10);
+    color-scheme: light;
+    /* رنگ زمینه و متن لیست بازشوی select در حالت لایت */
+    --lux-dropdown-bg: #ffffff;
+    --lux-dropdown-text: #1e293b;
+}
+
+/* ---------- پس‌زمینه کهکشانی ---------- */
+body {
+    background:
+        radial-gradient(1100px 520px at 88% -10%, rgba(124, 92, 255, 0.16), transparent 60%),
+        radial-gradient(900px 480px at -10% 20%, rgba(62, 166, 255, 0.13), transparent 55%),
+        radial-gradient(700px 700px at 60% 110%, rgba(217, 70, 239, 0.08), transparent 60%),
+        linear-gradient(180deg, var(--lux-bg-0), var(--lux-bg-1)) !important;
+    background-attachment: fixed !important;
+}
+
+/* ---------- تایپوگرافی ---------- */
+body {
+    font-family: Vazirmatn, "Segoe UI", Tahoma, sans-serif;
+    letter-spacing: 0;
+}
+
+h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
+    letter-spacing: -0.01em;
+}
+
+/* ---------- کارت‌های شیشه‌ای ---------- */
+.card {
+    background: var(--lux-surface) !important;
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid var(--lux-border) !important;
+    border-radius: 20px !important;
+    box-shadow: var(--lux-glow);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.card:hover {
+    border-color: rgba(124, 92, 255, 0.28) !important;
+}
+
+.card-header {
+    background: transparent !important;
+    border-bottom: 1px solid var(--lux-border) !important;
+    padding: 1rem 1.25rem;
+}
+
+.card-footer {
+    background: transparent !important;
+    border-top: 1px solid var(--lux-border) !important;
+}
+
+.glass-card {
+    background: linear-gradient(160deg, rgba(124, 92, 255, 0.10), rgba(62, 166, 255, 0.06)) !important;
+}
+
+/* ---------- کارت‌های آماری ---------- */
+.stat-card .card-body { padding: 1.1rem 1.2rem; }
+
+.stat-card { animation: luxRise 0.5s ease both; }
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 38px rgba(124, 92, 255, 0.16);
+}
+
+.stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    background: var(--icon-bg, rgba(124, 92, 255, 0.15));
+    color: var(--icon-color, #7c5cff);
+    margin-bottom: 0.45rem;
+}
+
+@keyframes luxRise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-glow-green { box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.45), 0 12px 44px rgba(34, 197, 94, 0.18) !important; }
+.card-glow-red   { box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.45), 0 12px 44px rgba(239, 68, 68, 0.18) !important; }
+
+/* ---------- هدر گرادیانی صفحه ---------- */
+.gradient-header {
+    background: linear-gradient(120deg, rgba(124, 92, 255, 0.85), rgba(62, 166, 255, 0.65)) !important;
+    border: none !important;
+    animation: luxRise 0.5s ease both;
+}
+
+[data-bs-theme="light"] .gradient-header {
+    background: linear-gradient(120deg, #7c5cff, #3ea6ff) !important;
+}
+
+/* ---------- دکمه‌ها ---------- */
+.btn-primary, .btn-success, .btn-info {
+    border: none !important;
+}
+
+.btn-primary {
+    background: var(--lux-gradient) !important;
+    box-shadow: 0 6px 20px rgba(124, 92, 255, 0.35);
+}
+
+.btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+.btn-success {
+    background: linear-gradient(135deg, #16a34a, #22d3ee) !important;
+    box-shadow: 0 6px 18px rgba(22, 163, 74, 0.30);
+    border: none !important;
+}
+
+.glow-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.glow-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.25) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.glow-btn:hover::after { transform: translateX(100%); }
+
+.btn-fuchsia { background: var(--lux-gradient-warm) !important; border: none !important; color: #fff !important; }
+.btn-fuchsia:hover { filter: brightness(1.1); }
+
+.btn {
+    border-radius: 12px !important;
+    font-weight: 600;
+    transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-sm { border-radius: 9px !important; }
+
+/* ---------- جدول‌ها ---------- */
+.table {
+    --tblr-table-border-color: var(--lux-border);
+    color: inherit;
+}
+
+.table thead th {
+    background: transparent !important;
+    border-bottom: 1px solid var(--lux-border) !important;
+    font-weight: 700;
+    font-size: 0.82rem;
+    opacity: 0.85;
+    white-space: nowrap;
+}
+
+.table tbody tr {
+    border-color: var(--lux-border) !important;
+    transition: background-color 0.15s ease;
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(124, 92, 255, 0.07) !important;
+}
+
+.table-light {
+    --tblr-table-bg: transparent;
+    background: transparent !important;
+}
+
+/* ---------- بج‌ها ---------- */
+.badge {
+    border-radius: 999px !important;
+    font-weight: 600;
+    padding: 0.35em 0.8em;
+}
+
+/* ---------- فرم‌ها ---------- */
+.form-control, .form-select {
+    border-radius: 12px !important;
+    border: 1px solid var(--lux-border) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    /* color: rgb(6, 109, 245); */
+}
+
+[data-bs-theme="light"] .form-control,
+[data-bs-theme="light"] .form-select {
+    background: #fff !important;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: rgba(124, 92, 255, 0.6) !important;
+    box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.14) !important;
+}
+
+/* لیست بازشوی select: هر تم رنگ خودش را دارد تا متن گزینه‌ها نخوانده نشود */
+.form-select option {
+    background: var(--lux-dropdown-bg);
+    color: var(--lux-dropdown-text);
+}
+
+.input-group-text {
+    border-radius: 12px 0 0 12px;
+    border: 1px solid var(--lux-border) !important;
+    background: rgba(124, 92, 255, 0.08) !important;
+}
+
+.form-check-input:checked {
+    background: var(--lux-gradient) !important;
+    border-color: transparent !important;
+}
+
+/* ---------- مودال‌ها ---------- */
+.modal-content {
+    border-radius: 22px !important;
+    border: 1px solid var(--lux-border) !important;
+    background: rgba(13, 18, 34, 0.92) !important;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+[data-bs-theme="light"] .modal-content {
+    background: rgba(255, 255, 255, 0.94) !important;
+}
+
+.modal-header, .modal-footer {
+    border-color: var(--lux-border) !important;
+}
+
+/* ---------- هشدارها ---------- */
+.alert {
+    border-radius: 16px !important;
+    border: 1px solid var(--lux-border) !important;
+    backdrop-filter: blur(12px);
+}
+
+.alert-fuchsia {
+    background: rgba(217, 70, 239, 0.12) !important;
+    color: #e879f9 !important;
+}
+
+/* ---------- اسکرول‌بار ---------- */
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(124, 92, 255, 0.55), rgba(62, 166, 255, 0.55));
+    border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(124, 92, 255, 0.85); }
+
+::selection { background: rgba(124, 92, 255, 0.35); }
+
+/* ---------- رینگ انتخاب ---------- */
+.ring-selected {
+    box-shadow: 0 0 0 2px var(--lux-accent-2), 0 10px 30px rgba(62, 166, 255, 0.2) !important;
+}
+
+/* ---------- صفحه انبارگردانی ---------- */
+.attendance-grid th, .attendance-grid td { font-size: 0.78rem; }
+.attendance-grid .sticky-col {
+    position: sticky;
+    inset-inline-start: 0;
+    background: var(--lux-bg-1);
+    z-index: 2;
+    box-shadow: 1px 0 0 var(--lux-border);
+}
+
+[data-bs-theme="light"] .attendance-grid .sticky-col { background: #fff; }
+
+.att-cell {
+    width: 22px;
+    height: 26px;
+    line-height: 26px;
+    margin: 0 auto;
+    border-radius: 7px;
+    font-size: 0.72rem;
+    color: #fff;
+    transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.att-cell:hover { transform: scale(1.18); filter: brightness(1.15); }
+
+.att-empty { background: rgba(148, 163, 184, 0.10); }
+.att-present {
+    background: linear-gradient(135deg, #16a34a, #4ade80) !important;
+    color: #fff !important;
+}
+
+.att-absent {
+    background: linear-gradient(135deg, #dc2626, #f87171) !important;
+    color: #fff !important;
+}
+
+.att-leave {
+    background: linear-gradient(135deg, #d97706, #fbbf24) !important;
+    color: #fff !important;
+}
+
+.att-half {
+    background: linear-gradient(135deg, #0284c7, #38bdf8) !important;
+    color: #fff !important;
+}
+
+.att-holiday {
+    background: linear-gradient(135deg, #64748b, #94a3b8) !important;
+    color: #fff !important;
+}
+
+/* نشان‌های راهنمای رنگ و گزارش */
+.badge.att-legend {
+    font-weight: 600;
+    border-radius: 7px;
+    padding: .32em .55em;
+}
+
+/* ---------- نمودار روند ---------- */
+.trend-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 220px;
+    padding-top: 10px;
+}
+
+.trend-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; }
+
+.trend-bars {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+}
+
+.bar {
+    width: 22%;
+    min-height: 2px;
+    border-radius: 6px 6px 2px 2px;
+    transition: transform 0.15s ease;
+    animation: luxGrow 0.7s ease both;
+}
+
+.bar:hover { transform: scaleY(1.03); filter: brightness(1.2); }
+
+@keyframes luxGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+.bar-revenue { background: linear-gradient(180deg, #3b82f6, #1d4ed8); }
+.bar-cost    { background: linear-gradient(180deg, #ef4444, #991b1b); }
+.bar-profit  { background: linear-gradient(180deg, #22c55e, #15803d); }
+.bar-negative { background: linear-gradient(180deg, #f97316, #c2410c); }
+
+.trend-label { font-size: 0.68rem; opacity: 0.7; }
+
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-inline-start: 10px; }
+
+/* ---------- جدول سود و زیان ---------- */
+.pl-table td { border-color: var(--lux-border) !important; }
+.pl-table .border-top-2 { border-top-width: 2px !important; border-top-color: var(--lux-border) !important; }
+.top-product-row { padding: 0.15rem 0; }
+
+/* ---------- امتیازدهی ---------- */
+.loyalty-box {
+    background: linear-gradient(140deg, rgba(217, 70, 239, 0.12), rgba(124, 92, 255, 0.08));
+    border: 1px solid rgba(217, 70, 239, 0.25);
+    border-radius: 16px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.text-fuchsia { color: #d946ef !important; }
+.bg-fuchsia-subtle { background: rgba(217, 70, 239, 0.14) !important; }
+.text-fuchsia-emphasis { color: #e879f9 !important; }
+
+/* ---------- زنگ هشدار ---------- */
+.alerts-bell { position: relative; }
+
+.alerts-toggle { position: relative; }
+
+.alerts-badge {
+    position: absolute;
+    top: 2px;
+    inset-inline-end: 2px;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.65);
+    animation: luxPulse 1.8s ease infinite;
+}
+
+@keyframes luxPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+}
+
+.alerts-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    inset-inline-end: 0;
+    width: 340px;
+    max-height: 430px;
+    overflow-y: auto;
+    background: rgba(13, 18, 34, 0.95);
+    backdrop-filter: blur(22px);
+    border: 1px solid var(--lux-border);
+    border-radius: 18px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+}
+
+[data-bs-theme="light"] .alerts-panel { background: rgba(255, 255, 255, 0.96); box-shadow: 0 18px 44px rgba(30, 41, 59, 0.18); }
+
+.alerts-head {
+    padding: 0.8rem 1rem;
+    font-weight: 800;
+    border-bottom: 1px solid var(--lux-border);
+    position: sticky;
+    top: 0;
+    background: inherit;
+    z-index: 1;
+}
+
+.alerts-group { padding: 0.5rem 0.7rem; }
+
+.alerts-group-title {
+    font-size: 0.74rem;
+    font-weight: 800;
+    margin-bottom: 0.3rem;
+}
+
+.alerts-item {
+    display: block;
+    padding: 0.45rem 0.6rem;
+    border-radius: 11px;
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+
+.alerts-item:hover { background: rgba(124, 92, 255, 0.12); color: inherit; }
+
+.alerts-empty {
+    padding: 1.6rem;
+    text-align: center;
+    color: rgba(148, 163, 184, 0.8);
+}
+
+.alerts-empty i { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; }
+
+
+.nav-tabs .nav-link {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 20px;
+    border: 1px solid rgb(90, 89, 89);
+    border-bottom: 0;
+    margin-left: 10px;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #e4e1e4;
+    background-color: #1c1d1d7e;
+}
+
+.nav-tabs .nav-link.active {
+    background: var(--lux-gradient) !important;
+    box-shadow: 0 6px 20px rgba(124, 92, 255, 0.35);
+    font-weight: 800;
+    color: #202124;
+}
+

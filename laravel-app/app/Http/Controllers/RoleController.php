@@ -62,6 +62,9 @@ class RoleController extends Controller
 
         $role->permissions()->sync($permissionIds);
 
+        /* کش مجوزهای نقش باید باطل شود تا تغییرات بلافاصله اعمال شوند */
+        cache()->forget("role-permissions-{$role->id}");
+
         return redirect()
             ->route('roles.permissions', $role)
             ->with('success', 'مجوزهای نقش با موفقیت ذخیره شدند.');

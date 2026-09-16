@@ -1,15 +1,17 @@
-<div dir="rtl">
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
+    {{-- پیام موفقیت --}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
         </div>
     @endif
 
+    {{-- پیام خطا --}}
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
@@ -26,8 +28,8 @@
         <div class="card-body">
             <div class="row g-3">
 
-                <div class="col-md-3">
-                    <label class="form-label">تاریخ خرید</label>
+                <div class="col-md-2">
+                    <label class="form-label" title="تاریخ خرید به صورت خودکار امروز را مشخص میکند">تاریخ خرید</label>
                     <input type="text" wire:model="purchase_date_jalali" data-jdp
                         autocomplete="off" inputmode="numeric" placeholder="1405/06/11"
                         class="form-control @error('purchase_date_jalali') is-invalid @enderror">
@@ -36,9 +38,9 @@
                     @enderror
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label">تامین کننده</label>
-                    <select wire:model="supplier_id"
+                <div class="col-md-3">
+                    <label class="form-label" title="تامین کننده ای که قصد خرید از آن را دارید را انتخاب کنید">تامین کننده</label>
+                    <select wire:model="supplier_id" title="تامین کننده ای که قصد خرید از آن را دارید را انتخاب کنید"
                         class="form-select @error('supplier_id') is-invalid @enderror">
                         <option value="">انتخاب کنید...</option>
                         @foreach ($suppliers as $supplier)
@@ -55,19 +57,39 @@
                     @enderror
                 </div>
 
-                <div class="col-md-2">
-                    <label class="form-label">شماره فاکتور</label>
-                    <input type="text" class="form-control" value="{{ $this->nextInvoiceNumber }}" readonly>
+                <div class="col-md-3">
+                    <label class="form-label" title="انباری که قصد دارید محصولات را در آن تخلیه کنید را انتخاب کنید">انتخاب انبار</label>
+                    <select wire:model="warehouse_id" title="انباری که قصد دارید محصولات را در آن تخلیه کنید را انتخاب کنید"
+                        class="form-select @error('warehouse_id') is-invalid @enderror">
+                        <option value="">انتخاب کنید...</option>
+                        @foreach ($warehouses as $warehouse)
+                            <option value="{{ $warehouse->id }}">
+                                {{ $warehouse->name }}
+                                @if ($warehouse->is_default)
+                                    (پیش‌فرض)
+                                @endif
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('warehouse_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-1">
+                    <label class="form-label" title="شماره فاکتور به صورت خودکار انتخاب میشود">ش فاکتور</label>
+                    <input type="text" class="form-control" value="{{ $this->nextInvoiceNumber }}" readonly 
+                        title="شماره فاکتور به صورت خودکار انتخاب میشود">
                 </div>
 
                 <div class="col-md-3">
                     <label class="form-label">روش پرداخت</label>
-                    <select wire:model="payment_method" class="form-select">
+                    <select wire:model="payment_method" class="form-select" title="روش پرداخت مبلغ فاکتور به تامین کننده را مشخص کنید">
                         <option value="cash">نقدی</option>
                         <option value="card">کارت</option>
                         <option value="transfer">کارت به کارت / حواله</option>
                         <option value="credit">نسیه</option>
-                        <option value="other">سایر</option>
+                        {{-- <option value="other">سایر</option> --}}
                     </select>
                 </div>
 
@@ -75,23 +97,24 @@
         </div>
     </div>
 
-    <div class="card shadow-sm border-3 mb-4">
+    <div class="card shadow-sm border-3 mb-4" style="z-index: 2;">
         <div class="card-header">
             <h5 class="mb-0">
                 <i class="bi bi-search"></i>
                 جستجو و افزودن کالا
             </h5>
+
         </div>
         <div class="card-body">
             <div class="row g-3 align-items-end">
                 <div class="col-md-4">
                     <label class="form-label">بارکد کالا</label>
-                    <input type="text" wire:model="product_barcode" wire:keydown.enter="processBarcode"
+                    <input type="text" wire:model="product_barcode" wire:keydown.enter="processBarcode" title="بارکد کالا را اسکن کنید یا به صورت دستی وارد کنید"
                         class="form-control" placeholder="بارکد را اسکن یا وارد کنید">
                 </div>
                 <div class="col-md-6 position-relative">
                     <label class="form-label">یا جستجوی نام کالا</label>
-                    <input type="text" wire:model.live.debounce.300ms="product_search"
+                    <input type="text" wire:model.live.debounce.300ms="product_search" title="نام کالا را وارد کنید و نتایج رو به صورت لایو مشاهده کنید"
                         class="form-control" placeholder="نام کالا را جستجو کنید" autocomplete="off">
                     @if (!empty($searchResults))
                         <ul class="list-group position-absolute" id="purchase-inv-search-product">
@@ -106,7 +129,8 @@
                     @endif
                 </div>
                 <div class="col-md-2">
-                    <button type="button" wire:click="openNewProductModal" class="btn btn-success w-100">
+                    <button type="button" wire:click="openNewProductModal" class="btn btn-success w-100"
+                        title="برای اضافه کردن محصولی که در سیستم وجود ندارد کلیک کنید">
                         <i class="bi bi-plus-circle"></i>
                         محصول جدید
                     </button>
@@ -115,7 +139,7 @@
         </div>
     </div>
 
-    <div class="card shadow-sm border-3">
+    <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">
                 <i class="bi bi-cart3"></i>
@@ -128,8 +152,8 @@
         <div class="card-body">
             @if (count($items) > 0)
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover align-middle">
-                        <thead class="table-light">
+                    <table class="table table-hover align-middle">
+                        <thead>
                             <tr>
                                 <th width="40">#</th>
                                 <th>نام کالا</th>
@@ -162,12 +186,15 @@
                                                 wire:change="updateItemPrice({{ $item['id'] }}, 'buy_price', $event.target.value)"
                                                 value="{{ $item['buy_price'] ?: $item['current_buy_price'] }}"
                                                 class="form-control">
-                                            <span class="input-group-text">{{ setting('currency', '') }}</span>
+                                            <span class="input-group-text">{{ setting('currency', 'تومان') }}</span>
                                         </div>
+
                                         @if ($item['buy_price'] != $item['current_buy_price'] && $item['buy_price'] != '')
+
                                             <small class="text-success d-block">
                                                 قبلی: {{ number_format($item['current_buy_price']) }}
                                             </small>
+
                                         @endif
                                     </td>
                                     <td>
@@ -176,7 +203,7 @@
                                                 wire:change="updateItemPrice({{ $item['id'] }}, 'sell_price', $event.target.value)"
                                                 value="{{ $item['sell_price'] ?: $item['current_sell_price'] }}"
                                                 class="form-control">
-                                            <span class="input-group-text">{{ setting('currency', '') }}</span>
+                                            <span class="input-group-text">{{ setting('currency', 'تومان') }}</span>
                                         </div>
                                         @if ($item['sell_price'] != $item['current_sell_price'] && $item['sell_price'] != '')
                                             <small class="text-success d-block">
@@ -186,17 +213,11 @@
                                     </td>
                                     <td class="text-end">
                                         {{ number_format(($item['quantity'] ?: 0) * ($item['buy_price'] ?: $item['current_buy_price'])) }}
-                                        {{ setting('currency', '') }}
+                                        {{ setting('currency', 'تومان') }}
                                     </td>
                                     <td>
-                                        {{-- <button type="button"
-                                            wire:click="openEditProductModal({{ $item['id'] }})"
-                                            class="btn btn-sm btn-warning text-dark" title="ویرایش محصول">
-                                            <i class="bi bi-pencil"></i>
-                                        </button> --}}
-                                        <button type="button"
-                                            wire:click="removeItem({{ $item['id'] }})"
-                                            class="btn btn-sm btn-danger" title="حذف از لیست">
+                                        <button type="button" wire:click="removeItem({{ $item['id'] }})"
+                                            class="btn btn-sm btn-outline-danger" title="حذف از لیست">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </td>
@@ -220,27 +241,26 @@
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <div class="alert alert-info mb-0 text-center">
+                        <div class="alert alert-info mb-0 text-center text-info">
                             <small>تعداد اقلام</small>
-                            <div class="h4 mb-0">{{ $this->totalItemsCount }}</div>
+                            <div class="h4 text-info mb-0">{{ $this->totalItemsCount }}</div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="alert alert-info mb-0 text-center">
+                        <div class="alert alert-info mb-0 text-center text-info">
                             <small>مجموع تعداد</small>
-                            <div class="h4 mb-0">{{ number_format($this->totalQuantity, 0) }}</div>
+                            <div class="h4 text-info mb-0">{{ number_format($this->totalQuantity, 0) }}</div>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="alert alert-success mb-0 text-center">
+                        <div class="alert alert-success mb-0 text-center text-success">
                             <small>مبلغ کل فاکتور</small>
-                            <div class="h4 mb-0">{{ number_format($this->totalAmount) }} {{ setting('currency', '') }}</div>
+                            <div class="h4 text-success mb-0">{{ number_format($this->totalAmount) }} {{ setting('currency', '') }}</div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="d-grid gap-2">
-                            <button type="button" wire:click="save"
-                                class="btn btn-success btn-lg"
+                            <button type="button" wire:click="save" id="submitInvoice" class="btn btn-success btn-lg"
                                 wire:loading.attr="disabled" wire:target="save">
                                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                                 <i wire:loading.remove wire:target="save" class="bi bi-save"></i>
@@ -261,6 +281,7 @@
         </div>
     @endif
 
+    {{--==================== مودال افزودن محصول جدید ====================--}}
     @if ($showNewProductModal)
         <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="product-new-modal">

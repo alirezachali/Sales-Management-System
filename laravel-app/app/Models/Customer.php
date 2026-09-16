@@ -27,6 +27,8 @@ class Customer extends Model
         'customer_role_id',
         'purchase_count',
         'total_purchase_amount',
+        'points',
+        'spent_points',
         'last_purchase_at',
         'notes',
         'is_active',
@@ -174,6 +176,11 @@ class Customer extends Model
     public function accountTransactions(): HasMany
     {
         return $this->hasMany(CustomerAccountTransaction::class);
+    }
+
+    public function pointTransactions(): HasMany
+    {
+        return $this->hasMany(PointTransaction::class);
     }
 
     /*

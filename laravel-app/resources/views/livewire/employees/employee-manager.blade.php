@@ -1,8 +1,8 @@
-<div dir="rtl">
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
     {{-- پیام موفقیت --}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
@@ -11,7 +11,7 @@
 
     {{-- پیام خطا --}}
     @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" title="بستن"></button>
@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    {{-- جدول کارکنان --}}
+    {{-- جدول کارکنان --}} 
     <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -93,16 +93,18 @@
                 <small class="text-muted">مدیریت اطلاعات کارکنان و حقوق پایه آن‌ها</small>
             </div>
             <div class="d-flex gap-3">
+                @can('employees.create')
                 <button type="button" class="btn btn-primary" wire:click="openCreateModal" title="افزودن کارمند جدید">
                     <i class="bi bi-person-plus"></i>
                     افزودن کارمند
                 </button>
+                @endcan
             </div>
         </div>
 
         <div class="card-body">
             <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
+                <thead>
                     <tr>
                         <th width="40">ردیف</th>
                         <th>نام کارمند</th>
@@ -144,14 +146,18 @@
                                 @endif
                             </td>
                             <td>
+                                @can('employees.edit')
                                 <button type="button" class="btn btn-sm btn-warning text-dark"
                                     wire:click="openEditModal({{ $employee->id }})" title="ویرایش کارمند">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
+                                @endcan
+                                @can('employees.delete')
                                 <button type="button" class="btn btn-sm btn-danger text-dark"
                                     wire:click="confirmDelete({{ $employee->id }})" title="حذف کارمند">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
+                                @endcan
                             </td>
                         </tr>
                     @empty
@@ -170,9 +176,9 @@
 
     {{-- ============================ مودال افزودن/ویرایش کارمند ============================ --}}
     @if ($showFormModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="employee-form-modal">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
                 <form wire:submit="save">
                     <div class="modal-content">
 
@@ -227,9 +233,23 @@
                                     <input type="text" wire:model="job_title" class="form-control">
                                 </div>
 
+                                <div class="col-md-8">
+                                    <label class="form-label">آدرس</label>
+                                    <textarea wire:model="address" rows="1"
+                                        class="form-control @error('address') is-invalid @enderror"></textarea>
+                                    @error('address')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                                 <div class="col-md-4">
-                                    <label class="form-label">تاریخ استخدام</label>
-                                    <input type="date" wire:model="hired_at" class="form-control">
+                                    <label class="form-label">تاریخ استخدام (شمسی)</label>
+                                    <input type="text" wire:model="hired_at_jalali" data-jdp
+                                        autocomplete="off" inputmode="numeric" placeholder="1405/06/11"
+                                        class="form-control @error('hired_at_jalali') is-invalid @enderror">
+                                    @error('hired_at_jalali')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="col-md-4">
@@ -277,7 +297,7 @@
 
     {{-- ============================ مودال تایید حذف ============================ --}}
     @if ($showDeleteModal)
-        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="employee-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">

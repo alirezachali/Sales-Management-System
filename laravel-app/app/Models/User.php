@@ -31,8 +31,10 @@ class User extends Authenticatable
         'avatar',
         'password',
         'role_id',
+        'employee_id',
         'is_active',
         'last_login_at',
+        'last_seen_at',
         'remember_token',
     ];
 
@@ -57,6 +59,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_login_at' => 'datetime',
+            'last_seen_at' => 'datetime',
             'is_active' => 'boolean',
         ];
     }
@@ -64,6 +67,54 @@ class User extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * کارمندی که این حساب کاربری به آن متصل است (اختیاری).
+     * اطلاعاتی مثل کد ملی و آدرس از همین رکورد خوانده می‌شود.
+     */
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
+    /**
+     * آیا کاربر مجوز (permission) مشخصی دارد؟
+     * مجوزها به‌ازای هر نقش در کش نگه‌داری می‌شوند تا برای هر درخواست
+     * کوئری اضافه‌ای به دیتابیس زده نشود. کش هنگام ذخیره‌ی مجوزهای
+     * نقش باطل می‌شود (RolePermissionManager و RoleController).
+     */
+    public function hasPermission(string $name): bool
+    {
+        if ($this->role?->name === 'super-admin') {
+            return true;
+        }
+
+        if (! $this->role) {
+            return false;
+        }
+
+        $permissions = cache()->rememberForever(
+            "role-permissions-{$this->role_id}",
+            fn () => $this->role->permissions()->pluck('name')->all()
+        );
+
+        return in_array($name, $permissions, true);
+    }
+
+    /**
+     * نام مسیر داشبورد متناسب با نقش کاربر.
+     * نقش‌های مدیر و مدیر کل (و هر نقش ناشناخته‌ی دیگر) داشبورد اصلی را
+     * می‌بینند و سایر نقش‌ها به داشبورد اختصاصی خودشان هدایت می‌شوند.
+     */
+    public function dashboardRouteName(): string
+    {
+        return match ($this->role?->name) {
+            Role::CASHIER    => 'dashboard.cashier',
+            Role::ACCOUNTANT => 'dashboard.accountant',
+            Role::WAREHOUSE  => 'dashboard.warehouse',
+            default          => 'dashboard',
+        };
     }
 
     public function sales(): HasMany
@@ -77,16 +128,42 @@ class User extends Authenticatable
     }
 
     /**
+     * پیام‌هایی که مدیر برای این کاربر فرستاده است (هر رکورد = یک گیرنده).
+     */
+    public function messageRecipients(): HasMany
+    {
+        return $this->hasMany(MessageRecipient::class);
+    }
+
+    /** تعداد پیام‌های خوانده‌نشده‌ی این کاربر؛ برای نشانگر زنگ نوار بالا */
+    public function unreadMessagesCount(): int
+    {
+        return $this->messageRecipients()->whereNull('read_at')->count();
+    }
+
+    /**
      * آدرس کامل تصویر پروفایل کاربر؛ در صورت نبود تصویر، null برمی‌گرداند
      * تا در رابط کاربری آیکن پیش‌فرض نمایش داده شود.
      */
     public function getAvatarUrlAttribute(): ?string
     {
+        // از asset() استفاده می‌شود (نه Storage::url) تا آدرس بر اساس هاست/پورت
+        // فعلی درخواست ساخته شود و به APP_URL گره نخورد.
         if ($this->avatar && Storage::disk('public')->exists($this->avatar)) {
-            return Storage::disk('public')->url($this->avatar);
+            return asset('storage/' . $this->avatar);
         }
 
         return null;
+    }
+
+    /**
+     * حروف اول نام و نام خانوادگی؛ برای نمایش در دایره پروفایل وقتی تصویر وجود ندارد.
+     */
+    public function getInitialsAttribute(): string
+    {
+        $parts = preg_split('/\s+/u', trim($this->name) ?: '?', -1, PREG_SPLIT_NO_EMPTY);
+
+        return collect($parts)->take(2)->map(fn ($p) => mb_substr($p, 0, 1))->implode(' ');
     }
 
     /**
@@ -97,5 +174,21 @@ class User extends Authenticatable
     public function isOnline(): bool
     {
         return Cache::has('user-online-' . $this->id);
+    }
+
+    /**
+     * تازه‌ترین زمانی که کاربر در سیستم دیده شده؛ برای نمایش «۲ دقیقه پیش».
+     * تا وقتی کلید آنلاین در کش زنده است همان دقیق‌ترین مقدار است،
+     * وگرنه از ستون last_seen_at خوانده می‌شود.
+     */
+    public function lastSeen(): ?\Illuminate\Support\Carbon
+    {
+        $cached = Cache::get('user-online-' . $this->id);
+
+        if ($cached !== null) {
+            return \Illuminate\Support\Carbon::parse($cached);
+        }
+
+        return $this->last_seen_at ?? $this->last_login_at;
     }
 }

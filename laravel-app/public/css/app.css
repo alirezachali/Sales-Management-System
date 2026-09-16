@@ -1,3 +1,22 @@
+
+html,
+body{
+    width:98%;
+    height:auto;
+
+}
+
+body{
+    margin:0;
+    font-family:Vazirmatn,sans-serif;
+    background:radial-gradient(circle at top,#1a1919 0%,#171718 45%,#06070c 100%);
+    overflow:visible;
+}
+
+.modal .modal-content {
+    border-radius: 20px;
+}
+
 body a {
     text-decoration: none;
 }
@@ -9,7 +28,7 @@ body a:hover {
 
 /* استایل فیلد جستجو کالا در ثبت فاکتور خرید */
 #purchase-inv-search-product {
-    z-index: 1;
+    z-index: 1050;
     width: 97%;
     /* max-height: 500px; */
     /* overflow-y: auto; */
@@ -18,9 +37,47 @@ body a:hover {
     opacity: 90%;
     color: rgb(7, 7, 7);
     background-color: rgb(212, 212, 214);  
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
 }
 [data-bs-theme="dark"] #purchase-inv-search-product {
     color: rgb(248, 246, 246);
     background-color: rgb(10, 10, 10);
 }
 
+.content {
+    flex: 1;
+    min-width: 0;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    min-height: calc(100vh - var(--nav-height, 64px));
+}
+[dir="ltr"] .content {
+    padding-left: 17px;
+    padding-right: 0;
+}
+[dir="rtl"] .content {
+    padding-left: 0;
+    padding-right: 17px;
+}
+
+
+/* ---------- صفحه‌بندی ---------- */
+.pagination .page-link {
+    border-radius: 10px !important;
+    margin: 0 3px;
+    border: 1px solid var(--lux-border) !important;
+    background: transparent !important;
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--lux-gradient) !important;
+    border: none !important;
+}
+
+
+
+/* ---------- فوتر/برند ---------- */
+.page-header {
+    border-bottom: none !important;
+    margin-bottom: 24px;
+}

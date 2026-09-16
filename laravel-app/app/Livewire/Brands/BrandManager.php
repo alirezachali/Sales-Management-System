@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Brands;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Brand;
 use App\Models\Supplier;
 use Illuminate\Validation\Rule;
@@ -11,6 +12,7 @@ use Livewire\WithPagination;
 class BrandManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     public string $search = '';
 
@@ -27,10 +29,19 @@ class BrandManager extends Component
     public bool $showDeleteModal = false;
     public ?int $deletingId = null;
 
-    protected array $messages = [
-        'name.required' => 'وارد کردن نام برند الزامی است.',
-        'name.unique'   => 'برندی با این نام قبلاً ثبت شده است.',
-    ];
+    // protected array $messages = [
+    //     'name.required' => __('brands.validation.name_required'),
+    //     'name.unique'   => __('brands.validation.name_unique'),
+    // ];
+
+    protected function messages(): array
+    {
+        return [
+            'name.required' => __('brands.validation.name_required'),
+            'name.unique'   => __('brands.validation.name_unique'),
+        ];
+    }
+
 
     public function updatingSearch(): void
     {
@@ -84,6 +95,8 @@ class BrandManager extends Component
      */
     public function save(): void
     {
+        $this->authorizeAction($this->brandId ? 'brands.edit' : 'brands.create');
+
         $validated = $this->validate();
 
         $supplierIds = $validated['selectedSuppliers'] ?? [];
@@ -92,10 +105,10 @@ class BrandManager extends Component
         if ($this->brandId) {
             $brand = Brand::findOrFail($this->brandId);
             $brand->update($validated);
-            session()->flash('success', 'اطلاعات برند بروزرسانی شد.');
+            session()->flash('success', __('brands.messages.updated'));
         } else {
             $brand = Brand::create($validated);
-            session()->flash('success', 'برند جدید با موفقیت ثبت شد.');
+            session()->flash('success', __('brands.messages.created'));
         }
 
         // همگام‌سازی جدول واسط brand_supplier
@@ -114,9 +127,11 @@ class BrandManager extends Component
 
     public function delete(): void
     {
+        $this->authorizeAction('brands.delete');
+
         if ($this->deletingId) {
             Brand::findOrFail($this->deletingId)->delete();
-            session()->flash('success', 'برند حذف شد.');
+            session()->flash('success', __('brands.messages.deleted'));
         }
 
         $this->showDeleteModal = false;

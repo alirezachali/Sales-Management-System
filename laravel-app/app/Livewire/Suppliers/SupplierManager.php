@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Suppliers;
 
+use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Supplier;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -11,6 +12,7 @@ use Livewire\WithPagination;
 class SupplierManager extends Component
 {
     use WithPagination;
+    use AuthorizesActions;
 
     // فیلدهای فرم (مشترک بین ساخت و ویرایش)
     public ?int $supplierId = null;
@@ -132,6 +134,8 @@ class SupplierManager extends Component
      */
     public function save(): void
     {
+        $this->authorizeAction($this->supplierId ? 'suppliers.edit' : 'suppliers.create');
+
         $validated = $this->validate();
 
         if ($this->supplierId) {
@@ -164,6 +168,8 @@ class SupplierManager extends Component
      */
     public function delete(): void
     {
+        $this->authorizeAction('suppliers.delete');
+
         if ($this->deletingId) {
             Supplier::findOrFail($this->deletingId)->delete();
             session()->flash('success', 'تامین‌کننده حذف شد.');

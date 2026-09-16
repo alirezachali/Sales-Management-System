@@ -1,0 +1,48 @@
+<?php
+
+return [
+    'dashboard' => 'داشبورد',
+    'financial_manage' => 'مدیریت مالی',
+    'products' => 'محصولات',
+    'reg_purchase_invoice' => 'ثبت فاکتور خرید',
+    'categories' => 'دسته بندی ها',
+    'sales_counter' => 'صندوق فروش',
+    'users' => 'کاربران',
+    'roles' => 'نقش‌ها و دسترسی‌ها',
+    'settings' => 'تنظیمات',
+    'customer_club' => 'باشگاه مشتریان',
+    'customer_club_roles' => 'مدیریت رده های باشگاه',
+    'customer_debtors' => 'مشتریان بدهکار',
+    'customer_purchases' => 'خریدهای مشتریان',
+    'brands' => 'برندها',
+    'suppliers' => 'تامین کنندگان',
+    'employee_manage' => 'مدیریت کارکنان',
+    'cost_manage' => 'مدیریت هزینه‌ها',
+    'todo' => 'لیست کارها',
+    'sales_report' => 'گزارش فروش',
+    'purchases_report' => 'گزارش خرید',
+    'warehouse_manage' => 'گردش کالا',
+    'debt_manage' => 'مدیریت بدهی ها',
+
+    /* گروه‌های منو */
+    'group_main' => 'اصلی',
+    'group_sales' => 'فروش و مشتریان',
+    'group_warehouse' => 'انبار و کالا',
+    'group_purchase' => 'خرید و تامین',
+    'group_finance' => 'امور مالی',
+    'group_hr' => 'منابع انسانی',
+    'group_reports' => 'گزارش‌ها و کارها',
+    'group_system' => 'مدیریت سیستم',
+
+    /* فیچرهای جدید */
+    'warehouses' => 'انبارها',
+    'transfers' => 'انتقال بین انبار',
+    'stock_counts' => 'انبارگردانی',
+    'cashboxes' => 'صندوق‌ها',
+    'attendance' => 'حضور و غیاب',
+    'payrolls' => 'حقوق و دستمزد',
+    'profit_report' => 'سود و زیان',
+    'loyalty' => 'باشگاه امتیازات',
+    'messages' => 'پیام‌ها',
+    'my_messages' => 'پیام‌های من',
+];

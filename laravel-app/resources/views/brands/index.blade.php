@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'مدیریت برندها')
+@section('title', __('brands.page_title'))
 @section('content')
 
     <div class="container-fluid">
@@ -7,3 +7,4 @@
     </div>
 
 @endsection
+
