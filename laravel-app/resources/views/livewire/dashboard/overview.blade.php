@@ -1,8 +1,8 @@
 <div wire:poll.{{ $pollingSeconds }}s="$refresh">
 
-    <div class="card shadow-sm border-3 mb-4" wire:loading.class="opacity-50">
+    <div class="card shadow-sm mb-4">
 
-        <div class="card-header d-flex justify-content-between align-items-center mb-2">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="fw-bold mb-1">
                 <i class="bi bi-speedometer2 text-primary"></i>
                 {{ __('dash.admin.title') }}
@@ -23,7 +23,7 @@
     <div class="row g-3 mb-4">
 
         <div class="col-lg-3 col-md-6">
-            <div class="card dashboard-card border-3">
+            <div class="card dashboard-card">
                 <div class="card-body">
                     <!-- کارت آمار فروش امروز-->
                     <div class="dashboard-title">
@@ -41,7 +41,7 @@
         </div>
 
         <div class="col-lg-3 col-md-6">
-            <div class="card dashboard-card border-3">
+            <div class="card dashboard-card">
                 <div class="card-body">
                     <!-- کارت آمار فاکتورهای امروز-->
                     <div class="dashboard-title">
@@ -57,7 +57,7 @@
 
         <!-- کارت آمار تعداد کالاها-->
         <div class="col-lg-3 col-md-6">
-            <div class="card dashboard-card border-3">
+            <div class="card dashboard-card">
                 <div class="card-body">
                     <div class="dashboard-title">
                         <h2> 📦 {{ __('dash.admin.card_3') }}</h2>
@@ -72,7 +72,7 @@
 
         <!-- کارت آمار تعدا کالاهای کم موجود-->
         <div class="col-lg-3 col-md-6">
-            <div class="card dashboard-card border-3">
+            <div class="card dashboard-card">
                 <div class="card-body">
                     <div class="dashboard-title">
                         <h2>⚠️ {{ __('dash.admin.card_4') }}</h2>
@@ -164,11 +164,11 @@
                 <!-- کارت کارهای در حال انجام -->
         <div class="col-12">
             <div class="card dashboard-card">
-                <div class="card-header d-flex justify-content-between align-items-center opacity-70">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <strong>
                        ✅ لیست وظیفه‌های درحال انجام
                     </strong>
-                    <a href="{{ route('todos.index') }}" class="btn btn-sm btn-primary">
+                    <a href="{{ route('todos.index') }}" class="btn btn-sm btn-outline-primary">
                         مشاهده‌همه
                     </a>
                 </div>

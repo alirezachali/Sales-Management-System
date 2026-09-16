@@ -21,57 +21,69 @@
     {{-- کارت‌های آماری --}}
     <div class="row row-cards mb-4">
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-primary">{{ $counts['total'] }}</div>
-                    <div class="subheader">همه</div>
+                    <div class="h2 mb-0 text-primary">
+                        {{ $counts['total'] }}
+                    </div>
+                    <div class="subheader">تعداد کل</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-warning">{{ $counts['pending'] }}</div>
+                    <div class="h2 mb-0 text-warning">
+                        {{ $counts['pending'] }}
+                    </div>
                     <div class="subheader">در انتظار</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-info">{{ $counts['in_progress'] }}</div>
+                    <div class="h2 mb-0 text-info">
+                        {{ $counts['in_progress'] }}
+                    </div>
                     <div class="subheader">در حال انجام</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-success">{{ $counts['completed'] }}</div>
+                    <div class="h2 mb-0 text-success">
+                        {{ $counts['completed'] }}
+                    </div>
                     <div class="subheader">تکمیل شده</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-danger">{{ $counts['high_priority_pending'] }}</div>
+                    <div class="h2 mb-0 text-danger">
+                        {{ $counts['high_priority_pending'] }}
+                    </div>
                     <div class="subheader">اولویت بالا</div>
                 </div>
             </div>
         </div>
         <div class="col-6 col-lg-2">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body text-center">
-                    <div class="h2 mb-0 text-secondary">{{ $counts['due_soon'] }}</div>
+                    <div class="h2 mb-0 text-secondary">
+                        {{ $counts['due_soon'] }}
+                    </div>
                     <div class="subheader">نزدیک سررسید</div>
                 </div>
             </div>
         </div>
     </div>
 
-{{--=========== فیلترها ============--}}
-    <div class="card mb-4 border-3">
+    {{--=========== فیلترها ============--}}
+    <div class="card mb-4">
         <div class="card-body">
             <div class="row g-2">
                 <div class="col-md-3">
@@ -111,8 +123,8 @@
         </div>
     </div>
 
-{{--============================== جدول کارها ==============================--}}
-    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
+    {{--============================== جدول کارها ==============================--}}
+    <div class="card shadow-sm" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
@@ -134,7 +146,7 @@
         </div>
 
         <div class="card-body table-responsive">
-            <table class="table table-bordered table-hover align-middle">
+            <table class="table table-hover align-middle">
                 <thead>
                     <tr>
                         <th width="40">ردیف</th>
@@ -198,24 +210,24 @@
                             <td>
                                 @can('todos.edit')
                                 <button type="button"
-                                    class="btn btn-sm {{ $todo->isCompleted() ? 'btn-success text-dark' : 'btn-success text-dark' }}"
+                                    class="btn btn-sm {{ $todo->isCompleted() ? 'btn-outline-success' : 'btn-outline-success' }}"
                                     wire:click="toggleComplete({{ $todo->id }}"
                                     title="{{ $todo->isCompleted() ? 'برگرداندن به در انتظار' : 'تکمیل کردن' }}">
                                     <i class="bi {{ $todo->isCompleted() ? 'bi-arrow-counterclockwise' : 'bi-check-lg' }}"></i>
                                 </button>
                                 @endcan
-                                <button type="button" class="btn btn-sm btn-info text-dark"
+                                <button type="button" class="btn btn-sm btn-outline-info"
                                     wire:click="openDetails({{ $todo->id }})" title="مشاهده جزئیات">
                                     <i class="bi bi-eye"></i>
                                 </button>
                                 @can('todos.edit')
-                                <button type="button" class="btn btn-sm btn-warning text-dark"
+                                <button type="button" class="btn btn-sm btn-outline-warning"
                                     wire:click="openEditModal({{ $todo->id }})" title="ویرایش">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
                                 @endcan
                                 @can('todos.delete')
-                                <button type="button" class="btn btn-sm btn-danger text-dark"
+                                <button type="button" class="btn btn-sm btn-outline-danger"
                                     wire:click="confirmDelete({{ $todo->id }})" title="حذف">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
