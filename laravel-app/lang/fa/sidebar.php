@@ -43,4 +43,6 @@ return [
     'payrolls' => 'حقوق و دستمزد',
     'profit_report' => 'سود و زیان',
     'loyalty' => 'باشگاه امتیازات',
+    'messages' => 'پیام‌ها',
+    'my_messages' => 'پیام‌های من',
 ];

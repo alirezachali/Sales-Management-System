@@ -70,26 +70,26 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class)->except(['show', 'index'])
         ->middleware('can:products.edit');
 
-    Route::get('products/{product}/stock', function (\App\Models\Product $product) 
+    Route::get('products/{product}/stock', function (\App\Models\Product $product)
         {return view('products.stock', compact('product'));})
             ->name('products.stock')->middleware('can:stocks.view');
-  
+
     Route::post('products/{product}/stock', [ProductController::class, 'storeStock'])->name('products.stock.store')
         ->middleware('can:stocks.adjust,product');
 
     Route::get('products/{product}/stock/sale', [ProductController::class, 'createSale'])->name('products.sale.create');
-    
+
     Route::post('products/{product}/stock/sale', [ProductController::class, 'storeSale'])->name('products.sale.store');
-    
+
     Route::get('products/{product}/stock/create', [ProductController::class, 'createStock'])->name('products.stock.create');
-    
+
     /* مسیر جنراتور بارکد برای محصولات جدید بدون بارکد خاصی از */
     Route::get('products/generate-barcode', [BarcodeController::class, 'generate'])->name('products.generate.barcode');
 
     /* مسیر چاپ لیبل محصولات */
     Route::get('products/{product}/label', [LabelController::class, 'show'])->name('products.label');
 
- 
+
     /* مسیر صفحه صندوق فروش */
     Route::get('pos', [SaleController::class, 'index'])->name('pos.index')
         ->middleware('can:pos.view');
@@ -141,7 +141,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('user/roles/{role}/permissions', [RoleController::class, 'syncPermissions'])->name('roles.permissions.sync')
         ->middleware('can:roles.permissions');
-    
+
 
     /* مسیر صفحه‌ی باشگاه مشتریان  */
     Route::get('customers', function () {return view('customers.index');})->name('customers.index')
@@ -243,4 +243,15 @@ Route::middleware('auth')->group(function () {
     /* باشگاه امتیازات مشتریان */
     Route::get('loyalty', function () {return view('customers.loyalty');})->name('loyalty.index')
         ->middleware('can:loyalty.view');
+
+    /*  |--------------------------------------------------|
+     |          پیام‌ها: ارسال پیام مدیر به کاربران         |
+     |--------------------------------------------------|*/
+
+    /* صندوق پیام‌های کاربر؛ هر کاربر فقط پیام‌های خودش را می‌بیند */
+    Route::get('inbox', function () {return view('messages.inbox');})->name('messages.inbox');
+
+    /* صفحه مدیریت پیام‌های ارسالی (مخصوص مدیر) */
+    Route::get('messages', function () {return view('messages.index');})->name('messages.index')
+        ->middleware('can:messages.view');
 });

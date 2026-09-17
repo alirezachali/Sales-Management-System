@@ -19,6 +19,9 @@
         {{--===== سمت چپ: منوی کاربر =====--}}
         @auth
             <div class="navbar-section">
+                {{-- زنگ پیام‌های مدیر --}}
+                <livewire:messages.messages-bell />
+
                 {{-- زنگ هشدارهای هوشمند --}}
                 <livewire:alerts-bell />
                 @php $avatarUrl = auth()->user()->avatar_url; @endphp
@@ -98,6 +101,18 @@
                         <a class="user-dropdown-item" href="{{ route('profile.show', auth()->user()->username) }}">
                             <i class="bi bi-person"></i>
                             <span>{{ __('navbar.profile') }}</span>
+                        </a>
+
+                        {{--===== پیام‌های من =====--}}
+                        @php $unreadMessages = auth()->user()->unreadMessagesCount(); @endphp
+                        <a class="user-dropdown-item" href="{{ route('messages.inbox') }}">
+                            <i class="bi bi-envelope"></i>
+                            <span>
+                                {{ __('navbar.messages') }}
+                                @if ($unreadMessages > 0)
+                                    ({{ $unreadMessages }})
+                                @endif
+                            </span>
                         </a>
 
                         {{--===== تنظیمات =====--}}

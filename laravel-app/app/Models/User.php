@@ -128,6 +128,20 @@ class User extends Authenticatable
     }
 
     /**
+     * پیام‌هایی که مدیر برای این کاربر فرستاده است (هر رکورد = یک گیرنده).
+     */
+    public function messageRecipients(): HasMany
+    {
+        return $this->hasMany(MessageRecipient::class);
+    }
+
+    /** تعداد پیام‌های خوانده‌نشده‌ی این کاربر؛ برای نشانگر زنگ نوار بالا */
+    public function unreadMessagesCount(): int
+    {
+        return $this->messageRecipients()->whereNull('read_at')->count();
+    }
+
+    /**
      * آدرس کامل تصویر پروفایل کاربر؛ در صورت نبود تصویر، null برمی‌گرداند
      * تا در رابط کاربری آیکن پیش‌فرض نمایش داده شود.
      */
