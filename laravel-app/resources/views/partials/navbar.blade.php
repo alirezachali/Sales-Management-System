@@ -19,6 +19,7 @@
         {{--===== سمت چپ: منوی کاربر =====--}}
         @auth
             <div class="navbar-section">
+                {{-- <img src="{{ $avatarUrl }}"> --}}
                 {{-- زنگ پیام‌های مدیر --}}
                 @cannot('messages.view')
                     <livewire:messages.messages-bell />
