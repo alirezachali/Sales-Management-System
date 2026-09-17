@@ -81,13 +81,13 @@
                     </h2>
                     <div>
                         <div>
-                            ویرایش و تعیین مجوز برای مشخص کردن سطح دسترسی نقش :       
+                            ویرایش و تعیین مجوز برای مشخص کردن سطح دسترسی نقش :
                             <span class="badge bg-info text-dark">
                                 {{ $role->display_name }}
                             </span>
                         </div>
                     </div>
-                    
+
                 </div>
 
                 <div class="d-flex gap-3">
@@ -106,15 +106,15 @@
             </div>
         </div>
 
-       
+
     {{--======================== کارت های گروه های مجوز ========================--}}
         <div class="permissions-grid">
 
             @foreach ($groups as $group)
                 <div class="permission-column">
-                    <div class="card shadow-sm border-3">
+                    <div class="card shadow-sm">
 
-                        <div class="card-header d-flex justify-content-between align-items-center bg-secondary text-dark">
+                        <div class="card-header d-flex justify-content-between align-items-center text-fuchsia">
                             <strong>
                                 <i class="bi {{ $group->icon }}"></i>
                                 {{ $group->name }}
@@ -134,7 +134,7 @@
                             <div class="form-check form-switch m-0">
                                 <input class="form-check-input" type="checkbox" id="group-{{ $group->id }}"
                                     wire:click="toggleGroup({{ $group->id }})" @checked($groupAllChecked)>
-                                <label class="form-check-label small" for="group-{{ $group->id }}">
+                                <label class="form-check-label small text-muted" for="group-{{ $group->id }}">
                                     همه
                                 </label>
                             </div>
