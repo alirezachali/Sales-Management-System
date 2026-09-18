@@ -1,6 +1,6 @@
 <div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
-    {{--=================== نمایش پیغام‌های موفقیت ===================--}}
+    {{-- =================== نمایش پیغام‌های موفقیت =================== --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
@@ -9,7 +9,7 @@
         </div>
     @endif
 
-    {{--=================== نمایش پیغام‌های خطا ===================--}}
+    {{-- =================== نمایش پیغام‌های خطا =================== --}}
     @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show glass-card" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -18,7 +18,7 @@
         </div>
     @endif
 
-{{--=================== کارت‌های آماری ===================--}}
+    {{-- =================== کارت‌های آماری =================== --}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
@@ -66,7 +66,7 @@
     </div>
 
 
-{{--=================== کارت جستجو ===================--}}
+    {{-- =================== کارت جستجو =================== --}}
     <div class="card glass-card mb-4 border-3">
         <div class="card-body">
             <div class="row">
@@ -85,7 +85,7 @@
     </div>
 
 
-{{--================================ جدول لیست برندها ================================--}}
+    {{-- ================================ جدول لیست برندها ================================ --}}
     <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
@@ -97,10 +97,10 @@
             </div>
 
             @can('brands.create')
-            <button class="btn btn-primary" wire:click="openCreateModal" title="{{ __('brands.add_tooltip') }}">
-                <i class="bi bi-plus-circle"></i>
-                {{ __('brands.add_brand') }}
-            </button>
+                <button class="btn btn-primary" wire:click="openCreateModal" title="{{ __('brands.add_tooltip') }}">
+                    <i class="bi bi-plus-circle"></i>
+                    {{ __('brands.add_brand') }}
+                </button>
             @endcan
         </div>
 
@@ -110,20 +110,33 @@
                     <thead>
                         <tr>
                             <th width="55">{{ __('brands.table.row') }}</th>
+                            <th width="90">لوگو</th>
                             <th>{{ __('brands.table.name') }}</th>
-                            <th>{{ __('brands.table.description') }}</th>
-                            <th >{{ __('brands.table.suppliers') }}</th>
+                            <th width="90">{{ __('brands.table.products') }}</th>
+                            <th width="120">{{ __('brands.table.suppliers') }}</th>
                             <th width="80">{{ __('brands.table.status') }}</th>
-                            <th width="170">{{ __('brands.table.actions') }}</th>
+                            <th width="130">{{ __('brands.table.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($brands as $brand)
                             <tr wire:key="brand-{{ $brand->id }}">
                                 <td>{{ $loop->iteration + ($brands->currentPage() - 1) * $brands->perPage() }}</td>
+                                <td>
+                                    @if ($brand->logo && \Illuminate\Support\Facades\Storage::disk('public')->exists($brand->logo))
+                                        <img src="{{ asset('storage/' . $brand->logo) }}" style="width: 50px; height: 50px; border-radius: 20px; object-fit: cover;" alt="{{ $brand->name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                        <div class="d-none align-items-center justify-content-center rounded-circle bg-secondary bg-opacity-25" style="width: 50px; height: 50px;">
+                                            <i class="bi bi-image text-muted"></i>
+                                        </div>
+                                    @else
+                                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-secondary bg-opacity-25" style="width: 50px; height: 50px;">
+                                            <i class="bi bi-image text-muted"></i>
+                                        </div>
+                                    @endif
+                                </td>
                                 <td class="fw-semibold">{{ $brand->name }}</td>
-                                <td class="text-muted small">
-                                    {{ $brand->description ? \Illuminate\Support\Str::limit($brand->description, 50) : '-' }}
+                                <td>
+                                    {{ $brand->products_count }}
                                 </td>
                                 <td>
                                     <span class="badge bg-info-subtle text-info-emphasis">
@@ -139,24 +152,28 @@
                                 </td>
                                 <td class="text-center">
                                     @can('brands.edit')
-                                    <button type="button" class="btn btn-sm btn-primary text-dark"
-                                        wire:click="openEditModal({{ $brand->id }})" title="{{ __('brands.edit_tooltip') }}">
-                                        <i class="bi bi-pencil-fill"></i>
-                                        {{ __('brands.table.edit') }}
-                                    </button>
+                                        <button type="button" class="btn btn-sm btn-outline-warning"
+                                            wire:click="openEditModal({{ $brand->id }})"
+                                            title="{{ __('brands.edit_tooltip') }}">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-info"
+                                            wire:click="openDetailsModal({{ $brand->id }})" title="جزئیات برند">
+                                            <i class="bi bi-info-circle"></i>
+                                        </button>
                                     @endcan
                                     @can('brands.delete')
-                                    <button type="button" class="btn btn-sm btn-danger text-dark"
-                                        wire:click="confirmDelete({{ $brand->id }})" title="{{ __('brands.delete_tooltip') }}">
-                                        <i class="bi bi-trash-fill"></i>
-                                        {{ __('brands.table.delete') }}
-                                    </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                            wire:click="confirmDelete({{ $brand->id }})"
+                                            title="{{ __('brands.delete_tooltip') }}">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
                                     @endcan
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-4 text-muted">
+                                <td colspan="6" class="text-center py-4 text-muted">
                                     @if ($search)
                                         نتیجه‌ای برای «{{ $search }}» پیدا نشد.
                                     @else
@@ -173,7 +190,7 @@
         </div>
     </div>
 
-{{--=================================== مودال ساخت / ویرایش برند ===================================--}}
+    {{-- =================================== مودال ساخت / ویرایش برند =================================== --}}
     @if ($showFormModal)
         <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="brand-form-modal">
@@ -189,7 +206,8 @@
                         <div class="modal-body">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label class="form-label">{{ __('brands.name_label') }}<span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('brands.name_label') }}<span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
                                         wire:model="name">
                                     @error('name')
@@ -199,8 +217,12 @@
 
                                 <div class="col-md-6">
                                     <label class="form-label">{{ __('brands.logo_label') }}</label>
-                                    <input type="text" class="form-control" wire:model="logo"
-                                        placeholder="مثلاً: logos/brand.png">
+                                    <input type="file" class="form-control @error('logoFile') is-invalid @enderror"
+                                        wire:model="logoFile" accept=".svg,image/svg+xml,.png,image/png,.jpg,.jpeg">
+                                    @error('logoFile')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="text-muted">{{ __('brands.logo_helper') }}</small>
                                 </div>
 
                                 <div class="col-12">
@@ -232,12 +254,14 @@
                                 <div class="col-12 form-check form-switch">
                                     <input type="checkbox" class="form-check-input" id="brand_is_active"
                                         wire:model="is_active">
-                                    <label class="form-check-label" for="brand_is_active">{{ __('brands.active') }}</label>
+                                    <label class="form-check-label"
+                                        for="brand_is_active">{{ __('brands.active') }}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeModals">{{ __('brands.cancel') }}</button>
+                            <button type="button" class="btn btn-secondary"
+                                wire:click="closeModals">{{ __('brands.cancel') }}</button>
                             <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
                                 wire:target="save">
                                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
@@ -250,7 +274,7 @@
         </div>
     @endif
 
-{{--=================================== مودال تایید حذف ===================================--}}
+    {{-- =================================== مودال تایید حذف =================================== --}}
     @if ($showDeleteModal)
         <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="brand-delete-modal">
@@ -264,10 +288,61 @@
                         {{ __('brands.delete_confirm') }}
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" wire:click="closeModals">{{ __('brands.cancel') }}</button>
+                        <button type="button" class="btn btn-secondary"
+                            wire:click="closeModals">{{ __('brands.cancel') }}</button>
                         <button type="button" class="btn btn-danger" wire:click="delete"
                             wire:loading.attr="disabled">
                             {{ __('brands.table.delete') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{--==================================== مودال جزئیات برند ====================================--}}
+    @if ($showDetailsModal)
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+            wire:key="brand-details-modal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">جزئیات برند</h5>
+                        <button type="button" class="btn-close" wire:click="$set('showDetailsModal', false)" title="بستن">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @if ($detailBrand)
+                            <p>
+                                <strong>نام:</strong>
+                                {{ $detailBrand->name }}
+                            </p>
+                            <p>
+                                <strong>توضیحات:</strong>
+                                {{ $detailBrand->description }}
+                            </p>
+                            <p>
+                                <strong>تامین‌کنندگان:</strong>
+                                @foreach ($detailBrand->suppliers as $supplier)
+                                    {{ $supplier->name }}
+                                    @if (!$loop->last)
+                                        ,
+                                    @endif
+                                @endforeach
+                            </p>
+                            <h5>محصولات</h5>
+                            <ul>
+                                @foreach ($detailBrand->products as $product)
+                                    <li>
+                                        {{ $product->name }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" wire:click="$set('showDetailsModal', false)" title="بستن">
+                            بستن
                         </button>
                     </div>
                 </div>

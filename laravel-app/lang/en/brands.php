@@ -25,6 +25,7 @@ return [
         'row' => '#',
         'name' => 'Brand Name',
         'description' => 'Description',
+        'products' => 'Products',
         'suppliers' => 'Suppliers',
         'status' => 'Status',
         'actions' => 'Actions',

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Brand;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,10 +12,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = [
+protected $fillable = [
         'barcode',
         'name',
         'category_id',
+        'brand_id',
         'buy_price',
         'sell_price',
         'stock',
@@ -30,6 +32,11 @@ class Product extends Model
             'stock' => 'decimal:3',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
     }
 
     public function category(): BelongsTo
@@ -63,7 +70,7 @@ class Product extends Model
     {
         return $this->hasMany(StockMovement::class);
     }
-    
+
     // متد برای نمایش موجودی کالا در رابط کاربری
     public function getFormattedStockAttribute(): string
     {

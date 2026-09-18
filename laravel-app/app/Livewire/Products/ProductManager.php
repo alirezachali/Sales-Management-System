@@ -4,6 +4,7 @@ namespace App\Livewire\Products;
 
 use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Category;
+use App\Models\Brand;
 use App\Models\Product;
 use App\Models\StockMovement;
 use App\Services\BarcodeService;
@@ -35,6 +36,7 @@ class ProductManager extends Component
     public string $barcode = '';
     public string $name = '';
     public string $category_id = '';
+    public string $brand_id = '';
     public $buy_price = 0;
     public $sell_price = 0;
     public $stock = 0;
@@ -89,11 +91,13 @@ class ProductManager extends Component
             ],
             'name' => ['required', 'string', 'max:255'],
             'category_id' => ['nullable', 'exists:categories,id'],
+            'brand_id' => ['nullable', 'exists:brands,id'],
             'buy_price' => ['required', 'numeric', 'min:0'],
             'sell_price' => ['required', 'numeric', 'min:0'],
             'stock' => ['required', 'numeric', 'min:0'],
             'unit' => ['required', 'string', 'max:20'],
             'is_active' => ['required', 'boolean'],
+            // 'brand_id' validation handled above
         ];
     }
 
@@ -130,6 +134,7 @@ class ProductManager extends Component
         $this->barcode = $product->barcode;
         $this->name = $product->name;
         $this->category_id = (string) $product->category_id;
+        $this->brand_id = (string) $product->brand_id;
         $this->buy_price = $product->buy_price;
         $this->sell_price = $product->sell_price;
         $this->stock = $product->stock;
@@ -174,6 +179,7 @@ class ProductManager extends Component
 
         $data = $this->validate();
         $data['category_id'] = $data['category_id'] ?: null;
+        $data['brand_id'] = $data['brand_id'] ?: null;
 
         if ($this->editingProductId) {
             $product = Product::findOrFail($this->editingProductId);
@@ -230,6 +236,7 @@ class ProductManager extends Component
         $this->barcode = '';
         $this->name = '';
         $this->category_id = '';
+        $this->brand_id = '';
         $this->buy_price = 0;
         $this->sell_price = 0;
         $this->stock = 0;
@@ -240,7 +247,7 @@ class ProductManager extends Component
 
     public function render()
     {
-        $query = Product::with('category');
+        $query = Product::with(['category', 'brand']);
 
         if ($this->search !== '') {
             $query->where(function ($q) {
@@ -258,6 +265,7 @@ class ProductManager extends Component
         return view('livewire.products.product-manager', [
             'products' => $products,
             'categories' => Category::all(),
+            'brands' => Brand::all(),
             'totalProducts' => Product::count(),
             'activeProducts' => Product::where('is_active', true)->count(),
             'inactiveProducts' => Product::where('is_active', false)->count(),

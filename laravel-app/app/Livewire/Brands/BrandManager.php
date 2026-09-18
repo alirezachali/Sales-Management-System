@@ -7,11 +7,13 @@ use App\Models\Brand;
 use App\Models\Supplier;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class BrandManager extends Component
 {
     use WithPagination;
+    use WithFileUploads;
     use AuthorizesActions;
 
     public string $search = '';
@@ -21,18 +23,17 @@ class BrandManager extends Component
     public string $name = '';
     public ?string $description = null;
     public ?string $logo = null;
+    public $logoFile = null;
     public bool $is_active = true;
     public array $selectedSuppliers = [];
 
     // کنترل مودال‌ها
     public bool $showFormModal = false;
+    public bool $showDetailsModal = false;
+    public $detailBrand = null;
     public bool $showDeleteModal = false;
     public ?int $deletingId = null;
 
-    // protected array $messages = [
-    //     'name.required' => __('brands.validation.name_required'),
-    //     'name.unique'   => __('brands.validation.name_unique'),
-    // ];
 
     protected function messages(): array
     {
@@ -56,7 +57,8 @@ class BrandManager extends Component
                 Rule::unique('brands', 'name')->ignore($this->brandId),
             ],
             'description'         => ['nullable', 'string'],
-            'logo'                => ['nullable', 'string', 'max:100'],
+            'logo'                => ['nullable', 'string', 'max:255'],
+            'logoFile'            => ['nullable', 'file', 'mimes:svg,png,jpg,jpeg', 'max:2048'],
             'is_active'           => ['boolean'],
             'selectedSuppliers'   => ['array'],
             'selectedSuppliers.*' => ['exists:suppliers,id'],
@@ -68,6 +70,7 @@ class BrandManager extends Component
      */
     public function openCreateModal(): void
     {
+        $this->logoFile = null;
         $this->resetForm();
         $this->showFormModal = true;
     }
@@ -77,8 +80,8 @@ class BrandManager extends Component
      */
     public function openEditModal(int $id): void
     {
+        $this->logoFile = null;
         $brand = Brand::with('suppliers:id')->findOrFail($id);
-
         $this->brandId            = $brand->id;
         $this->name                = $brand->name;
         $this->description         = $brand->description;
@@ -88,6 +91,12 @@ class BrandManager extends Component
 
         $this->resetErrorBag();
         $this->showFormModal = true;
+    }
+
+    public function openDetailsModal(int $id): void
+    {
+        $this->detailBrand = Brand::with(['suppliers', 'products'])->findOrFail($id);
+        $this->showDetailsModal = true;
     }
 
     /**
@@ -102,11 +111,18 @@ class BrandManager extends Component
         $supplierIds = $validated['selectedSuppliers'] ?? [];
         unset($validated['selectedSuppliers']);
 
+        if ($this->logoFile) {
+            $validated['logo'] = $this->logoFile->store('logos', 'public');
+        } else {
+            unset($validated['logo']);
+        }
+
         if ($this->brandId) {
             $brand = Brand::findOrFail($this->brandId);
             $brand->update($validated);
             session()->flash('success', __('brands.messages.updated'));
         } else {
+            $validated['logo'] = $validated['logo'] ?? null;
             $brand = Brand::create($validated);
             session()->flash('success', __('brands.messages.created'));
         }
@@ -143,18 +159,19 @@ class BrandManager extends Component
     {
         $this->showFormModal = false;
         $this->showDeleteModal = false;
+        $this->showDetailsModal = false;
     }
 
     private function resetForm(): void
     {
-        $this->reset(['brandId', 'name', 'description', 'logo', 'selectedSuppliers']);
+        $this->reset(['brandId', 'name', 'description', 'logo', 'selectedSuppliers', 'logoFile']);
         $this->is_active = true;
         $this->resetErrorBag();
     }
 
     public function render()
     {
-        $brands = Brand::withCount('suppliers')
+        $brands = Brand::withCount(['suppliers', 'products'])
             ->when($this->search, fn ($q) => $q->where('name', 'like', "%{$this->search}%"))
             ->latest()
             ->paginate(15);

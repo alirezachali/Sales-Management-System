@@ -2,6 +2,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Brand extends Model
@@ -26,5 +28,10 @@ class Brand extends Model
     public function suppliers(): BelongsToMany
     {
         return $this->belongsToMany(Supplier::class, 'brand_supplier');
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 }

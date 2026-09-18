@@ -106,7 +106,7 @@
                 data-hotkey="products_add" title="افزودن محصول جدید به سیستم{{ hotkeyHint('products_add') }}">
                 <i class="bi bi-plus-circle"></i>
                 افزودن محصول
-            </button> 
+            </button>
             @endcan
         </div>
 
@@ -233,18 +233,30 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">دسته بندی</label>
-                                    <select wire:model="category_id" class="form-select">
-                                        <option value="">انتخاب کنید</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('category_id')
-                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">دسته بندی</label>
+                                        <select wire:model="category_id" class="form-select">
+                                            <option value="">انتخاب کنید</option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('category_id')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">برند</label>
+                                        <select wire:model="brand_id" class="form-select">
+                                            <option value="">انتخاب کنید</option>
+                                            @foreach ($brands as $brand)
+                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('brand_id')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">قیمت خرید</label>
