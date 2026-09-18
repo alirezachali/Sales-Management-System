@@ -84,15 +84,7 @@
                         <div class="invalid-feedback d-block">{{ $dateErrors['to'] }}</div>
                     @endif
                 </div>
-                {{-- <div class="col-md-3">
-                    <label class="form-label">نوع عملیات</label>
-                    <select wire:model.live="filterType" class="form-select">
-                        <option value="">همه</option>
-                        <option value="initial">موجودی اولیه</option>
-                        <option value="purchase">ورود کالا</option>
-                        <option value="sale">خروج کالا</option>
-                    </select>
-                </div> --}}
+
                 <div class="col-md-3">
                     <label class="form-label">روش پرداخت</label>
                     <select wire:model.live="filterPaymentMethod" class="form-select">
@@ -229,7 +221,7 @@
         </div>
     </div>
 
-{{--======================== مودال جزئیات فاکتور خرید ========================--}}
+    {{--======================== مودال جزئیات فاکتور خرید ========================--}}
     @if ($showDetailsModal && $detailsInvoice)
         @php
             $itemCount = $detailsInvoice->items->count();
@@ -254,7 +246,7 @@
                             @if ($detailsInvoice->invoice_number)
                                 <span class="fw-normal">#{{ $detailsInvoice->invoice_number }}</span>
                             @endif
-                        </h5> 
+                        </h5>
                         <button type="button" class="btn-close" wire:click="closeDetails" title="بستن"></button>
                     </div>
                     <div class="modal-body" id="purchase-invoice-print-area">
@@ -266,7 +258,7 @@
                                     <div class="card dashboard-card border-3">
                                         <table class="table table-bordered">
                                             <tbody>
-                                        
+
                                                 <tr class="table-active">
                                                     <th class="">شماره فاکتور</th>
                                                     <td>{{ $detailsInvoice->invoice_number ?: '—' }}</td>
@@ -424,7 +416,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>

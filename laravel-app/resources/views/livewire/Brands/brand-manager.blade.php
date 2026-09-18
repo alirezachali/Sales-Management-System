@@ -110,7 +110,7 @@
                     <thead>
                         <tr>
                             <th width="55">{{ __('brands.table.row') }}</th>
-                            <th width="90">لوگو</th>
+                            <th width="80"></th>
                             <th>{{ __('brands.table.name') }}</th>
                             <th width="90">{{ __('brands.table.products') }}</th>
                             <th width="120">{{ __('brands.table.suppliers') }}</th>
@@ -124,7 +124,7 @@
                                 <td>{{ $loop->iteration + ($brands->currentPage() - 1) * $brands->perPage() }}</td>
                                 <td>
                                     @if ($brand->logo && \Illuminate\Support\Facades\Storage::disk('public')->exists($brand->logo))
-                                        <img src="{{ asset('storage/' . $brand->logo) }}" style="width: 50px; height: 50px; border-radius: 20px; object-fit: cover;" alt="{{ $brand->name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                        <img src="{{ asset('storage/' . $brand->logo) }}" style="width: 50px; height: 50px; border-radius: 30px; object-fit: cover;" alt="{{ $brand->name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                                         <div class="d-none align-items-center justify-content-center rounded-circle bg-secondary bg-opacity-25" style="width: 50px; height: 50px;">
                                             <i class="bi bi-image text-muted"></i>
                                         </div>
@@ -313,14 +313,21 @@
                     </div>
                     <div class="modal-body">
                         @if ($detailBrand)
-                            <p>
-                                <strong>نام:</strong>
-                                {{ $detailBrand->name }}
-                            </p>
-                            <p>
-                                <strong>توضیحات:</strong>
-                                {{ $detailBrand->description }}
-                            </p>
+                            <div class="card">
+                                <div class="card-body">
+                                    <tr>
+                                        <th class="">نام برند</th>
+                                        <td>{{ $detailBrand->name ?: '—' }}</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th class="">توضیحات</th>
+                                        <td>{{ $detailBrand->description ?: '—' }}</td>
+                                    </tr>
+                                </div>
+                            </div>
+
+
+
                             <p>
                                 <strong>تامین‌کنندگان:</strong>
                                 @foreach ($detailBrand->suppliers as $supplier)
@@ -330,6 +337,7 @@
                                     @endif
                                 @endforeach
                             </p>
+
                             <h5>محصولات</h5>
                             <ul>
                                 @foreach ($detailBrand->products as $product)
