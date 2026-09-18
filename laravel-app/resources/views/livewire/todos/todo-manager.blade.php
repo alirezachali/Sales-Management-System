@@ -244,7 +244,9 @@
                 </tbody>
             </table>
 
-            <div class="mt-3">{{ $todos->links() }}</div>
+            <div class="card-footer">
+                {{ $todos->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 

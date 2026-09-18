@@ -139,7 +139,9 @@
                 </tbody>
             </table>
 
-            <div class="mt-3">{{ $debtors->links() }}</div>
+            <div class="mt-3">
+                {{ $debtors->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 

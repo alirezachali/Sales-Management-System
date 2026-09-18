@@ -145,7 +145,9 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="card-footer">{{ $transactions->links() }}</div>
+                        <div class="card-footer">
+                            {{ $transactions->links('pagination::bootstrap-5') }}
+                        </div>
                     </div>
                 </div>
             </div>

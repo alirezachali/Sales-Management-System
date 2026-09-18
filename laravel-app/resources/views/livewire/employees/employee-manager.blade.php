@@ -170,7 +170,9 @@
                 </tbody>
             </table>
 
-            <div class="mt-3">{{ $employees->links() }}</div>
+            <div class="card-footer">
+                {{ $employees->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 

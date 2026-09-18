@@ -142,7 +142,9 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer">{{ $warehouses->links() }}</div>
+            <div class="card-footer">
+                {{ $warehouses->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 

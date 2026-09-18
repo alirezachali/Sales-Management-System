@@ -124,7 +124,7 @@
                                 <td>{{ $loop->iteration + ($brands->currentPage() - 1) * $brands->perPage() }}</td>
                                 <td>
                                     @if ($brand->logo && \Illuminate\Support\Facades\Storage::disk('public')->exists($brand->logo))
-                                        <img src="{{ asset('storage/' . $brand->logo) }}" style="width: 50px; height: 50px; border-radius: 30px; object-fit: cover;" alt="{{ $brand->name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                        <img src="{{ asset('storage/' . $brand->logo) }}" style="width: 50px; height: 50px; border-radius: 10px; object-fit: cover;" alt="{{ $brand->name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                                         <div class="d-none align-items-center justify-content-center rounded-circle bg-secondary bg-opacity-25" style="width: 50px; height: 50px;">
                                             <i class="bi bi-image text-muted"></i>
                                         </div>
@@ -185,8 +185,9 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="card-footer">{{ $brands->links() }}</div>
+            <div class="card-footer">
+                {{ $brands->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 

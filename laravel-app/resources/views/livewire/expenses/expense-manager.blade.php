@@ -198,7 +198,9 @@
                 </table>
             </div>
 
-            <div class="mt-3">{{ $expenses->links() }}</div>
+            <div class="card-footer">
+                {{ $expenses->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 

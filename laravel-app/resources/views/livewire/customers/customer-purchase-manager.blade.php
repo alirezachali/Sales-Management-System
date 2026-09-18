@@ -103,7 +103,9 @@
                 </tbody>
             </table>
 
-            <div class="mt-3">{{ $buyers->links() }}</div>
+            <div class="mt-3">
+                {{ $buyers->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 

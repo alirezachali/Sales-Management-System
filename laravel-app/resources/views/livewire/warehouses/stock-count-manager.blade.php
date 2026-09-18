@@ -81,7 +81,9 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer">{{ $counts->links() }}</div>
+            <div class="card-footer">
+                {{ $counts->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 

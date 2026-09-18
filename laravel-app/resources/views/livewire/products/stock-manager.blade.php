@@ -152,7 +152,9 @@
                 </table>
             </div>
 
-            <div class="mt-3">{{ $movements->links() }}</div>
+            <div class="card-footer">
+                {{ $movements->links('pagination::bootstrap-5') }}
+            </div>
 
         </div>
     </div>

@@ -158,7 +158,9 @@
                 </table>
             </div>
 
-            <div class="card-footer">{{ $suppliers->links() }}</div>
+            <div class="card-footer">
+                {{ $suppliers->links('pagination::bootstrap-5') }}
+            </div>
 
         </div>
     </div>

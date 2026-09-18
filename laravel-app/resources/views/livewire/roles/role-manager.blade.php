@@ -166,7 +166,9 @@
             </div>
         </div>
 
-        <div class="mt-3">{{ $roles->links() }}</div>
+        <div class="card-footer">
+            {{ $roles->links('pagination::bootstrap-5') }}
+        </div>
     </div>
 
     {{-- ================================== مودال افزودن/ویرایش نقش ================================== --}}

@@ -193,11 +193,13 @@
                         @endforelse
                     </tbody>
                 </table>
+                <div class="card-footer">
+                    {{ $users->links('pagination::bootstrap-5') }}
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="mt-3">{{ $users->links() }}</div>
 
 {{-- ================================ مودال افزودن/ویرایش کاربر ================================ --}}
     @if ($showFormModal)

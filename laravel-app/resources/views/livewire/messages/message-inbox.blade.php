@@ -118,7 +118,9 @@
                 </div>
             @endforelse
 
-            <div class="mt-3">{{ $inbox->links() }}</div>
+            <div class="card-footer">
+                {{ $inbox->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 

@@ -86,7 +86,9 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer">{{ $transfers->links() }}</div>
+            <div class="card-footer">
+                {{ $transfers->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 

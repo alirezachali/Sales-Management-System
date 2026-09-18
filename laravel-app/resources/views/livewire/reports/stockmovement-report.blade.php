@@ -211,8 +211,8 @@
                 </table>
             </div>
 
-            <div class="mt-3 d-flex flex-wrap justify-content-between align-items-center">
-                <div>{{ $records->links() }}</div>
+            <div class="card-footer">
+                {{ $records->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>

@@ -198,8 +198,8 @@
                     </table>
                 </div>
 
-                <div class="mt-3 d-flex flex-wrap justify-content-between align-items-center">
-                    <div>{{ $sales->links() }}</div>
+                <div class="card-footer">
+                    {{ $sales->links('pagination::bootstrap-5') }}
                 </div>
 
             </div>
