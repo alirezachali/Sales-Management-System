@@ -50,7 +50,6 @@
                         <div class="user-dropdown-head">
                             @if ($avatarUrl)
                                 <img src="{{ $avatarUrl }}" class="dropdown-avatar" alt="avatar">
-                                <p>{{ $avatarUrl }}</p>
                             @else
                                 <span class="dropdown-avatar dropdown-avatar-fallback">
                                     <i class="bi bi-person"></i>
