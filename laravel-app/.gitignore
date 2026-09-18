@@ -14,7 +14,7 @@
 /node_modules
 /public/build
 /public/hot
-/public/storage/avatar/*
+/storage
 /storage/*.key
 /storage/pail
 /storage/framework
