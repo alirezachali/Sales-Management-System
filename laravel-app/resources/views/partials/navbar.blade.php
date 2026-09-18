@@ -19,8 +19,11 @@
         {{--===== سمت چپ: منوی کاربر =====--}}
         @auth
             <div class="navbar-section">
+                {{-- <img src="{{ $avatarUrl }}"> --}}
                 {{-- زنگ پیام‌های مدیر --}}
-                <livewire:messages.messages-bell />
+                @cannot('messages.view')
+                    <livewire:messages.messages-bell />
+                @endcannot
 
                 {{-- زنگ هشدارهای هوشمند --}}
                 <livewire:alerts-bell />
@@ -104,17 +107,18 @@
                         </a>
 
                         {{--===== پیام‌های من =====--}}
-                        @php $unreadMessages = auth()->user()->unreadMessagesCount(); @endphp
-                        <a class="user-dropdown-item" href="{{ route('messages.inbox') }}">
-                            <i class="bi bi-envelope"></i>
-                            <span>
-                                {{ __('navbar.messages') }}
-                                @if ($unreadMessages > 0)
-                                    ({{ $unreadMessages }})
-                                @endif
-                            </span>
-                        </a>
-
+                        @cannot('messages.view')
+                            @php $unreadMessages = auth()->user()->unreadMessagesCount(); @endphp
+                            <a class="user-dropdown-item" href="{{ route('messages.inbox') }}">
+                                <i class="bi bi-envelope"></i>
+                                <span>
+                                    {{ __('navbar.messages') }}
+                                    @if ($unreadMessages > 0)
+                                        ({{ $unreadMessages }})
+                                    @endif
+                                </span>
+                            </a>
+                        @endcannot
                         {{--===== تنظیمات =====--}}
                         @can('settings.view')
                             <a class="user-dropdown-item" href="{{ route('settings.index') }}">

@@ -1,11 +1,5 @@
 @extends('layouts.auth')
 @section('title', 'ورود به سیستم')
-
-{{-- اسکریپت مربوط به گوگل ری کپچا --}}
-{{-- @section('script')
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-@endsection --}}
-
 @section('content')
 
     <div class="login-card">
@@ -56,11 +50,6 @@
                     </button>
                 </div>
             </div>
-
-            {{-- تگ نمایش گوگل ری کپچا --}}
-            {{-- <div class="form-group">
-                <div class="g-recaptcha" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}"></div>
-            </div> --}}
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="form-check">
