@@ -15,7 +15,7 @@ footer {
 }
 
 .app-footer {
-    /* z-index: 1030; */
+    z-index: 1030;
     height: var(--footer-height);
     width: 102%;
     -webkit-backdrop-filter: blur(10px);
@@ -40,10 +40,6 @@ footer {
     color: rgb(236, 217, 243);
 }
 
-
-/* .footer-separator {
-    color: rgb(231, 7, 231);
-} */
 
 
 
