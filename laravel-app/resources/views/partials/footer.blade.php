@@ -9,7 +9,7 @@
                 {{ verta()->format('l j F Y') }}
             </span>
 
-            <span class="footer-separator">&emsp;| |&emsp;</span>
+            <span class="footer-separator">📅&emsp;🕖</span>
 
             <span id="liveClock" class="footer-clock">
                 --:--:--
