@@ -104,7 +104,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-bordered table-hover align-middle">
+            <table class="table table-hover align-middle">
                 <thead>
                     <tr>
                         <th width="40">#</th>
@@ -115,7 +115,7 @@
                         <th width="110">مانده</th>
                         <th width="120">سررسید</th>
                         <th width="100">وضعیت</th>
-                        <th width="60">عملیات</th>
+                        <th width="80">عملیات</th>
                     </tr>
                 </thead>
                 <tbody>

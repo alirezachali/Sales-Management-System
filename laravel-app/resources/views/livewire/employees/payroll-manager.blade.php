@@ -38,8 +38,16 @@
 
     <div class="card border-0 shadow-sm">
         <div class="card-header">
-            <h3 class="fw-bold mb-1"><i class="bi bi-cash-coin text-success"></i> حقوق و دستمزد — ماه {{ $monthTitle }}</h3>
-            <small class="text-muted">مقادیر از حقوق پایه کارکنان و رکوردهای حضور/غیاب/اضافه‌کاری آن ماه به‌صورت خودکار پیش‌بینی می‌شوند؛ قابل ویرایش هستند.</small>
+            <div>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-cash-coin text-success"></i>
+                    حقوق و دستمزد 💲 برج 👈  
+                    <span class="text-success">{{ $monthTitle }}</span>
+                </h3>
+                <small class="text-muted">
+                    مقادیر از حقوق پایه کارکنان و رکوردهای حضور/غیاب/اضافه‌کاری آن ماه به‌صورت خودکار پیش‌بینی می‌شوند؛ قابل ویرایش هستند.
+                </small>
+            </div>
         </div>
         <div class="card-body p-0">
             @if (empty($rows))

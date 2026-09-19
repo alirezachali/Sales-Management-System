@@ -30,8 +30,15 @@
 
     <div class="card border-0 shadow-sm" wire:loading.class="opacity-50">
         <div class="card-header">
-            <h3 class="fw-bold mb-1"><i class="bi bi-arrow-left-right text-primary"></i> انتقالات بین انبار</h3>
-            <small class="text-muted">کالا ابتدا از انبار مبدأ کسر و پس از تأیید دریافت به انبار مقصد اضافه می‌شود.</small>
+            <div>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-arrow-left-right text-primary"></i>
+                    انتقالات بین انبار
+                </h3>
+                <small class="text-muted">
+                    کالا ابتدا از انبار مبدأ کسر و پس از تأیید دریافت به انبار مقصد اضافه می‌شود.
+                </small>
+            </div>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">

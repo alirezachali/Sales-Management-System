@@ -24,8 +24,15 @@
 
     <div class="card border-0 shadow-sm" wire:loading.class="opacity-50">
         <div class="card-header">
-            <h3 class="fw-bold mb-1"><i class="bi bi-clipboard-check text-primary"></i> برگه‌های انبارگردانی</h3>
-            <small class="text-muted">شمارش فیزیکی موجودی با بارکدخوان، محاسبه خودکار مغایرت و اعمال آن روی سیستم.</small>
+            <div>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-clipboard-check text-primary"></i>
+                    برگه‌های انبارگردانی
+                </h3>
+                <small class="text-muted">
+                    شمارش فیزیکی موجودی با بارکدخوان، محاسبه خودکار مغایرت و اعمال آن روی سیستم.
+                </small>
+            </div>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">

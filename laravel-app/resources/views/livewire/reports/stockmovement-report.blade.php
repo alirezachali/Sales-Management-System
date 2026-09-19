@@ -121,7 +121,7 @@
             <div>
                 <h3 class="fw-bold mb-1">
                     <i class="bi bi-clipboard-data text-primary"></i>
-                    گزارش ورود/خروج کالا
+                    گــــــــــــــــردش کـــــــــالا 
                 </h3>
                 <small class="">مشاهده گزارش عملیات ورود/خروج کالا به/از انبار در بازه زمانی انتخابی</small>
             </div>
@@ -143,7 +143,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle">
+                <table class="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th width="40">ردیف</th>

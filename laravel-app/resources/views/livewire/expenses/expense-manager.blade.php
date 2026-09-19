@@ -129,17 +129,17 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle">
+                <table class="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th width="40">ردیف</th>
-                            <th width="160">عنوان</th>
-                            <th width="70">دسته‌بندی</th>
-                            <th width="100">کارمند</th>
-                            <th width="135">تاریخ</th>
-                            <th width="60">روش پرداخت</th>
-                            <th width="130">مبلغ</th>
-                            <th width="120">عملیات</th>
+                            <th width="180">عنوان</th>
+                            <th width="60">دسته‌بندی</th>
+                            {{-- <th width="100">کارمند</th> --}}
+                            <th width="90">تاریخ</th>
+                            <th width="70">پرداخت</th>
+                            <th width="100">مبلغ</th>
+                            <th width="90">عملیات</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -155,32 +155,32 @@
                                 <td>
                                     <span class="badge bg-secondary text-dark">{{ $expense->category?->name }}</span>
                                 </td>
-                                <td>
+                                {{-- <td>
                                     @if ($expense->employee)
                                         <span
                                             class="badge bg-info text-dark">{{ $expense->employee->full_name }}</span>
                                     @else
                                         <span class="text-muted">—</span>
                                     @endif
-                                </td>
+                                </td> --}}
                                 <td>{{ jalaliDate($expense->expense_date) }}</td>
                                 <td>{{ $expense->payment_method_text }}</td>
                                 <td class="fw-bold text-danger">
                                     {{ number_format($expense->amount) }} {{ setting('currency', '') }}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-secondary text-dark"
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
                                         wire:click="openDetails({{ $expense->id }})" title="مشاهده جزئیات">
                                         <i class="bi bi-eye"></i>
                                     </button>
                                     @can('expenses.edit')
-                                    <button type="button" class="btn btn-sm btn-warning text-dark"
+                                    <button type="button" class="btn btn-sm btn-outline-warning"
                                         wire:click="openEditModal({{ $expense->id }})" title="ویرایش هزینه">
                                         <i class="bi bi-pencil-fill"></i>
                                     </button>
                                     @endcan
                                     @can('expenses.delete')
-                                    <button type="button" class="btn btn-sm btn-danger text-dark"
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
                                         wire:click="confirmDelete({{ $expense->id }})" title="حذف هزینه">
                                         <i class="bi bi-trash-fill"></i>
                                     </button>

@@ -104,7 +104,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle mb-0">
+                <table class="table table-hover align-middle mb-0">
                     <thead>
                         <tr>
                             <th width="55">ردیف</th>
@@ -135,13 +135,13 @@
                                 </td>
                                 <td class="text-center">
                                     @can('suppliers.edit')
-                                    <button type="button" class="btn btn-sm btn-primary text-dark"
+                                    <button type="button" class="btn btn-sm btn-outline-primary"
                                         wire:click="openEditModal({{ $supplier->id }})">
                                         <i class="bi bi-pencil-fill"></i> ویرایش
                                     </button>
                                     @endcan
                                     @can('suppliers.delete')
-                                    <button type="button" class="btn btn-sm btn-danger text-dark"
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
                                         wire:click="confirmDelete({{ $supplier->id }})">
                                         <i class="bi bi-trash-fill"></i> حذف
                                     </button>
