@@ -1,10 +1,10 @@
-/* ========================================================================== 
+/* ==========================================================================
    متغیرهای مشترک رابط کاربری
    ========================================================================== */
 :root {
     --nav-height: 70px;
-    --nav-accent: #e69e17fb;
-    --nav-accent-contrast: #080808;
+    --nav-accent: #df17e6c0;
+    --nav-accent-contrast: #fcfbfc;
     --nav-radius: 20px;
 }
 
@@ -181,9 +181,12 @@
     min-width: 230px;
     padding: 10px;
     border-radius: 16px;
+    border: 1px solid rgba(114, 113, 113, 0.37);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
     z-index: 1050;
 }
-
 [dir="ltr"] .user-dropdown {
     right: 0;
     left: auto;
@@ -192,27 +195,22 @@
     left: 0;
     right: auto;
 }
-
 [data-bs-theme="dark"] .user-dropdown {
-    background: rgb(7, 7, 7);
-    border: 2px solid rgba(114, 113, 113, 0.37);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
+    background:
+        radial-gradient(1100px 520px at 88% -10%, rgba(124, 92, 255, 0.16), transparent 60%),
+        radial-gradient(900px 480px at -10% 20%, rgba(62, 166, 255, 0.13), transparent 55%),
+        radial-gradient(700px 700px at 60% 110%, rgba(217, 70, 239, 0.08), transparent 60%),
+        linear-gradient(180deg, var(--lux-bg-0), var(--lux-bg-1)) !important;
+    background-attachment: fixed !important;
 }
 [data-bs-theme="light"] .user-dropdown {
     background: rgb(255, 255, 255);
-    border: 2px solid rgba(0, 0, 0, 0.12);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
 }
 
 
 
 /* سربرگ اطلاعات کاربر */
 .user-dropdown-head {
-    display: block;
     align-items: center;
     gap: 12px;
     padding: 6px 8px 12px;
@@ -223,8 +221,7 @@
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--nav-accent);
-    /* flex-shrink: 0; */
+    border: 1px dashed var(--nav-accent);
 }
 
 .dropdown-avatar-fallback {
@@ -277,7 +274,7 @@
     display: inline-flex;
     gap: 6px;
     padding: 5px;
-    border-radius: 999px; 
+    border-radius: 999px;
 }
 [data-bs-theme="dark"] .lang-switch-btns {
     border: 2px solid rgba(53, 53, 53, 0.12);

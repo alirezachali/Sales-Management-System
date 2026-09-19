@@ -47,7 +47,7 @@
                         @click.outside="open = false">
 
                         {{--===== سربرگ اطلاعات کاربر =====--}}
-                        <div class="user-dropdown-head">
+                        <div class="user-dropdown-head d-flex">
                             @if ($avatarUrl)
                                 <img src="{{ $avatarUrl }}" class="dropdown-avatar" alt="avatar">
                             @else
@@ -63,17 +63,19 @@
                             </div>
                         </div>
 
+                        <div class="dropdown-divider-line"></div>
+
                         {{--===== سوییچ تغییر زبان فارسی / انگلیسی =====--}}
                         <div class="lang-switch">
                             <span class="lang-switch-label">{{ __('navbar.lang_label') }}</span>
                             <div class="lang-switch-btns" role="group" aria-label="{{ __('navbar.lang_title') }}">
                                 <a href="{{ route('locale.switch', 'fa') }}"
-                                    class="lang-btn {{ app()->getLocale() === 'fa' ? 'active' : '' }}"
+                                    class="lang-btn glow-btn {{ app()->getLocale() === 'fa' ? 'active' : '' }}"
                                     title="فارسی" aria-label="فارسی">
                                     <img src="{{ asset('images/flags/ir.svg') }}" class="flag" alt="فارسی">
                                 </a>
                                 <a href="{{ route('locale.switch', 'en') }}"
-                                    class="lang-btn {{ app()->getLocale() === 'en' ? 'active' : '' }}"
+                                    class="lang-btn glow-btn {{ app()->getLocale() === 'en' ? 'active' : '' }}"
                                     title="English" aria-label="English">
                                     <img src="{{ asset('images/flags/us.svg') }}" class="flag" alt="English">
                                 </a>
@@ -84,12 +86,12 @@
                         <div class="theme-switch">
                             <span class="theme-switch-label">{{ __('navbar.theme_btn') }}</span>
                             <div class="theme-switch-btns" role="group" aria-label="تغییر تم">
-                                <button type="button" class="theme-btn" @click="setTheme('light')"
+                                <button type="button" class="theme-btn glow-btn" @click="setTheme('light')"
                                     :class="{ 'active': theme === 'light' }" title="{{ __('navbar.theme_light_title') }}"
                                     aria-label="{{ __('navbar.theme_light_title') }}">
                                     <i class="bi bi-sun-fill"></i>
                                 </button>
-                                <button type="button" class="theme-btn" @click="setTheme('dark')"
+                                <button type="button" class="theme-btn glow-btn" @click="setTheme('dark')"
                                     :class="{ 'active': theme === 'dark' }" title="{{ __('navbar.theme_dark_title') }}"
                                     aria-label="{{ __('navbar.theme_dark_title') }}">
                                     <i class="bi bi-moon-stars-fill"></i>
@@ -100,7 +102,7 @@
                         <div class="dropdown-divider-line"></div>
 
                         {{--===== پروفایل =====--}}
-                        <a class="user-dropdown-item" href="{{ route('profile.show', auth()->user()->username) }}">
+                        <a class="sidebar-link glow-btn" href="{{ route('profile.show', auth()->user()->username) }}">
                             <i class="bi bi-person"></i>
                             <span>{{ __('navbar.profile') }}</span>
                         </a>
@@ -108,7 +110,7 @@
                         {{--===== پیام‌های من =====--}}
                         @cannot('messages.view')
                             @php $unreadMessages = auth()->user()->unreadMessagesCount(); @endphp
-                            <a class="user-dropdown-item" href="{{ route('messages.inbox') }}">
+                            <a class="sidebar-link glow-btn" href="{{ route('messages.inbox') }}">
                                 <i class="bi bi-envelope"></i>
                                 <span>
                                     {{ __('navbar.messages') }}
@@ -120,18 +122,18 @@
                         @endcannot
                         {{--===== تنظیمات =====--}}
                         @can('settings.view')
-                            <a class="user-dropdown-item" href="{{ route('settings.index') }}">
+                            <a class="sidebar-link glow-btn" href="{{ route('settings.index') }}">
                                 <i class="bi bi-gear"></i>
                                 <span>{{ __('navbar.settings') }}</span>
                             </a>
                         @endcan
 
-                        <div class="dropdown-divider-line"></div>
+                        {{-- <div class="dropdown-divider-line"></div> --}}
 
                         {{--===== خروج از سیستم =====--}}
                         <form action="{{ route('logout') }}" method="POST" class="m-0">
                             @csrf
-                            <button type="submit" class="user-dropdown-item logout-item">
+                            <button type="submit" class="user-dropdown-item sidebar-link glow-btn logout-item">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>{{ __('navbar.logout_btn') }}</span>
                             </button>
