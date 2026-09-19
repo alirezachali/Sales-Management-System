@@ -95,5 +95,6 @@
 <script src="{{ asset('js/hotkeys.js') }}"></script>
 
 @livewireScripts
+<script src="{{ asset('js/alerts.js') }}"></script>
 </body>
 </html>

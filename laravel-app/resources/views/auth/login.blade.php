@@ -14,11 +14,7 @@
             </p>
         </div>
 
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
+        @include('partials.flash-messages')
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
