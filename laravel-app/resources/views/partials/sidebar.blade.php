@@ -7,7 +7,7 @@
     <nav class="sidebar-nav">
 
         {{-- ================= داشبورد ================= --}}
-        <div class="sidebar-section" x-show="!sidebarCollapsed">
+        <div class="sidebar-section text-fuchsia fw-bold fs-3" x-show="!sidebarCollapsed">
             <span>{{ __('sidebar.group_main') }}</span>
         </div>
 
@@ -50,7 +50,7 @@
             }
         @endphp
         @if (count($salesItems))
-            <div class="sidebar-section" x-show="!sidebarCollapsed">
+            <div class="sidebar-section text-fuchsia fw-bold fs-3" x-show="!sidebarCollapsed">
                 <span>{{ __('sidebar.group_sales') }}</span>
             </div>
             @foreach ($salesItems as $item)
@@ -86,7 +86,7 @@
             }
         @endphp
         @if (count($stockItems))
-            <div class="sidebar-section" x-show="!sidebarCollapsed">
+            <div class="sidebar-section text-fuchsia fw-bold fs-3" x-show="!sidebarCollapsed">
                 <span>{{ __('sidebar.group_warehouse') }}</span>
             </div>
             @foreach ($stockItems as $item)
@@ -109,7 +109,7 @@
             }
         @endphp
         @if (count($purchaseItems))
-            <div class="sidebar-section" x-show="!sidebarCollapsed">
+            <div class="sidebar-section text-fuchsia fw-bold fs-3" x-show="!sidebarCollapsed">
                 <span>{{ __('sidebar.group_purchase') }}</span>
             </div>
             @foreach ($purchaseItems as $item)
@@ -141,7 +141,7 @@
             }
         @endphp
         @if (count($financeItems))
-            <div class="sidebar-section" x-show="!sidebarCollapsed">
+            <div class="sidebar-section text-fuchsia fw-bold fs-3" x-show="!sidebarCollapsed">
                 <span>{{ __('sidebar.group_finance') }}</span>
             </div>
             @foreach ($financeItems as $item)
@@ -164,7 +164,7 @@
             }
         @endphp
         @if (count($hrItems))
-            <div class="sidebar-section" x-show="!sidebarCollapsed">
+            <div class="sidebar-section text-fuchsia fw-bold fs-3" x-show="!sidebarCollapsed">
                 <span>{{ __('sidebar.group_hr') }}</span>
             </div>
             @foreach ($hrItems as $item)
@@ -196,7 +196,7 @@
             }
         @endphp
         @if (count($reportItems))
-            <div class="sidebar-section" x-show="!sidebarCollapsed">
+            <div class="sidebar-section text-fuchsia fw-bold fs-3" x-show="!sidebarCollapsed">
                 <span>{{ __('sidebar.group_reports') }}</span>
             </div>
             @foreach ($reportItems as $item)
@@ -225,7 +225,7 @@
             }
         @endphp
         @if (count($systemItems))
-            <div class="sidebar-section" x-show="!sidebarCollapsed">
+            <div class="sidebar-section text-fuchsia fw-bold fs-3" x-show="!sidebarCollapsed">
                 <span>{{ __('sidebar.group_system') }}</span>
             </div>
             @foreach ($systemItems as $item)
