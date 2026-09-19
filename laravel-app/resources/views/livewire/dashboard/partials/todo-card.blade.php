@@ -4,7 +4,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <strong>
                 <i class="bi bi-card-checklist text-primary"></i>
-                لیست کارهای من
+                لــــــــیست کــــــــارهای مــــــــن
             </strong>
             <div class="d-flex gap-2">
                 @can('todos.create')

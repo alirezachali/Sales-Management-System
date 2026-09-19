@@ -7,12 +7,12 @@
         </div>
     @endif
 
-    <div class="card shadow-sm border-3 mb-4" wire:loading.class="opacity-50">
+    <div class="card shadow-sm mb-4" wire:loading.class="opacity-50">
 
-        <div class="card-header d-flex justify-content-between align-items-center mb-2">
-            <h3 class="fw-bold mb-1">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="fw-bold">
                 <i class="bi bi-box-seam-fill text-primary"></i>
-                داشبورد انباردار
+                داشــــــــــبورد انــــــــــباردار
             </h3>
             <small class="text-muted d-flex align-items-center gap-1">
                 <span wire:loading.flex wire:target="$refresh" class="align-items-center gap-1">
@@ -30,19 +30,19 @@
             @can('products.view')
                 <a href="{{ route('products.index') }}" class="btn btn-primary">
                     <i class="bi bi-box-seam"></i>
-                    لیست محصولات
+                    لـــیست مـــحصولات
                 </a>
             @endcan
             @can('categories.view')
                 <a href="{{ route('categories.index') }}" class="btn btn-info text-dark">
                     <i class="bi bi-grid"></i>
-                    دسته‌بندی‌ها
+                    دســـته‌بـــندی‌ها
                 </a>
             @endcan
             @can('purchases.view')
                 <a href="{{ route('purchase-invoices.index') }}" class="btn btn-success">
                     <i class="bi bi-file-earmark-plus"></i>
-                    ثبت فاکتور خرید
+                    ثـــبت فـــاکتور خـــرید
                 </a>
             @endcan
         </div>
@@ -52,11 +52,11 @@
     <div class="row g-3 mb-4">
 
         <div class="col-lg-4 col-md-6">
-            <div class="card dashboard-card border-3">
+            <div class="card dashboard-card">
                 <div class="card-body">
                     <!-- تعداد کل کالاهای ثبت‌شده در سیستم -->
                     <div class="dashboard-title">
-                        <h2>📦 تعداد کالاها</h2>
+                        <h2>📦 تــعداد کــالاها</h2>
                     </div>
                     <div class="dashboard-number">
                         <div class="h1 mb-0 text-primary">{{ number_format($productsCount) }}</div>
@@ -66,11 +66,11 @@
         </div>
 
         <div class="col-lg-4 col-md-6">
-            <div class="card dashboard-card border-3">
+            <div class="card dashboard-card">
                 <div class="card-body">
                     <!-- تعداد دسته‌بندی‌های محصولات -->
                     <div class="dashboard-title">
-                        <h2>🗂️ دسته‌بندی‌ها</h2>
+                        <h2>🗂️ دســته‌بــندی‌هــا</h2>
                     </div>
                     <div class="dashboard-number">
                         <div class="h1 mb-0 text-info">{{ number_format($categoriesCount) }}</div>
@@ -80,11 +80,11 @@
         </div>
 
         <div class="col-lg-4 col-md-6">
-            <div class="card dashboard-card border-3">
+            <div class="card dashboard-card">
                 <div class="card-body">
                     <!-- تعداد کالاهای در حال اتمام -->
                     <div class="dashboard-title">
-                        <h2>⚠️ کالاهای در حال اتمام</h2>
+                        <h2>⚠️ کــالاهای در حــال اتــمام</h2>
                     </div>
                     <div class="dashboard-number">
                         <div class="h1 mb-0 text-danger">{{ number_format($runningOutCount) }}</div>
@@ -99,11 +99,11 @@
 
         <!-- کارت کالاهای در حال اتمام -->
         <div class="col-md-6">
-            <div class="card dashboard-card border-3">
-                <div class="card-header bg-danger text-dark opacity-70">
+            <div class="card dashboard-card">
+                <div class="card-header">
                     <strong>
                         <i class="bi bi-exclamation-triangle"></i>
-                        کالاهای در حال اتمام
+                        کــــــــالاهای در حــــــــال اتــــــــمام
                         <small class="text-muted fw-normal">(موجودی ≤ {{ number_format($stockAlert, 0, '.', ',') }})</small>
                     </strong>
                 </div>
@@ -144,11 +144,11 @@
 
         <!-- کارت کالاهای پرفروش -->
         <div class="col-md-6">
-            <div class="card dashboard-card border-3">
-                <div class="card-header bg-success text-dark opacity-70">
+            <div class="card dashboard-card">
+                <div class="card-header">
                     <strong>
-                        <i class="bi bi-graph-up-arrow"></i>
-                        کالاهای پرفروش
+                        {{-- <i class="bi bi-graph-up-arrow"></i> --}}
+                       📈  کــــــــــالاهای پرفــــــــــروش
                     </strong>
                 </div>
                 <div class="table-responsive">
@@ -185,11 +185,11 @@
 
         <!-- کارت کالاهای کم‌فروش -->
         <div class="col-md-6">
-            <div class="card dashboard-card border-3">
-                <div class="card-header bg-warning text-dark opacity-70">
+            <div class="card dashboard-card">
+                <div class="card-header">
                     <strong>
-                        <i class="bi bi-graph-down-arrow"></i>
-                        کالاهای کم‌فروش
+                        {{-- <i class="bi bi-graph-down-arrow"></i> --}}
+                       📉  کــــــــــالاهای کم‌فــــــــــروش
                     </strong>
                 </div>
                 <div class="table-responsive">
