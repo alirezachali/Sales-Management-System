@@ -31,7 +31,7 @@
                 <div class="user-menu" x-data="{ open: false }" @keydown.escape.window="open = false">
 
                     {{--===== دکمه‌ی باز کردن منو با کلیک روی تصویر پروفایل =====--}}
-                    <button type="button" class="user-menu-toggle" @click="open = !open"
+                    <button type="button" class="user-menu-toggle glow-btn" @click="open = !open"
                         :class="{ 'is-open': open }" aria-haspopup="true" :aria-expanded="open.toString()">
                         @if ($avatarUrl)
                             <img src="{{ $avatarUrl }}" class="user-avatar-img" alt="avatar">

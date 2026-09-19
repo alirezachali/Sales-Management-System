@@ -16,7 +16,7 @@
     top: 0;
     z-index: 1030;
     height: var(--nav-height);
-    width: 100%;
+    width: 102%;
     display: flex;
     align-items: center;
     -webkit-backdrop-filter: blur(5px);
@@ -24,71 +24,58 @@
 }
 
 [data-bs-theme="dark"] .top-navbar {
-    background: rgba(48, 47, 47, 0.459);
-    border-bottom-color: rgba(255, 255, 255, 0.12);
+    background: rgba(51, 45, 73, 0.479);
+
+
 }
 [data-bs-theme="light"] .top-navbar {
-    background: rgba(255, 255, 255, 0.438);
-    border-bottom: 2px solid rgba(0, 0, 0, 0.12);
+    background: rgba(77, 60, 85, 0.438);
 }
 
 
 .navbar-inner {
     width: 100%;
     display: flex;
-    align-items: center;
     justify-content: space-between;
     padding: 0 18px;
-    gap: 12px;
 }
 
 .navbar-section {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    /* align-items: center; */
+    gap: 20px;
     min-width: 0;
 }
 
 /* دکمه‌های آیکنی نوار بالا (منوی همبرگری) */
 .nav-icon-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    font-size: 22px;
+    font-size: 30px;
     border: none;
-    border-radius: 10px;
     background: transparent;
     color: var(--bs-body-color);
-    cursor: pointer;
-    transition: background-color .2s ease, color .2s ease;
+    transition: color .2s ease;
 }
 
 .nav-icon-btn:hover {
-    background: var(--bs-secondary-bg);
-    font-size: 28px;
+    cursor: pointer;
 }
 
 .nav-icon-btn.is-active {
     color: var(--nav-accent);
-    background: color-mix(in srgb, var(--nav-accent) 15%, transparent);
 }
 
 /* برند فروشگاه */
 .navbar-brand {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
     color: var(--bs-emphasis-color);
     min-width: 0;
 }
 
 .navbar-brand .nav-logo {
+    margin-right: 20px;
     width: 42px;
     height: 42px;
-    object-fit: cover;
+    /* object-fit: cover; */
     border-radius: 10px;
     border: 1px solid var(--bs-border-color);
 }
@@ -112,7 +99,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    border: 2px solid transparent;
+    border: 1px dashed transparent;
     background: transparent;
     padding: 5px 8px 5px 5px;
     border-radius: 999px;
@@ -127,7 +114,10 @@
 }
 
 .user-menu-toggle.is-open {
-    background: rgba(217, 218, 214, 0.178);
+    background: var(--lux-gradient) !important;
+    box-shadow: 0 6px 20px rgba(124, 92, 255, 0.35);
+    font-weight: 800;
+    color: #202124;
 }
 
 /* تصویر پروفایل در نوار */
@@ -136,7 +126,7 @@
     height: 38px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--nav-accent);
+    border: 1px dashed var(--nav-accent);
     display: block;
 }
 
