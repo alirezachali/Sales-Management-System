@@ -12,14 +12,14 @@
         </div>
 
         @if ($dashboardRoute !== 'dashboard')
-            <a href="{{ route($dashboardRoute) }}" class="sidebar-link {{ request()->routeIs($dashboardRoute) ? 'active' : '' }}"
+            <a href="{{ route($dashboardRoute) }}" class="sidebar-link glow-btn {{ request()->routeIs($dashboardRoute) ? 'active' : '' }}"
                 title="{{ __('sidebar.dashboard') }}">
                 <i class="bi bi-speedometer2"></i>
                 <span>{{ __('sidebar.dashboard') }}</span>
             </a>
         @else
             @can('dashboard.view')
-                <a href="{{ route('dashboard') }}" class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                <a href="{{ route('dashboard') }}" class="sidebar-link glow-btn {{ request()->routeIs('dashboard') ? 'active' : '' }}"
                     title="{{ __('sidebar.dashboard') }}">
                     <i class="bi bi-speedometer2"></i>
                     <span>{{ __('sidebar.dashboard') }}</span>
@@ -55,7 +55,7 @@
             </div>
             @foreach ($salesItems as $item)
                 <a href="{{ route($item['route']) }}"
-                    class="sidebar-link {{ ($item['active'] ?? request()->routeIs($item['is'])) ? 'active' : '' }}"
+                    class="sidebar-link glow-btn {{ ($item['active'] ?? request()->routeIs($item['is'])) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
                     <i class="bi {{ $item['icon'] }}"></i>
                     <span>{{ $item['label'] }}</span>
@@ -90,7 +90,7 @@
                 <span>{{ __('sidebar.group_warehouse') }}</span>
             </div>
             @foreach ($stockItems as $item)
-                <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['is']) ? 'active' : '' }}"
+                <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ request()->routeIs($item['is']) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
                     <i class="bi {{ $item['icon'] }}"></i>
                     <span>{{ $item['label'] }}</span>
@@ -113,7 +113,7 @@
                 <span>{{ __('sidebar.group_purchase') }}</span>
             </div>
             @foreach ($purchaseItems as $item)
-                <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['is']) ? 'active' : '' }}"
+                <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ request()->routeIs($item['is']) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
                     <i class="bi {{ $item['icon'] }}"></i>
                     <span>{{ $item['label'] }}</span>
@@ -145,7 +145,7 @@
                 <span>{{ __('sidebar.group_finance') }}</span>
             </div>
             @foreach ($financeItems as $item)
-                <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['is']) ? 'active' : '' }}"
+                <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ request()->routeIs($item['is']) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
                     <i class="bi {{ $item['icon'] }}"></i>
                     <span>{{ $item['label'] }}</span>
@@ -168,7 +168,7 @@
                 <span>{{ __('sidebar.group_hr') }}</span>
             </div>
             @foreach ($hrItems as $item)
-                <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['is']) ? 'active' : '' }}"
+                <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ request()->routeIs($item['is']) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
                     <i class="bi {{ $item['icon'] }}"></i>
                     <span>{{ $item['label'] }}</span>
@@ -200,7 +200,7 @@
                 <span>{{ __('sidebar.group_reports') }}</span>
             </div>
             @foreach ($reportItems as $item)
-                <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['route']) ? 'active' : '' }}"
+                <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ request()->routeIs($item['route']) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
                     <i class="bi {{ $item['icon'] }}"></i>
                     <span>{{ $item['label'] }}</span>
@@ -229,7 +229,7 @@
                 <span>{{ __('sidebar.group_system') }}</span>
             </div>
             @foreach ($systemItems as $item)
-                <a href="{{ route($item['route']) }}" class="sidebar-link {{ ($item['active'] ?? false) ? 'active' : '' }}"
+                <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ ($item['active'] ?? false) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
                     <i class="bi {{ $item['icon'] }}"></i>
                     <span>{{ $item['label'] }}</span>

@@ -15,7 +15,7 @@
     @endif
 
     <div class="row row-cards mb-4">
-        <div class="col-sm-6 col-lg-3">
+        <div class="col-sm-6 col-lg-4">
             <div class="card stat-card border-0 h-100">
                 <div class="card-body">
                     <div class="stat-icon" style="--icon-bg: rgba(59,130,246,.15); --icon-color:#3b82f6">
@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
+        <div class="col-sm-6 col-lg-4">
             <div class="card stat-card border-0 h-100">
                 <div class="card-body">
                     <div class="stat-icon" style="--icon-bg: rgba(34,197,94,.15); --icon-color:#22c55e">
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
+        <div class="col-sm-6 col-lg-4">
             <div class="card stat-card border-0 h-100">
                 <div class="card-body">
                     <div class="stat-icon" style="--icon-bg: rgba(168,85,247,.15); --icon-color:#a855f7">
@@ -48,13 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-lg-3 d-flex align-items-end">
-            @can('warehouses.create')
-                <button class="btn btn-primary w-100 glow-btn" wire:click="openCreateModal">
-                    <i class="bi bi-plus-circle"></i> انبار جدید
-                </button>
-            @endcan
-        </div>
+
     </div>
 
     <div class="card glass-card mb-4 border-0">
@@ -67,12 +61,22 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm" wire:loading.class="opacity-50">
+    <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
-                <h3 class="fw-bold mb-1"><i class="bi bi-buildings text-primary"></i> مدیریت انبارها</h3>
+                <h3 class="fw-bold mb-1">
+                    <i class="bi bi-buildings text-primary"></i>
+                    مدیریت انبارها
+                </h3>
                 <small class="text-muted">لیست انبارهای سازمان و مشاهده چیدمان کالا در هر انبار</small>
             </div>
+            {{-- <div class="col-sm-6 col-lg-3 d-flex align-items-end"> --}}
+            @can('warehouses.create')
+                <button class="btn btn-primary glow-btn" wire:click="openCreateModal">
+                    <i class="bi bi-plus-circle"></i> انبار جدید
+                </button>
+            @endcan
+        {{-- </div> --}}
         </div>
 
         <div class="card-body p-0">

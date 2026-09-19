@@ -91,7 +91,7 @@
     </div>
 
 {{--======================== جدول لیست کالاها ========================--}}
-    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
+    <div class="card shadow-sm">
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
@@ -102,7 +102,7 @@
                 <small class="text-muted">مدیریت اطلاعات محصولات موجود در فروشگاه</small>
             </div>
             @can('products.create')
-            <button type="button" class="btn btn-primary" wire:click="openCreateModal"
+            <button type="button" class="btn btn-primary glow-btn" wire:click="openCreateModal"
                 data-hotkey="products_add" title="افزودن محصول جدید به سیستم{{ hotkeyHint('products_add') }}">
                 <i class="bi bi-plus-circle"></i>
                 افزودن محصول
