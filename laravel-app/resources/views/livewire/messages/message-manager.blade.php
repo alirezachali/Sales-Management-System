@@ -76,16 +76,16 @@
             <div>
                 <h3 class="fw-bold mb-1">
                     <i class="bi bi-envelope-paper text-primary"></i>
-                    پیام‌های ارسال‌شده
+                    پـــــیام‌ هـــــای ارســـــال‌ شـــــده
                 </h3>
                 <small class="text-muted">مدیریت پیام‌های ارسالی و پیگیری خوانده‌شدن آن‌ها</small>
             </div>
             <div>
                 @can('messages.create')
-                    <button type="button" class="btn btn-primary" wire:click="openCreateModal"
+                    <button type="button" class="btn btn-primary glow-btn" wire:click="openCreateModal"
                         title="ارسال پیام جدید">
                         <i class="bi bi-send-plus"></i>
-                        ارسال پیام جدید
+                        ارســـال پـــیام جـــدید
                     </button>
                 @endcan
             </div>

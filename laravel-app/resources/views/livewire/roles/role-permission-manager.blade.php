@@ -57,7 +57,7 @@
             <div class="card-header d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h2 class="fw-bold mb-1">
-                        مجوزهای نقش:
+                        مـــجوزهـــای نـــقش:
                         <span class="badge bg-{{ $role->color ?? 'secondary' }} text-dark">
                             {{ $role->name }}
                             <i class="{{ $role->icon }}"></i>
@@ -75,13 +75,13 @@
                 </div>
 
                 <div class="d-flex gap-3">
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:target="save">
+                    <button type="submit" class="btn btn-success glow-btn" wire:loading.attr="disabled" wire:target="save">
                         <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                         <i class="bi bi-check-circle"></i>
                         ذخیره تغییرات
                     </button>
 
-                    <a href="{{ route('roles.index') }}" class="btn btn-info" title="بازگشت به صفحه لیست نقش ها">
+                    <a href="{{ route('roles.index') }}" class="btn btn-info glow-btn" title="بازگشت به صفحه لیست نقش ها">
                         <i class="bi bi-arrow-right"></i>
                         بازگشت
                     </a>

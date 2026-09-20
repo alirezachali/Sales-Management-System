@@ -6,7 +6,7 @@
 {{--=================== کارت‌های آماری ===================--}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">تعداد کاربران</div>
                     <div class="h1 mb-0">
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">کاربران فعال</div>
                     <div class="h1 mb-0 text-success">
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">کاربران غیرفعال</div>
                     <div class="h1 mb-0 text-danger">
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">تعداد کارمندان</div>
                     <div class="h1 mb-0 text-warning">
@@ -49,7 +49,7 @@
 
 
 {{--=================== کارت جستجو و فیلتر ===================--}}
-    <div class="card glass-card mb-4 border-3">
+    <div class="card glass-card mb-4">
         <div class="card-body">
             <div class="row g-2">
 
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="col-lg-2">
-                    <button type="button" wire:click="resetFilters" class="btn btn-outline-secondary w-100"
+                    <button type="button" wire:click="resetFilters" class="btn btn-outline-secondary glow-btn w-100"
                         title="پاک کردن فیلترهای جستجو">
                         پاک کردن
                     </button>
@@ -84,24 +84,24 @@
     </div>
 
 {{--============================ جدول کاربران ============================--}}
-    <div class="card shadow-sm  border-3" wire:loading.class="opacity-50">
+    <div class="card shadow-sm" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <h3 class="fw-bold mb-1">
                     <i class="bi bi-person-video text-fuchsia"></i>
-                    مدیریت کاربران
+                    مـــــدیریت کـــــاربران
                 </h3>
                 <small class="text-muted">مدیریت اطلاعات کاربران سیستم</small>
             </div>
 
             <div class="d-flex gap-3">
-                
+
                 @can('users.create')
-                <button class="btn btn-primary" wire:click="openCreateModal"
+                <button class="btn btn-primary glow-btn" wire:click="openCreateModal"
                     title="برای افزودن کاربر جدید به سیستم کلیک کنید">
                     <i class="bi bi-plus-circle"></i>
-                    افزودن کاربر
+                    افـــزودن کـــاربر
                 </button>
                 @endcan
 

@@ -8,7 +8,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">تعداد نقش ها</div>
+                    <div class="subheader">تـــعداد نـــقش هـــا</div>
                     <div class="h1 mb-0">
                         {{-- {{ $totalCategories }} --}}5
                     </div>
@@ -18,7 +18,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">نقش های فعال</div>
+                    <div class="subheader">نـــقش هـــای فـــعال</div>
                     <div class="h1 mb-0 text-success">
                         {{-- {{ $activeCategories }} --}}5
                     </div>
@@ -28,7 +28,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">نقش های غیرفعال</div>
+                    <div class="subheader">نـــقش هـــای غـــیرفـــعال</div>
                     <div class="h1 mb-0 text-danger">
                         {{-- {{ $inactiveCategories }} --}}0
                     </div>
@@ -38,7 +38,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">نقش های بدون کاربر</div>
+                    <div class="subheader">نـــقش هـــای بـــدون کـــاربر</div>
                     <div class="h1 mb-0 text-warning">
                         {{-- {{ $emptyCategories }} --}}2
                     </div>
@@ -66,17 +66,17 @@
             <div>
                 <h3 class="fw-bold mb-1">
                     <i class="bi bi-shield-lock-fill text-fuchsia"></i>
-                    مدیریت نقش‌ها
+                    مـــــدیریت نـــــقش‌هـــــا
                 </h3>
                 <small class="text-muted">مدیریت نقش‌های کاربران سیستم و مجوزهای دسترسی به هر بخش</small>
             </div>
             <div class="d-flex">
 
                 @can('roles.create')
-                    <button class="btn btn-primary" wire:click="openCreateModal"
+                    <button class="btn btn-primary glow-btn" wire:click="openCreateModal"
                         title="برای افزودن نقش جدید به سیستم کلیک کنید">
                         <i class="bi bi-plus-circle"></i>
-                        افزودن نقش
+                        افـــزودن نـــقش
                     </button>
                 @endcan
 
