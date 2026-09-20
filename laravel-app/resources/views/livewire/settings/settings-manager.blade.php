@@ -597,9 +597,10 @@
 
                                     <div class="col-md-4">
                                         <label class="form-label">زبان برنامه</label>
-                                        <select class="form-select" wire:model="data.system_language">
-                                            <option value="fa">فارسی</option>
-                                            <option value="en">English</option>
+                                        <select class="form-select"
+                                            wire:change="changeLanguage($event.target.value)">
+                                            <option value="fa" @selected(app()->getLocale() === 'fa')>فارسی</option>
+                                            <option value="en" @selected(app()->getLocale() === 'en')>English</option>
                                         </select>
                                     </div>
 
