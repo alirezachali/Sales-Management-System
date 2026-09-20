@@ -16,9 +16,9 @@
         {{--===== سمت چپ فوتر: زنگ پیام‌های من و هشدارهای هوشمند =====--}}
         @auth
             <div class="footer-actions">
-                @cannot('messages.view')
+                @can('messages.inbox')
                     <livewire:messages.messages-bell />
-                @endcannot
+                @endcan
                 <livewire:alerts-bell />
             </div>
         @endauth

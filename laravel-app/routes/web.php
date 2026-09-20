@@ -249,7 +249,8 @@ Route::middleware('auth')->group(function () {
      |--------------------------------------------------|*/
 
     /* صندوق پیام‌های کاربر؛ هر کاربر فقط پیام‌های خودش را می‌بیند */
-    Route::get('inbox', function () {return view('messages.inbox');})->name('messages.inbox');
+    Route::get('inbox', function () {return view('messages.inbox');})->name('messages.inbox')
+        ->middleware('can:messages.inbox');
 
     /* صفحه مدیریت پیام‌های ارسالی (مخصوص مدیر) */
     Route::get('messages', function () {return view('messages.index');})->name('messages.index')

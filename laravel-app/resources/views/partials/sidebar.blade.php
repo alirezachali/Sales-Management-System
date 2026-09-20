@@ -220,6 +220,9 @@
             if (auth()->user()->hasPermission('messages.view')) {
                 $systemItems[] = ['route' => 'messages.index', 'label' => __('sidebar.messages'), 'icon' => 'bi-envelope-paper', 'active' => request()->routeIs('messages.index')];
             }
+            if (auth()->user()->hasPermission('messages.inbox')) {
+                $systemItems[] = ['route' => 'messages.inbox', 'label' => __('sidebar.my_messages'), 'icon' => 'bi-envelope-paper', 'active' => request()->routeIs('messages.inbox')];
+            }
             if (auth()->user()->hasPermission('settings.view')) {
                 $systemItems[] = ['route' => 'settings.index', 'label' => __('sidebar.settings'), 'icon' => 'bi-gear', 'active' => request()->routeIs('settings.*')];
             }

@@ -824,6 +824,10 @@ class PermissionSeeder extends Seeder
                         'display_name' => 'مشاهده پیام‌های ارسالی',
                     ],
                     [
+                        'name' => 'messages.inbox',
+                        'display_name' => 'مشاهده پیام‌های دریافتی کاربران',
+                    ],
+                    [
                         'name' => 'messages.send',
                         'display_name' => 'ارسال پیام به کاربران',
                     ],
