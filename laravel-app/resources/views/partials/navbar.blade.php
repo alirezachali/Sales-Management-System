@@ -19,13 +19,6 @@
         {{--===== سمت چپ: منوی کاربر =====--}}
         @auth
             <div class="navbar-section">
-                {{-- زنگ پیام‌های مدیر --}}
-                @cannot('messages.view')
-                    <livewire:messages.messages-bell />
-                @endcannot
-
-                {{-- زنگ هشدارهای هوشمند --}}
-                <livewire:alerts-bell />
                 @php $avatarUrl = auth()->user()->avatar_url; @endphp
 
                 <div class="user-menu" x-data="{ open: false }" @keydown.escape.window="open = false">

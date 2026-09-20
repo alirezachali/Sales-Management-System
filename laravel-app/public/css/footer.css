@@ -29,6 +29,63 @@ footer {
     background: rgba(51, 45, 73, 0.479);
 }
 
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100%;
+}
+
+/* سمت چپ فوتر: زنگ پیام‌ها و هشدارها (در راستای LTR سمت راست؛ در RTL سمت چپ) */
+.footer-actions {
+    position: absolute;
+    inset-inline-end: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-inline-end: 10px;
+}
+
+.footer-actions .alerts-bell {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* زنگ‌های فوتر کوچک‌تر از نوبار */
+.footer-actions .nav-icon-btn {
+    font-size: 20px;
+    color: inherit;
+    padding: 2px 6px;
+    line-height: 1;
+}
+
+/* شمارنده (badge) روی زنگ‌های فوتر کوچک‌تر شود تا آیکن زنگوله
+   کاملاً پوشیده نشود و عدد به‌خوبی دیده شود */
+.footer-actions .alerts-badge {
+    min-width: 13px;
+    height: 13px;
+    padding: 0 2px;
+    font-size: 0.5rem;
+    font-weight: 800;
+    top: -2px;
+    inset-inline-end: -2px;
+    animation: none;
+}
+
+/* با قرارگیری در پایین صفحه، پنل کشویی باید رو به بالا باز شود تا
+   از لبه‌ی پایین بریده نشود. چون دکمه‌ها در سمت چپ صفحه‌اند، پنل
+   باید به سمت داخل (راست) باز شود تا از لبه‌ی چپ بیرون نزند. */
+.footer-actions .alerts-panel {
+    top: auto;
+    bottom: calc(100% + 10px);
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+}
+
 .footer-datetime {
     color: rgb(13, 14, 14);
     font-size: 16px;
