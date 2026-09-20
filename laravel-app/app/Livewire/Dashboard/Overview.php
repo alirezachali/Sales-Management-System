@@ -36,23 +36,23 @@ class Overview extends Component
         $todayInvoices = cache()->remember("dashboard-today-invoices-{$today}", now()->addMinutes(5), fn () => Sale::whereDate('created_at', $today)
             ->count());
 
-        $productsCount = cache()->remember('dashboard-products-count', now()->addMinutes(15), fn () => Product::count());
+        $productsCount = cache()->rememberForever('dashboard-products-count', fn () => Product::count());
 
-        $lowStockProducts = cache()->remember('dashboard-low-stock-count', now()->addMinutes(15), fn () => Product::where('stock', '<=', 5)
+        $lowStockProducts = cache()->rememberForever('dashboard-low-stock-count', fn () => Product::where('stock', '<=', 5)
             ->count());
 
-        $latestSales = cache()->remember('dashboard-latest-sales', now()->addMinutes(15), fn () => Sale::with('user')
+        $latestSales = cache()->rememberForever('dashboard-latest-sales', fn () => Sale::with('user')
             ->latest('created_at')
             ->take(10)
             ->get());
 
-        $lowStockList = cache()->remember('dashboard-low-stock-list', now()->addMinutes(15), fn () => Product::where('stock', '<=', 5)
+        $lowStockList = cache()->rememberForever('dashboard-low-stock-list', fn () => Product::where('stock', '<=', 5)
             ->orderBy('stock')
             ->orderBy('id')
             ->take(10)
             ->get());
 
-        $inProgressTodos = cache()->remember('dashboard-todos-in-progress', now()->addMinutes(15), fn () => Todo::where('status', 'in_progress')
+        $inProgressTodos = cache()->rememberForever('dashboard-todos-in-progress', fn () => Todo::where('status', 'in_progress')
             ->with('assignee')
             ->latest()
             ->take(10)
