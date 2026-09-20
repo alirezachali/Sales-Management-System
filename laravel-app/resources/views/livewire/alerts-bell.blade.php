@@ -10,7 +10,7 @@
     <div class="alerts-panel" x-show="open" x-cloak x-transition.opacity.duration.150ms>
         <div class="alerts-head">
             <i class="bi bi-spark2s text-warning"></i>
-            <span>مرکز هشدارها</span>
+            <span>مـــــرکز هـــــشدار هـــــا</span>
         </div>
 
         <div class="alerts-body">

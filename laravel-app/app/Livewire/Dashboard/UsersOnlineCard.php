@@ -19,7 +19,11 @@ class UsersOnlineCard extends Component
     public function render()
     {
         // آنلاین‌ها اول؛ بقیه بر اساس تازه‌ترین زمان دیده‌شدن
-        $users = User::with('role')->get()
+        // فقط ستون‌های لازم واکشی می‌شوند تا هر poll ۱۰ ثانیه‌ای سبک بماند.
+        $users = User::query()
+            ->with('role:id,name,color,icon')
+            ->select('id', 'name', 'username', 'avatar', 'last_seen_at', 'last_login_at')
+            ->get()
             ->sortByDesc(fn (User $u) => [$u->isOnline() ? 1 : 0, $u->lastSeen()?->getTimestamp() ?? 0])
             ->values();
 

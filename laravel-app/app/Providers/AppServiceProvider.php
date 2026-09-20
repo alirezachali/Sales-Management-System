@@ -2,10 +2,16 @@
 
 namespace App\Providers;
 
+use App\Models\CustomerAccountTransaction;
+use App\Models\MessageRecipient;
 use App\Models\Permission;
 use App\Models\Product;
 use App\Models\Role;
+use App\Models\Setting;
+use App\Observers\CustomerAccountTransactionObserver;
+use App\Observers\MessageRecipientObserver;
 use App\Observers\ProductObserver;
+use App\Observers\SettingObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -29,6 +35,9 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
 
         Product::observe(ProductObserver::class);
+        Setting::observe(SettingObserver::class);
+        MessageRecipient::observe(MessageRecipientObserver::class);
+        CustomerAccountTransaction::observe(CustomerAccountTransactionObserver::class);
 
         /* کاربر super-admin همیشه به همه‌جا دسترسی دارد؛
            خروجی null یعنی تصمیم‌گیری به Gateهای بعدی سپرده شود. */

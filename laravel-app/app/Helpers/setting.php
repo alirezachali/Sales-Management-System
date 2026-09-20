@@ -6,9 +6,26 @@ use Illuminate\Support\Facades\Storage;
 
 if (! function_exists('setting')) {
 
+    /**
+     * مقدار یک تنظیم را برمی‌گرداند.
+     *
+     * تمام تنظیمات برای هر درخواست یک‌بار کش می‌شوند تا تابع setting()
+     * (که در هدرِ همه‌ی صفحات چندین بار صدا زده می‌شود) هر بار یک کوئری
+     * جدا روی جدول settings نزند.
+     */
     function setting($key, $default = null)
     {
-        return Setting::where('key', $key)->value('value') ?? $default;
+        static $all = null;
+
+        if ($all === null) {
+            $all = \Illuminate\Support\Facades\Cache::remember(
+                'all-settings',
+                now()->addMinutes(5),
+                fn () => Setting::pluck('value', 'key')->all()
+            );
+        }
+
+        return $all[$key] ?? $default;
     }
 
 }

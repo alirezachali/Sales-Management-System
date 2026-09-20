@@ -28,14 +28,17 @@ class AlertsBell extends Component
         $alerts = [];
 
         // ۱) کالاهای زیر حد هشدار موجودی
+        // (داده‌ها مشترک است؛ کش می‌شود تا هدرِ همه‌ی صفحات کوئری تکراری نزند)
         $threshold = (float) setting('Out_of_stock_alert', setting('stock_alert', 5));
 
-        $lowStock = Product::where('is_active', true)
-            ->where('stock', '<=', $threshold)
-            ->orderBy('stock')
-            ->orderBy('id')
-            ->limit(6)
-            ->get(['id', 'name', 'stock', 'unit']);
+        $lowStock = cache()->remember('alerts-low-stock-'.$threshold, now()->addMinutes(5), function () use ($threshold) {
+            return Product::where('is_active', true)
+                ->where('stock', '<=', $threshold)
+                ->orderBy('stock')
+                ->orderBy('id')
+                ->limit(6)
+                ->get(['id', 'name', 'stock', 'unit']);
+        });
 
         if ($lowStock->isNotEmpty()) {
             $alerts[] = [
@@ -52,13 +55,15 @@ class AlertsBell extends Component
 
         // ۲) بدهی‌های نزدیک سررسید (۷ روز آینده یا گذشته)
         if (auth()->user()->hasPermission('debts.view')) {
-            $soon = Debt::whereIn('status', ['unpaid', 'partial'])
-                ->whereNotNull('due_date')
-                ->whereBetween('due_date', [now()->subDays(30)->toDateString(), now()->addDays(7)->toDateString()])
-                ->orderBy('due_date')
-                ->orderBy('id')
-                ->limit(6)
-                ->get(['id', 'title', 'creditor_name', 'due_date']);
+            $soon = cache()->remember('alerts-debts-soon', now()->addMinutes(5), function () {
+                return Debt::whereIn('status', ['unpaid', 'partial'])
+                    ->whereNotNull('due_date')
+                    ->whereBetween('due_date', [now()->subDays(30)->toDateString(), now()->addDays(7)->toDateString()])
+                    ->orderBy('due_date')
+                    ->orderBy('id')
+                    ->limit(6)
+                    ->get(['id', 'title', 'creditor_name', 'due_date']);
+            });
 
             if ($soon->isNotEmpty()) {
                 $alerts[] = [
@@ -79,13 +84,23 @@ class AlertsBell extends Component
             $nowMonth = (int) Verta::now()->format('n');
             $nowDay = (int) Verta::now()->format('j');
 
-            $birthdays = Customer::query()
-                ->whereNotNull('birth_date')
-                ->where('is_active', true)
-                ->limit(200)
-                ->orderBy('birth_date')
-                ->get(['id', 'first_name', 'last_name', 'birth_date'])
-                ->filter(function (Customer $c) use ($nowMonth, $nowDay) {
+            $birthdays = cache()->remember('alerts-birthdays-'.$nowMonth.'-'.$nowDay, now()->addMinutes(30), function () use ($nowMonth, $nowDay) {
+                $jalaliYear = (int) Verta::now()->format('Y');
+                $daysInMonth = (int) Verta::createJalaliDate($jalaliYear, $nowMonth, 1)->daysInMonth;
+
+                // به‌جای لود تا ۲۰۰ مشتری و فیلتر در PHP، فقط تولدهای مربوط به
+                // ماهِ جاری شمسی را از دیتابیس می‌گیریم و در PHP فیلتر می‌کنیم.
+                $monthStart = Verta::createJalaliDate($jalaliYear, $nowMonth, 1)->toCarbon()->toDateString();
+                $monthEnd = Verta::createJalaliDate($jalaliYear, $nowMonth, $daysInMonth)->toCarbon()->toDateString();
+
+                $candidates = Customer::query()
+                    ->whereNotNull('birth_date')
+                    ->where('is_active', true)
+                    ->whereBetween('birth_date', [$monthStart, $monthEnd])
+                    ->orderBy('birth_date')
+                    ->get(['id', 'first_name', 'last_name', 'birth_date']);
+
+                return $candidates->filter(function (Customer $c) use ($nowMonth, $nowDay) {
                     try {
                         $v = Verta::instance($c->birth_date);
 
@@ -93,8 +108,8 @@ class AlertsBell extends Component
                     } catch (\Throwable) {
                         return false;
                     }
-                })
-                ->take(6);
+                })->values()->take(6);
+            });
 
             if ($birthdays->isNotEmpty()) {
                 $alerts[] = [
@@ -112,12 +127,14 @@ class AlertsBell extends Component
 
         // ۴) انتقالات بین انبار در انتظار
         if (auth()->user()->hasPermission('transfers.view')) {
-            $pending = StockTransfer::with(['fromWarehouse:id,name', 'toWarehouse:id,name'])
-                ->where('status', 'pending')
-                ->orderBy('created_at', 'desc')
-                ->orderBy('id', 'desc')
-                ->limit(6)
-                ->get();
+            $pending = cache()->remember('alerts-pending-transfers', now()->addMinutes(5), function () {
+                return StockTransfer::with(['fromWarehouse:id,name', 'toWarehouse:id,name'])
+                    ->where('status', 'pending')
+                    ->orderBy('created_at', 'desc')
+                    ->orderBy('id', 'desc')
+                    ->limit(6)
+                    ->get();
+            });
 
             if ($pending->isNotEmpty()) {
                 $alerts[] = [

@@ -33,12 +33,22 @@ trait HasTodoQuickAdd
     /** کارهای انجام‌نشده‌ی کاربر جاری برای کارت لیست کارها */
     protected function currentUserTodos()
     {
-        return Todo::with('assignee')
-            ->where('assigned_to', auth()->id())
-            ->where('status', '!=', Todo::STATUS_COMPLETED)
-            ->latest()
-            ->take(10)
-            ->get();
+        return cache()->remember(
+            'todos-mine-'.auth()->id(),
+            now()->addSeconds(60),
+            fn () => Todo::with('assignee')
+                ->where('assigned_to', auth()->id())
+                ->where('status', '!=', Todo::STATUS_COMPLETED)
+                ->latest()
+                ->take(10)
+                ->get()
+        );
+    }
+
+    /** بعد از افزودن/تغییر کار، کش کارت کارها را باطل می‌کنیم */
+    protected function forgetTodosCache(): void
+    {
+        \Illuminate\Support\Facades\Cache::forget('todos-mine-'.auth()->id());
     }
 
     public function openCreateModal(): void
@@ -122,6 +132,7 @@ trait HasTodoQuickAdd
             'due_date' => $this->due_date,
         ]);
 
+        $this->forgetTodosCache();
         session()->flash('success', 'کار جدید با موفقیت ثبت شد');
 
         $this->showFormModal = false;
@@ -135,5 +146,6 @@ trait HasTodoQuickAdd
 
         $todo = Todo::where('assigned_to', auth()->id())->findOrFail($id);
         $todo->toggleComplete();
+        $this->forgetTodosCache();
     }
 }

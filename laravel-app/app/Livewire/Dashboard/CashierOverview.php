@@ -22,7 +22,7 @@ class CashierOverview extends Component
     | با wire:poll در ویو استفاده می‌شود تا آمار داشبورد بدون رفرش صفحه   |
     | و بدون دخالت کاربر، هر چند ثانیه یک‌بار خودکار تازه شود.            |
     */
-    public int $pollingSeconds = 30;
+    public int $pollingSeconds = 300;
 
     /*
     |--------------------------------------------------------------------|
@@ -66,15 +66,19 @@ class CashierOverview extends Component
         // مشتریان بدهکار: مانده‌ی مثبت حساب (فروش/تنظیم مثبت منهای
         // پرداخت‌ها و عودت‌ها)؛ دقیقاً همان منطقی که در سرویس
         // CustomerAccountService::balance استفاده شده.
-        $debtors = CustomerAccountTransaction::query()
-            ->selectRaw("customer_id, SUM(CASE WHEN type IN ('sale','adjustment') THEN amount ELSE -amount END) as debt_amount")
-            ->groupBy('customer_id')
-            ->havingRaw("SUM(CASE WHEN type IN ('sale','adjustment') THEN amount ELSE -amount END) > 0")
-            ->orderByDesc('debt_amount')
-            ->with('customer')
-            ->take(10)
-            ->get()
-            ->filter(fn ($row) => $row->customer !== null);
+        // این aggregate روی کل جدول جمع می‌زند؛ بین کاربران مشترک است پس
+        // کش می‌شود تا هر poll ۳۰ ثانیه‌ای دوباره اجرا نشود.
+        $debtors = cache()->remember('cashier-debtors', now()->addMinutes(5), function () {
+            return CustomerAccountTransaction::query()
+                ->selectRaw("customer_id, SUM(CASE WHEN type IN ('sale','adjustment') THEN amount ELSE -amount END) as debt_amount")
+                ->groupBy('customer_id')
+                ->havingRaw("SUM(CASE WHEN type IN ('sale','adjustment') THEN amount ELSE -amount END) > 0")
+                ->orderByDesc('debt_amount')
+                ->with('customer')
+                ->take(10)
+                ->get()
+                ->filter(fn ($row) => $row->customer !== null);
+        });
 
         return view('livewire.dashboard.cashier-overview', compact(
             'todaySales',

@@ -24,16 +24,24 @@ class MessagesBell extends Component
 
     public function getMessagesProperty()
     {
-        return MessageRecipient::with('message.sender:id,name')
-            ->where('user_id', auth()->id())
-            ->latest()
-            ->limit(self::PREVIEW_LIMIT)
-            ->get();
+        return cache()->remember(
+            'bell-messages-'.auth()->id(),
+            now()->addSeconds(60),
+            fn () => MessageRecipient::with('message.sender:id,name')
+                ->where('user_id', auth()->id())
+                ->latest()
+                ->limit(self::PREVIEW_LIMIT)
+                ->get()
+        );
     }
 
     public function getCountProperty(): int
     {
-        return MessageRecipient::where('user_id', auth()->id())->unread()->count();
+        return cache()->remember(
+            'bell-messages-count-'.auth()->id(),
+            now()->addSeconds(60),
+            fn () => MessageRecipient::where('user_id', auth()->id())->unread()->count()
+        );
     }
 
     public function render()
