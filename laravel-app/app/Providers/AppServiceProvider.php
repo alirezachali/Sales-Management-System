@@ -13,6 +13,7 @@ use App\Observers\MessageRecipientObserver;
 use App\Observers\ProductObserver;
 use App\Observers\SettingObserver;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -39,6 +40,8 @@ class AppServiceProvider extends ServiceProvider
         MessageRecipient::observe(MessageRecipientObserver::class);
         CustomerAccountTransaction::observe(CustomerAccountTransactionObserver::class);
 
+        $this->applyConfiguredTimezone();
+
         /* کاربر super-admin همیشه به همه‌جا دسترسی دارد؛
            خروجی null یعنی تصمیم‌گیری به Gateهای بعدی سپرده شود. */
         Gate::before(fn ($user) => $user->role?->name === Role::SUPER_ADMIN ? true : null);
@@ -55,6 +58,39 @@ class AppServiceProvider extends ServiceProvider
             }
         } catch (\Throwable) {
             // دیتابیس آماده نیست؛ Gateها در درخواست بعدی ساخته می‌شوند
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------|
+    |            اعمال منطقه‌ی زمانی ذخیره‌شده در تنظیمات                 |
+    |--------------------------------------------------------------------|
+    | مقدار timezone از جدول settings خوانده و هم روی PHP/Carbon و هم    |
+    | روی نشست دیتابیس اعمال می‌شود تا تاریخ/ساعتِ ذخیره‌شده و نمایش    |
+    | داده‌شده در همه‌ی بخش‌ها یکدست و درست باشد. مقدار پیش‌فرض (در    |
+    | صورت نبود تنظیم یا خطای دیتابیس) همان زمان محلی ایران است.       |
+    */
+    protected function applyConfiguredTimezone(): void
+    {
+        try {
+            $timezone = setting('timezone') ?: 'Asia/Tehran';
+        } catch (\Throwable) {
+            return;
+        }
+
+        if (! in_array($timezone, \DateTimeZone::listIdentifiers(), true)) {
+            $timezone = 'Asia/Tehran';
+        }
+
+        date_default_timezone_set($timezone);
+        config(['app.timezone' => $timezone]);
+
+        // جلسه‌ی دیتابیس هم باید همان منطقه‌ی زمانی را دنبال کند تا
+        // توابع SQL مثل NOW() و مقایسه‌ی تاریخ‌ها با PHP هم‌سو باشند.
+        try {
+            DB::statement("SET time_zone = ?", [$timezone]);
+        } catch (\Throwable) {
+            // برخی درایورها/میزبان‌ها نام منطقه را قبول نمی‌کنند؛ نادیده می‌گیریم.
         }
     }
 }

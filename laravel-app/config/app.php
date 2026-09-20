@@ -49,8 +49,12 @@ return [
     | Here you may specify the default timezone for your application, which
     | will be used by the PHP date and date-time functions. The timezone
     | is set to "UTC" by default as it is suitable for most use cases.
+    |
+    | توجه: دیتابیس این پروژه به وقت محلی (ایران) کار می‌کند و کاربران نیز
+    | در همین منطقه هستند؛ بنابراین منطقه‌ی زمانی برنامه با دیتابیس هماهنگ
+    | شده تا تاریخ/ساعت ذخیره‌شده و نمایش‌داده‌شده یکدست و درست باشد.
     */
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Tehran',
 
     /*
     |--------------------------------------------------------------------------
