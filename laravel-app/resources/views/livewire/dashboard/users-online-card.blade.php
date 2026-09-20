@@ -3,7 +3,7 @@
     <div class="col-12">
         <div class="card dashboard-card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <strong>🧒 وضعیت کاربران</strong>
+                <strong>🧒 وضـــــعیت کـــــاربران</strong>
                 <small>
                     <span class="badge bg-success-subtle text-success-emphasis">آنلاین: {{ $users->filter->isOnline()->count() }}</span>
                 </small>

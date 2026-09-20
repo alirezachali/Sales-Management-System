@@ -92,7 +92,7 @@
         <div class="col-md-6">
             <div class="card dashboard-card">
                 <div class="card-header">
-                    <strong>🛍️ آخرین فاکتورهای فروش</strong>
+                    <strong>🛍️ آخـــــرین فــــاکتورهای فــــروش</strong>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
@@ -137,7 +137,7 @@
                 <div class="col-12">
                     <div class="card dashboard-card">
                         <div class="card-header">
-                            ⚠️ لیست کالاهای درحال اتمام موجودی
+                            ⚠️ لـــیست کـــالاهای درحـــال اتـــمام مـــوجودی
                         </div>
                         <div class="list-group list-group-flush">
                             @forelse($lowStockList as $product)
@@ -166,7 +166,7 @@
             <div class="card dashboard-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <strong>
-                       ✅ لیست وظیفه‌های درحال انجام
+                       ✅ لـــیست وظـــیفه‌هـــای درحـــال انـــجام
                     </strong>
                     <a href="{{ route('todos.index') }}" class="btn btn-sm btn-outline-primary">
                         مشاهده‌همه
@@ -231,7 +231,7 @@
             <div class="card dashboard-card">
                 <div class="card-header">
                     <strong>
-                       📈 نمودار مبلغ فروش ۳۰ روز گذشته
+                       📈 نـــــمودار مـــــبلغ فـــــروش ۳۰ روز گـــــذشته
                     </strong>
                 </div>
                 {{-- wire:ignore باعث می‌شود کنواس با هر poll دوباره ساخته نشود؛
