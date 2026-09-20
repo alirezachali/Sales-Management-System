@@ -28,7 +28,7 @@
                     مدیریت اطلاعات فروشگاه و تنظیمات نرم افزار
                 </small>
             </div>
-            <button type="button" wire:click="save" class="btn btn-success" wire:loading.attr="disabled"
+            <button type="button" wire:click="save" class="btn btn-success glow-btn" wire:loading.attr="disabled"
                 wire:target="save" title="ذخیره تغییرات ایجاد کرده">
                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                 <i class="bi bi-check-circle" wire:loading.remove wire:target="save"></i>
@@ -43,7 +43,7 @@
                 <ul class="nav nav-tabs mb-4">
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'store') active @endif"
+                        <button type="button" class="nav-link glow-btn @if ($activeTab === 'store') active @endif"
                             wire:click="selectTab('store')">
                             <i class="bi bi-shop"></i>
                             اطلاعات فروشگاه
@@ -51,7 +51,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'sales') active @endif"
+                        <button type="button" class="nav-link glow-btn @if ($activeTab === 'sales') active @endif"
                             wire:click="selectTab('sales')">
                             <i class="bi bi-receipt"></i>
                             فروش
@@ -59,7 +59,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'loyalty') active @endif"
+                        <button type="button" class="nav-link glow-btn @if ($activeTab === 'loyalty') active @endif"
                             wire:click="selectTab('loyalty')">
                             <i class="bi bi-gem"></i>
                             باشگاه امتیازات
@@ -67,7 +67,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'print') active @endif"
+                        <button type="button" class="nav-link glow-btn @if ($activeTab === 'print') active @endif"
                             wire:click="selectTab('print')">
                             <i class="bi bi-printer"></i>
                             چاپ
@@ -75,7 +75,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'barcode') active @endif"
+                        <button type="button" class="nav-link glow-btn @if ($activeTab === 'barcode') active @endif"
                             wire:click="selectTab('barcode')">
                             <i class="bi bi-upc-scan"></i>
                             بارکد و لیبل
@@ -83,7 +83,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'system') active @endif"
+                        <button type="button" class="nav-link glow-btn @if ($activeTab === 'system') active @endif"
                             wire:click="selectTab('system')">
                             <i class="bi bi-cpu"></i>
                             سیستم
@@ -91,7 +91,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'hotkeys') active @endif"
+                        <button type="button" class="nav-link glow-btn @if ($activeTab === 'hotkeys') active @endif"
                             wire:click="selectTab('hotkeys')">
                             <i class="bi bi-keyboard"></i>
                             کلیدهای میانبر
@@ -99,7 +99,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <button type="button" class="nav-link @if ($activeTab === 'backup') active @endif"
+                        <button type="button" class="nav-link glow-btn @if ($activeTab === 'backup') active @endif"
                             wire:click="selectTab('backup')">
                             <i class="bi bi-database"></i>
                             پشتیبان گیری
