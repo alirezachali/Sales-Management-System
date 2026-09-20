@@ -17,20 +17,20 @@ class ProductManager extends Component
     use WithPagination;
     use AuthorizesActions;
 
-    protected string $paginationTheme = 'bootstrap';
+    // protected string $paginationTheme = 'bootstrap';
 
     /*
-    |--------------------------------------------------------------------|
+    |--------------------------------------------------------------------------
     |                              فیلترها                                |
-    |--------------------------------------------------------------------|
+    |--------------------------------------------------------------------------
     */
     public string $search = '';
     public string $filterCategoryId = '';
 
     /*
-    |--------------------------------------------------------------------|
+    |--------------------------------------------------------------------------
     |                        فیلدهای فرم افزودن/ویرایش                    |
-    |--------------------------------------------------------------------|
+    |--------------------------------------------------------------------------
     */
     public ?int $editingProductId = null;
     public string $barcode = '';
@@ -44,28 +44,39 @@ class ProductManager extends Component
     public string $is_active = '1';
 
     /*
-    |--------------------------------------------------------------------|
+    |--------------------------------------------------------------------------
     |                        کنترل نمایش مودال‌ها                          |
-    |--------------------------------------------------------------------|
+    |--------------------------------------------------------------------------
     */
     public bool $showFormModal = false;
     public bool $showDeleteModal = false;
     public ?int $deletingId = null;
 
     /*
-    |--------------------------------------------------------------------|
+    |--------------------------------------------------------------------------
     |                        واکنش به تغییر فیلترها                       |
-    |--------------------------------------------------------------------|
+    |--------------------------------------------------------------------------
     */
+    protected string $lastSearchTerm = '';
+
+    protected int $lastFilterCategoryId = 0;
+
     public function updatingSearch(): void
     {
-        $this->resetPage();
+        if ($this->lastSearchTerm !== $this->search) {
+            $this->lastSearchTerm = $this->search;
+            $this->resetPage();
+        }
     }
 
     public function updatingFilterCategoryId(): void
     {
-        $this->resetPage();
+        if ($this->lastFilterCategoryId !== (int) $this->filterCategoryId) {
+            $this->lastFilterCategoryId = (int) $this->filterCategoryId;
+            $this->resetPage();
+        }
     }
+
 
     public function resetFilters(): void
     {

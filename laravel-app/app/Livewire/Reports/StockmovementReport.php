@@ -38,16 +38,25 @@ class StockmovementReport extends Component
     //     'other' => 'سایر',
     // ];
 
+    protected string $lastDateFromJalali = '';
+    protected string $lastDateToJalali = '';
+
     public function updatedDateFromJalali(): void
     {
-        $this->syncJalaliFilter('dateFromJalali', 'dateFrom', 'from');
-        $this->resetPage();
+        if ($this->lastDateFromJalali !== $this->dateFromJalali) {
+            $this->lastDateFromJalali = $this->dateFromJalali;
+            $this->syncJalaliFilter('dateFromJalali', 'dateFrom', 'from');
+            $this->resetPage();
+        }
     }
 
     public function updatedDateToJalali(): void
     {
-        $this->syncJalaliFilter('dateToJalali', 'dateTo', 'to');
-        $this->resetPage();
+        if ($this->lastDateToJalali !== $this->dateToJalali) {
+            $this->lastDateToJalali = $this->dateToJalali;
+            $this->syncJalaliFilter('dateToJalali', 'dateTo', 'to');
+            $this->resetPage();
+        }
     }
 
     private function syncJalaliFilter(string $jalaliProp, string $gregorianProp, string $errorKey): void
@@ -86,9 +95,15 @@ class StockmovementReport extends Component
         }
     }
 
+    protected string $lastFilterType = '';
+    protected string $lastFilterPaymentMethod = '';
+
     public function updatedFilterPaymentMethod(): void
     {
-        $this->resetPage();
+        if ($this->lastFilterPaymentMethod !== $this->filterPaymentMethod) {
+            $this->lastFilterPaymentMethod = $this->filterPaymentMethod;
+            $this->resetPage();
+        }
     }
 
     public function resetFilters(): void

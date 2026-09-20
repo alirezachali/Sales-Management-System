@@ -60,14 +60,24 @@ class CustomerManager extends Component
     public bool $showLedgerModal = false;
     public ?int $ledgerCustomerId = null;
 
+    protected string $lastSearchTerm = '';
+
+    protected int $lastFilterRoleId = 0;
+
     public function updatingSearch(): void
     {
-        $this->resetPage();
+        if ($this->lastSearchTerm !== $this->search) {
+            $this->lastSearchTerm = $this->search;
+            $this->resetPage();
+        }
     }
 
     public function updatingFilterRoleId(): void
     {
-        $this->resetPage();
+        if ($this->lastFilterRoleId !== (int) $this->filterRoleId) {
+            $this->lastFilterRoleId = (int) $this->filterRoleId;
+            $this->resetPage();
+        }
     }
 
     public function resetFilters(): void

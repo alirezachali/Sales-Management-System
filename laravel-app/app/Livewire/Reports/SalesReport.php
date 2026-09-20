@@ -137,7 +137,9 @@ class SalesReport extends Component
     private function baseQuery(): \Illuminate\Database\Eloquent\Builder
     {
         $query = Sale::query()
-            ->with(['customer', 'user']);
+            ->with(['customer', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc');
 
         if ($this->dateFrom) {
             $query->whereDate('created_at', '>=', $this->dateFrom);
@@ -172,9 +174,9 @@ class SalesReport extends Component
      */
     private function exportRows(): \Illuminate\Support\Collection
     {
-        $query = $this->baseQuery()->withCount('items');
+        $query = $this->baseQuery();
 
-        return $query->latest('created_at')->get()->map(function (Sale $sale) {
+        return $query->get()->map(function (Sale $sale) {
             return [
                 $sale->invoice_number,
                 $sale->customer?->full_name ?? 'مشتری ناشناس',

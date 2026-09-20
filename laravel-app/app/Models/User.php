@@ -94,8 +94,9 @@ class User extends Authenticatable
             return false;
         }
 
-        $permissions = cache()->rememberForever(
+        $permissions = cache()->remember(
             "role-permissions-{$this->role_id}",
+            now()->addHour(),
             fn () => $this->role->permissions()->pluck('name')->all()
         );
 
@@ -163,7 +164,15 @@ class User extends Authenticatable
     {
         $parts = preg_split('/\s+/u', trim($this->name) ?: '?', -1, PREG_SPLIT_NO_EMPTY);
 
-        return collect($parts)->take(2)->map(fn ($p) => mb_substr($p, 0, 1))->implode(' ');
+        $initials = [];
+        foreach ($parts as $part) {
+            $initials[] = mb_substr($part, 0, 1);
+            if (count($initials) >= 2) {
+                break;
+            }
+        }
+
+        return implode(' ', $initials);
     }
 
     /**

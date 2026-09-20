@@ -12,56 +12,51 @@ use Livewire\Component;
 class Overview extends Component
 {
     /*
-    |--------------------------------------------------------------------|
-    |                 بازه‌ی زمانی به‌روزرسانی خودکار (ثانیه)                |
-    |--------------------------------------------------------------------|
-    | با wire:poll در ویو استفاده می‌شود تا آمار داشبورد بدون رفرش صفحه   |
-    | و بدون دخالت کاربر، هر چند ثانیه یک‌بار خودکار تازه شود.            |
+    |--------------------------------------------------------------------------
+    |                 بازه زمانی به‌روزرسانی خودکار (ثانیه)
+    |--------------------------------------------------------------------------
+    | با wire:poll در ویو استفاده می‌شود تا آمار داشبورد بدون رفرش صفحه
+    | و بدون دخالت کاربر، هر چند ثانیه یک بار خودکار تازه شود.
     */
-    public int $pollingSeconds = 30;
+    public int $pollingSeconds = 900;
 
     /*
-    |--------------------------------------------------------------------|
-    |                              رندر                                  |
-    |--------------------------------------------------------------------|
-    | تمام آمارها همان منطقی است که قبلاً در DashboardController@index   |
-    | محاسبه می‌شد؛ فقط محل اجرا به کامپوننت زنده منتقل شده تا با هر بار  |
-    | poll، بدون رفرش صفحه دوباره محاسبه و نمایش داده شود.                |
+    |--------------------------------------------------------------------------
+    |                              رندر
+    |--------------------------------------------------------------------------
+    | تمام آمارهای ساده استفاده از caching انجام می‌شود تا دوباره محاسبه نشوند
     */
     public function render()
     {
         $today = Carbon::today();
 
-        $todaySales = Sale::whereDate('created_at', $today)
-            ->sum('final_price');
+        $todaySales = cache()->remember("dashboard-today-sales-{$today}", now()->addMinutes(5), fn () => Sale::whereDate('created_at', $today)
+            ->sum('final_price'));
 
-        $todayInvoices = Sale::whereDate('created_at', $today)
-            ->count();
+        $todayInvoices = cache()->remember("dashboard-today-invoices-{$today}", now()->addMinutes(5), fn () => Sale::whereDate('created_at', $today)
+            ->count());
 
-        $productsCount = Product::count();
+        $productsCount = cache()->remember('dashboard-products-count', now()->addMinutes(15), fn () => Product::count());
 
-        $lowStockProducts = Product::where('stock', '<=', 5)
-            ->count();
+        $lowStockProducts = cache()->remember('dashboard-low-stock-count', now()->addMinutes(15), fn () => Product::where('stock', '<=', 5)
+            ->count());
 
-        $latestSales = Sale::with('user')
-            ->latest()
+        $latestSales = cache()->remember('dashboard-latest-sales', now()->addMinutes(15), fn () => Sale::with('user')
+            ->latest('created_at')
             ->take(10)
-            ->get();
+            ->get());
 
-        $lowStockList = Product::where('stock', '<=', 5)
+        $lowStockList = cache()->remember('dashboard-low-stock-list', now()->addMinutes(15), fn () => Product::where('stock', '<=', 5)
             ->orderBy('stock')
+            ->orderBy('id')
             ->take(10)
-            ->get();
-            
-        // کارت کاربران به‌صورت کامپوننت مستقل (dashboard.users-online-card) رندر می‌شود.
+            ->get());
 
-
-        // کارهای در حال انجام برای نمایش در کارت داشبورد
-        $inProgressTodos = Todo::where('status', 'in_progress')
+        $inProgressTodos = cache()->remember('dashboard-todos-in-progress', now()->addMinutes(15), fn () => Todo::where('status', 'in_progress')
             ->with('assignee')
             ->latest()
             ->take(10)
-            ->get();
+            ->get());
 
         [$labels, $chartData] = $this->buildChartSeries();
 
@@ -98,8 +93,8 @@ class Overview extends Component
         foreach ($period as $date) {
             $labels[] = jalaliDate($date, 'm/d');
 
-            $data[] = Sale::whereDate('created_at', $date)
-                ->sum('final_price');
+            $data[] = cache()->remember("dashboard-chart-{$date->toDateString()}", now()->addMinutes(5), fn () => Sale::whereDate('created_at', $date)
+                ->sum('final_price'));
         }
 
         return [$labels, $data];

@@ -33,6 +33,7 @@ class AlertsBell extends Component
         $lowStock = Product::where('is_active', true)
             ->where('stock', '<=', $threshold)
             ->orderBy('stock')
+            ->orderBy('id')
             ->limit(6)
             ->get(['id', 'name', 'stock', 'unit']);
 
@@ -55,6 +56,7 @@ class AlertsBell extends Component
                 ->whereNotNull('due_date')
                 ->whereBetween('due_date', [now()->subDays(30)->toDateString(), now()->addDays(7)->toDateString()])
                 ->orderBy('due_date')
+                ->orderBy('id')
                 ->limit(6)
                 ->get(['id', 'title', 'creditor_name', 'due_date']);
 
@@ -80,7 +82,8 @@ class AlertsBell extends Component
             $birthdays = Customer::query()
                 ->whereNotNull('birth_date')
                 ->where('is_active', true)
-                ->limit(500)
+                ->limit(200)
+                ->orderBy('birth_date')
                 ->get(['id', 'first_name', 'last_name', 'birth_date'])
                 ->filter(function (Customer $c) use ($nowMonth, $nowDay) {
                     try {
@@ -111,7 +114,8 @@ class AlertsBell extends Component
         if (auth()->user()->hasPermission('transfers.view')) {
             $pending = StockTransfer::with(['fromWarehouse:id,name', 'toWarehouse:id,name'])
                 ->where('status', 'pending')
-                ->latest()
+                ->orderBy('created_at', 'desc')
+                ->orderBy('id', 'desc')
                 ->limit(6)
                 ->get();
 
