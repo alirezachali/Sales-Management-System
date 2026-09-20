@@ -41,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
         CustomerAccountTransaction::observe(CustomerAccountTransactionObserver::class);
 
         $this->applyConfiguredTimezone();
+        $this->applyConfiguredSessionLifetime();
 
         /* کاربر super-admin همیشه به همه‌جا دسترسی دارد؛
            خروجی null یعنی تصمیم‌گیری به Gateهای بعدی سپرده شود. */
@@ -91,6 +92,32 @@ class AppServiceProvider extends ServiceProvider
             DB::statement("SET time_zone = ?", [$timezone]);
         } catch (\Throwable) {
             // برخی درایورها/میزبان‌ها نام منطقه را قبول نمی‌کنند؛ نادیده می‌گیریم.
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------|
+    |          اعمال «مدت زمان انقضای نشست» ذخیره‌شده در تنظیمات          |
+    |--------------------------------------------------------------------|
+    | مقدار session_timeout از جدول settings خوانده و روی                 |
+    | config('session.lifetime') تنظیم می‌شود تا کاربر بتواند از داخل     |
+    | صفحه‌ی تنظیمات، مدت زمان انقضای نشست را داینامیک عوض کند. این کار  |
+    | بعد از آماده‌شدن دیتابیس (در boot) و قبل از اینکه middleware شروع  |
+    | نشست مقدار lifetime را بخواند انجام می‌شود. مقدار پیش‌فرض ۱۲۰       |
+    | دقیقه است.                                                        |
+    */
+    protected function applyConfiguredSessionLifetime(): void
+    {
+        try {
+            $minutes = (int) \App\Models\Setting::where('key', 'session_timeout')->value('value');
+
+            if ($minutes < 1) {
+                $minutes = 120;
+            }
+
+            config(['session.lifetime' => $minutes]);
+        } catch (\Throwable) {
+            // دیتابیس در دسترس نیست؛ مقدار پیش‌فرضِ کانفیگ حفظ می‌شود
         }
     }
 }
