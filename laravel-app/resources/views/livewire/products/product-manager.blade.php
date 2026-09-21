@@ -1,8 +1,9 @@
 <div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
+    {{-- فایل کدهای مربوط به نمایش پیغام های اطلاع رسانی --}}
     @include('partials.flash-messages')
 
-{{-- ==================== استایل چاپ لیبل (مستقل از صفحه) ==================== --}}
+    {{-- ======== استایل چاپ لیبل (مستقل از صفحه) ======== --}}
     <style>
         /* پیش‌نمایش لیبل داخل مودال */
         #label-container {
@@ -96,11 +97,11 @@
     </style>
 
 
-{{--============ کارت‌های آماری ============--}}
+    {{--======== کارت‌های آماری ========--}}
     <div class="row row-cards mb-4">
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">تعداد کالاها</div>
                     <div class="h1 mb-0">{{ $totalProducts }}</div>
@@ -109,7 +110,7 @@
         </div>
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">کالاهای فعال</div>
                     <div class="h1 mb-0 text-success">{{ $activeProducts }}</div>
@@ -118,7 +119,7 @@
         </div>
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">کالاهای غیرفعال</div>
                     <div class="h1 mb-0 text-danger">{{ $inactiveProducts }}</div>
@@ -127,7 +128,7 @@
         </div>
 
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">موجودی کم</div>
                     <div class="h1 mb-0 text-warning">{{ $lowStockProducts }}</div>
@@ -137,8 +138,8 @@
 
     </div>
 
-{{--================== فیلترها ==================--}}
-    <div class="card glass-card mb-4 border-3">
+    {{--========= فیلترها ==========--}}
+    <div class="card glass-card mb-4">
         <div class="card-body">
             <div class="row g-2">
 
@@ -168,7 +169,7 @@
         </div>
     </div>
 
-{{--======================== جدول لیست کالاها ========================--}}
+    {{--=================== جدول لیست کالاها ===================--}}
     <div class="card shadow-sm">
 
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -206,19 +207,30 @@
                         @forelse ($products as $product)
                             <tr wire:key="product-{{ $product->id }}">
                                 <td>{{ $loop->iteration + ($products->currentPage() - 1) * $products->perPage() }}</td>
-                                <td class="text-fuchsia-emphasis">{{ $product->barcode }}</td>
-                                <td>{{ $product->name }}</td>
+                                <td>
+                                    <strong>
+                                        {{ $product->barcode }}
+                                    </strong>
+                                </td>
+                                <td>
+                                    <strong>
+                                        {{ $product->name }}
+                                    </strong>
+                                </td>
                                 <td>{{ $product->category?->name }}</td>
-                                <td class="text-success-emphasis">
-                                    {{ number_format($product->sell_price) }}
-                                    {{-- <span>{{ setting('currency', '') }}</span> --}}
+                                <td>
+                                    <strong class="text-success">
+                                        {{ number_format($product->sell_price) }}
+                                        {{-- <span>{{ setting('currency', '') }}</span> --}}
+                                    </strong>
                                 </td>
                                 <td>
-                                    {{ $product->formatted_stock }}
-                                    <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ $product->unit }}</span>
+                                    <span class="badge bg-secondary-subtle">
+                                        {{ $product->formatted_stock }} {{ $product->unit }}
+                                    </span>
                                 </td>
                                 <td>
-                                {{--============ دکمه ویرایش کالا ============--}}
+                                    {{--===== دکمه ویرایش کالا =====--}}
                                     @can('products.edit')
                                     <button type="button" class="btn btn-sm btn-outline-warning"
                                         wire:click="openEditModal({{ $product->id }})" title="ویرایش کالا">
@@ -226,19 +238,19 @@
                                     </button>
                                     @endcan
 
-                                {{--============ دکمه چاپ لیبل ============--}}
-                                    <button type="button" class="btn btn-sm btn-outline-info print-label-btn"
+                                    {{--===== دکمه چاپ لیبل =====--}}
+                                    <button type="button" class="btn btn-sm btn-outline-primary print-label-btn"
                                         data-id="{{ $product->id }}" title="چاپ لیبل">
-                                        <i class="bi bi-printer-fill"></i>
+                                        <i class="bi bi-upc-scan"></i>
                                     </button>
 
-                                {{--====== دکمه مشاهده موجودی و ورود و خروج این کالا به انبار ======--}}
-                                    <a href="{{ route('products.stock', $product) }}" class="btn btn-sm btn-outline-light"
+                                    {{--== دکمه مشاهده موجودی و ورود و خروج این کالا به انبار ==--}}
+                                    <a href="{{ route('products.stock', $product) }}" class="btn btn-sm btn-outline-success"
                                         title="مشاهده سوابق ورود و خروج این کالا به انبار">
                                         <i class="bi bi-boxes"></i>
                                     </a>
 
-                                {{--================== دکمه حذف کالا ==================--}}
+                                    {{--===== دکمه حذف کالا =====--}}
                                     {{-- @can('products.delete')
                                     <button type="button" class="btn btn-danger text-dark btn-sm"
                                         wire:click="confirmDelete({{ $product->id }})" title="حذف این کالا">
@@ -266,7 +278,7 @@
         </div>
     </div>
 
-{{-- ================================ مودال افزودن/ویرایش کالا ================================ --}}
+    {{-- =============== مودال افزودن/ویرایش کالا =============== --}}
     @if ($showFormModal)
         <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="product-form-modal">
@@ -407,8 +419,8 @@
         </div>
     @endif
 
-{{-- ============================ مودال تایید حذف ============================ --}}
-    @if ($showDeleteModal)
+    {{-- =================== مودال تایید حذف ============================ --}}
+    {{-- @if ($showDeleteModal)
         <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="product-delete-modal">
             <div class="modal-dialog modal-dialog-centered">
@@ -432,9 +444,9 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif --}}
 
-{{-- ============================ مودال چاپ لیبل ============================ --}}
+    {{-- =================== مودال چاپ لیبل ==================== --}}
     <div class="modal modal-blur fade" id="labelModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -460,13 +472,7 @@
         </div>
     </div>
 
-{{-- ==================== استایل و رفتار مودال چاپ لیبل ==================== --}}
-{{--
-    نکته: این پروژه اسکریپت‌های Bootstrap (bootstrap.bundle.min.js) را فقط در صفحه
-    احراز هویت لود می‌کند، نه در لایوت اصلی. بنابراین از bootstrap.Modal نمی‌توان
-    استفاده کرد. به همین دلیل نمایش/بستن مودال چاپ لیبل به‌صورت دستی با کلاسِ
-    show/d-block مدیریت می‌شود تا به اسکریپت Bootstrap وابسته نباشد.
---}}
+    {{-- ============ استایل و رفتار مودال چاپ لیبل ============= --}}
     @push('scripts')
         <script>
             (function () {
