@@ -285,57 +285,211 @@
         </div>
     @endif
 
-    {{--================== مودال جزئیات برند ==================--}}
-    @if ($showDetailsModal)
+    {{--======================== مودال جزئیات برند =========================--}}
+    @if ($showDetailsModal && $detailBrand)
         <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="brand-details-modal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">جزئیات برند</h5>
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content overflow-hidden">
+ 
+                    {{-- هدر مودال --}}
+                    <div class="modal-header border-0 pb-0">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="avatar avatar-sm bg-primary-lt">
+                                <i class="bi bi-bing"></i>
+                            </span>
+                            <h5 class="modal-title fw-bold mb-0">
+                                جـــزئـــیـــات بـــرنـــد {{ $detailBrand->name }}
+                            </h5>
+                        </div>
                         <button type="button" class="btn-close" wire:click="$set('showDetailsModal', false)" title="بستن">
                         </button>
                     </div>
-                    <div class="modal-body">
-                        @if ($detailBrand)
-                            <div class="card">
-                                <div class="card-body">
-                                    <tr>
-                                        <th class="">نام برند</th>
-                                        <td>{{ $detailBrand->name ?: '—' }}</td>
-                                    </tr>
-                                    <tr class="table-active">
-                                        <th class="">توضیحات</th>
-                                        <td>{{ $detailBrand->description ?: '—' }}</td>
-                                    </tr>
+ 
+                    <div class="modal-body pt-3 d-flex flex-column gap-3">
+ 
+                        {{-- ============ کارت ۱: معرفی برند ============ --}}
+                        <div class="card border-3 mb-0 shadow-sm">
+                            <div class="row g-0">
+                                <div class="col-auto d-flex align-items-center justify-content-center"
+                                    style="background: linear-gradient(135deg, var(--tblr-primary-rgb, 66,99,235) 0%, rgba(66,99,235,.06) 100%); min-width: 160px; padding: 1.5rem;">
+                                    @if ($detailBrand->logo && \Illuminate\Support\Facades\Storage::disk('public')->exists($detailBrand->logo))
+                                        <img src="{{ asset('storage/' . $detailBrand->logo) }}"
+                                            alt="{{ $detailBrand->name }}"
+                                            style="width: 110px; height: 110px; border-radius: 18px; object-fit: cover; box-shadow: 0 .5rem 1rem rgba(0,0,0,.15); background:#fff; padding:6px;">
+                                    @else
+                                        <div class="d-flex align-items-center justify-content-center rounded-4"
+                                            style="width: 110px; height: 110px; background: rgba(255,255,255,.6); box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);">
+                                            <i class="bi bi-image text-secondary" style="font-size: 2.5rem;"></i>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="col">
+                                    <div class="card-body py-4">
+                                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                            <h3 class="fw-bold mb-0">
+                                                <i class="bi bi-award text-primary me-1"></i>
+                                                {{ $detailBrand->name }}
+                                            </h3>
+                                            @if ($detailBrand->is_active)
+                                                <span class="badge bg-success text-dark"><i class="bi bi-check-circle me-1"></i>فــعــال</span>
+                                            @else
+                                                <span class="badge bg-secondary text-dark"><i class="bi bi-x-circle me-1"></i>غــیــرفــعــال</span>
+                                            @endif
+                                        </div>
+                                        <hr class="my-3">
+                                        <div class="d-flex flex-wrap gap-3 mb-3">
+                                            <div class="text-muted d-flex align-items-center gap-1">
+                                                <i class="bi bi-box-seam"></i>
+                                                <span>{{ $detailBrand->products_count ?? $detailBrand->products->count() }} مـحـصـول</span>
+                                            </div>
+                                            <div class="text-muted d-flex align-items-center gap-1">
+                                                <i class="bi bi-truck"></i>
+                                                <span>{{ $detailBrand->suppliers_count ?? $detailBrand->suppliers->count() }} تـامـیـن‌کـنـنـده</span>
+                                            </div>
+                                        </div>
+                                        <div class="p-3 rounded-3" style="background: rgba(66,99,235,.06); border-right: 4px solid var(--tblr-primary);">
+                                            <i class="bi bi-chat-left-quote text-primary me-1"></i>
+                                            <span class="text-muted">{{ $detailBrand->description ?: 'توضیحاتی برای این برند ثبت نشده است.' }}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-
-
-                            <p>
-                                <strong>تامین‌کنندگان:</strong>
-                                @foreach ($detailBrand->suppliers as $supplier)
-                                    {{ $supplier->name }}
-                                    @if (!$loop->last)
-                                        ,
-                                    @endif
-                                @endforeach
-                            </p>
-
-                            <h5>محصولات</h5>
-                            <ul>
-                                @foreach ($detailBrand->products as $product)
-                                    <li>
-                                        {{ $product->name }}
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
+                        </div>
+ 
+                        {{-- ============ کارت ۲: تامین‌کنندگان برند ============ --}}
+                        <div class="card border-3 mb-0 shadow-sm">
+                            <div class="card-header bg-primary-lt py-2">
+                                <h4 class="card-title mb-0 fw-bold">
+                                    <i class="bi bi-truck text-primary me-2"></i>
+                                    تــامــیــن‌کــنــنــدگــان ایــن بــرنــد
+                                </h4>&emsp;
+                                <span class="badge bg-primary">
+                                    {{ $detailBrand->suppliers->count() }}
+                                </span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="50">ردیف</th>
+                                                <th>نام تامین‌کننده</th>
+                                                <th>نام شرکت</th>
+                                                <th>موبایل</th>
+                                                <th>شهر</th>
+                                                <th width="70">نوع</th>
+                                                <th width="80">وضعیت</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($detailBrand->suppliers as $supplier)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td class="fw-semibold">
+                                                        <span class="avatar avatar-xs me-2" style="background: rgba(66,99,235,.08);">
+                                                            <i class="bi bi-person text-primary"></i>
+                                                        </span>
+                                                        {{ $supplier->name }}
+                                                    </td>
+                                                    <td>{{ $supplier->company_name ?: '—' }}</td>
+                                                    <td dir="ltr" class="text-end">{{ $supplier->mobile ?: '—' }}</td>
+                                                    <td>{{ $supplier->city ?: '—' }}</td>
+                                                    <td>
+                                                        <span class="badge {{ $supplier->type === 'company' ? 'bg-purple-subtle text-purple' : 'bg-azure-subtle text-azure' }}">
+                                                            {{ $supplier->type === 'company' ? 'حقوقی' : 'حقیقی' }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        @if ($supplier->is_active)
+                                                            <span class="badge bg-success-subtle text-success-emphasis">فعال</span>
+                                                        @else
+                                                            <span class="badge bg-secondary-subtle text-secondary-emphasis">غیرفعال</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="7" class="text-center py-4 text-muted">
+                                                        <i class="bi bi-truck me-1"></i>هیچ تامین‌کننده‌ای برای این برند ثبت نشده است.
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+ 
+                        {{-- ============ کارت ۳: محصولات برند ============ --}}
+                        <div class="card border-3 mb-0 shadow-sm">
+                            <div class="card-header bg-primary-lt py-2">
+                                <h4 class="card-title mb-0 fw-bold">
+                                    <i class="bi bi-box-seam text-primary me-2"></i>
+                                    مــحــصــولات ایــن بــرنــد
+                                </h4>&emsp;
+                                <span class="badge bg-primary">
+                                    {{ $detailBrand->products->count() }}
+                                </span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="50">ردیف</th>
+                                                <th width="140">بارکد</th>
+                                                <th>نام محصول</th>
+                                                <th>دسته‌بندی</th>
+                                                <th>قیمت فروش</th>
+                                                <th width="100">موجودی</th>
+                                                <th width="80">وضعیت</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($detailBrand->products as $product)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td dir="ltr" class="text-end">
+                                                        <span class="badge bg-secondary-subtle text-secondary">{{ $product->barcode ?: '—' }}</span>
+                                                    </td>
+                                                    <td class="fw-semibold">
+                                                        <i class="bi bi-upc-scan text-muted me-1"></i>
+                                                        {{ $product->name }}
+                                                    </td>
+                                                    <td>{{ $product->category?->name ?: '—' }}</td>
+                                                    <td class="text-success fw-semibold">{{ number_format($product->sell_price) }}</td>
+                                                    <td>
+                                                        <span class="badge {{ $product->stock > 0 ? 'bg-success-subtle text-success-emphasis' : 'bg-danger-subtle text-danger-emphasis' }}">
+                                                            {{ $product->formatted_stock }} {{ $product->unit }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        @if ($product->is_active)
+                                                            <span class="badge bg-success-subtle text-success-emphasis">فعال</span>
+                                                        @else
+                                                            <span class="badge bg-secondary-subtle text-secondary-emphasis">غیرفعال</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="7" class="text-center py-4 text-muted">
+                                                        <i class="bi bi-box-seam me-1"></i>هیچ محصولی برای این برند ثبت نشده است.
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+ 
                     </div>
+ 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" wire:click="$set('showDetailsModal', false)" title="بستن">
-                            بستن
+                            <i class="bi bi-x-lg me-1"></i>بستن
                         </button>
                     </div>
                 </div>
