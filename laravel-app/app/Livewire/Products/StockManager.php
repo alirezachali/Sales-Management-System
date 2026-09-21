@@ -8,8 +8,10 @@ use App\Models\StockMovement;
 use App\Models\Warehouse;
 use App\Services\WarehouseService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class StockManager extends Component
 {
@@ -159,7 +161,7 @@ class StockManager extends Component
     {
         $movements = $this->product
             ->stockMovements()
-            ->with('warehouse:id,name')
+            ->with(['warehouse:id,name', 'user:id,name'])
             ->latest()
             ->paginate(20);
 
@@ -179,68 +181,94 @@ class StockManager extends Component
     |                      خروجی اکسل و CSV گردش کالا                     |
     |--------------------------------------------------------------------|
     */
-    public function exportCsv()
-    {
-        $fileName = 'گردش-کالا-' . $this->product->barcode . '.csv';
 
-        return response()->streamDownload(function () {
+    // ستون‌های خروجی؛ آخرین مورد «ثبت توسط» (نام کاربر ثبت‌کننده) است.
+    private function exportHeader(): array
+    {
+        return ['تاریخ', 'نوع عملیات', 'مقدار', 'واحد', 'توضیحات', 'ثبت توسط'];
+    }
+
+    // همه‌ی گردش‌های کالا (بدون محدودیت صفحه‌بندی) به‌صورت آرایه‌ای از ردیف‌ها
+    private function exportRows(): array
+    {
+        return $this->product
+            ->stockMovements()
+            ->with('user:id,name')
+            ->latest()
+            ->get()
+            ->map(function ($movement) {
+                return [
+                    jalaliDateTime($movement->created_at),
+                    $this->movementTypeLabel($movement->type),
+                    $movement->quantity,
+                    $this->product->unit,
+                    $movement->description,
+                    $movement->user?->name ?? '—',
+                ];
+            })
+            ->all();
+    }
+
+    public function exportCsv(): StreamedResponse
+    {
+        $rows = $this->exportRows();
+
+        $callback = function () use ($rows) {
             $handle = fopen('php://output', 'w');
 
             // BOM برای نمایش صحیح حروف فارسی در Excel
-            fwrite($handle, "\xEF\xBB\xBF");
+            fwrite($handle, "\u{FEFF}");
 
-            fputcsv($handle, ['تاریخ', 'نوع عملیات', 'مقدار', 'واحد', 'توضیحات']);
+            fputcsv($handle, $this->exportHeader());
 
-            $this->product->stockMovements()->latest()->chunk(500, function ($movements) use ($handle) {
-                foreach ($movements as $movement) {
-                    fputcsv($handle, [
-                        jalaliDateTime($movement->created_at),
-                        $this->movementTypeLabel($movement->type),
-                        $movement->quantity,
-                        $this->product->unit,
-                        $movement->description,
-                    ]);
-                }
-            });
+            foreach ($rows as $row) {
+                fputcsv($handle, $row);
+            }
 
             fclose($handle);
-        }, $fileName, [
+        };
+
+        $filename = 'گردش-کالا-' . $this->product->barcode . '-' . now()->format('Y-m-d-His') . '.csv';
+
+        return Response::stream($callback, 200, [
             'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ]);
     }
 
-    public function exportExcel()
+    public function exportExcel(): StreamedResponse
     {
-        $fileName = 'گردش-کالا-' . $this->product->barcode . '.xls';
-        $product = $this->product;
+        $rows = $this->exportRows();
 
-        return response()->streamDownload(function () use ($product) {
-            echo "\xEF\xBB\xBF"; // BOM برای نمایش صحیح حروف فارسی
-            echo '<html><head><meta charset="UTF-8"></head><body dir="rtl">';
-            echo '<table border="1">';
-            echo '<thead><tr>
-                    <th>تاریخ</th>
-                    <th>نوع عملیات</th>
-                    <th>مقدار</th>
-                    <th>واحد</th>
-                    <th>توضیحات</th>
-                  </tr></thead><tbody>';
+        $callback = function () use ($rows) {
+            $out = fopen('php://output', 'w');
 
-            $product->stockMovements()->latest()->chunk(500, function ($movements) use ($product) {
-                foreach ($movements as $movement) {
-                    echo '<tr>'
-                        . '<td>' . e(jalaliDateTime($movement->created_at)) . '</td>'
-                        . '<td>' . e($this->movementTypeLabel($movement->type)) . '</td>'
-                        . '<td>' . e($movement->quantity) . '</td>'
-                        . '<td>' . e($product->unit) . '</td>'
-                        . '<td>' . e($movement->description) . '</td>'
-                        . '</tr>';
+            fwrite($out, "\u{FEFF}"); // BOM برای نمایش صحیح حروف فارسی
+            fwrite($out, '<html><head><meta charset="UTF-8"></head><body dir="rtl">');
+            fwrite($out, '<table border="1">');
+            fwrite($out, '<thead><tr>');
+            foreach ($this->exportHeader() as $label) {
+                fwrite($out, '<th>' . e($label) . '</th>');
+            }
+            fwrite($out, '</tr></thead><tbody>');
+
+            foreach ($rows as $row) {
+                fwrite($out, '<tr>');
+                foreach ($row as $value) {
+                    fwrite($out, '<td>' . e((string) $value) . '</td>');
                 }
-            });
+                fwrite($out, '</tr>');
+            }
 
-            echo '</tbody></table></body></html>';
-        }, $fileName, [
+            fwrite($out, '</tbody></table></body></html>');
+            fclose($out);
+        };
+
+        $filename = 'گردش-کالا-' . $this->product->barcode . '-' . now()->format('Y-m-d-His') . '.xls';
+
+        return Response::stream($callback, 200, [
             'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ]);
     }
 

@@ -8,22 +8,22 @@
                 گردش کالا:
                 {{ $product->name }}
             </h3>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary" title="بازگشت به صفحه لیست محصولات">
-                بازگشت
+            <a href="{{ route('products.index') }}" class="btn btn-primary" title="بازگشت به صفحه لیست محصولات">
+                بازگشت به صفحه محصولات
             </a>
         </div>
 
         <div class="card-body">
             <div class="card-header d-flex justify-content-between align-items-center">
             {{--======= نمایش پیغام موجودی فعلی =======--}}
-                <div class="alert alert-info mb-3">
-                    موجودی فعلی:
-                    <strong>{{ $product->formatted_stock }}{{ $product->unit }}</strong>
-                    
+                <div class="alert alert-info mb-3 w-25 justify-content-between">
+                    موجودی فعلی 👈
+                    <strong>{{ $product->formatted_stock }} {{ $product->unit }}</strong>
+
                 </div>
 
             {{--====== دکمه‌های ورود، خروج و خروجی گزارش ======--}}
-                <div class="d-flex align-items-center gap-2">
+                {{-- <div class="d-flex align-items-center gap-2">
 
                     <button type="button" class="btn btn-sm btn-outline-success" wire:click="openAddStockModal"
                         title="ورود این کالا به انبار">
@@ -36,53 +36,47 @@
                         خروج کالا
                     </button>
 
-                    <div class="vr mx-1 d-none d-sm-block" style="opacity:.15;"></div>
+                    <div class="vr mx-1 d-none d-sm-block" style="opacity:.15;"></div> --}}
 
-                {{--====== دراپ‌داون خروجی گزارش (اکسل / CSV) ======--}}
-                    <div class="dropdown">
-                        <button type="button"
-                            class="btn btn-sm btn-outline-primary dropdown-toggle d-flex align-items-center gap-1"
-                            data-bs-toggle="dropdown" aria-expanded="false" wire:loading.attr="disabled"
-                            wire:target="exportExcel,exportCsv" title="دریافت خروجی گردش کالا">
-                            <span wire:loading.remove wire:target="exportExcel,exportCsv">
-                                <i class="bi bi-download"></i>
+                {{--====== دکمه‌های خروجی گزارش (اکسل / CSV) ======--}}
+                    <div class="d-flex align-items-center gap-2">
+
+                        <button type="button" class="btn btn-sm btn-outline-success d-flex align-items-center gap-1"
+                            wire:click="exportExcel" wire:loading.attr="disabled" wire:target="exportExcel"
+                            title="دریافت خروجی Excel">
+                            <span wire:loading.remove wire:target="exportExcel">
+                                <i class="bi bi-file-earmark-excel-fill"></i>
                             </span>
-                            <span wire:loading wire:target="exportExcel,exportCsv"
-                                class="spinner-border spinner-border-sm"></span>
-                            خروجی گزارش
+                            <span wire:loading wire:target="exportExcel" class="spinner-border spinner-border-sm"></span>
+                            خروجی Excel
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                            <li>
-                                <button type="button" class="dropdown-item d-flex align-items-center gap-2"
-                                    wire:click="exportExcel" wire:loading.attr="disabled"
-                                    wire:target="exportExcel">
-                                    <i class="bi bi-file-earmark-excel-fill text-success fs-5"></i>
-                                    خروجی Excel
-                                </button>
-                            </li>
-                            <li>
-                                <button type="button" class="dropdown-item d-flex align-items-center gap-2"
-                                    wire:click="exportCsv" wire:loading.attr="disabled" wire:target="exportCsv">
-                                    <i class="bi bi-filetype-csv text-primary fs-5"></i>
-                                    خروجی CSV
-                                </button>
-                            </li>
-                        </ul>
+
+                        <button type="button" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
+                            wire:click="exportCsv" wire:loading.attr="disabled" wire:target="exportCsv"
+                            title="دریافت خروجی CSV">
+                            <span wire:loading.remove wire:target="exportCsv">
+                                <i class="bi bi-filetype-csv"></i>
+                            </span>
+                            <span wire:loading wire:target="exportCsv" class="spinner-border spinner-border-sm"></span>
+                            خروجی CSV
+                        </button>
+
                     </div>
 
                 </div>
             </div>
 
             <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle">
+                <table class="table table-hover align-middle">
 
                     <thead>
                         <tr>
-                            <th width="300">تاریخ</th>
-                            <th width="150">نوع عملیات</th>
-                            <th width="150">مقدار</th>
+                            <th width="180">تاریخ</th>
+                            <th width="110">نوع عملیات</th>
+                            <th width="110">مقدار</th>
                             <th>توضیحات</th>
-                            <th>انبار</th>
+                            <th width="130">انبار</th>
+                            <th width="130">ثبت توسط</th>
                         </tr>
                     </thead>
 
@@ -93,27 +87,27 @@
                                 <td>
                                     @switch($movement->type)
                                         @case('initial')
-                                            <span class="badge bg-info text-dark">موجودی اولیه</span>
+                                            <span class="badge bg-info-subtle">موجودی اولیه</span>
                                         @break
 
                                         @case('purchase')
-                                            <span class="badge bg-success text-dark">خرید</span>
+                                            <span class="badge bg-success-subtle">خرید</span>
                                         @break
 
                                         @case('sale')
-                                            <span class="badge bg-danger text-dark">فروش</span>
+                                            <span class="badge bg-danger-subtle">فروش</span>
                                         @break
 
                                         @case('adjust')
-                                            <span class="badge bg-warning text-dark">اصلاح</span>
+                                            <span class="badge bg-warning-subtle">اصلاح</span>
                                         @break
 
                                         @case('transfer')
-                                            <span class="badge bg-primary-subtle text-primary-emphasis">انتقال</span>
+                                            <span class="badge bg-primary-subtle">انتقال</span>
                                         @break
 
                                         @case('return')
-                                            <span class="badge bg-secondary text-dark">مرجوعی</span>
+                                            <span class="badge bg-secondary-subtle">مرجوعی</span>
                                         @break
                                     @endswitch
                                 </td>
@@ -122,11 +116,20 @@
                                     <span>{{ $product->unit }}</span>
                                 </td>
                                 <td>{{ $movement->description }}</td>
-                                <td class="small text-muted">{{ $movement->warehouse?->name ?? '—' }}</td>
+                                <td>
+                                    <span class="badge bg-info-subtle">
+                                        {{ $movement->warehouse?->name ?? '—' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success-subtle">
+                                        {{ $movement->user?->name ?? '—' }}
+                                    </span>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-4 text-muted">
+                                <td colspan="6" class="text-center py-4 text-muted">
                                     هیچ گردشی برای این کالا ثبت نشده است.
                                 </td>
                             </tr>
@@ -173,7 +176,7 @@
                                     <span>|</span>
                                 موجودی فعلی:
                                 <strong class="text-info">{{ $product->formatted_stock }}{{ $product->unit }}</strong>
-                                
+
                             </div>
 
                             <div class="mb-3">
