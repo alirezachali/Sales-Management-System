@@ -7,31 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class CustomerRole extends Model
 {
     protected $fillable = [
-
         'name',
-
         'icon',
-
         'color',
-
         'sort_order',
-
         'discount_percent',
-
         'points_per_amount',
-
         'points_expiry_days',
-
         'min_purchase_count',
-
         'min_purchase_amount',
-
         'description',
-
         'is_default',
-
         'is_active',
-
     ];
 
     public function customers()

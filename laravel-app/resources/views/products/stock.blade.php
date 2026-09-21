@@ -1,7 +1,7 @@
 {{-- resources/views/products/stock.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'گردش انبار')
+@section('title', 'گردش کالا')
 
 @section('content')
     <div class="container-fluid">

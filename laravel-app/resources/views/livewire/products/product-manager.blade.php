@@ -2,6 +2,100 @@
 
     @include('partials.flash-messages')
 
+{{-- ==================== استایل چاپ لیبل (مستقل از صفحه) ==================== --}}
+    <style>
+        /* پیش‌نمایش لیبل داخل مودال */
+        #label-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            padding: 8px 0;
+        }
+
+        .label-print-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: #ffffff;
+            color: #000000;
+            border: 1px dashed #adb5bd;
+            padding: 4mm;
+            box-sizing: border-box;
+            overflow: hidden;
+            font-family: 'Vazirmatn', sans-serif;
+            border-radius: 20px;
+        }
+
+        .label-print-area .label-name {
+            font-size: 9pt;
+            font-weight: 700;
+            line-height: 1.2;
+            word-break: break-word;
+            width: 100%;
+        }
+
+        .label-print-area .label-price {
+            font-size: 8pt;
+            font-weight: 700;
+            color: #d63384;
+            margin-top: 1mm;
+        }
+
+        .label-print-area .label-barcode {
+            margin-top: 1mm;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .label-print-area .label-barcode svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .label-print-area .label-code {
+            font-size: 7pt;
+            letter-spacing: 1px;
+            color: #333;
+            margin-top: 0.5mm;
+        }
+
+        /* فقط هنگام چاپ: بقیه صفحه مخفی و فقط لیبل‌ها چاپ می‌شوند */
+        @media print {
+            body * {
+                visibility: hidden !important;
+            }
+
+            #label-container,
+            #label-container * {
+                visibility: visible !important;
+            }
+
+            #label-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 0;
+            }
+
+            .label-print-area {
+                border: none;
+                padding: 2mm;
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+        }
+    </style>
+
+
 {{--============ کارت‌های آماری ============--}}
     <div class="row row-cards mb-4">
 
@@ -341,16 +435,16 @@
     @endif
 
 {{-- ============================ مودال چاپ لیبل ============================ --}}
-    <div class="modal modal-blur fade" id="labelModal" tabindex="-1">
+    <div class="modal modal-blur fade" id="labelModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">چاپ لیبل</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" title="بستن"></button>
+                    <h5 class="modal-title">چـــاپ لـــیـــبـــل</h5>
+                    <button type="button" class="btn-close" id="label-modal-close" aria-label="بستن"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">تعداد لیبل</label>
+                        <label class="form-label">تــعــداد لــیــبــل</label>
                         <input type="number" id="label_quantity" class="form-control" value="1"
                             min="1">
                     </div>
@@ -359,75 +453,118 @@
                 <div class="modal-footer">
                     <button type="button" id="print-label-btn" class="btn btn-primary">
                         <i class="bi bi-printer"></i>
-                        چاپ
+                        چــــاپ
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    @script
+{{-- ==================== استایل و رفتار مودال چاپ لیبل ==================== --}}
+{{--
+    نکته: این پروژه اسکریپت‌های Bootstrap (bootstrap.bundle.min.js) را فقط در صفحه
+    احراز هویت لود می‌کند، نه در لایوت اصلی. بنابراین از bootstrap.Modal نمی‌توان
+    استفاده کرد. به همین دلیل نمایش/بستن مودال چاپ لیبل به‌صورت دستی با کلاسِ
+    show/d-block مدیریت می‌شود تا به اسکریپت Bootstrap وابسته نباشد.
+--}}
+    @push('scripts')
         <script>
-            // چاپ لیبل کالا از طریق endpoint موجود، مستقل از رندر لیوایر (فقط یک‌بار ثبت می‌شود)
-            let currentLabelTemplate = '';
+            (function () {
+                const modalEl = document.getElementById('labelModal');
+                if (!modalEl) return;
 
-            document.addEventListener('click', function(e) {
-                const button = e.target.closest('.print-label-btn');
-                if (!button) return;
+                let currentLabelTemplate = '';
 
-                const productId = button.dataset.id;
+                const getContainer = () => document.getElementById('label-container');
 
-                fetch(`/products/${productId}/label`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('خطا در دریافت اطلاعات لیبل');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        let labelName = data.label_show_name ?
-                            `<div class="label-name">${data.name}</div>` : '';
-                        let labelPrice = data.label_show_price ?
-                            `<div class="label-price">${Number(data.price).toLocaleString()} تومان</div>` : '';
-                        let labelBarcode = data.label_show_barcode ?
-                            `<div class="label-barcode">${data.barcode_svg}</div>` : '';
-                        let labelCode = data.label_show_code ?
-                            `<div class="label-code">${data.barcode}</div>` : '';
+                function openLabelModal(template) {
+                    getContainer().innerHTML = template;
+                    currentLabelTemplate = template;
 
-                        currentLabelTemplate = `
-                            <div class="label-print-area" style="width: ${data.label_width}mm; height: ${data.label_height}mm;">
-                                ${labelName}
-                                ${labelPrice}
-                                ${labelBarcode}
-                                ${labelCode}
-                            </div>
-                        `;
-
-                        document.getElementById('label-container').innerHTML = currentLabelTemplate;
-
-                        new bootstrap.Modal(document.getElementById('labelModal')).show();
-                    })
-                    .catch(error => console.error('Label Error:', error));
-            });
-
-            document.getElementById('print-label-btn')?.addEventListener('click', function() {
-                let quantity = parseInt(document.getElementById('label_quantity').value) || 1;
-                let container = document.getElementById('label-container');
-                let output = '';
-
-                for (let i = 0; i < quantity; i++) {
-                    output += currentLabelTemplate;
+                    modalEl.classList.add('show', 'd-block');
+                    modalEl.setAttribute('aria-hidden', 'false');
+                    document.body.classList.add('modal-open');
+                    // افزودن پس‌زمینه تیره پشت مودال
+                    if (!document.querySelector('.modal-backdrop')) {
+                        const backdrop = document.createElement('div');
+                        backdrop.className = 'modal-backdrop fade show';
+                        document.body.appendChild(backdrop);
+                    }
                 }
 
-                container.innerHTML = output;
-                window.print();
-            });
+                function closeLabelModal() {
+                    modalEl.classList.remove('show', 'd-block');
+                    modalEl.setAttribute('aria-hidden', 'true');
+                    document.body.classList.remove('modal-open');
+                    const backdrop = document.querySelector('.modal-backdrop');
+                    if (backdrop) backdrop.remove();
+                    getContainer().innerHTML = '';
+                    currentLabelTemplate = '';
+                }
 
-            document.getElementById('labelModal')?.addEventListener('hidden.bs.modal', function() {
-                document.getElementById('label-container').innerHTML = '';
-                currentLabelTemplate = '';
-            });
+                // باز کردن مودال با کلیک روی دکمه چاپ لیبل هر محصول
+                document.addEventListener('click', function (e) {
+                    const button = e.target.closest('.print-label-btn');
+                    if (!button) return;
+
+                    const productId = button.dataset.id;
+
+                    fetch(`/products/${productId}/label`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('خطا در دریافت اطلاعات لیبل');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            let labelName = data.label_show_name ?
+                                `<div class="label-name">${data.name}</div>` : '';
+                            let labelPrice = data.label_show_price ?
+                                `<div class="label-price">${Number(data.price).toLocaleString()} تومان</div>` : '';
+                            let labelBarcode = data.label_show_barcode ?
+                                `<div class="label-barcode">${data.barcode_svg}</div>` : '';
+                            let labelCode = data.label_show_code ?
+                                `<div class="label-code">${data.barcode}</div>` : '';
+
+                            const template = `
+                                <div class="label-print-area" style="width: ${data.label_width}mm; height: ${data.label_height}mm;">
+                                    ${labelName}
+                                    ${labelPrice}
+                                    ${labelBarcode}
+                                    ${labelCode}
+                                </div>
+                            `;
+
+                            openLabelModal(template);
+                        })
+                        .catch(error => console.error('Label Error:', error));
+                });
+
+                // دکمه چاپ با تعداد دلخواه
+                document.getElementById('print-label-btn')?.addEventListener('click', function () {
+                    let quantity = parseInt(document.getElementById('label_quantity').value) || 1;
+                    let output = '';
+                    for (let i = 0; i < quantity; i++) {
+                        output += currentLabelTemplate;
+                    }
+                    getContainer().innerHTML = output;
+                    window.print();
+                });
+
+                // بستن مودال (دکمه بستن، کلیک روی پس‌زمینه، و کلید Escape)
+                document.getElementById('label-modal-close')?.addEventListener('click', closeLabelModal);
+
+                modalEl.addEventListener('click', function (e) {
+                    if (e.target === modalEl) closeLabelModal();
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && modalEl.classList.contains('show')) {
+                        closeLabelModal();
+                    }
+                });
+            })();
         </script>
-    @endscript
+    @endpush
 
 </div>
