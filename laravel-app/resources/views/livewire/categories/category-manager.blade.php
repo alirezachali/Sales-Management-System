@@ -5,7 +5,7 @@
     {{-- کارت‌های آماری --}}
     <div class="row row-cards mb-4">
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">{{ __('categories.stats.total') }}</div>
                     <div class="h1 mb-0">{{ $totalCategories }}</div>
@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">{{ __('categories.stats.active') }}</div>
                     <div class="h1 mb-0 text-success">{{ $activeCategories }}</div>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">{{ __('categories.stats.inactive') }}</div>
                     <div class="h1 mb-0 text-danger">{{ $inactiveCategories }}</div>
@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg-3">
-            <div class="card border-3">
+            <div class="card">
                 <div class="card-body">
                     <div class="subheader">{{ __('categories.stats.empty') }}</div>
                     <div class="h1 mb-0 text-warning">{{ $emptyCategories }}</div>
@@ -39,7 +39,7 @@
     </div>
 
     {{-- کارت جستجو --}}
-    <div class="card glass-card mb-4 border-3">
+    <div class="card glass-card mb-4">
         <div class="card-body">
             <div class="input-group">
                 <span class="input-group-text">
@@ -52,7 +52,7 @@
     </div>
 
     {{-- جدول دسته‌بندی‌ها --}}
-    <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
+    <div class="card shadow-sm" wire:loading.class="opacity-50">
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
@@ -93,7 +93,11 @@
                                 {{-- ردیف --}}
                                 <td>{{ $loop->iteration + ($categories->currentPage() - 1) * $categories->perPage() }}</td>
                                 {{-- نام دسته‌بندی --}}
-                                <td>{{ $category->name }}</td>
+                                <td>
+                                    <strong>
+                                        {{ $category->name }}
+                                    </strong>
+                                </td>
                                 {{-- توضیحات --}}
                                 <td>
                                     @if ($category->description)

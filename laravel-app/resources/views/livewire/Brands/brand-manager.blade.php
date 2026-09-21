@@ -285,7 +285,7 @@
         </div>
     @endif
 
-    {{--==================================== مودال جزئیات برند ====================================--}}
+    {{--================== مودال جزئیات برند ==================--}}
     @if ($showDetailsModal)
         <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
             wire:key="brand-details-modal">
