@@ -51,7 +51,7 @@
         <div class="card-body">
             <div class="row g-4 align-items-end">
                 <div class="col-md-3">
-                    <label class="form-label">از تاریخ</label>
+                    <label class="form-label">از تـــاریـــخ</label>
                     <input type="text" wire:model.live.debounce.500ms="dateFromJalali" data-jdp
                         autocomplete="off" inputmode="numeric" placeholder="1405/06/01"
                         class="form-control @if (isset($dateErrors['from'])) is-invalid @endif">
@@ -60,7 +60,7 @@
                     @endif
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">تا تاریخ</label>
+                    <label class="form-label">تـــا تـــاریـــخ</label>
                     <input type="text" wire:model.live.debounce.500ms="dateToJalali" data-jdp
                         autocomplete="off" inputmode="numeric" placeholder="1405/06/31"
                         class="form-control @if (isset($dateErrors['to'])) is-invalid @endif">
@@ -70,9 +70,9 @@
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">روش پرداخت</label>
+                    <label class="form-label">روش پـــرداخـــت</label>
                     <select wire:model.live="filterPaymentMethod" class="form-select">
-                        <option value="">همه روش‌ها</option>
+                        <option value="">هـــمـــه روش‌هـــا</option>
                         @foreach ($paymentMethodLabels as $key => $label)
                             <option value="{{ $key }}">{{ $label }}</option>
                         @endforeach
@@ -81,7 +81,7 @@
                 <div class="col-md-3">
                     <button type="button" wire:click="resetFilters" class="btn btn-outline-secondary w-100"
                         title="پاک کردن فیلترها">
-                        پاک کردن فیلترها
+                        پـــاک کـــردن فـــیـــلـــتـــرهـــا
                     </button>
                 </div>
             </div>
@@ -97,7 +97,7 @@
             <div>
                 <h3 class="fw-bold mb-1">
                     <i class="bi bi-clipboard-data text-primary"></i>
-                    گزارش فاکتورهای خرید
+                    گــــزارش فــــاکــــتــــورهــــای خــــریــــد
                 </h3>
                 <small class="">مشاهده گزارش لیست فاکتورهای خرید ثبت شده در بازه زمانی انتخابی</small>
             </div>
@@ -119,15 +119,15 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle">
+                <table class="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th width="40">ردیف</th>
-                            <th width="80">شماره فاکتور</th>
-                            <th width="80">روش پرداخت</th>
+                            <th width="80">ش فاکتور</th>
+                            <th width="100">روش پرداخت</th>
                             <th>تامین کننده</th>
                             <th width="120">تاریخ ثبت</th>
-                            <th width="150">مبلغ</th>
+                            <th width="150">مبلغ ({{ setting('currency', '') }})</th>
                             <th width="120">ثبت کننده</th>
                             <th width="70">عملیات</th>
                         </tr>
@@ -163,13 +163,17 @@
                                     @endif
                                 </td>
                                 {{--تامین کننده--}}
-                                <td class="fw-bold">{{ $record['supplier'] }}</td>
+                                <td class="fw-bold">
+                                    {{ $record['supplier'] }}
+                                </td>
                                 {{--تاریخ ثبت--}}
                                 <td>
                                     {{ jalaliDate($record['date'] ) }}
                                 </td>
                                 {{--مبلغ--}}
-                                <td>{{ $record['total_amount'] }}</td>
+                                <td class="fw-bold text-success">
+                                    {{ number_format($record['total_amount']) }}
+                                </td>
                                 {{--ثبت کننده--}}
                                 <td>
                                     @if ($record['user_name'])
