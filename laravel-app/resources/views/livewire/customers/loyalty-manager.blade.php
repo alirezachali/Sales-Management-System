@@ -81,7 +81,7 @@
                                     @endif
                                 </td>
                                 <td class="small">{{ number_format((float) $customer->total_purchase_amount) }}</td>
-                                <td class="fw-bold text-primary">{{ number_format($customer->points) }}</td>
+                                <td class="fw-bold text-primary">{{ number_format($customer->available_points) }}</td>
                                 <td class="small">{{ number_format($customer->spent_points) }}</td>
                                 <td class="text-center">
                                     <button class="btn btn-sm btn-outline-info" wire:click="openHistory({{ $customer->id }})">

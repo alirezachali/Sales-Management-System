@@ -94,7 +94,9 @@ class LoyaltyManager extends Component
 
             $history = PointTransaction::with('user:id,name')
                 ->where('customer_id', $this->historyCustomerId)
-                ->latest()
+                // ترتیب واقعی ثبت (id) — در یک فروش هم‌زمان، «مصرف امتیاز» اول و
+                // «دریافت امتیاز» آخر ثبت می‌شود؛ بنابراین مصرف قبل از دریافت می‌آید.
+                ->orderBy('id')
                 ->limit(100)
                 ->get();
         }

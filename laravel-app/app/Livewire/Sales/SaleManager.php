@@ -333,9 +333,7 @@ class SaleManager extends Component
                 'paidAmount.min' => 'مبلغ نقدی دریافتی نمی‌تواند کمتر از مبلغ قابل پرداخت باشد.',
             ]),
             'card' => $this->validate([
-                'paidAmount' => 'required|numeric|eq:'.$final,
-            ], [
-                'paidAmount.eq' => 'مبلغ کارتخوان باید دقیقاً برابر مبلغ قابل پرداخت باشد.',
+                'paidAmount' => 'required|numeric',
             ]),
             'mixed' => $this->validate([
                 'cashAmount' => 'required|numeric|min:1|max:'.$final,
@@ -375,9 +373,18 @@ class SaleManager extends Component
             }
         }
 
+        if ($this->paymentType === 'card' && abs((float) $this->paidAmount - $final) > 0.001) {
+            $this->addError(
+                'paidAmount',
+                'مبلغ کارتخوان باید دقیقاً برابر مبلغ قابل پرداخت باشد.'
+            );
+
+            return;
+        }
+
         $payments = match ($this->paymentType) {
             'cash' => [['type' => 'cash', 'amount' => $this->paidAmount]],
-            'card' => [['type' => 'card', 'amount' => $this->finalPrice]],
+            'card' => [['type' => 'card', 'amount' => $this->paidAmount]],
             'mixed' => [
                 ['type' => 'cash', 'amount' => $this->cashAmount],
                 ['type' => 'card', 'amount' => $this->cardAmount],

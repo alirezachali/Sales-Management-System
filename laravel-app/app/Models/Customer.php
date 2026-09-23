@@ -183,6 +183,14 @@ class Customer extends Model
         return $this->hasMany(PointTransaction::class);
     }
 
+    // مانده امتیاز قابل‌استفاده (کل کسب‌شده منهای مصرف‌شده)
+    protected function availablePoints(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => max(0, (int) $this->points - (int) $this->spent_points),
+        );
+    }
+
     /*
     |--------------------------------------------------------------------|
     |                     منطق باشگاه مشتریان (رده‌بندی)                  |
