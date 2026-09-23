@@ -2,13 +2,17 @@
 
     @include('partials.flash-messages')
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
-        <div class="btn-group" role="group">
-            <button class="btn btn-outline-secondary" wire:click="changeMonth('prev')"><i
-                    class="bi bi-chevron-right"></i></button>
-            <button class="btn btn-secondary text-white fw-bold">{{ $monthTitle }}</button>
-            <button class="btn btn-outline-secondary" wire:click="changeMonth('next')"><i
-                    class="bi bi-chevron-left"></i></button>
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div class="btn-group gap-2" role="group">
+            <button class="btn btn-outline-primary" wire:click="changeMonth('prev')" title="ماه قبلی">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+
+            <button class="btn btn-info text-dark fw-bold">{{ $monthTitle }}</button>
+
+            <button class="btn btn-outline-primary" wire:click="changeMonth('next')" title="ماه بعدی">
+                <i class="bi bi-chevron-left"></i>
+            </button>
         </div>
 
         <input type="text" class="form-control" style="max-width:260px" placeholder="جستجوی کارمند..."
@@ -20,9 +24,9 @@
             <div>
                 <h3 class="fw-bold mb-1">
                     <i class="bi bi-calendar-check text-primary"></i>
-                    حضور و غیاب کارکنان
+                    حــضــور و غــیــاب کــارکــنــان
                 </h3>
-                <small class="text-muted">روی هر خانه کلیک کنید تا سابقه‌ی آن روز ثبت/ویرایش شود. رنگ‌ها:
+                <small class="">روی هر خانه کلیک کنید تا سابقه‌ی آن روز ثبت/ویرایش شود. رنگ‌ها:
                     <span class="badge att-legend att-present">حاضر</span>
                     <span class="badge att-legend att-absent">غایب</span>
                     <span class="badge att-legend att-leave">مرخصی</span>
@@ -33,12 +37,12 @@
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-sm table-bordered align-middle mb-0 attendance-grid">
+                <table class="table table-sm align-middle mb-0 attendance-grid">
                     <thead>
                         <tr>
                             <th style="min-width:100px" class="sticky-col">نام کارمند</th>
                             @foreach ($days as $day)
-                                <th class="text-center p-1" style="width:26px">{{ $day }}</th>
+                                <th class="text-center p-1" style="width:27px">{{ $day }}</th>
                             @endforeach
                             {{-- <th class="text-center">حاضر</th> --}}
                             {{-- <th class="text-center">غایب</th> --}}
@@ -97,7 +101,7 @@
                                     {{ number_format((float) ($sum->total_overtime ?? 0), 1) }}
                                 </td> --}}
                                 <td class="text-center p-0">
-                                    <button type="button" class="btn btn-sm btn-outline-primary"
+                                    <button type="button" class="btn btn-sm btn-outline-success"
                                         title="گزارش کامل ماه" wire:click="openReport({{ $employee->id }})">
                                         <i class="bi bi-file-earmark-text"></i>
                                     </button>
