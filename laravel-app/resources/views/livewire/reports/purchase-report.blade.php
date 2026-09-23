@@ -127,7 +127,7 @@
                             <th width="100">روش پرداخت</th>
                             <th>تامین کننده</th>
                             <th width="120">تاریخ ثبت</th>
-                            <th width="150">مبلغ ({{ setting('currency', '') }})</th>
+                            <th width="120">مبلغ ({{ setting('currency', '') }})</th>
                             <th width="120">ثبت کننده</th>
                             <th width="70">عملیات</th>
                         </tr>
@@ -137,26 +137,28 @@
                             <tr wire:key="{{ $record['id'] }}">
                                 <td>{{ $loop->iteration + ($records->currentPage() - 1) * $records->perPage() }}</td>
                                 {{--شماره فاکتور--}}
-                                <td>{{ $record['invoice_number'] }}</td>
+                                <td class="text-center">
+                                    {{ $record['invoice_number'] }}
+                                </td>
                                 {{--روش پرداخت--}}
-                                <td>
+                                <td class="text-center">
                                     @if ($record['payment_method'] === 'credit')
-                                        <span class="badge bg-danger text-dark">
+                                        <span class="badge bg-danger-subtle">
                                             <i class="bi bi-box-arrow-in-down me-1"></i>
                                             نسیه
                                         </span>
                                     @elseif ($record['payment_method'] === 'cash')
-                                        <span class="badge bg-success text-dark">
+                                        <span class="badge bg-success-subtle">
                                             <i class="bi bi-box-arrow-up me-1"></i>
                                             نقد
                                         </span>
                                     @elseif ($record['payment_method'] === 'transfer')
-                                        <span class="badge bg-info text-dark">
+                                        <span class="badge bg-info-subtle">
                                             <i class="bi bi-box-arrow-up me-1"></i>
                                             حواله
                                         </span>
                                     @elseif ($record['payment_method'] === 'card')
-                                        <span class="badge bg-warning text-dark">
+                                        <span class="badge bg-warning-subtle">
                                             <i class="bi bi-box-arrow-up me-1"></i>
                                             کارت
                                         </span>
@@ -167,17 +169,17 @@
                                     {{ $record['supplier'] }}
                                 </td>
                                 {{--تاریخ ثبت--}}
-                                <td>
+                                <td class="text-center">
                                     {{ jalaliDate($record['date'] ) }}
                                 </td>
                                 {{--مبلغ--}}
-                                <td class="fw-bold text-success">
+                                <td class="fw-bold text-success text-center">
                                     {{ number_format($record['total_amount']) }}
                                 </td>
                                 {{--ثبت کننده--}}
                                 <td>
                                     @if ($record['user_name'])
-                                        <span class="badge bg-secondary text-dark">
+                                        <span class="badge bg-secondary-subtle">
                                             <i class="bi bi-person me-1"></i>{{ $record['user_name'] }}
                                         </span>
                                     @else

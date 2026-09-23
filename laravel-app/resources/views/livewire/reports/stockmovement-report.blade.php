@@ -143,7 +143,7 @@
                         @forelse ($records as $record)
                             <tr wire:key="{{ $record['type'] }}-{{ $record['id'] }}">
                                 <td>{{ $loop->iteration + ($records->currentPage() - 1) * $records->perPage() }}</td>
-                                <td>
+                                <td class="text-center">
                                     @if ($record['type'] === 'purchase')
                                         <span class="badge bg-success-subtle">
                                             <i class="bi bi-box-arrow-in-down me-1"></i>ورود کالا
@@ -166,7 +166,7 @@
                                         {{ $record['related_name'] }}
                                     </span>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     {{ jalaliDate($record['date'] ) }}
                                 </td>
                                 <td class="text-center">

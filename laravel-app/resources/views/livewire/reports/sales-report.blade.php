@@ -121,8 +121,8 @@
                         <tr>
                             <th width="40">ردیف</th>
                             <th>شماره فاکتور</th>
-                            <th width="130">مشتری</th>
-                            <th width="140">تاریخ</th>
+                            <th width="130">نام مشتری</th>
+                            <th width="140">تاریخ ثبت</th>
                             <th width="35">اقلام</th>
                             <th width="100">جمع کل</th>
                             <th width="60">تخفیف ({{ setting('currency', '') }})</th>
@@ -135,24 +135,30 @@
                             <tr wire:key="sale-{{ $sale->id }}">
                                 <td>{{ $loop->iteration + ($sales->currentPage() - 1) * $sales->perPage() }}</td>
                                 <td class="fw-bold">{{ $sale->invoice_number }}</td>
-                                <td>
+                                <td class="text-center">
                                     @if ($sale->customer?->full_name)
                                         <span class="fw-bold text-warning">
                                             {{ $sale->customer?->full_name }}
                                         </span>
                                     @else
-                                        <span class="badge bg-secondary text-dark">مشتری متفرقه</span>
+                                        <span class="badge bg-secondary-subtle">مشتری متفرقه</span>
                                     @endif
                                 </td>
-                                <td>{{ jalaliDateTime($sale->created_at) }}</td>
-                                <td class="text-center">{{ number_format($sale->items_count) }}</td>
-                                <td>{{ number_format($sale->total_price) }}</td>
                                 <td>
+                                    {{ jalaliDateTime($sale->created_at) }}
+                                </td>
+                                <td class="text-center fw-bold text-info">
+                                    {{ number_format($sale->items_count) }}
+                                </td>
+                                <td class="text-center">
+                                    {{ number_format($sale->total_price) }}
+                                </td>
+                                <td class="text-center">
                                     <span class="fw-bold text-danger">
                                         {{ number_format($sale->discount) }}
                                     </span>
                                 </td>
-                                <td class="fw-bold text-success">
+                                <td class="text-center fw-bold text-success">
                                     {{ number_format($sale->final_price) }}
                                 </td>
                                 <td>
