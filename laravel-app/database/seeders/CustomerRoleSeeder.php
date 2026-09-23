@@ -28,7 +28,7 @@ class CustomerRoleSeeder extends Seeder
                 'sort_order' => 2,
                 'discount_percent' => 0,
                 'min_purchase_count' => 5,
-                'min_purchase_amount' => 0,
+                'min_purchase_amount' => 5000000,
                 'is_default' => false,
             ],
             [
@@ -38,7 +38,7 @@ class CustomerRoleSeeder extends Seeder
                 'sort_order' => 3,
                 'discount_percent' => 3,
                 'min_purchase_count' => 20,
-                'min_purchase_amount' => 0,
+                'min_purchase_amount' => 20000000,
                 'is_default' => false,
             ],
             [
@@ -48,7 +48,7 @@ class CustomerRoleSeeder extends Seeder
                 'sort_order' => 4,
                 'discount_percent' => 5,
                 'min_purchase_count' => 50,
-                'min_purchase_amount' => 0,
+                'min_purchase_amount' => 50000000,
                 'is_default' => false,
             ],
             [
@@ -58,7 +58,7 @@ class CustomerRoleSeeder extends Seeder
                 'sort_order' => 5,
                 'discount_percent' => 10,
                 'min_purchase_count' => 100,
-                'min_purchase_amount' => 0,
+                'min_purchase_amount' => 100000000,
                 'is_default' => false,
             ],
         ];
