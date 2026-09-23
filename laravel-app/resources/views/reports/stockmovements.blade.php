@@ -1,7 +1,7 @@
 {{-- resources/views/reports/sales.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'گزارش ورود|خروج کالا')
+@section('title', 'گزارش گردش کالا')
 
 @section('content')
     <div class="container-fluid">
