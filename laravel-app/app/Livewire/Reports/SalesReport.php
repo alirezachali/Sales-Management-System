@@ -137,9 +137,7 @@ class SalesReport extends Component
     private function baseQuery(): \Illuminate\Database\Eloquent\Builder
     {
         $query = Sale::query()
-            ->with(['customer', 'user'])
-            ->orderBy('created_at', 'desc')
-            ->orderBy('id', 'desc');
+            ->with(['customer', 'user']);
 
         if ($this->dateFrom) {
             $query->whereDate('created_at', '>=', $this->dateFrom);
@@ -162,9 +160,12 @@ class SalesReport extends Component
      */
     private function totals(): object
     {
-        return $this->baseQuery()->selectRaw(
-            'COUNT(*) as count, SUM(total_price) as total_price, SUM(discount) as discount, SUM(final_price) as final_price'
-        )->first();
+        return $this->baseQuery()
+            ->reorder()
+            ->selectRaw(
+                'COUNT(*) as count, SUM(total_price) as total_price, SUM(discount) as discount, SUM(final_price) as final_price'
+            )
+            ->first();
     }
 
     /*
@@ -174,7 +175,10 @@ class SalesReport extends Component
      */
     private function exportRows(): \Illuminate\Support\Collection
     {
-        $query = $this->baseQuery();
+        $query = $this->baseQuery()
+            ->withCount('items')
+            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc');
 
         return $query->get()->map(function (Sale $sale) {
             return [

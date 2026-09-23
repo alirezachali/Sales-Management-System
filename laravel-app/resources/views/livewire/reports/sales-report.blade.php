@@ -7,7 +7,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">تعداد فروش</div>
+                    <div class="subheader">تـــعـــداد فـــروش</div>
                     <div class="h1 mb-0">{{ number_format($totals->count ?? 0) }}</div>
                 </div>
             </div>
@@ -15,7 +15,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">مجموع کل (قبل از تخفیف)</div>
+                    <div class="subheader">مـــجـــمـــوع کـــل (قبل از تخفیف)</div>
                     <div class="h1 mb-0 text-primary">
                         {{ number_format($totals->total_price ?? 0) }} {{ setting('currency', '') }}
                     </div>
@@ -25,7 +25,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">مجموع تخفیف</div>
+                    <div class="subheader">مـــجـــمـــوع کـــل تـــخـــفـــیـــف</div>
                     <div class="h1 mb-0 text-warning">
                         {{ number_format($totals->discount ?? 0) }} {{ setting('currency', '') }}
                     </div>
@@ -35,7 +35,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card border-3">
                 <div class="card-body">
-                    <div class="subheader">مبلغ نهایی فروش</div>
+                    <div class="subheader">مـــبـــلـــغ نـــهـــایـــی فـــروش</div>
                     <div class="h1 mb-0 text-success">
                         {{ number_format($totals->final_price ?? 0) }} {{ setting('currency', '') }}
                     </div>
@@ -49,7 +49,7 @@
         <div class="card-body">
             <div class="row g-2 align-items-end">
                 <div class="col-md-3">
-                    <label class="form-label">از تاریخ (شمسی)</label>
+                    <label class="form-label">از تـــاریـــخ</label>
                     <input type="text" wire:model.live.debounce.500ms="dateFromJalali" data-jdp
                         autocomplete="off" inputmode="numeric" placeholder="1405/06/01"
                         class="form-control @if (isset($dateErrors['from'])) is-invalid @endif">
@@ -58,7 +58,7 @@
                     @endif
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">تا تاریخ (شمسی)</label>
+                    <label class="form-label">تـــا تـــاریـــخ</label>
                     <input type="text" wire:model.live.debounce.500ms="dateToJalali" data-jdp
                         autocomplete="off" inputmode="numeric" placeholder="1405/06/31"
                         class="form-control @if (isset($dateErrors['to'])) is-invalid @endif">
@@ -67,9 +67,9 @@
                     @endif
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">روش پرداخت</label>
+                    <label class="form-label">روش پـــرداخـــت</label>
                     <select wire:model.live="filterPaymentType" class="form-select">
-                        <option value="">همه روش‌ها</option>
+                        <option value="">هـــمـــه روش‌هـــا</option>
                         @foreach ($paymentTypeLabels as $key => $label)
                             <option value="{{ $key }}">{{ $label }}</option>
                         @endforeach
@@ -78,7 +78,7 @@
                 <div class="col-md-3">
                     <button type="button" wire:click="resetFilters" class="btn btn-outline-secondary w-100"
                         title="پاک کردن فیلترها">
-                        پاک کردن فیلترها
+                        پـــاک کـــردن فـــیـــلـــتـــرهـــا
                     </button>
                 </div>
             </div>
@@ -94,7 +94,7 @@
             <div>
                 <h3 class="fw-bold mb-1">
                     <i class="bi bi-clipboard-data text-primary"></i>
-                    گزارش فروش
+                    گـــزارش فـــروش
                 </h3>
                 <small class="text-muted">مشاهده فروش‌ها در بازه زمانی انتخابی</small>
             </div>
@@ -116,18 +116,18 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle">
+                <table class="table table-hover align-middle">
                     <thead>
                         <tr>
                             <th width="40">ردیف</th>
                             <th>شماره فاکتور</th>
                             <th width="130">مشتری</th>
-                            <th width="160">تاریخ</th>
-                            <th width="40">اقلام</th>
+                            <th width="140">تاریخ</th>
+                            <th width="35">اقلام</th>
                             <th width="100">جمع کل</th>
-                            <th width="60">تخفیف</th>
-                            <th width="130">مبلغ نهایی</th>
-                            <th width="70">روش پرداخت</th>
+                            <th width="60">تخفیف ({{ setting('currency', '') }})</th>
+                            <th width="130">مبلغ نهایی ({{ setting('currency', '') }})</th>
+                            <th width="70">پرداخت</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -137,7 +137,7 @@
                                 <td class="fw-bold">{{ $sale->invoice_number }}</td>
                                 <td>
                                     @if ($sale->customer?->full_name)
-                                        <span class="badge bg-warning text-dark">
+                                        <span class="fw-bold text-warning">
                                             {{ $sale->customer?->full_name }}
                                         </span>
                                     @else
@@ -148,12 +148,12 @@
                                 <td class="text-center">{{ number_format($sale->items_count) }}</td>
                                 <td>{{ number_format($sale->total_price) }}</td>
                                 <td>
-                                    <span class="badge bg-danger text-light">
-                                        {{ number_format($sale->discount) }} %
+                                    <span class="fw-bold text-danger">
+                                        {{ number_format($sale->discount) }}
                                     </span>
                                 </td>
-                                <td class="fw-bold">
-                                    {{ number_format($sale->final_price) }} {{ setting('currency', '') }}
+                                <td class="fw-bold text-success">
+                                    {{ number_format($sale->final_price) }}
                                 </td>
                                 <td>
                                     @switch($paymentTypeLabels[$sale->payment_type] ?? $sale->payment_type)
