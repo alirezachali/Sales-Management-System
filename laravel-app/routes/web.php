@@ -151,6 +151,10 @@ Route::middleware('auth')->group(function () {
     Route::get('customers', function () {return view('customers.index');})->name('customers.index')
         ->middleware('can:customers.view');
 
+    Route::get('online-customers', function () {
+        return view('online-customers.index');
+    })->name('online-customers.index')->middleware('can:customers.view');
+
     /* بقیه‌ی مسیرهای resource همچنان از طریق کنترلر (برای سازگاری با لینک‌های قدیمی) */
     Route::resource('customers', CustomerController::class)->except(['show', 'index'])
         ->middleware('can:customers.view');

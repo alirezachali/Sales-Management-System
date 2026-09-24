@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('online-shop:publish-catalog')->everyFiveMinutes();
 Schedule::command('online-shop:pull-orders')->everyMinute();
+Schedule::command('online-shop:pull-customers')->everyFiveMinutes();

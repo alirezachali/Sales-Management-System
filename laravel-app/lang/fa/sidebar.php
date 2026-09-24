@@ -12,6 +12,7 @@ return [
     'roles' => 'نــقش‌ها و دســترسی‌ها',
     'settings' => 'تنظیمــــات',
     'customer_club' => 'بـــاشگاه مشتریــان',
+    'online_customers' => 'مشتریان آنـــلاین',
     'customer_club_roles' => 'مدیریت رده های باشگاه',
     'customer_debtors' => 'مشتریان بدهکار',
     'customer_purchases' => 'خریدهای مشتریان',

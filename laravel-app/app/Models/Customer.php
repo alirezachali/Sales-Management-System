@@ -32,7 +32,18 @@ class Customer extends Model
         'last_purchase_at',
         'notes',
         'is_active',
+        'online_user_id',
+        'registered_online_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'registered_online_at' => 'datetime',
+            'last_purchase_at' => 'datetime',
+            'is_active' => 'boolean',
+        ];
+    }
 
     protected static function booted(): void
     {

@@ -39,6 +39,20 @@ class OnlineShopClient
     /**
      * @param  array<int, string>  $keys
      */
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    public function customers(): array
+    {
+        $response = $this->http()->get($this->url('/api/customers'));
+
+        if (! $response->successful()) {
+            throw new RuntimeException('Customer directory failed: HTTP '.$response->status());
+        }
+
+        return $response->json('data') ?? [];
+    }
+
     public function ack(array $keys): void
     {
         if ($keys === []) {

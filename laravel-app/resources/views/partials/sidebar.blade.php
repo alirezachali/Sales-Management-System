@@ -37,7 +37,8 @@
                 $salesItems[] = ['route' => 'online-orders.index', 'label' => __('sidebar.online_orders'), 'icon' => 'bi-bag-heart', 'is' => 'online-orders.*'];
             }
             if (auth()->user()->hasPermission('customers.view')) {
-                $salesItems[] = ['route' => 'customers.index', 'label' => __('sidebar.customer_club'), 'icon' => 'bi-person-vcard', 'is' => 'customers.*'];
+                $salesItems[] = ['route' => 'customers.index', 'label' => __('sidebar.customer_club'), 'icon' => 'bi-person-vcard', 'is' => 'customers.index'];
+                $salesItems[] = ['route' => 'online-customers.index', 'label' => __('sidebar.online_customers'), 'icon' => 'bi-phone', 'is' => 'online-customers.*'];
             }
             if (auth()->user()->hasPermission('loyalty.view')) {
                 $salesItems[] = ['route' => 'loyalty.index', 'label' => __('sidebar.loyalty'), 'icon' => 'bi-gem', 'is' => 'loyalty.*'];

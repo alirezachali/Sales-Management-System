@@ -12,6 +12,7 @@ return [
     'roles' => 'Roles & Permissions',
     'settings' => 'Settings',
     'customer_club' => 'Customer Club',
+    'online_customers' => 'Online Customers',
     'customer_club_roles' => 'Club Roles Management',
     'customer_debtors' => 'Debt Customers',
     'customer_purchases' => 'Customer Purchases',
