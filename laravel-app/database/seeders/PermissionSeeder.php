@@ -173,6 +173,18 @@ class PermissionSeeder extends Seeder
                         'name' => 'sales.reprint',
                         'display_name' => 'چاپ مجدد فاکتورهای فروش',
                     ],
+                    [
+                        'name' => 'online-orders.view',
+                        'display_name' => 'مشاهده سفارش‌های آنلاین',
+                    ],
+                    [
+                        'name' => 'online-orders.process',
+                        'display_name' => 'پردازش و صدور فاکتور سفارش آنلاین',
+                    ],
+                    [
+                        'name' => 'online-orders.dispatch',
+                        'display_name' => 'ارسال پیک سفارش آنلاین',
+                    ],
                 ],
             ],
             [

@@ -33,6 +33,9 @@
             if (auth()->user()->hasPermission('pos.view')) {
                 $salesItems[] = ['route' => 'pos.index', 'label' => __('sidebar.sales_counter'), 'icon' => 'bi-cash-stack', 'is' => 'pos.*'];
             }
+            if (auth()->user()->hasPermission('online-orders.view')) {
+                $salesItems[] = ['route' => 'online-orders.index', 'label' => __('sidebar.online_orders'), 'icon' => 'bi-bag-heart', 'is' => 'online-orders.*'];
+            }
             if (auth()->user()->hasPermission('customers.view')) {
                 $salesItems[] = ['route' => 'customers.index', 'label' => __('sidebar.customer_club'), 'icon' => 'bi-person-vcard', 'is' => 'customers.*'];
             }

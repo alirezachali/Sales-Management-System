@@ -7,6 +7,7 @@ return [
     'reg_purchase_invoice' => 'Register Purchase Invoice',
     'categories' => 'Categories',
     'sales_counter' => 'Sales Counter (POS)',
+    'online_orders' => 'Online Orders',
     'users' => 'Users',
     'roles' => 'Roles & Permissions',
     'settings' => 'Settings',

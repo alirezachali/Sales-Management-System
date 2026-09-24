@@ -7,6 +7,7 @@ return [
     'reg_purchase_invoice' => 'ثبت فــاکتور خــرید',
     'categories' => 'دســته بــندی هــا',
     'sales_counter' => 'صـــندوق فـــروش',
+    'online_orders' => 'ســـفارش آنـــلاین',
     'users' => 'کاربــــران',
     'roles' => 'نــقش‌ها و دســترسی‌ها',
     'settings' => 'تنظیمــــات',

@@ -91,6 +91,10 @@ Route::middleware('auth')->group(function () {
 
 
     /* مسیر صفحه صندوق فروش */
+    Route::get('online-orders', function () {
+        return view('online-orders.index');
+    })->name('online-orders.index')->middleware('can:online-orders.view');
+
     Route::get('pos', [SaleController::class, 'index'])->name('pos.index')
         ->middleware('can:pos.view');
 
