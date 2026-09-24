@@ -184,6 +184,7 @@ class SalesReport extends Component
             return [
                 $sale->invoice_number,
                 $sale->customer?->full_name ?? 'مشتری ناشناس',
+                $sale->isOnline() ? 'آنلاین' : 'حضوری',
                 jalaliDateTime($sale->created_at),
                 (int) $sale->items_count,
                 number_format((float) $sale->total_price, 2),
@@ -203,6 +204,7 @@ class SalesReport extends Component
             '',
             '',
             '',
+            '',
             number_format((float) $totals->total_price, 2),
             number_format((float) $totals->discount, 2),
             number_format((float) $totals->final_price, 2),
@@ -215,6 +217,7 @@ class SalesReport extends Component
         return [
             'شماره فاکتور',
             'مشتری',
+            'منبع',
             'تاریخ',
             'تعداد اقلام',
             'جمع کل',

@@ -14,6 +14,7 @@ class Sale extends Model
 
     protected $fillable = [
         'invoice_number',
+        'source',
         'user_id',
         'customer_id',
         'total_price',
@@ -36,6 +37,11 @@ class Sale extends Model
             'paid_amount' => 'decimal:2',
             'change_amount' => 'decimal:2',
         ];
+    }
+
+    public function isOnline(): bool
+    {
+        return $this->source === 'online';
     }
 
     protected static function booted(): void

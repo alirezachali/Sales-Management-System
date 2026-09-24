@@ -51,12 +51,17 @@ class ProcessOnlineOrder
             $products = Product::query()->whereIn('id', collect($cart)->pluck('id'))->get()->keyBy('id');
             $payable = app(SaleCalculator::class)->total($cart, $products);
 
+            $customerId = $this->resolveCustomerId($order);
+
             $sale = $this->saleService->checkout(
                 cart: $cart,
                 discount: 0,
                 paymentType: 'card',
+                customerId: $customerId,
                 payments: [['type' => 'card', 'amount' => $payable]],
             );
+
+            $sale->forceFill(['source' => 'online'])->save();
 
             $order->forceFill([
                 'sale_id' => $sale->id,
@@ -66,6 +71,23 @@ class ProcessOnlineOrder
 
             return $sale;
         });
+    }
+
+    public function resolveCustomerId(OnlineOrder $order): ?int
+    {
+        $phone = preg_replace('/\D+/', '', (string) data_get($order->payload, 'customer.phone', ''));
+
+        if ($phone !== '') {
+            return \App\Models\Customer::query()->where('mobile', $phone)->value('id');
+        }
+
+        if ($order->customer_phone) {
+            return \App\Models\Customer::query()
+                ->where('mobile', preg_replace('/\D+/', '', $order->customer_phone))
+                ->value('id');
+        }
+
+        return null;
     }
 
     public function dispatch(OnlineOrder $order, string $courierName, string $courierPhone): void

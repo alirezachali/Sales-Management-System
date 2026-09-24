@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Cashbox;
+use App\Models\Customer;
 use App\Models\OnlineOrder;
 use App\Models\Product;
 use App\Models\Role;
@@ -66,9 +67,36 @@ class ProcessOnlineOrderTest extends TestCase
         $sale = app(ProcessOnlineOrder::class)->fulfill($order);
 
         $this->assertInstanceOf(Sale::class, $sale);
+        $this->assertTrue($sale->isOnline());
         $this->assertSame('packing', $order->fresh()->status);
         $this->assertSame($sale->id, $order->fresh()->sale_id);
         $this->assertEquals(8, (float) $product->fresh()->stock);
+    }
+
+    public function test_fulfill_links_online_order_to_customer_by_mobile(): void
+    {
+        $order = OnlineOrder::create([
+            'idempotency_key' => 'k-cust',
+            'status' => 'received',
+            'total' => 0,
+            'payload' => [
+                'items' => [
+                    ['source_product_id' => 999, 'quantity' => 1, 'unit_price' => 0],
+                ],
+                'customer' => ['phone' => '09120000000'],
+            ],
+        ]);
+
+        $this->assertSame(null, app(ProcessOnlineOrder::class)->resolveCustomerId($order));
+
+        $customer = Customer::create([
+            'first_name' => 'علی',
+            'last_name' => 'مشتری',
+            'mobile' => '09120000000',
+            'is_active' => true,
+        ]);
+
+        $this->assertSame($customer->id, app(ProcessOnlineOrder::class)->resolveCustomerId($order));
     }
 
     public function test_reject_received_order(): void

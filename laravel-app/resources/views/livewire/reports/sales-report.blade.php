@@ -122,6 +122,7 @@
                             <th width="40">ردیف</th>
                             <th>شماره فاکتور</th>
                             <th width="130">نام مشتری</th>
+                            <th width="70">منبع</th>
                             <th width="140">تاریخ ثبت</th>
                             <th width="35">اقلام</th>
                             <th width="100">جمع کل</th>
@@ -142,6 +143,13 @@
                                         </span>
                                     @else
                                         <span class="badge bg-secondary-subtle">مشتری متفرقه</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if ($sale->isOnline())
+                                        <span class="badge bg-primary text-dark">آنلاین</span>
+                                    @else
+                                        <span class="badge bg-secondary-subtle">حضوری</span>
                                     @endif
                                 </td>
                                 <td>
@@ -179,7 +187,7 @@
                             </tr>
                             @empty
                                 <tr>
-                                    <td colspan="9" class="text-center py-4 text-muted">
+                                    <td colspan="10" class="text-center py-4 text-muted">
                                         در بازه انتخاب‌شده فروشی یافت نشد.
                                     </td>
                                 </tr>
