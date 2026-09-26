@@ -285,45 +285,6 @@ class PermissionSeeder extends Seeder
                 ],
             ],
             [
-                'name' => 'انبار',
-                'icon' => 'bi-boxes',
-                'sort_order' => 8,
-                'permissions' => [
-                    [
-                        'name' => 'stocks.view',
-                        'display_name' => 'مشاهده موجودی انبار',
-                    ],
-                    [
-                        'name' => 'stocks.adjust',
-                        'display_name' => 'اصلاح موجودی انبار',
-                    ],
-                    [
-                        'name' => 'stocks.transfer',
-                        'display_name' => 'انتقال موجودی انبار',
-                    ],
-                    [
-                        'name' => 'stocks.history',
-                        'display_name' => 'مشاهده سوابق انبار',
-                    ],
-                    [
-                        'name' => 'qrcodes.view',
-                        'display_name' => 'مشاهده QR Code انبار',
-                    ],
-                    [
-                        'name' => 'qrcodes.create',
-                        'display_name' => 'ایجاد QR Code انبار',
-                    ],
-                    [
-                        'name' => 'qrcodes.edit',
-                        'display_name' => 'ویرایش QR Code انبار',
-                    ],
-                    [
-                        'name' => 'qrcodes.delete',
-                        'display_name' => 'حذف QR Code انبار',
-                    ],
-                ],
-            ],
-            [
                 'name' => 'تنظیمات',
                 'icon' => 'bi-gear',
                 'sort_order' => 19,
@@ -746,6 +707,22 @@ class PermissionSeeder extends Seeder
                     [
                         'name' => 'counts.finalize',
                         'display_name' => 'نهایی کردن انبارگردانی',
+                    ],
+                    [
+                        'name' => 'qrcodes.view',
+                        'display_name' => 'مشاهده QR Code انبار',
+                    ],
+                    [
+                        'name' => 'qrcodes.create',
+                        'display_name' => 'ایجاد QR Code انبار',
+                    ],
+                    [
+                        'name' => 'qrcodes.edit',
+                        'display_name' => 'ویرایش QR Code انبار',
+                    ],
+                    [
+                        'name' => 'qrcodes.delete',
+                        'display_name' => 'حذف QR Code انبار',
                     ],
                 ],
             ],
