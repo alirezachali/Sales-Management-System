@@ -26,16 +26,18 @@
 
             {{-- جستجو و افزودن کالا --}}
             <div class="card mb-3">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h3>
                         <i class="bi bi-plus-circle-fill"></i>
                         افـزودن کـالـا
                     </h3>
-                    @if (count($cart))
-                        <span class="badge bg-primary-lt rounded-pill">
-                            {{ count($cart) }} قلم کالا در سبد
-                        </span>
-                    @endif
+                    <div>
+                        @if (count($cart))
+                            <span class="badge bg-primary-lt rounded-pill">
+                                {{ count($cart) }} قلم کالا در سبد
+                            </span>
+                        @endif
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="row g-2">
@@ -85,17 +87,20 @@
 
             {{-- سبد فروش --}}
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h3>
                         <i class="bi bi-bag-fill"></i>
                         سبـد خـریـد مـشـتـری
                     </h3>
-                    @if (count($cart))
-                        <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"
-                            wire:click="clearCart" wire:confirm="آیا از پاک کردن کل سبد خرید مطمئن هستید؟">
-                            <i class="bi bi-x-circle me-1"></i>خالی کردن سبد
-                        </button>
-                    @endif
+                    <div>
+                        @if (count($cart))
+                            <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"
+                                wire:click="clearCart" wire:confirm="آیا از پاک کردن کل سبد خرید مطمئن هستید؟">
+                                <i class="bi bi-x-circle me-1"></i>
+                                خالی کردن سبد
+                            </button>
+                        @endif
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
@@ -118,9 +123,9 @@
                                         </small>
                                     </td>
                                     <td>
-                                        <input type="number" min="0" step="any" class="form-control form-control-sm"
-                                            value="{{ $item['price'] }}"
-                                            wire:change="updatePrice({{ $item['id'] }}, $event.target.value)">
+                                        <span class="text-success fw-bold">
+                                            {{ number_format($item['price']) }}
+                                        </span>
                                     </td>
                                     <td class="text-center">
                                         <div class="d-inline-flex align-items-center gap-1">
@@ -223,7 +228,7 @@
     </div>
 
 
-    {{--================================== مودال پرداخت / تسویه =================================--}}
+    {{--===================== مودال پرداخت / تسویه ====================--}}
     @if ($showCheckoutModal)
         <div class="modal modal-blur fade show d-block pos-modal" tabindex="-1"
             style="background: rgba(15,23,42,.55);" wire:key="checkout-modal">
