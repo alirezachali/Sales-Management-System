@@ -10,7 +10,7 @@
     <div class="alerts-panel" x-show="open" x-cloak x-transition.opacity.duration.150ms>
         <div class="alerts-head">
             <i class="bi bi-spark2s text-warning"></i>
-            <span>مـــــرکز هـــــشدار هـــــا</span>
+            <span>مـرکـز هـشـدار هـا</span>
         </div>
 
         <div class="alerts-body">
@@ -29,7 +29,7 @@
             @empty
                 <div class="alerts-empty">
                     <i class="bi bi-emoji-smile"></i>
-                    <div>همه‌چیز تحت کنترله! 🎯</div>
+                    <div>هـمـه‌چـیـز تـحـت کـنـتـرلـه! 🎯</div>
                 </div>
             @endforelse
         </div>

@@ -78,7 +78,10 @@
         <div class="col-lg-5">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header">
-                    <h3 class="fw-bold mb-0"><i class="bi bi-journal-arrow-down text-primary"></i> صــورت ســود و زیــان</h3>
+                    <h3 class="fw-bold mb-0">
+                        <i class="bi bi-journal-arrow-down text-primary"></i>
+                         صــورت ســود و زیــان
+                    </h3>
                 </div>
                 <div class="card-body p-0">
                     <table class="table table-sm align-middle mb-0 pl-table">
@@ -107,7 +110,10 @@
         <div class="col-lg-7">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header">
-                    <h3 class="fw-bold mb-0"><i class="bi bi-bar-chart-fill text-info"></i> رونــد ۱۲ مــاه اخــیــر</h3>
+                    <h3 class="fw-bold mb-0">
+                        <i class="bi bi-bar-chart-fill text-info"></i>
+                         رونــد ۱۲ مــاه اخــیــر
+                    </h3>
                     <small class="text-muted">
                         <span class="dot" style="background:#3b82f6"></span> درآمـد
                         <span class="dot ms-2" style="background:#ef4444"></span> هـزیـنـه
@@ -139,7 +145,10 @@
         <div class="col-lg-7">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header">
-                    <h3 class="fw-bold mb-0"><i class="bi bi-star-fill text-warning"></i> پــرســودتــریــن کــالاهــای مــاه</h3>
+                    <h3 class="fw-bold mb-0">
+                        <i class="bi bi-star-fill text-warning"></i>
+                         پــرســودتــریــن کــالاهــای مــاه
+                    </h3>
                 </div>
                 <div class="card-body">
                     @forelse ($topProducts as $p)

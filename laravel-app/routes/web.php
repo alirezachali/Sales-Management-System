@@ -224,6 +224,10 @@ Route::middleware('auth')->group(function () {
     Route::get('warehouses', function () {return view('warehouses.index');})->name('warehouses.index')
         ->middleware('can:warehouses.view');
 
+    /* چیدمان و مدیریت محصولات با QR Code */
+    Route::get('warehouse-qrcodes', function () {return view('warehouses.qr-codes');})->name('warehouse-qrcodes.index')
+        ->middleware('can:qrcodes.view');
+
     /* انتقال بین انبار */
     Route::get('transfers', function () {return view('warehouses.transfers');})->name('transfers.index')
         ->middleware('can:transfers.view');

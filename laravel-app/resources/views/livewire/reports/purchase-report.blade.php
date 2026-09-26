@@ -95,11 +95,11 @@
     <div class="card shadow-sm border-3" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
-                <h3 class="fw-bold mb-1">
+                <h2 class="fw-bold mb-1">
                     <i class="bi bi-clipboard-data text-primary"></i>
-                    گــــزارش فــــاکــــتــــورهــــای خــــریــــد
-                </h3>
-                <small class="">مشاهده گزارش لیست فاکتورهای خرید ثبت شده در بازه زمانی انتخابی</small>
+                    گــزارش فــاکــتــورهــای خــریــد
+                </h2>
+                <small>مشاهده گزارش لیست فاکتورهای خرید ثبت شده در بازه زمانی انتخابی</small>
             </div>
             <div class="d-flex gap-2 flex-wrap">
                 <button type="button" class="btn btn-success text-dark" wire:click="exportExcel" wire:loading.attr="disabled"

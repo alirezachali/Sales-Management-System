@@ -2,10 +2,10 @@
 
     <div class="card shadow-sm border-3 mb-4" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h3 class="fw-bold mb-1">
+            <h2 class="fw-bold mb-1">
                 <i class="bi bi-bank text-primary"></i>
-                مدیریت مالی
-            </h3>
+                مــدیــریــت مــالــی
+            </h2>
             <small class="text-muted d-flex align-items-center gap-1">
                 <span wire:loading.flex class="align-items-center gap-1">
                     <span class="spinner-border spinner-border-sm"></span>
@@ -26,7 +26,7 @@
         <div class="card-body">
             <div class="row g-4 align-items-end">
                 <div class="col-md-3">
-                    <label class="form-label" for="financial-date-from">از تاریخ (شمسی)</label>
+                    <label class="form-label" for="financial-date-from">از تـاریـخ</label>
                     <input type="text" id="financial-date-from" wire:model="dateFromJalali" data-jdp
                         autocomplete="off" inputmode="numeric" placeholder="1405/06/01"
                         class="form-control @if (isset($dateErrors['from'])) is-invalid @endif">
@@ -35,7 +35,7 @@
                     @endif
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label" for="financial-date-to">تا تاریخ (شمسی)</label>
+                    <label class="form-label" for="financial-date-to">تـا تـاریـخ</label>
                     <input type="text" id="financial-date-to" wire:model="dateToJalali" data-jdp
                         autocomplete="off" inputmode="numeric" placeholder="1405/06/31"
                         class="form-control @if (isset($dateErrors['to'])) is-invalid @endif">

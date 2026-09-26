@@ -38,6 +38,7 @@ return [
 
     /* New features */
     'warehouses' => 'Warehouses',
+    'warehouse_qrcodes' => 'Layout & QR Codes',
     'transfers' => 'Stock Transfers',
     'stock_counts' => 'Stock Counts',
     'cashboxes' => 'Cashboxes',

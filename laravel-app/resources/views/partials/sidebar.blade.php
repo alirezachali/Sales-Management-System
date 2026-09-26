@@ -82,6 +82,9 @@
             if (auth()->user()->hasPermission('warehouses.view')) {
                 $stockItems[] = ['route' => 'warehouses.index', 'label' => __('sidebar.warehouses'), 'icon' => 'bi-buildings', 'is' => 'warehouses.*'];
             }
+            if (auth()->user()->hasPermission('qrcodes.view')) {
+                $stockItems[] = ['route' => 'warehouse-qrcodes.index', 'label' => __('sidebar.warehouse_qrcodes'), 'icon' => 'bi-qr-code', 'is' => 'warehouse-qrcodes.*'];
+            }
             if (auth()->user()->hasPermission('transfers.view')) {
                 $stockItems[] = ['route' => 'transfers.index', 'label' => __('sidebar.transfers'), 'icon' => 'bi-arrow-left-right', 'is' => 'transfers.*'];
             }

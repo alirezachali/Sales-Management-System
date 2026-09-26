@@ -305,6 +305,22 @@ class PermissionSeeder extends Seeder
                         'name' => 'stocks.history',
                         'display_name' => 'مشاهده سوابق انبار',
                     ],
+                    [
+                        'name' => 'qrcodes.view',
+                        'display_name' => 'مشاهده QR Code انبار',
+                    ],
+                    [
+                        'name' => 'qrcodes.create',
+                        'display_name' => 'ایجاد QR Code انبار',
+                    ],
+                    [
+                        'name' => 'qrcodes.edit',
+                        'display_name' => 'ویرایش QR Code انبار',
+                    ],
+                    [
+                        'name' => 'qrcodes.delete',
+                        'display_name' => 'حذف QR Code انبار',
+                    ],
                 ],
             ],
             [

@@ -7,11 +7,11 @@
     <div class="card mb-3">
         <div class="card-header">
             <div>
-                <h3>
+                <h2>
                     <i class="bi bi-cart-check-fill text-primary"></i>
-                    صندوق فــــــــروش
-                </h3>
-            <small class="text-muted d-none d-sm-inline">سبد خرید مشتری و صدور فاکتور خرید</small>
+                    صــنــدوق فــروش
+                </h2>
+            <small class="d-none d-sm-inline">سـبـد خـریـد مـشـتـری و صـدور فـاکـتـور خـریـد</small>
             </div>
         </div>
     </div>
@@ -27,10 +27,10 @@
             {{-- جستجو و افزودن کالا --}}
             <div class="card mb-3">
                 <div class="card-header">
-                    <h5>
+                    <h3>
                         <i class="bi bi-plus-circle-fill"></i>
-                        افزودن کـــــالا
-                    </h5>
+                        افـزودن کـالـا
+                    </h3>
                     @if (count($cart))
                         <span class="badge bg-primary-lt rounded-pill">
                             {{ count($cart) }} قلم کالا در سبد
@@ -42,7 +42,7 @@
                         <div class="col-md-6">
                             <div class="input-group">
                                 <input type="text" class="form-control"
-                                    placeholder="اسکن یا وارد کردن بارکد…" wire:model="barcode"
+                                    placeholder="اسـکـن یـا وارد کـردن بـارکـد…" wire:model="barcode"
                                     wire:keydown.enter="addByBarcode" autofocus>
                                 <span class="input-group-text"><i class="bi bi-upc-scan text-primary"></i></span>
                             </div>
@@ -50,7 +50,7 @@
                         <div class="col-md-6">
                             <div class="input-group">
                                 <input type="text" class="form-control"
-                                    wire:model.live.debounce.400ms="search" placeholder="جستجو نام یا بارکد کالا…">
+                                    wire:model.live.debounce.400ms="search" placeholder="جـسـتـجـو نـام یـا بـارکـد کـالـا …">
                                 <span class="input-group-text"><i class="bi bi-search text-info"></i></span>
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                         </div>
                     @elseif ($search)
                         <div class="text-muted small mt-2 text-center py-2">
-                            <i class="bi bi-emoji-frown me-1"></i>کالایی یافت نشد.
+                            <i class="bi bi-emoji-frown me-1"></i>کـالـایـی یـافـت نـشـد.
                         </div>
                     @endif
                 </div>
@@ -86,10 +86,10 @@
             {{-- سبد فروش --}}
             <div class="card">
                 <div class="card-header">
-                    <h4>
+                    <h3>
                         <i class="bi bi-bag-fill"></i>
-                        سبـــــد خرید مشــتری
-                    </h4>
+                        سبـد خـریـد مـشـتـری
+                    </h3>
                     @if (count($cart))
                         <button type="button" class="btn btn-sm btn-outline-danger rounded-pill"
                             wire:click="clearCart" wire:confirm="آیا از پاک کردن کل سبد خرید مطمئن هستید؟">
@@ -156,8 +156,8 @@
                                     <td colspan="5">
                                         <div class="text-center">
                                             <i class="bi bi-basket2"></i>
-                                            سبد فروش خالی است.<br>
-                                            <small>با بارکدخوان یا جستجو کالا اضافه کنید.</small>
+                                            سـبـد فـروش خـالـی اسـت.<br>
+                                            <small>بـا بـارکـدخـوان یـا جـسـتـجـو کـالـا اضـافـه کـنـیـد.</small>
                                         </div>
                                     </td>
                                 </tr>
@@ -172,26 +172,26 @@
         <div class="col-lg-5">
             <div class="card">
                 <div class="card-header">
-                    <h4>
+                    <h3>
                         <i class="bi bi-receipt-cutoff"></i>
-                        جمع‌بندی فاکـــــــتور
-                    </h4>
+                        جـمـع‌بـنـدی فـاکـتـور
+                    </h3>
                 </div>
                 <div class="card-body">
                     <div class="mb-2">
-                        <label class="form-label fw-semibold">تخفیف (تومان)</label>
+                        <label class="form-label fw-semibold">تـخـفـیـف (تـومـان)</label>
                         <input type="number" min="0" step="any" class="form-control pos-scan-input"
                             wire:model.live.debounce.500ms="discount" placeholder="0">
                     </div>
 
                     <div class="">
-                        <span class="text-muted">جمع کل ({{ number_format(count($cart)) }} قلم)</span>
+                        <span class="text-muted">جـمـع کـل ({{ number_format(count($cart)) }} قـلـم)</span>
                         <strong>{{ number_format($this->subtotal) }}</strong>
                     </div>
 
                     @if ($discount > 0)
                         <div class="text-success">
-                            <span>تخفیف</span>
+                            <span>تـخـفـیـف</span>
                             <strong>{{ number_format(min($discount, $this->subtotal)) }}</strong>
                         </div>
                     @endif
@@ -199,22 +199,22 @@
                     <hr class="my-2">
 
                     <div class=" mb-3">
-                        <span class="fw-bold">مبلغ قابل پرداخت</span>
+                        <span class="fw-bold">مـبـلـغ قـابـل پـرداخـت</span>
                         <strong class="fs-4 text-success">{{ number_format($this->finalPrice) }}
-                            <small class="fw-normal">تومان</small>
+                            <small class="fw-normal">تـومـان</small>
                         </strong>
                     </div>
 
                     <button type="button" class="btn btn-success text-dark w-100"
                         wire:click="openCheckoutModal" @if (empty($cart)) disabled @endif>
                         <i class="bi bi-cash-coin me-4"></i>
-                        پرداخت و ثبت فاکتور
+                        پـرداخـت و ثـبـت فـاکـتـور
                     </button>
 
                     <div class="text-center mt-2">
                         <small class="text-muted">
                             <i class="bi bi-person-badge me-1"></i>
-                            صندوقدار: {{ auth()->user()->name ?? '—' }}
+                            صـنـدوقـدار: {{ auth()->user()->name ?? '—' }}
                         </small>
                     </div>
                 </div>
@@ -233,7 +233,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title fw-bold">
                                 <i class="bi bi-credit-card-2-front-fill text-primary me-1"></i>
-                                تسویه و ثبت فاکتور فروش
+                                تـسـویـه و ثـبـت فـاکـتـور فـروش
                             </h5>
                             <button type="button" class="btn-close" wire:click="closeModals"></button>
                         </div>
@@ -243,7 +243,7 @@
                             {{-- ============ انتخاب مشتری با جستجوی لایو ============ --}}
                             <div class="mb-4">
                                 <label class="form-label fw-bold">
-                                    <i class="bi bi-person-fill me-1 text-primary"></i>مشتری
+                                    <i class="bi bi-person-fill me-1 text-primary"></i>مـشـتـری
                                 </label>
 
                                 @if ($customerId)
@@ -301,7 +301,7 @@
                                         <div>
                                             <span class="fw-bold"><i class="bi bi-gem text-fuchsia me-1"></i>امتیاز قابل استفاده:
                                                 {{ number_format($customerAvailablePoints) }}</span>
-                                            <div class="text-muted small">هر امتیاز = {{ number_format($pointValue) }} تومان تخفیف</div>
+                                            <div class="text-muted small">هـر امـتـیـاز = {{ number_format($pointValue) }} تومان تخفیف</div>
                                         </div>
                                         <div class="d-flex align-items-center gap-2">
                                             <input type="number" min="0" max="{{ $customerAvailablePoints }}"
@@ -310,14 +310,14 @@
                                             <button type="button" class="btn btn-sm btn-fuchsia text-white rounded-pill"
                                                 wire:click="applyAllPoints"
                                                 title="حداکثر امتیاز مجاز برای این فاکتور">
-                                                <i class="bi bi-stars me-1"></i>حداکثر
+                                                <i class="bi bi-stars me-1"></i>حـداکـثـر
                                             </button>
                                         </div>
                                     </div>
                                     @if ($pointsToRedeem > 0)
                                         <div class="alert alert-fuchsia mt-2 mb-0 py-2 small d-flex justify-content-between">
-                                            <span><i class="bi bi-ticket-perforated me-1"></i>تخفیف امتیازی:</span>
-                                            <strong>{{ number_format($this->pointsDiscount) }} تومان</strong>
+                                            <span><i class="bi bi-ticket-perforated me-1"></i>تـخـفـیـف امـتـیـازی:</span>
+                                            <strong>{{ number_format($this->pointsDiscount) }} تـومـان</strong>
                                         </div>
                                     @endif
                                 </div>
@@ -325,7 +325,7 @@
 
                             {{-- ============ روش پرداخت ============ --}}
                             <label class="form-label fw-bold">
-                                <i class="bi bi-wallet2 me-1 text-primary"></i>روش پرداخت
+                                <i class="bi bi-wallet2 me-1 text-primary"></i>روش پـرداخـت
                                 <span class="text-danger">*</span>
                             </label>
                             <div class="row g-2 mb-1">
@@ -336,7 +336,7 @@
                                         <span class="icon" style="background: rgba(24,145,48,.12); color:#189130;">
                                             <i class="bi bi-cash-stack"></i>
                                         </span>
-                                        <div class="label">نقدی</div>
+                                        <div class="label">نـقـدی</div>
                                     </button>
                                 </div>
                                 <div class="col-3">
@@ -346,7 +346,7 @@
                                         <span class="icon" style="background: rgba(32,107,196,.12); color:#206bc4;">
                                             <i class="bi bi-credit-card-fill"></i>
                                         </span>
-                                        <div class="label">کارتخوان</div>
+                                        <div class="label">کـارتـخـوان</div>
                                     </button>
                                 </div>
                                 <div class="col-3">
@@ -357,7 +357,7 @@
                                         <span class="icon" style="background: rgba(214,61,98,.12); color:#d63d62;">
                                             <i class="bi bi-clock-history"></i>
                                         </span>
-                                        <div class="label">نسیه</div>
+                                        <div class="label">نـسـیـه</div>
                                     </button>
                                 </div>
                                 <div class="col-3">
@@ -367,7 +367,7 @@
                                         <span class="icon" style="background: rgba(139,92,246,.12); color:#8b5cf6;">
                                             <i class="bi bi-shuffle"></i>
                                         </span>
-                                        <div class="label">ترکیبی</div>
+                                        <div class="label">تـرکـیـبـی</div>
                                     </button>
                                 </div>
                             </div>
@@ -401,7 +401,7 @@
                                 @if ($paymentType === 'cash')
                                     <div class="row g-3 align-items-end">
                                         <div class="col-md-7">
-                                            <label class="form-label fw-semibold">مبلغ نقدی دریافتی</label>
+                                            <label class="form-label fw-semibold">مـبـلـغ نـقـدی دریـافـتـی</label>
                                             <input type="number" min="0" step="any"
                                                 class="form-control @error('paidAmount') is-invalid @enderror"
                                                 wire:model.live.debounce.400ms="paidAmount">
@@ -412,15 +412,15 @@
                                         <div class="col-md-5">
                                             <button type="button" class="btn btn-sm btn-outline-success rounded-pill w-100"
                                                 wire:click="$set('paidAmount', {{ $this->finalPrice }})">
-                                                <i class="bi bi-magic me-1"></i>پرداخت دقیق ({{ number_format($this->finalPrice) }})
+                                                <i class="bi bi-magic me-1"></i>پـرداخـت دقـیـق ({{ number_format($this->finalPrice) }})
                                             </button>
                                         </div>
                                     </div>
 
                                     @if ($this->change > 0)
                                         <div class="alert alert-success mt-3 mb-0 d-flex justify-content-between py-2">
-                                            <span><i class="bi bi-arrow-repeat me-1"></i>باقی وجه مشتری:</span>
-                                            <strong>{{ number_format($this->change) }} تومان</strong>
+                                            <span><i class="bi bi-arrow-repeat me-1"></i>بـاقـی وجـه مـشـتـری:</span>
+                                            <strong>{{ number_format($this->change) }} تـومـان</strong>
                                         </div>
                                     @endif
 
@@ -428,7 +428,7 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="fw-semibold">
                                             <i class="bi bi-credit-card-fill text-primary me-1"></i>
-                                            مبلغ قابل کشیدن از کارتخوان
+                                            مـبـلـغ قـابـل کـشـیـدن از کـارتـخـوان
                                         </span>
                                         <strong class="fs-5 text-primary">{{ number_format($this->finalPrice) }} تومان</strong>
                                     </div>
@@ -437,7 +437,7 @@
                                     <div class="row g-3">
                                         <div class="col-md-6">
                                             <label class="form-label fw-semibold">
-                                                <i class="bi bi-cash-stack text-success me-1"></i>مبلغ نقدی
+                                                <i class="bi bi-cash-stack text-success me-1"></i>مـبـلـغ نـقـدی
                                             </label>
                                             <input type="number" min="0" step="any"
                                                 class="form-control @error('cashAmount') is-invalid @enderror"
@@ -448,7 +448,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label fw-semibold">
-                                                <i class="bi bi-credit-card-fill text-primary me-1"></i>مبلغ کارتخوان
+                                                <i class="bi bi-credit-card-fill text-primary me-1"></i>مـبـلـغ کـارتـخـوان
                                             </label>
                                             <input type="number" min="0" step="any"
                                                 class="form-control @error('cardAmount') is-invalid @enderror"
@@ -461,18 +461,18 @@
 
                                     @if (!$errors->has('cardAmount'))
                                         <div class="mt-3 d-flex justify-content-between small">
-                                            <span class="text-muted">مجموع وارد شده:
+                                            <span class="text-muted">مـجـمـوع وارد شـده:
                                                 <strong>{{ number_format($this->cashAmount + $this->cardAmount) }}</strong>
                                             </span>
                                             <span
                                                 class="{{ abs($this->mixedDiff) < 0.001 ? 'text-success' : ($this->mixedDiff > 0 ? 'text-danger' : 'text-warning') }}">
                                                 @if (abs($this->mixedDiff) < 0.001)
-                                                    <i class="bi bi-check-circle-fill me-1"></i>تسویه کامل شد
+                                                    <i class="bi bi-check-circle-fill me-1"></i>تـسـویـه کـامـل شـد
                                                 @elseif ($this->mixedDiff > 0)
-                                                    <i class="bi bi-arrow-down-circle me-1"></i>باقی‌مانده:
+                                                    <i class="bi bi-arrow-down-circle me-1"></i>بـاقـی‌مـانـده:
                                                     {{ number_format($this->mixedDiff) }}
                                                 @else
-                                                    <i class="bi bi-arrow-up-circle me-1"></i>اضافه:
+                                                    <i class="bi bi-arrow-up-circle me-1"></i>اضـافـه:
                                                     {{ number_format(abs($this->mixedDiff)) }}
                                                 @endif
                                             </span>
@@ -482,7 +482,7 @@
                                     @if ($this->mixedDiff > 0.001)
                                         <button type="button" class="btn btn-sm btn-primary-lt rounded-pill mt-2"
                                             wire:click="$set('cardAmount', {{ $this->mixedDiff + $this->cardAmount }})">
-                                            <i class="bi bi-magic me-1"></i>تکمیل خودکار با کارتخوان
+                                            <i class="bi bi-magic me-1"></i>تـکـمـیـل خـودکـار بـا کـارتـخـوان
                                         </button>
                                     @endif
 
@@ -490,7 +490,7 @@
                                     <div class="row g-3 align-items-end">
                                         <div class="col-md-8">
                                             <label class="form-label fw-semibold">
-                                                مبلغ پیش‌پرداخت <span class="text-muted fw-normal">(اختیاری)</span>
+                                                مـبـلـغ پـیـش‌پـرداخـت <span class="text-muted fw-normal">(اخـتـیـاری)</span>
                                             </label>
                                             <div class="input-group">
                                                 <input type="number" min="0" step="any"
