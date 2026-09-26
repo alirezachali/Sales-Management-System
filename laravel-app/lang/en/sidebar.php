@@ -48,4 +48,5 @@ return [
     'loyalty' => 'Loyalty Points',
     'messages' => 'Messages',
     'my_messages' => 'My Messages',
+    'couriers' => 'Couriers Management',
 ];

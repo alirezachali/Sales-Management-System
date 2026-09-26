@@ -27,6 +27,15 @@
             @endcan
         @endif
 
+        {{-- ================= پیک‌ها ================= --}}
+        @can('couriers.view')
+            <a href="{{ route('couriers.index') }}" class="sidebar-link glow-btn {{ request()->routeIs('couriers.*') ? 'active' : '' }}"
+                title="{{ __('sidebar.couriers') }}">
+                <i class="bi bi-bicycle"></i>
+                <span>{{ __('sidebar.couriers') }}</span>
+            </a>
+        @endcan
+
         {{-- ================= فروش و مشتریان ================= --}}
         @php
             $salesItems = [];

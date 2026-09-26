@@ -188,6 +188,29 @@ class PermissionSeeder extends Seeder
                 ],
             ],
             [
+                'name' => 'پیک‌ها',
+                'icon' => 'bi-bicycle',
+                'sort_order' => 8,
+                'permissions' => [
+                    [
+                        'name' => 'couriers.view',
+                        'display_name' => 'مشاهده لیست پیک‌ها',
+                    ],
+                    [
+                        'name' => 'couriers.create',
+                        'display_name' => 'ثبت پیک جدید',
+                    ],
+                    [
+                        'name' => 'couriers.edit',
+                        'display_name' => 'ویرایش پیک',
+                    ],
+                    [
+                        'name' => 'couriers.delete',
+                        'display_name' => 'حذف پیک',
+                    ],
+                ],
+            ],
+            [
                 'name' => 'خرید',
                 'icon' => 'bi-cart-plus',
                 'sort_order' => 10,

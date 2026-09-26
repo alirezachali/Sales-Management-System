@@ -264,6 +264,13 @@ Route::middleware('auth')->group(function () {
     Route::get('inbox', function () {return view('messages.inbox');})->name('messages.inbox')
         ->middleware('can:messages.inbox');
 
+    /*  |--------------------------------------------------|
+     |          مدیریت پیک‌ها                              |
+     |--------------------------------------------------|*/
+
+    Route::get('couriers', function () {return view('couriers.index');})->name('couriers.index')
+        ->middleware('can:couriers.view');
+
     /* صفحه مدیریت پیام‌های ارسالی (مخصوص مدیر) */
     Route::get('messages', function () {return view('messages.index');})->name('messages.index')
         ->middleware('can:messages.view');

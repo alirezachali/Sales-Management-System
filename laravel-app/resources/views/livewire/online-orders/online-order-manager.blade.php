@@ -143,12 +143,28 @@
                 <div class="modal-content">
                     <div class="modal-header"><h5 class="modal-title">ارسال با پیک</h5></div>
                     <div class="modal-body">
-                        <label class="form-label">نام پیک</label>
-                        <input class="form-control mb-3" wire:model="courier_name">
-                        @error('courier_name') <div class="text-danger small">{{ $message }}</div> @enderror
-                        <label class="form-label">موبایل پیک</label>
-                        <input class="form-control" wire:model="courier_phone">
-                        @error('courier_phone') <div class="text-danger small">{{ $message }}</div> @enderror
+                        <div class="mb-3">
+                            <label class="form-label">انتخاب پیک</label>
+                            <select class="form-select mb-2" wire:model.live="selectedCourierId">
+                                <option value="">— پیک را انتخاب کنید —</option>
+                                @foreach ($couriers as $courier)
+                                    <option value="{{ $courier->id }}">{{ $courier->name }}
+                                        @if ($courier->phone) ({{ $courier->phone }}) @endif
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('courier_name') <div class="text-danger small">{{ $message }}</div> @enderror
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-8">
+                                <label class="form-label">نام پیک</label>
+                                <input class="form-control" wire:model="courier_name" placeholder="یا نام جدید وارد کنید">
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label">موبایل پیک</label>
+                                <input class="form-control" wire:model="courier_phone" placeholder="۰۹۱۲..." dir="ltr">
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" wire:click="$set('dispatchingId', null)">انصراف</button>

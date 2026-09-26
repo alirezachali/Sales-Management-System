@@ -3,6 +3,7 @@
 namespace App\Livewire\OnlineOrders;
 
 use App\Livewire\Concerns\AuthorizesActions;
+use App\Models\Courier;
 use App\Models\OnlineOrder;
 use App\Services\OnlineShop\ProcessOnlineOrder;
 use App\Services\OnlineShop\PullOnlineOrders;
@@ -19,6 +20,8 @@ class OnlineOrderManager extends Component
     public string $filterStatus = 'all';
 
     public ?int $dispatchingId = null;
+
+    public ?int $selectedCourierId = null;
 
     public string $courier_name = '';
 
@@ -60,8 +63,23 @@ class OnlineOrderManager extends Component
     public function openDispatch(int $id): void
     {
         $this->dispatchingId = $id;
+        $this->selectedCourierId = null;
         $this->courier_name = '';
         $this->courier_phone = '';
+    }
+
+    public function updatedSelectedCourierId($value): void
+    {
+        if ($value) {
+            $courier = Courier::find($value);
+            if ($courier) {
+                $this->courier_name = $courier->name;
+                $this->courier_phone = $courier->phone ?? '';
+            }
+        } else {
+            $this->courier_name = '';
+            $this->courier_phone = '';
+        }
     }
 
     public function dispatchOrder(ProcessOnlineOrder $processor): void
@@ -69,7 +87,7 @@ class OnlineOrderManager extends Component
         $this->authorizeAction('online-orders.dispatch');
         $this->validate([
             'courier_name' => 'required|string|max:120',
-            'courier_phone' => 'required|string|max:32',
+            'courier_phone' => 'nullable|string|max:32',
         ]);
 
         try {
@@ -79,6 +97,7 @@ class OnlineOrderManager extends Component
                 $this->courier_phone,
             );
             $this->dispatchingId = null;
+            $this->selectedCourierId = null;
             session()->flash('success', 'سفارش به پیک سپرده شد.');
         } catch (\Throwable $e) {
             session()->flash('error', $e->getMessage());
@@ -143,6 +162,8 @@ class OnlineOrderManager extends Component
             'delivered' => OnlineOrder::query()->where('status', 'delivered')->count(),
         ];
 
-        return view('livewire.online-orders.online-order-manager', compact('orders', 'stats'));
+        $couriers = Courier::active()->orderBy('name')->get();
+
+        return view('livewire.online-orders.online-order-manager', compact('orders', 'stats', 'couriers'));
     }
 }
