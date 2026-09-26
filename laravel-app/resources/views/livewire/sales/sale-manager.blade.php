@@ -5,13 +5,19 @@
 
     {{-- Page Header --}}
     <div class="card mb-3">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <div>
                 <h2>
                     <i class="bi bi-cart-check-fill text-primary"></i>
                     صــنــدوق فــروش
                 </h2>
             <small class="d-none d-sm-inline">سـبـد خـریـد مـشـتـری و صـدور فـاکـتـور خـریـد</small>
+            </div>
+            <div class="text-center mt-2">
+                <small class="">
+                    <i class="bi bi-person-badge me-1"></i>
+                    صـنـدوقـدار: {{ auth()->user()->name ?? '—' }}
+                </small>
             </div>
         </div>
     </div>
@@ -213,15 +219,15 @@
                     <button type="button" class="btn btn-success text-dark w-100"
                         wire:click="openCheckoutModal" @if (empty($cart)) disabled @endif>
                         <i class="bi bi-cash-coin me-4"></i>
-                        پـرداخـت و ثـبـت فـاکـتـور
+                        پـــرداخـــت و ثـــبـــت فـــاکـــتـــور
                     </button>
 
-                    <div class="text-center mt-2">
+                    {{-- <div class="text-center mt-2">
                         <small class="text-muted">
                             <i class="bi bi-person-badge me-1"></i>
                             صـنـدوقـدار: {{ auth()->user()->name ?? '—' }}
                         </small>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
