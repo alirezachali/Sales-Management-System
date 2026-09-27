@@ -99,23 +99,25 @@
                                 @elseif ($qr->is_near_expiration)
                                     <span class="badge bg-warning text-dark">{{ $qr->expiration_status }}</span>
                                 @elseif ($qr->expiration_date)
-                                    <span class="small">{{ $qr->expiration_date->format('Y/m/d') }}</span>
+                                    <span class="small">
+                                        {{ jalaliDate($qr->expiration_date) }}
+                                    </span>
                                 @else
                                     <span class="text-muted small">—</span>
                                 @endif
                             </td>
                             <td>
-                                <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-outline-primary" wire:click="viewQr({{ $qr->id }})" title="مشاهده QR">
+                                {{-- <div class="btn-group btn-group-sm"> --}}
+                                    <button class="btn btn-sm btn-outline-primary" wire:click="viewQr({{ $qr->id }})" title="مشاهده QR">
                                         <i class="bi bi-qr-code"></i>
                                     </button>
-                                    <button class="btn btn-outline-secondary" wire:click="openEditModal({{ $qr->id }})" title="ویرایش">
+                                    <button class="btn btn-sm btn-outline-secondary" wire:click="openEditModal({{ $qr->id }})" title="ویرایش">
                                         <i class="bi bi-pencil"></i>
                                     </button>
-                                    <button class="btn btn-outline-danger" wire:click="confirmDelete({{ $qr->id }})" title="حذف">
+                                    <button class="btn btn-sm btn-outline-danger" wire:click="confirmDelete({{ $qr->id }})" title="حذف">
                                         <i class="bi bi-trash"></i>
                                     </button>
-                                </div>
+                                {{-- </div> --}}
                             </td>
                         </tr>
                     @empty
@@ -305,23 +307,23 @@
 
                     <div class="card shadow-sm">
                         <div class="text-end p-3 rounded g-3">
-                            <div class="mb-2"><strong>انـبـار 🟰</strong> {{ $viewingQr->warehouse->name ?? '—' }}</div>
-                            <div class="mb-2"><strong>نـوع واحـد 🟰</strong> {{ $unitTypes[$viewingQr->unit_type] ?? $viewingQr->unit_type }}</div>
-                            <div class="mb-2"><strong>تـعـداد مـحـصـولـات مـوجـود در واحـد 🟰</strong> {{ number_format($viewingQr->quantity_in_unit) }}</div>
-                            <div class="mb-2"><strong>مـحـل قـرارگـیـری 🟰</strong> {{ $viewingQr->full_location }}</div>
+                            <div class="mb-3"><strong>انـبـار 🟰</strong> {{ $viewingQr->warehouse->name ?? '—' }}</div>
+                            <div class="mb-3"><strong>نـوع واحـد 🟰</strong> {{ $unitTypes[$viewingQr->unit_type] ?? $viewingQr->unit_type }}</div>
+                            <div class="mb-3"><strong>تـعـداد مـحـصـولـات مـوجـود در واحـد 🟰</strong> {{ number_format($viewingQr->quantity_in_unit) }}</div>
+                            <div class="mb-3"><strong>مـحـل قـرارگـیـری 🟰</strong> {{ $viewingQr->full_location }}</div>
                             @if ($viewingQr->product)
-                                <div class="mb-2"><strong>نـام مـحـصـول 🟰</strong> {{ $viewingQr->product->name }}</div>
+                                <div class="mb-3"><strong>نـام مـحـصـول 🟰</strong> {{ $viewingQr->product->name }}</div>
                             @endif
                             @if ($viewingQr->expiration_date)
-                                <div class="mb-2"><strong>تـاریـخ انـقـضـا 🟰</strong> {{ $viewingQr->expiration_date->format('Y/m/d') }}</div>
+                                <div class="mb-3"><strong>تـاریـخ انـقـضـا 🟰</strong>{{ jalaliDate($viewingQr->expiration_date) }}</div>
                             @endif
                             @if ($viewingQr->entry_date)
-                                <div class="mb-2"><strong>تـاریـخ ورود بـه انـبـار 🟰</strong> {{ $viewingQr->entry_date->format('Y/m/d') }}</div>
+                                <div class="mb-3"><strong>تـاریـخ ورود بـه انـبـار 🟰</strong> {{ jalaliDate($viewingQr->entry_date) }}</div>
                             @endif
                             @if ($viewingQr->performer)
-                                <div class="mb-2"><strong>کـاربـر ثـبـت کـنـنـده 🟰</strong> {{ $viewingQr->performer->name }}</div>
+                                <div class="mb-3"><strong>کـاربـر ثـبـت کـنـنـده 🟰</strong> {{ $viewingQr->performer->name }}</div>
                             @elseif ($viewingQr->creator)
-                                <div class="mb-2"><strong>کـاربـر ثـبـت کـنـنـده 🟰</strong> {{ $viewingQr->creator->name }}</div>
+                                <div class="mb-3"><strong>کـاربـر ثـبـت کـنـنـده 🟰</strong> {{ $viewingQr->creator->name }}</div>
                             @endif
                             @if ($viewingQr->products_barcode)
                                 <div><strong>بـارکـدهـا 🟰</strong>
