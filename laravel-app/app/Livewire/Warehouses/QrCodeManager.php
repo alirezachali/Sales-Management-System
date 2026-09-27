@@ -42,6 +42,7 @@ class QrCodeManager extends Component
 
     // نمایش QR
     public bool $showQrModal = false;
+    public bool $showPrintModal = false;
     public ?WarehouseQRCode $viewingQr = null;
 
     // حذف
@@ -209,6 +210,11 @@ class QrCodeManager extends Component
         $this->showQrModal = true;
     }
 
+    public function openPrintLabel(): void
+    {
+        $this->showPrintModal = true;
+    }
+
     public function downloadQr(int $id)
     {
         $this->authorizeAction('qrcodes.view');
@@ -259,6 +265,7 @@ class QrCodeManager extends Component
     {
         $this->showFormModal = false;
         $this->showQrModal = false;
+        $this->showPrintModal = false;
         $this->showDeleteModal = false;
         $this->resetErrorBag();
     }

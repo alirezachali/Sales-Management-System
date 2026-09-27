@@ -4,7 +4,19 @@
         .qr-code-img {
             border-radius: 10px;
         }
-
+        @media print {
+            body * { visibility: hidden; }
+            #printable-label, #printable-label * { visibility: visible; }
+            #printable-label {
+                position: absolute;
+                left: 0; top: 0;
+                width: 360px;
+                border: 2px dashed #000 !important;
+                box-shadow: none !important;
+                background: #fff;
+            }
+            .no-print { display: none !important; }
+        }
     </style>
 
     @include('partials.flash-messages')
@@ -341,6 +353,9 @@
                         class="btn btn-primary" @if(!$viewingQr->qr_image_path || !file_exists(storage_path('app/public/' . $viewingQr->qr_image_path))) style="pointer-events:none;opacity:.5;" @endif>
                         <i class="bi bi-download"></i> دانلود
                     </a>
+                    <button type="button" class="btn btn-success" wire:click="openPrintLabel">
+                        <i class="bi bi-printer"></i> چاپ لیبل
+                    </button>
                     <button class="btn btn-secondary" wire:click="closeModals">بستن</button>
                 </div>
             </div>
@@ -370,4 +385,86 @@
         </div>
     </div>
     @endif
+
+    {{-- مودال چاپ لیبل پشت‌چسبی --}}
+    @if ($showPrintModal && $viewingQr)
+    <div class="modal d-block" tabindex="-1" style="background: rgba(0,0,0,.5);">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-printer"></i> چاپ لیبل پشت‌چسبی</h5>
+                    <button type="button" class="btn-close" wire:click="closeModals"></button>
+                </div>
+                <div class="modal-body">
+                    {{-- لیبل قابل چاپ --}}
+                    <div id="printable-label" class="p-3 mx-auto" style="max-width:360px; border:2px dashed #ccc; border-radius:8px;">
+                        <div class="text-center mb-2">
+                            {{-- QR Code --}}
+                            @if ($viewingQr->qr_image_path && file_exists(storage_path('app/public/' . $viewingQr->qr_image_path)))
+                                <img src="{{ asset('storage/' . $viewingQr->qr_image_path) }}" alt="QR"
+                                    style="width:130px; height:130px;">
+                            @endif
+                            <div class="small text-muted mt-1 fw-bold">{{ $viewingQr->qr_identifier }}</div>
+                        </div>
+                        <hr class="my-1">
+                        <div class="small">
+                            <div class="row g-0 mb-1">
+                                <div class="col-5 text-muted">انبار:</div>
+                                <div class="col-7 fw-bold">{{ $viewingQr->warehouse->name ?? '—' }}</div>
+                            </div>
+                            <div class="row g-0 mb-1">
+                                <div class="col-5 text-muted">واحد:</div>
+                                <div class="col-7 fw-bold">{{ $unitTypes[$viewingQr->unit_type] ?? $viewingQr->unit_type }}</div>
+                            </div>
+                            <div class="row g-0 mb-1">
+                                <div class="col-5 text-muted">تعداد:</div>
+                                <div class="col-7 fw-bold">{{ number_format($viewingQr->quantity_in_unit) }} عدد</div>
+                            </div>
+                            <div class="row g-0 mb-1">
+                                <div class="col-5 text-muted">محل:</div>
+                                <div class="col-7 fw-bold small">{{ $viewingQr->full_location }}</div>
+                            </div>
+                            @if ($viewingQr->product)
+                            <div class="row g-0 mb-1">
+                                <div class="col-5 text-muted">محصول:</div>
+                                <div class="col-7 fw-bold small">{{ $viewingQr->product->name }}</div>
+                            </div>
+                            @endif
+                            @if ($viewingQr->expiration_date)
+                            <div class="row g-0 mb-1">
+                                <div class="col-5 text-muted">انقضا:</div>
+                                <div class="col-7 fw-bold {{ $viewingQr->is_expired ? 'text-danger' : '' }}">
+                                    {{ jalaliDate($viewingQr->expiration_date) }}
+                                    @if ($viewingQr->is_expired)
+                                        <span class="badge bg-danger ms-1">منقضی</span>
+                                    @elseif ($viewingQr->is_near_expiration)
+                                        <span class="badge bg-warning text-dark ms-1">نزدیک</span>
+                                    @endif
+                                </div>
+                            </div>
+                            @endif
+                            @if ($viewingQr->products_barcode && count($viewingQr->products_barcode))
+                            <div class="row g-0 mb-1">
+                                <div class="col-5 text-muted">بارکدها:</div>
+                                <div class="col-7">
+                                    @foreach ($viewingQr->products_barcode as $bc)
+                                        <span class="badge bg-light text-dark border d-block mb-1 text-start">{{ $bc }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" onclick="window.print()">
+                        <i class="bi bi-print"></i> پرینت
+                    </button>
+                    <button class="btn btn-secondary" wire:click="closeModals">بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
 </div>
