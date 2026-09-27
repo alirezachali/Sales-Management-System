@@ -67,18 +67,19 @@
                     @if ($search && $products->count())
                         <div class="list-group list-group-flush">
                             @foreach ($products as $product)
-                                <button type="button"
-                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                                <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                                     wire:click="addProduct({{ $product->id }})">
                                     <span>
-                                        <i class="bi bi-box-seam text-muted ms-1"></i>
-                                        {{ $product->name }}
-                                        <small class="text-muted d-block" style="font-size:.72rem;">
-                                            بارکد: {{ $product->barcode }} — موجودی: {{ $product->formatted_stock }}
+                                        <span style="font-size:1rem;">
+                                            <span style="font-size:1.4rem;">📦</span>
+                                            {{ $product->name }}
+                                        </span>
+                                        <small class="d-block text-info" style="font-size:.72rem;">
+                                            بـارکـد: {{ $product->barcode }} 🔰 مـوجـودی: {{ $product->formatted_stock }}
                                         </small>
                                     </span>
                                     <span class="badge bg-success-lt rounded-pill text-success-emphasis">
-                                        {{ number_format($product->sell_price) }}
+                                        {{ number_format($product->sell_price) }} تـومـان
                                     </span>
                                 </button>
                             @endforeach
@@ -95,9 +96,7 @@
             @if ($stockError)
                 <div class="alert alert-warning border-0 d-flex align-items-center gap-2 mb-3 shadow-sm" dir="rtl">
                     <div class="flex-shrink-0">
-                        {{-- <span class="badge bg-warning text-dark rounded-pill"> --}}
-                            <i class="bi bi-exclamation-triangle-fill" style="font-size: 25px; color:rgb(235, 202, 17)"></i>
-                        {{-- </span> --}}
+                        <i class="bi bi-exclamation-triangle-fill" style="font-size: 25px; color:rgb(235, 202, 17)"></i>
                     </div>
                     <div class="flex-grow-1">
                         <strong>کـمـبـود مـوجـودی❗</strong>
@@ -179,7 +178,7 @@
                                 <tr>
                                     <td colspan="5">
                                         <div class="text-center">
-                                            <i class="bi bi-basket2"></i>
+                                            🛒
                                             سـبـد فـروش خـالـی اسـت.<br>
                                             <small>بـا بـارکـدخـوان یـا جـسـتـجـو کـالـا اضـافـه کـنـیـد.</small>
                                         </div>
