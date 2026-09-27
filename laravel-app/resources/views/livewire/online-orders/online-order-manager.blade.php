@@ -85,11 +85,16 @@
                             <td>
                                 <small>{{ $order->city }} {{ $order->address }}</small>
                             </td>
-                            <td>{{ number_format((float) $order->total) }}</td>
+                            <td class="fw-bold text-success">
+                                {{ number_format((float) $order->total) }} تـومـان
+                            </td>
                             <td>
                                 <span class="badge text-bg-secondary">{{ $order->statusLabel() }}</span>
                                 @if ($order->courier_name)
-                                    <div class="small text-muted mt-1">پیک: {{ $order->courier_name }} — {{ $order->courier_phone }}</div>
+                                    <div class="small text-muted mt-1">
+                                        پیک: {{ $order->courier_name }}
+                                        {{-- {{ $order->courier_phone }} --}}
+                                    </div>
                                 @endif
                             </td>
                             <td>
@@ -118,7 +123,8 @@
                                 @endif
                             </td>
                         </tr>
-                        @if ($items = data_get($order->payload, 'items', []))
+
+                        {{-- @if ($items = data_get($order->payload, 'items', []))
                             <tr class="table-light">
                                 <td colspan="6" class="small text-muted">
                                     @foreach ($items as $item)
@@ -127,14 +133,15 @@
                                     @endforeach
                                 </td>
                             </tr>
-                        @endif
+                        @endif --}}
+
                     @empty
                         <tr><td colspan="6" class="text-center py-4 text-muted">سفارشی نیست.</td></tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-        <div class="card-footer">{{ $orders->links() }}</div>
+        <div class="card-footer">{{ $orders->links('pagination::bootstrap-5') }}</div>
     </div>
 
     @if ($dispatchingId)

@@ -55,6 +55,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="card-footer">{{ $customers->links() }}</div>
+        <div class="card-footer">{{ $customers->links('pagination::bootstrap-5') }}</div>
     </div>
 </div>
