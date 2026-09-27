@@ -1,9 +1,6 @@
 <div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
     <style>
-        .qr-code-img {
-            border-radius: 10px;
-        }
         @media print {
             body * { visibility: hidden; }
             #printable-label, #printable-label * { visibility: visible; }

@@ -91,6 +91,25 @@
                 </div>
             </div>
 
+            {{-- اخطار کمبود موجودی --}}
+            @if ($stockError)
+                <div class="alert alert-warning border-0 d-flex align-items-center gap-2 mb-3 shadow-sm" dir="rtl">
+                    <div class="flex-shrink-0">
+                        {{-- <span class="badge bg-warning text-dark rounded-pill"> --}}
+                            <i class="bi bi-exclamation-triangle-fill" style="font-size: 25px; color:rgb(235, 202, 17)"></i>
+                        {{-- </span> --}}
+                    </div>
+                    <div class="flex-grow-1">
+                        <strong>کـمـبـود مـوجـودی❗</strong>
+                        <span>مـوجـودی</span>
+                        <strong class="text-danger">{{ $stockError }}</strong>
+                        <span>کـافـی نـیـست.</span>
+                    </div>
+                    <button type="button" class="btn-close ms-0 me-auto" wire:click="$set('stockError', null)"
+                        title="بستن"></button>
+                </div>
+            @endif
+
             {{-- سبد فروش --}}
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">

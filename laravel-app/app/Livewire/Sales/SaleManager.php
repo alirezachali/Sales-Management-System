@@ -54,6 +54,9 @@ class SaleManager extends Component
 
     public ?Sale $lastSale = null;
 
+    // خطای موجودی کالا
+    public ?string $stockError = null;
+
     protected array $messages = [
         'cart.required' => 'سبد فروش خالی است.',
     ];
@@ -204,6 +207,18 @@ class SaleManager extends Component
             return;
         }
 
+        $currentInCart = isset($this->cart[$productId]) ? $this->cart[$productId]['quantity'] : 0;
+        $requestedQty = $currentInCart + 1;
+
+        // بررسی موجودی
+        if ($requestedQty > $product->stock) {
+            $this->stockError = $product->name;
+
+            return;
+        }
+
+        $this->stockError = null;
+
         if (isset($this->cart[$productId])) {
             $this->cart[$productId]['quantity']++;
         } else {
@@ -220,9 +235,26 @@ class SaleManager extends Component
 
     public function incrementQty(int $productId): void
     {
-        if (isset($this->cart[$productId])) {
-            $this->cart[$productId]['quantity']++;
+        if (! isset($this->cart[$productId])) {
+            return;
         }
+
+        $currentQty = $this->cart[$productId]['quantity'];
+        $product = Product::find($productId);
+
+        if (! $product) {
+            return;
+        }
+
+        // بررسی موجودی
+        if (($currentQty + 1) > $product->stock) {
+            $this->stockError = $product->name;
+
+            return;
+        }
+
+        $this->stockError = null;
+        $this->cart[$productId]['quantity']++;
     }
 
     public function decrementQty(int $productId): void
