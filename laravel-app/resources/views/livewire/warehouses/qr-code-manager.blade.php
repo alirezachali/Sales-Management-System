@@ -1,4 +1,12 @@
 <div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
+
+    <style>
+        .qr-code-img {
+            border-radius: 10px;
+        }
+
+    </style>
+
     @include('partials.flash-messages')
 
     {{-- کارت‌های آمار --}}
@@ -285,38 +293,46 @@
                 <div class="modal-body text-center">
                     @if ($viewingQr->qr_image_path && file_exists(storage_path('app/public/' . $viewingQr->qr_image_path)))
                         <img src="{{ asset('storage/' . $viewingQr->qr_image_path) }}" alt="QR Code"
-                            class="img-fluid mb-3" style="max-width:220px;">
+                            class="img-fluid qr-code-img mb-3" style="max-width:220px;">
                     @else
                         <div class="text-muted py-4">QR هنوز تولید نشده است.</div>
                     @endif
-                    <div class="small text-muted mb-3">{{ $viewingQr->qr_identifier }}</div>
-                    <div class="text-start small bg-light p-3 rounded">
-                        <div><strong>انبار:</strong> {{ $viewingQr->warehouse->name ?? '—' }}</div>
-                        <div><strong>نوع واحد:</strong> {{ $unitTypes[$viewingQr->unit_type] ?? $viewingQr->unit_type }}</div>
-                        <div><strong>تعداد:</strong> {{ number_format($viewingQr->quantity_in_unit) }}</div>
-                        <div><strong>محل:</strong> {{ $viewingQr->full_location }}</div>
-                        @if ($viewingQr->product)
-                            <div><strong>محصول:</strong> {{ $viewingQr->product->name }}</div>
-                        @endif
-                        @if ($viewingQr->expiration_date)
-                            <div><strong>انقضا:</strong> {{ $viewingQr->expiration_date->format('Y/m/d') }}</div>
-                        @endif
-                        @if ($viewingQr->entry_date)
-                            <div><strong>ورود به انبار:</strong> {{ $viewingQr->entry_date->format('Y/m/d') }}</div>
-                        @endif
-                        @if ($viewingQr->performer)
-                            <div><strong>انجام‌دهنده:</strong> {{ $viewingQr->performer->name }}</div>
-                        @elseif ($viewingQr->creator)
-                            <div><strong>انجام‌دهنده:</strong> {{ $viewingQr->creator->name }}</div>
-                        @endif
-                        @if ($viewingQr->products_barcode)
-                            <div><strong>بارکدها:</strong>
-                                @foreach ($viewingQr->products_barcode as $bc)
-                                    <span class="badge bg-light text-dark border me-1">{{ $bc }}</span>
-                                @endforeach
-                            </div>
-                        @endif
+                    <div class="mb-3">
+                        <span class="badge bg-info text-dark border-1 me-1">
+                            {{ $viewingQr->qr_identifier }}
+                        </span>
                     </div>
+
+                    <div class="card shadow-sm">
+                        <div class="text-end p-3 rounded g-3">
+                            <div class="mb-2"><strong>انـبـار 🟰</strong> {{ $viewingQr->warehouse->name ?? '—' }}</div>
+                            <div class="mb-2"><strong>نـوع واحـد 🟰</strong> {{ $unitTypes[$viewingQr->unit_type] ?? $viewingQr->unit_type }}</div>
+                            <div class="mb-2"><strong>تـعـداد مـحـصـولـات مـوجـود در واحـد 🟰</strong> {{ number_format($viewingQr->quantity_in_unit) }}</div>
+                            <div class="mb-2"><strong>مـحـل قـرارگـیـری 🟰</strong> {{ $viewingQr->full_location }}</div>
+                            @if ($viewingQr->product)
+                                <div class="mb-2"><strong>نـام مـحـصـول 🟰</strong> {{ $viewingQr->product->name }}</div>
+                            @endif
+                            @if ($viewingQr->expiration_date)
+                                <div class="mb-2"><strong>تـاریـخ انـقـضـا 🟰</strong> {{ $viewingQr->expiration_date->format('Y/m/d') }}</div>
+                            @endif
+                            @if ($viewingQr->entry_date)
+                                <div class="mb-2"><strong>تـاریـخ ورود بـه انـبـار 🟰</strong> {{ $viewingQr->entry_date->format('Y/m/d') }}</div>
+                            @endif
+                            @if ($viewingQr->performer)
+                                <div class="mb-2"><strong>کـاربـر ثـبـت کـنـنـده 🟰</strong> {{ $viewingQr->performer->name }}</div>
+                            @elseif ($viewingQr->creator)
+                                <div class="mb-2"><strong>کـاربـر ثـبـت کـنـنـده 🟰</strong> {{ $viewingQr->creator->name }}</div>
+                            @endif
+                            @if ($viewingQr->products_barcode)
+                                <div><strong>بـارکـدهـا 🟰</strong>
+                                    @foreach ($viewingQr->products_barcode as $bc)
+                                        <span class="badge bg-warning text-dark border-1 me-1">{{ $bc }}</span>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <a href="{{ asset('storage/' . $viewingQr->qr_image_path) }}" download

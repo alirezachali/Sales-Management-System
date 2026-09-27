@@ -36,7 +36,7 @@ body a:hover {
     cursor: pointer;
     opacity: 90%;
     color: rgb(7, 7, 7);
-    background-color: rgb(212, 212, 214);  
+    background-color: rgb(212, 212, 214);
     box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
 }
 [data-bs-theme="dark"] #purchase-inv-search-product {

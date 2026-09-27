@@ -22,6 +22,7 @@ class QRCodeService
         // تولید تصویر QR با simple-qrcode
         $svg = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(300)
             ->format('svg')
+            ->encoding('UTF-8')
             ->generate($data);
 
         Storage::disk('public')->put($filename, $svg);

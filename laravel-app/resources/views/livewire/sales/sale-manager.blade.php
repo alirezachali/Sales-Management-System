@@ -342,43 +342,43 @@
                             <div class="row g-2 mb-1">
                                 <div class="col-3">
                                     <button type="button"
-                                        class="pay-card {{ $paymentType === 'cash' ? 'active' : '' }}"
+                                        class="{{ $paymentType === 'cash' ? 'active' : '' }}"
                                         wire:click="setPaymentType('cash')">
-                                        <span class="icon" style="background: rgba(24,145,48,.12); color:#189130;">
-                                            <i class="bi bi-cash-stack"></i>
-                                        </span>
-                                        <div class="label">نـقـدی</div>
+                                        <div class="">
+                                            <x-icon name="cash" />
+                                            <div class="label">نـقـدی</div>
+                                        </div>
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="pay-card {{ $paymentType === 'card' ? 'active' : '' }}"
+                                        class="{{ $paymentType === 'card' ? 'active' : '' }}"
                                         wire:click="setPaymentType('card')">
-                                        <span class="icon" style="background: rgba(32,107,196,.12); color:#206bc4;">
-                                            <i class="bi bi-credit-card-fill"></i>
-                                        </span>
-                                        <div class="label">کـارتـخـوان</div>
+                                        <div class="">
+                                            <x-icon name="bank_cards" />
+                                            <div class="label">کـارتـخـوان</div>
+                                        </div>
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="pay-card {{ $paymentType === 'credit' ? 'active' : '' }} {{ !$customerId ? 'disabled' : '' }}"
+                                        class="{{ $paymentType === 'credit' ? 'active' : '' }} {{ !$customerId ? 'disabled' : '' }}"
                                         @if ($customerId) wire:click="setPaymentType('credit')" @endif
                                         title="{{ $customerId ? '' : 'نسیه فقط برای مشتری ثبت‌شده امکان‌پذیر است' }}">
-                                        <span class="icon" style="background: rgba(214,61,98,.12); color:#d63d62;">
-                                            <i class="bi bi-clock-history"></i>
-                                        </span>
-                                        <div class="label">نـسـیـه</div>
+                                        <div class="">
+                                            <x-icon name="credit" />
+                                            <div class="label">نـسـیـه</div>
+                                        </div>
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="pay-card {{ $paymentType === 'mixed' ? 'active' : '' }}"
+                                        class="{{ $paymentType === 'mixed' ? 'active' : '' }}"
                                         wire:click="setPaymentType('mixed')">
-                                        <span class="icon" style="background: rgba(139,92,246,.12); color:#8b5cf6;">
-                                            <i class="bi bi-shuffle"></i>
-                                        </span>
-                                        <div class="label">تـرکـیـبـی</div>
+                                        <div class="">
+                                            <x-icon name="cash_card" />
+                                            <div class="label">تـرکـیـبـی</div>
+                                        </div>
                                     </button>
                                 </div>
                             </div>
