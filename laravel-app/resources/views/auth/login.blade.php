@@ -10,7 +10,7 @@
                 {{ setting('store_name', 'سیستم مدیریت فروشگاه') }}
             </h3>
             <p class="text-secondary">
-                ورود به پنل مدیریت
+                ورود بـه پـنـل مـدیـریـت
             </p>
         </div>
 
@@ -21,7 +21,7 @@
 
             <div class="mb-3">
                 <label class="form-label">
-                    نام کاربری
+                    نـام کـاربـری
                 </label>
                 <div class="input-group">
                     <span class="input-group-text">
@@ -33,7 +33,7 @@
 
             <div class="mb-3">
                 <label class="form-label">
-                    رمز عبور
+                    رمـز عـبـور
                 </label>
                 <div class="input-group">
                     <span class="input-group-text">
@@ -51,18 +51,18 @@
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="remember" id="remember">
                     <label class="form-check-label" for="remember">
-                        مرا به خاطر بسپار
+                        مـرا بـه خـاطـر بـسـپـار
                     </label>
                 </div>
             </div>
-            <button class="btn btn-warning w-100 login-btn">
-                ورود به سیستم
+            <button class="btn btn-warning w-100 login-btn fw-bold">
+                ورود بـــه ســـیـــســـتـــم
             </button>
         </form>
 
         <div class="login-footer">
             <div class="badge bg-secondary">
-                نسخه 1.0.0
+                نـسـخـه 1.0.0
             </div>
         </div>
     </div>
