@@ -27,7 +27,6 @@
     @enderror
 
     <div class="row g-3">
-        {{--=============== ستون جستجو و سبد خرید ===============--}}
         <div class="col-lg-7">
 
             {{-- جستجو و افزودن کالا --}}
@@ -130,11 +129,11 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
-                                <th>کالا</th>
-                                <th>قیمت (تومان)</th>
-                                <th class="text-center">تعداد</th>
-                                <th>جمع</th>
-                                <th class="text-center">حذف</th>
+                                <th>کـالـا</th>
+                                <th>قـیـمـت (تومان)</th>
+                                <th class="text-center">تـعـداد</th>
+                                <th>جـمـع</th>
+                                <th class="text-center">حـذف</th>
                             </tr>
                         </thead>
                         <tbody>

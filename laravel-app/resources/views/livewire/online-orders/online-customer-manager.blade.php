@@ -19,11 +19,13 @@
 
     <div class="card shadow-sm border-3">
         <div class="card-header">
-            <h3 class="page-title mb-0">
-                <i class="bi bi-people me-2 text-info"></i>
-                مشتریان فروشگاه آنلاین
-            </h3>
-            <small class="text-muted">همان پرونده باشگاه مشتریان؛ با موبایل به حساب آنلاین وصل شده‌اند.</small>
+            <div>
+                <h3 class="page-title mb-0">
+                    <i class="bi bi-people me-2 text-info"></i>
+                    مشتریان فروشگاه آنلاین
+                </h3>
+                <small class="">همان پرونده باشگاه مشتریان؛ با موبایل به حساب آنلاین وصل شده‌اند.</small>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table table-hover mb-0">
@@ -42,9 +44,9 @@
                             <td class="fw-semibold">{{ $customer->full_name }}</td>
                             <td dir="ltr">{{ $customer->mobile }}</td>
                             <td><small>{{ $customer->city }} {{ $customer->address }}</small></td>
-                            <td>{{ $customer->registered_online_at?->format('Y/m/d') }}</td>
+                            <td>{{ jalaliDate($customer->registered_online_at) }}</td>
                             <td>
-                                <a href="{{ route('customers.index') }}">پرونده مشتری</a>
+                                <a href="{{ route('customers.index') }}" class="btn btn-sm btn-outline-primary">پرونده مشتری</a>
                             </td>
                         </tr>
                     @empty
