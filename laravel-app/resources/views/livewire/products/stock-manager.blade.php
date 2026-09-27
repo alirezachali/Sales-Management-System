@@ -22,22 +22,6 @@
 
                 </div>
 
-            {{--====== دکمه‌های ورود، خروج و خروجی گزارش ======--}}
-                {{-- <div class="d-flex align-items-center gap-2">
-
-                    <button type="button" class="btn btn-sm btn-outline-success" wire:click="openAddStockModal"
-                        title="ورود این کالا به انبار">
-                        <i class="bi bi-plus-lg"></i>
-                        ورود کالا
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-danger" wire:click="openRemoveStockModal"
-                        title="خروج این کالا از انبار">
-                        <i class="bi bi-dash-lg"></i>
-                        خروج کالا
-                    </button>
-
-                    <div class="vr mx-1 d-none d-sm-block" style="opacity:.15;"></div> --}}
-
                 {{--====== دکمه‌های خروجی گزارش (اکسل / CSV) ======--}}
                     <div class="d-flex align-items-center gap-2">
 

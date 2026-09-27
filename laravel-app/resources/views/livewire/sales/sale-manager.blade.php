@@ -74,7 +74,7 @@
                                         <i class="bi bi-box-seam text-muted ms-1"></i>
                                         {{ $product->name }}
                                         <small class="text-muted d-block" style="font-size:.72rem;">
-                                            بارکد: {{ $product->barcode }} — موجودی: {{ $product->stock }}
+                                            بارکد: {{ $product->barcode }} — موجودی: {{ $product->formatted_stock }}
                                         </small>
                                     </span>
                                     <span class="badge bg-success-lt rounded-pill text-success-emphasis">
@@ -164,12 +164,6 @@
                                                 <i class="bi bi-plus-lg"></i>
                                             </button>
                                         </div>
-                                        @if ($item['quantity'] > $item['stock'])
-                                            <div class="text-danger small mt-1">
-                                                <i class="bi bi-exclamation-triangle-fill"></i>
-                                                موجودی کافی نیست
-                                            </div>
-                                        @endif
                                     </td>
                                     <td class="fw-bold text-primary">
                                         {{ number_format($item['price'] * $item['quantity']) }}

@@ -1,6 +1,5 @@
-{{-- resources/views/sales/index.blade.php --}}
 @extends('layouts.app')
-
+@section('title', 'صندوق فروش')
 @section('content')
     <div class="container-fluid">
         <livewire:sales.sale-manager />
