@@ -136,7 +136,9 @@
                         @endif --}}
 
                     @empty
-                        <tr><td colspan="6" class="text-center py-4 text-muted">سفارشی نیست.</td></tr>
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">سفارشی نیست.</td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
@@ -144,6 +146,7 @@
         <div class="card-footer">{{ $orders->links('pagination::bootstrap-5') }}</div>
     </div>
 
+    {{--========== مودال ارسال و انتخاب پیک برای ارسال کالا ==========--}}
     @if ($dispatchingId)
         <div class="modal d-block" style="background: rgba(0,0,0,.4)">
             <div class="modal-dialog">
@@ -182,6 +185,7 @@
         </div>
     @endif
 
+    {{--========== مودال رد سفارش ==========--}}
     @if ($rejectingId)
         <div class="modal d-block" style="background: rgba(0,0,0,.4)">
             <div class="modal-dialog">
