@@ -1,4 +1,4 @@
-<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
+<div class="settings-page" dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
     @include('partials.flash-messages')
 
@@ -42,7 +42,7 @@
 
             <form wire:submit="save" enctype="multipart/form-data">
 
-                <ul class="nav nav-tabs mb-4">
+                <ul class="nav nav-tabs settings-tabs" role="tablist">
 
                     <li class="nav-item">
                         <button type="button" class="nav-link glow-btn @if ($activeTab === 'store') active @endif"

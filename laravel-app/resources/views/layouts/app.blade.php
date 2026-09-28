@@ -36,6 +36,9 @@
 
     {{-- پوسته لوکس باید بعد از Tabler/vite بارگذاری شود --}}
     <link href="{{ asset('css/luxury.css') }}" rel="stylesheet">
+
+    {{-- استایل اختصاصی صفحه تنظیمات (بعد از پوسته لوکس) --}}
+    <link href="{{ asset('css/settings.css') }}" rel="stylesheet">
     
     @livewireStyles
 </head>
