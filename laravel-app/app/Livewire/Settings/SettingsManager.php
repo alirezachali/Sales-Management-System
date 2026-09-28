@@ -2,6 +2,10 @@
 
 namespace App\Livewire\Settings;
 
+use App\Alerts\AlertDispatcher;
+use App\Alerts\AlertRegistry;
+use App\Alerts\AlertStore;
+use App\Models\AlertService;
 use App\Models\Setting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -40,6 +44,16 @@ class SettingsManager extends Component
 
     /*
     |--------------------------------------------------------------------|
+    |      سرویس‌های هشدار: وضعیت فعال/غیرفعال، بازه و ساعت اجرا          |
+    |--------------------------------------------------------------------|
+    | کلید هر آیتم، همان کلید سرویس در config/alerts.php است. این آرایه  |
+    | فقط هنگام ورود به تب هشدارها بارگذاری می‌شود تا صفحات دیگر تنظیمات |
+    | هزینه‌ی اضافه‌ای نداشته باشند.                                     |
+    */
+    public array $alertServices = [];
+
+    /*
+    |--------------------------------------------------------------------|
     |     کلیدهایی که مقدارشان بولی (سوییچ روشن/خاموش) در نظر گرفته می‌شود |
     |--------------------------------------------------------------------|
     */
@@ -67,7 +81,7 @@ class SettingsManager extends Component
     */
     protected function tabs(): array
     {
-        return ['store', 'sales', 'loyalty', 'print', 'barcode', 'system', 'hotkeys', 'backup'];
+        return ['store', 'sales', 'loyalty', 'print', 'barcode', 'system', 'hotkeys', 'alerts', 'backup'];
     }
 
     /*
@@ -184,6 +198,10 @@ class SettingsManager extends Component
         if (! in_array($this->activeTab, $this->tabs(), true)) {
             $this->activeTab = 'store';
         }
+
+        if ($this->activeTab === 'alerts') {
+            $this->loadAlertServices();
+        }
     }
 
     public function selectTab(string $tab): void
@@ -191,6 +209,138 @@ class SettingsManager extends Component
         if (in_array($tab, $this->tabs(), true)) {
             $this->activeTab = $tab;
         }
+
+        if ($this->activeTab === 'alerts') {
+            $this->loadAlertServices();
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------|
+    |                      مدیریت سرویس‌های هشدار                        |
+    |--------------------------------------------------------------------|
+    */
+
+    /** بارگذاری وضعیت و زمان‌بندی سرویس‌ها از دیتابیس (فقط تب هشدارها). */
+    protected function loadAlertServices(): void
+    {
+        $this->alertServices = app(AlertRegistry::class)
+            ->all()
+            ->mapWithKeys(fn (AlertService $service) => [
+                $service->key => $this->presentAlertService($service),
+            ])
+            ->all();
+    }
+
+    /**
+     * شکل قابل‌نمایش یک سرویس برای رابط کاربری.
+     *
+     * @return array<string, mixed>
+     */
+    protected function presentAlertService(AlertService $service): array
+    {
+        $definition = $service->definition ?? [];
+
+        return [
+            'enabled' => (bool) $service->enabled,
+            'frequency' => $service->frequency,
+            'run_at' => is_string($service->run_at) ? substr($service->run_at, 0, 5) : null,
+            'label' => $definition['label'] ?? $service->key,
+            'description' => $definition['description'] ?? '',
+            'icon' => $definition['icon'] ?? 'bi-bell',
+            'color' => $definition['color'] ?? 'primary',
+            'last_run_at' => $service->last_run_at?->toDateTimeString(),
+            'next_run_at' => $service->next_run_at?->toDateTimeString(),
+        ];
+    }
+
+    /**
+     * ذخیره‌ی تنظیمات یک سرویس هشدار (فعال/غیرفعال، بازه و ساعت اجرا).
+     * تغییر «بازه» یا روشن‌کردن سرویس، اجرای بعدی را فوراً زمان‌بندی
+     * می‌کند تا حداکثر تا یک دقیقه بعد اعمال شود.
+     */
+    public function saveAlertService(string $key): void
+    {
+        abort_unless($this->canManageAlerts(), 403);
+
+        $registry = app(AlertRegistry::class);
+        $definition = $registry->definition($key);
+        $service = $registry->ensure($key);
+
+        if ($definition === null || $service === null) {
+            return;
+        }
+
+        $input = $this->alertServices[$key] ?? [];
+        $frequencies = array_keys((array) config('alerts.frequencies', []));
+        $frequency = in_array($input['frequency'] ?? null, $frequencies, true)
+            ? $input['frequency']
+            : 'hourly';
+        $enabled = (bool) ($input['enabled'] ?? false);
+        $runAt = $this->normalizeRunAt($input['run_at'] ?? null);
+
+        // برای بازه‌ی «روزی یک‌بار»، ساعت اجرا لازم است؛ پیش‌فرض پایان شب.
+        if ($enabled && $frequency === 'daily' && $runAt === null) {
+            $runAt = '00:00';
+        }
+
+        $service->fill([
+            'enabled' => $enabled,
+            'frequency' => $frequency,
+            'run_at' => $runAt,
+            'next_run_at' => $enabled ? now() : null,
+        ])->save();
+
+        // نتیجه‌ی کش‌شده‌ی سرویس غیرفعال دیگر نمایش داده نشود.
+        if (! $enabled) {
+            app(AlertStore::class)->forget($key);
+        }
+
+        $this->alertServices[$key] = $this->presentAlertService($service->refresh());
+
+        session()->flash('success', "تنظیمات سرویس «{$definition['label']}» ذخیره شد.");
+    }
+
+    /** اجرای فوری یک سرویس هشدار و نمایش تعداد موارد ساخته‌شده. */
+    public function runAlertServiceNow(string $key): void
+    {
+        abort_unless($this->canManageAlerts(), 403);
+
+        try {
+            $count = app(AlertDispatcher::class)->run($key);
+
+            session()->flash('success', "سرویس هشدار اجرا شد؛ {$count} مورد ساخته شد.");
+        } catch (\Throwable $e) {
+            session()->flash('error', 'خطا در اجرای سرویس هشدار: '.$e->getMessage());
+        }
+
+        $this->loadAlertServices();
+    }
+
+    /** نرمال‌سازی ساعت ورودی به قالب HH:MM (با تبدیل ارقام فارسی). */
+    protected function normalizeRunAt(?string $value): ?string
+    {
+        if (! is_string($value) || trim($value) === '') {
+            return null;
+        }
+
+        $value = str_replace(
+            ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],
+            ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+            trim($value)
+        );
+
+        if (preg_match('/^(\d{1,2}):(\d{2})/', $value, $matches) !== 1) {
+            return null;
+        }
+
+        return sprintf('%02d:%02d', min(23, (int) $matches[1]), min(59, (int) $matches[2]));
+    }
+
+    /** فقط کاربری که به بخش تنظیمات دسترسی دارد می‌تواند سرویس‌ها را تغییر دهد. */
+    protected function canManageAlerts(): bool
+    {
+        return (bool) auth()->user()?->hasPermission('settings.view');
     }
 
     /*
@@ -626,6 +776,7 @@ class SettingsManager extends Component
         return view('livewire.settings.settings-manager', [
             'backups' => $this->backupFiles(),
             'lastBackup' => Setting::where('key', 'last_backup')->value('value'),
+            'alertFrequencies' => (array) config('alerts.frequencies', []),
         ]);
     }
 }

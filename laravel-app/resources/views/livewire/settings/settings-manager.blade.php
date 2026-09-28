@@ -28,12 +28,14 @@
                     مدیریت اطلاعات فروشگاه و تنظیمات نرم افزار
                 </small>
             </div>
-            <button type="button" wire:click="save" class="btn btn-success glow-btn" wire:loading.attr="disabled"
-                wire:target="save" title="ذخیره تغییرات ایجاد کرده">
-                <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
-                <i class="bi bi-check-circle" wire:loading.remove wire:target="save"></i>
-                ذخیره تغییرات
-            </button>
+            @if ($activeTab !== 'alerts')
+                <button type="button" wire:click="save" class="btn btn-success glow-btn" wire:loading.attr="disabled"
+                    wire:target="save" title="ذخیره تغییرات ایجاد کرده">
+                    <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
+                    <i class="bi bi-check-circle" wire:loading.remove wire:target="save"></i>
+                    ذخیره تغییرات
+                </button>
+            @endif
         </div>
 
         <div class="card-body">
@@ -95,6 +97,14 @@
                             wire:click="selectTab('hotkeys')">
                             <i class="bi bi-keyboard"></i>
                             کلیدهای میانبر
+                        </button>
+                    </li>
+
+                    <li class="nav-item">
+                        <button type="button" class="nav-link glow-btn @if ($activeTab === 'alerts') active @endif"
+                            wire:click="selectTab('alerts')">
+                            <i class="bi bi-bell"></i>
+                            هشدارها
                         </button>
                     </li>
 
@@ -876,6 +886,126 @@
                                             }
                                         </script>
                                     @endscript
+                                </div>
+
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- ============================ تب تنظیمات هشدارها ============================ --}}
+                    @if ($activeTab === 'alerts')
+                        <div class="card border-4 shadow-sm">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <strong>
+                                    <i class="bi bi-bell-fill text-fuchsia"></i>
+                                    سرویس‌های هشدار هوشمند
+                                </strong>
+                                <small class="text-muted">تغییرات هر سرویس بلافاصله ذخیره می‌شود</small>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered align-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>سرویس</th>
+                                                <th width="100">وضعیت</th>
+                                                <th width="240">بازه اجرا</th>
+                                                <th width="160">آخرین اجرا</th>
+                                                <th width="160">اجرای بعدی</th>
+                                                <th width="110">عملیات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($alertServices as $key => $service)
+                                                <tr wire:key="alert-service-{{ $key }}">
+                                                    <td>
+                                                        <div class="d-flex align-items-start gap-2">
+                                                            <i class="bi {{ $service['icon'] }} text-{{ $service['color'] }} fs-5"></i>
+                                                            <div>
+                                                                <div class="fw-semibold">{{ $service['label'] }}</div>
+                                                                <div class="text-muted" style="font-size:.75rem">
+                                                                    {{ $service['description'] }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="alert_enabled_{{ $key }}"
+                                                                wire:model="alertServices.{{ $key }}.enabled"
+                                                                wire:change="saveAlertService('{{ $key }}')"
+                                                                wire:loading.attr="disabled" wire:target="saveAlertService">
+                                                            <label class="form-check-label" for="alert_enabled_{{ $key }}">
+                                                                {{ $service['enabled'] ? 'فعال' : 'غیرفعال' }}
+                                                            </label>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <select class="form-select form-select-sm"
+                                                            wire:model="alertServices.{{ $key }}.frequency"
+                                                            wire:change="saveAlertService('{{ $key }}')"
+                                                            wire:loading.attr="disabled" wire:target="saveAlertService">
+                                                            @foreach ($alertFrequencies as $value => $label)
+                                                                <option value="{{ $value }}">{{ $label }}</option>
+                                                            @endforeach
+                                                        </select>
+
+                                                        @if ($service['frequency'] === 'daily')
+                                                            <input type="time"
+                                                                class="form-control form-control-sm mt-2"
+                                                                value="{{ $service['run_at'] ?? '00:00' }}"
+                                                                wire:model="alertServices.{{ $key }}.run_at"
+                                                                wire:change="saveAlertService('{{ $key }}')"
+                                                                wire:loading.attr="disabled" wire:target="saveAlertService">
+                                                            <small class="text-muted">ساعت اجرا (00:00 = پایان شب)</small>
+                                                        @endif
+                                                    </td>
+
+                                                    <td>
+                                                        {{ $service['last_run_at'] ? jalaliDateTime($service['last_run_at']) : '—' }}
+                                                    </td>
+
+                                                    <td>
+                                                        {{ $service['enabled'] && $service['next_run_at'] ? jalaliDateTime($service['next_run_at']) : '—' }}
+                                                    </td>
+
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                                            wire:click="runAlertServiceNow('{{ $key }}')"
+                                                            wire:loading.attr="disabled"
+                                                            wire:target="runAlertServiceNow('{{ $key }}')">
+                                                            <span wire:loading
+                                                                wire:target="runAlertServiceNow('{{ $key }}')"
+                                                                class="spinner-border spinner-border-sm"></span>
+                                                            <i class="bi bi-play-fill" wire:loading.remove
+                                                                wire:target="runAlertServiceNow('{{ $key }}')"></i>
+                                                            اجرا
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="6" class="text-center text-muted py-4">
+                                                        سرویس هشداری ثبت نشده است.
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="alert alert-info d-flex align-items-center mt-3 mb-0">
+                                    <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+                                    <div>
+                                        اجرای خودکار سرویس‌ها به زمان‌بند لاراول سپرده شده است؛ روی سرور باید
+                                        زمان‌بند (<code>php artisan schedule:work</code> یا cron) و یک worker صف
+                                        فعال باشد. برای دیدن نتیجه بدون انتظار، از دکمه‌ی «اجرا» استفاده کنید.
+                                    </div>
                                 </div>
 
                             </div>

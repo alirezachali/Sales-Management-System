@@ -459,6 +459,50 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
     top: 0;
     background: inherit;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.alerts-head-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.alerts-refresh-btn {
+    border: 1px solid var(--lux-border);
+    background: transparent;
+    color: inherit;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.alerts-refresh-btn:hover:not(:disabled) {
+    background: rgba(124, 92, 255, 0.16);
+    color: #a78bfa;
+}
+
+.alerts-refresh-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.alerts-foot {
+    position: sticky;
+    bottom: 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.7rem;
+    color: rgba(148, 163, 184, 0.85);
+    border-top: 1px solid var(--lux-border);
+    background: inherit;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
 }
 
 .alerts-group { padding: 0.5rem 0.7rem; }
