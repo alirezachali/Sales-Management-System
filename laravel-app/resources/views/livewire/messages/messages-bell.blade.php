@@ -1,7 +1,8 @@
 <div x-data="{ open: @js($open) }" @click.outside="open = false" @keydown.escape.window="open = false" class="alerts-bell">
 
     <button type="button" class="nav-icon-btn alerts-toggle" @click="open = !open" title="پیام‌های من">
-        <i class="bi bi-envelope{{ $this->count > 0 ? '-exclamation' : '' }}"></i>
+        {{-- <i class="bi bi-envelope{{ $this->count > 0 ? '-exclamation' : '' }}"></i> --}}
+        📫
         @if ($this->count > 0)
             <span class="alerts-badge">{{ $this->count > 9 ? '9+' : $this->count }}</span>
         @endif
@@ -10,11 +11,12 @@
     <div class="alerts-panel" x-show="open" x-cloak x-transition.opacity.duration.150ms>
         <div class="alerts-head d-flex justify-content-between align-items-center">
             <span>
-                <i class="bi bi-envelope-paper text-info"></i>
-                پیام‌های من
+                {{-- <i class="bi bi-envelope-paper text-info"></i> --}}
+                📬
+                پـیـام‌هـای مـن
             </span>
             @if ($this->count > 0)
-                <span class="badge bg-warning text-dark">{{ $this->count }} خوانده‌نشده</span>
+                <span class="badge bg-warning text-dark">{{ $this->count }} خـوانـده‌نـشـده</span>
             @endif
         </div>
 
@@ -24,7 +26,7 @@
                     <div class="d-flex justify-content-between align-items-start gap-2">
                         <div class="fw-semibold small">
                             @if (! $item->isRead())
-                                <span class="badge bg-primary text-dark">جدید</span>
+                                <span class="badge bg-primary text-dark">جـدیـد</span>
                             @endif
                             {{ $item->message?->subject ?: '(بدون موضوع)' }}
                         </div>
@@ -39,14 +41,14 @@
             @empty
                 <div class="alerts-empty">
                     <i class="bi bi-envelope-open"></i>
-                    <div>پیام جدیدی ندارید.</div>
+                    <div>پـیـام جـدیـدی نـداریـد.</div>
                 </div>
             @endforelse
         </div>
 
         <a href="{{ route('messages.inbox') }}" class="alerts-item text-center fw-bold border-top"
             style="border-color: var(--lux-border) !important">
-            مشاهده همه پیام‌ها
+            مـشـاهـده هـمـه پـیـام‌هـا
         </a>
     </div>
 </div>

@@ -1,7 +1,8 @@
 <div x-data="{ open: @js($open) }" @click.outside="open = false" @keydown.escape.window="open = false" class="alerts-bell">
 
     <button type="button" class="nav-icon-btn alerts-toggle" @click="open = !open" title="هشدارهای هوشمند">
-        <i class="bi bi-bell"></i>
+        {{-- <i class="bi bi-bell"></i> --}}
+        📢
         @if ($this->count > 0)
             <span class="alerts-badge">{{ $this->count > 9 ? '9+' : $this->count }}</span>
         @endif
@@ -10,7 +11,8 @@
     <div class="alerts-panel" x-show="open" x-cloak x-transition.opacity.duration.150ms>
         <div class="alerts-head">
             <span class="alerts-head-title">
-                <i class="bi bi-spark2s text-warning"></i>
+                {{-- <i class="bi bi-spark2s text-warning"></i> --}}
+                📢
                 <span>مـرکـز هـشـدار هـا</span>
             </span>
 

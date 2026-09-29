@@ -20,11 +20,12 @@
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
-                <h3 class="fw-bold mb-1">
-                    <i class="bi bi-gear-fill text-fuchsia"></i>
+                <h2 class="fw-bold mb-1">
+                    {{-- <i class="bi bi-gear-fill text-fuchsia"></i> --}}
+                    ⚙️
                     تنظیمات سیستم
-                </h3>
-                <small class="text-muted">
+                </h2>
+                <small class="">
                     مدیریت اطلاعات فروشگاه و تنظیمات نرم افزار
                 </small>
             </div>
@@ -50,7 +51,8 @@
                             aria-selected="{{ $activeTab === 'store' ? 'true' : 'false' }}"
                             class="nav-link glow-btn @if ($activeTab === 'store') active @endif"
                             wire:click="selectTab('store')">
-                            <i class="bi bi-shop"></i>
+                            {{-- <i class="bi bi-shop"></i> --}}
+                            🏪
                             اطلاعات فروشگاه
                         </button>
                     </li>
@@ -60,7 +62,8 @@
                             aria-selected="{{ $activeTab === 'sales' ? 'true' : 'false' }}"
                             class="nav-link glow-btn @if ($activeTab === 'sales') active @endif"
                             wire:click="selectTab('sales')">
-                            <i class="bi bi-receipt"></i>
+                            {{-- <i class="bi bi-receipt"></i> --}}
+                            🛒
                             فروش
                         </button>
                     </li>
@@ -70,7 +73,8 @@
                             aria-selected="{{ $activeTab === 'loyalty' ? 'true' : 'false' }}"
                             class="nav-link glow-btn @if ($activeTab === 'loyalty') active @endif"
                             wire:click="selectTab('loyalty')">
-                            <i class="bi bi-gem"></i>
+                            {{-- <i class="bi bi-gem"></i> --}}
+                            💎
                             باشگاه امتیازات
                         </button>
                     </li>
@@ -80,7 +84,8 @@
                             aria-selected="{{ $activeTab === 'print' ? 'true' : 'false' }}"
                             class="nav-link glow-btn @if ($activeTab === 'print') active @endif"
                             wire:click="selectTab('print')">
-                            <i class="bi bi-printer"></i>
+                            {{-- <i class="bi bi-printer"></i> --}}
+                            🖨️
                             چاپ
                         </button>
                     </li>
@@ -90,7 +95,8 @@
                             aria-selected="{{ $activeTab === 'barcode' ? 'true' : 'false' }}"
                             class="nav-link glow-btn @if ($activeTab === 'barcode') active @endif"
                             wire:click="selectTab('barcode')">
-                            <i class="bi bi-upc-scan"></i>
+                            {{-- <i class="bi bi-upc-scan"></i> --}}
+                            🏷️
                             بارکد و لیبل
                         </button>
                     </li>
@@ -100,7 +106,8 @@
                             aria-selected="{{ $activeTab === 'system' ? 'true' : 'false' }}"
                             class="nav-link glow-btn @if ($activeTab === 'system') active @endif"
                             wire:click="selectTab('system')">
-                            <i class="bi bi-cpu"></i>
+                            {{-- <i class="bi bi-cpu"></i> --}}
+                            🖥️
                             سیستم
                         </button>
                     </li>
@@ -110,7 +117,8 @@
                             aria-selected="{{ $activeTab === 'hotkeys' ? 'true' : 'false' }}"
                             class="nav-link glow-btn @if ($activeTab === 'hotkeys') active @endif"
                             wire:click="selectTab('hotkeys')">
-                            <i class="bi bi-keyboard"></i>
+                            {{-- <i class="bi bi-keyboard"></i> --}}
+                            ⌨️
                             کلیدهای میانبر
                         </button>
                     </li>
@@ -120,7 +128,8 @@
                             aria-selected="{{ $activeTab === 'alerts' ? 'true' : 'false' }}"
                             class="nav-link glow-btn @if ($activeTab === 'alerts') active @endif"
                             wire:click="selectTab('alerts')">
-                            <i class="bi bi-bell"></i>
+                            {{-- <i class="bi bi-bell"></i> --}}
+                            🔔
                             هشدارها
                         </button>
                     </li>
@@ -130,7 +139,8 @@
                             aria-selected="{{ $activeTab === 'backup' ? 'true' : 'false' }}"
                             class="nav-link glow-btn @if ($activeTab === 'backup') active @endif"
                             wire:click="selectTab('backup')">
-                            <i class="bi bi-database"></i>
+                            {{-- <i class="bi bi-database"></i> --}}
+                            🛡️
                             پشتیبان گیری
                         </button>
                     </li>
@@ -931,7 +941,7 @@
                                             <tr>
                                                 <th>سرویس</th>
                                                 {{-- <th width="100">وضعیت</th> --}}
-                                                <th width="240">بازه اجرا</th>
+                                                <th width="130">بازه اجرا</th>
                                                 <th width="160">آخرین اجرا</th>
                                                 <th width="160">اجرای بعدی</th>
                                                 <th width="110">عملیات</th>
@@ -945,7 +955,7 @@
                                                             <i class="bi {{ $service['icon'] }} text-{{ $service['color'] }} fs-5"></i>
                                                             <div>
                                                                 <div class="fw-semibold">{{ $service['label'] }}</div>
-                                                                <div class="text-muted" style="font-size:.75rem">
+                                                                <div class="text-info" style="font-size:.75rem">
                                                                     {{ $service['description'] }}
                                                                 </div>
                                                             </div>
@@ -977,26 +987,26 @@
 
                                                         @if ($service['frequency'] === 'daily')
                                                             <input type="time"
-                                                                class="form-control form-control-sm mt-2"
+                                                                class="form-control form-control-sm mt-1"
                                                                 value="{{ $service['run_at'] ?? '00:00' }}"
                                                                 wire:model="alertServices.{{ $key }}.run_at"
                                                                 wire:change="saveAlertService('{{ $key }}')"
                                                                 wire:loading.attr="disabled" wire:target="saveAlertService">
-                                                            <small class="text-muted">ساعت اجرا (00:00 = پایان شب)</small>
+                                                            {{-- <small class="text-muted">ساعت اجرا (00:00 = پایان شب)</small> --}}
                                                         @endif
                                                     </td>
 
-                                                    <td>
+                                                    <td class="fw-bold text-danger">
                                                         {{ $service['last_run_at'] ? jalaliDateTime($service['last_run_at']) : '—' }}
                                                     </td>
 
-                                                    <td>
+                                                    <td class="fw-bold text-success">
                                                         {{ $service['enabled'] && $service['next_run_at'] ? jalaliDateTime($service['next_run_at']) : '—' }}
                                                     </td>
 
                                                     <td class="text-center">
 
-                                                        
+
                                                         <div class="form-check form-switch">
                                                             <input class="form-check-input" type="checkbox"
                                                                 id="alert_enabled_{{ $key }}"
