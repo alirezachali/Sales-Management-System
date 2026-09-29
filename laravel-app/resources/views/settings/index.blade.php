@@ -7,3 +7,8 @@
         <livewire:settings.settings-manager />
     </div>
 @endsection
+
+{{-- پیمایش و نشانگر متحرک نوار تب‌های تنظیمات --}}
+@push('scripts')
+    <script src="{{ asset('js/settings-tabs.js') }}"></script>
+@endpush
