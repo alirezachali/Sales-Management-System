@@ -1,5 +1,130 @@
 <div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
+    <style>
+        /* ============ انتخاب روش پرداخت (مودال تسویه) ============ */
+        .pay-type-row {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: stretch;
+            gap: 8px;
+        }
+
+        .pay-type-btn {
+            --pay-accent: 32, 107, 196;
+            position: relative;
+            flex: 1 1 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 6px 10px;
+            background: var(--lux-surface, rgba(255, 255, 255, 0.045));
+            border: 2px solid var(--lux-border, rgba(148, 163, 184, 0.16));
+            border-radius: 18px;
+            color: inherit;
+            cursor: pointer;
+            outline: none;
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease,
+                background-color .2s ease;
+        }
+
+        /* آیکن در بزرگ‌ترین حالت ممکن، بدون بیرون زدن از کارت */
+        .pay-type-btn .pay-type {
+            display: block;
+            width: min(96px, 100%);
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
+            transition: transform .2s ease;
+        }
+
+        .pay-type-btn .label {
+            font-size: .82rem;
+            font-weight: 700;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        /* رنگ اختصاصی هر روش برای افکت هاور */
+        .pay-type-btn.pay-cash {
+            --pay-accent: 34, 197, 94;
+        }
+
+        .pay-type-btn.pay-card {
+            --pay-accent: 62, 166, 255;
+        }
+
+        .pay-type-btn.pay-credit {
+            --pay-accent: 249, 115, 22;
+        }
+
+        .pay-type-btn.pay-mixed {
+            --pay-accent: 217, 70, 239;
+        }
+
+        /* هاور: بالا آمدن، هاله رنگی و روشن‌تر شدن کارت */
+        .pay-type-btn:not(:disabled):hover,
+        .pay-type-btn:not(:disabled):focus-visible {
+            transform: translateY(-4px);
+            border-color: rgb(var(--pay-accent));
+            background-image: linear-gradient(180deg, rgba(var(--pay-accent), .16), rgba(var(--pay-accent), .04));
+            box-shadow: 0 12px 24px -12px rgba(var(--pay-accent), .85);
+        }
+
+        .pay-type-btn:not(:disabled):hover .pay-type,
+        .pay-type-btn:not(:disabled):focus-visible .pay-type {
+            transform: scale(1.08);
+        }
+
+        .pay-type-btn:not(:disabled):active {
+            transform: translateY(-1px) scale(.98);
+        }
+
+        /* حالت انتخاب‌شده: هاله و خط بردر سبز */
+        .pay-type-btn.active {
+            border-color: #22c55e;
+            background-image: linear-gradient(180deg, rgba(34, 197, 94, .18), rgba(34, 197, 94, .05));
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, .18), 0 0 18px 2px rgba(34, 197, 94, .45);
+        }
+
+        .pay-type-btn.active .label {
+            color: #22c55e;
+        }
+
+        .pay-type-btn.active .pay-type {
+            transform: scale(1.06);
+        }
+
+        /* گزینه غیرفعال (مثلاً نسیه بدون مشتری): قابل انتخاب نیست */
+        .pay-type-btn:disabled {
+            cursor: not-allowed;
+            opacity: .45;
+            filter: grayscale(.65);
+            box-shadow: none;
+        }
+
+        /* روی نمایشگرهای باریک هم هر 4 کارت در یک ردیف می‌مانند */
+        @media (max-width: 575.98px) {
+            .pay-type-row {
+                gap: 5px;
+            }
+
+            .pay-type-btn {
+                padding: 8px 4px 7px;
+                border-radius: 14px;
+            }
+
+            .pay-type-btn .pay-type {
+                max-width: 58px;
+            }
+
+            .pay-type-btn .label {
+                font-size: .68rem;
+            }
+        }
+    </style>
 
     @include('partials.flash-messages')
 
@@ -350,48 +475,36 @@
                                 <i class="bi bi-wallet2 me-1 text-primary"></i>روش پـرداخـت
                                 <span class="text-danger">*</span>
                             </label>
-                            <div class="row g-2 mb-1">
-                                <div class="col-3">
-                                    <button type="button"
-                                        class="{{ $paymentType === 'cash' ? 'active' : '' }}"
-                                        wire:click="setPaymentType('cash')">
-                                        <div class="">
-                                            <x-icon name="cash" />
-                                            <div class="label">نـقـدی</div>
-                                        </div>
-                                    </button>
-                                </div>
-                                <div class="col-3">
-                                    <button type="button"
-                                        class="{{ $paymentType === 'card' ? 'active' : '' }}"
-                                        wire:click="setPaymentType('card')">
-                                        <div class="">
-                                            <x-icon name="bank_cards" />
-                                            <div class="label">کـارتـخـوان</div>
-                                        </div>
-                                    </button>
-                                </div>
-                                <div class="col-3">
-                                    <button type="button"
-                                        class="{{ $paymentType === 'credit' ? 'active' : '' }} {{ !$customerId ? 'disabled' : '' }}"
-                                        @if ($customerId) wire:click="setPaymentType('credit')" @endif
-                                        title="{{ $customerId ? '' : 'نسیه فقط برای مشتری ثبت‌شده امکان‌پذیر است' }}">
-                                        <div class="">
-                                            <x-icon name="credit" />
-                                            <div class="label">نـسـیـه</div>
-                                        </div>
-                                    </button>
-                                </div>
-                                <div class="col-3">
-                                    <button type="button"
-                                        class="{{ $paymentType === 'mixed' ? 'active' : '' }}"
-                                        wire:click="setPaymentType('mixed')">
-                                        <div class="">
-                                            <x-icon name="cash_card" />
-                                            <div class="label">تـرکـیـبـی</div>
-                                        </div>
-                                    </button>
-                                </div>
+                            <div class="pay-type-row mt-2" dir="rtl">
+                                <button type="button"
+                                    class="pay-type-btn pay-cash {{ $paymentType === 'cash' ? 'active' : '' }}"
+                                    wire:click="setPaymentType('cash')" title="پرداخت نقدی">
+                                    <x-icon name="cash" class="pay-type" alt="نقدی" />
+                                    <span class="label">نـقـدی</span>
+                                </button>
+
+                                <button type="button"
+                                    class="pay-type-btn pay-card {{ $paymentType === 'card' ? 'active' : '' }}"
+                                    wire:click="setPaymentType('card')" title="پرداخت با کارتخوان">
+                                    <x-icon name="bank_cards" class="pay-type" alt="کارتخوان" />
+                                    <span class="label">کـارتـخـوان</span>
+                                </button>
+
+                                <button type="button"
+                                    class="pay-type-btn pay-credit {{ $paymentType === 'credit' ? 'active' : '' }}"
+                                    @disabled(! $customerId)
+                                    wire:click="setPaymentType('credit')"
+                                    title="{{ $customerId ? 'فروش نسیه' : 'نسیه فقط برای مشتری ثبت‌شده امکان‌پذیر است' }}">
+                                    <x-icon name="credit" class="pay-type" alt="نسیه" />
+                                    <span class="label">نـسـیـه</span>
+                                </button>
+
+                                <button type="button"
+                                    class="pay-type-btn pay-mixed {{ $paymentType === 'mixed' ? 'active' : '' }}"
+                                    wire:click="setPaymentType('mixed')" title="پرداخت ترکیبی نقدی و کارتخوان">
+                                    <x-icon name="cash_card" class="pay-type" alt="ترکیبی" />
+                                    <span class="label">تـرکـیـبـی</span>
+                                </button>
                             </div>
                             <div class="text-muted small mb-3">
                                 <i class="bi bi-lightbulb-fill text-warning me-1"></i>
