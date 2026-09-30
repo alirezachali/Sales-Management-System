@@ -16,16 +16,30 @@
             </a>
         </div>
 
-        {{--===== سمت چپ: منوی کاربر =====--}}
+        {{--===== وسط: تاریخ و ساعت (روی هم) =====--}}
+        <div class="navbar-clock" aria-label="تاریخ و ساعت">
+            <span class="navbar-clock-date">{{ verta()->format('l j F Y') }}</span>
+            <span id="liveClock" class="navbar-clock-time">--:--:--</span>
+        </div>
+
+        {{--===== سمت چپ: زنگ‌ها + منوی کاربر =====--}}
         @auth
-            <div class="navbar-section">
-                @php $avatarUrl = auth()->user()->avatar_url; @endphp
+            <div class="navbar-section navbar-user-area">
+
+                {{--===== آیکن‌های پیام‌ها و هشدارها، کنار تصویر پروفایل =====--}}
+                <div class="navbar-bells">
+                    @can('messages.inbox')
+                        <livewire:messages.messages-bell />
+                    @endcan
+                    <livewire:alerts-bell />
+                </div>
 
                 <div class="user-menu" x-data="{ open: false }" @keydown.escape.window="open = false">
 
                     {{--===== دکمه‌ی باز کردن منو با کلیک روی تصویر پروفایل =====--}}
                     <button type="button" class="user-menu-toggle glow-btn" @click="open = !open"
                         :class="{ 'is-open': open }" aria-haspopup="true" :aria-expanded="open.toString()">
+                        @php $avatarUrl = auth()->user()->avatar_url; @endphp
                         @if ($avatarUrl)
                             <img src="{{ $avatarUrl }}" class="user-avatar-img" alt="avatar">
                         @else
@@ -35,12 +49,18 @@
                         <i class="bi bi-chevron-down user-menu-caret"></i>
                     </button>
 
-                    {{--===== منوی بازشونده =====--}}
-                    <div class="user-dropdown" x-show="open" x-cloak x-transition
+                    {{--===== منوی بازشونده (شیشه‌ای با افکت بلور) =====--}}
+                    <div class="user-dropdown" x-show="open" x-cloak
+                        x-transition:enter="dropdown-enter"
+                        x-transition:enter-start="dropdown-enter-start"
+                        x-transition:enter-end="dropdown-enter-end"
+                        x-transition:leave="dropdown-leave"
+                        x-transition:leave-start="dropdown-leave-start"
+                        x-transition:leave-end="dropdown-leave-end"
                         @click.outside="open = false">
 
                         {{--===== سربرگ اطلاعات کاربر =====--}}
-                        <div class="user-dropdown-head d-flex">
+                        <div class="user-dropdown-head">
                             @if ($avatarUrl)
                                 <img src="{{ $avatarUrl }}" class="dropdown-avatar" alt="avatar">
                             @else
@@ -95,7 +115,7 @@
                         <div class="dropdown-divider-line"></div>
 
                         {{--===== پروفایل =====--}}
-                        <a class="sidebar-link glow-btn" href="{{ route('profile.show', auth()->user()->username) }}">
+                        <a class="dropdown-item-link glow-btn" href="{{ route('profile.show', auth()->user()->username) }}">
                             <i class="bi bi-person"></i>
                             <span>{{ __('navbar.profile') }}</span>
                         </a>
@@ -103,7 +123,7 @@
                         {{--===== پیام‌های من =====--}}
                         @cannot('messages.view')
                             @php $unreadMessages = auth()->user()->unreadMessagesCount(); @endphp
-                            <a class="sidebar-link glow-btn" href="{{ route('messages.inbox') }}">
+                            <a class="dropdown-item-link glow-btn" href="{{ route('messages.inbox') }}">
                                 <i class="bi bi-envelope"></i>
                                 <span>
                                     {{ __('navbar.messages') }}
@@ -113,20 +133,19 @@
                                 </span>
                             </a>
                         @endcannot
+
                         {{--===== تنظیمات =====--}}
                         @can('settings.view')
-                            <a class="sidebar-link glow-btn" href="{{ route('settings.index') }}">
+                            <a class="dropdown-item-link glow-btn" href="{{ route('settings.index') }}">
                                 <i class="bi bi-gear"></i>
                                 <span>{{ __('navbar.settings') }}</span>
                             </a>
                         @endcan
 
-                        {{-- <div class="dropdown-divider-line"></div> --}}
-
                         {{--===== خروج از سیستم =====--}}
                         <form action="{{ route('logout') }}" method="POST" class="m-0">
                             @csrf
-                            <button type="submit" class="user-dropdown-item sidebar-link glow-btn logout-item">
+                            <button type="submit" class="dropdown-item-link glow-btn logout-item">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>{{ __('navbar.logout_btn') }}</span>
                             </button>
@@ -139,3 +158,18 @@
 
     </div>
 </nav>
+
+{{--===== ساعت زنده (به‌جای ساعت فوتر حذف‌شده) =====--}}
+<script>
+    (function () {
+        var el = document.getElementById('liveClock');
+        if (!el) return;
+
+        function updateClock() {
+            el.textContent = new Date().toLocaleTimeString('fa-IR');
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+    })();
+</script>

@@ -27,7 +27,6 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/footer.css') }}" rel="stylesheet">
     <link href="{{ asset('css/roles.css') }}" rel="stylesheet">
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
     <link href="{{ asset('css/back-to-top.css') }}" rel="stylesheet">
@@ -70,9 +69,6 @@
     </main>
 
 </div>
-
-<!-- Footer -->
-@include('partials.footer')
 
 <!-- دکمه بازگشت به بالای صفحه؛ بعد از اسکرول ظاهر می‌شود -->
 <button type="button" class="back-to-top"
