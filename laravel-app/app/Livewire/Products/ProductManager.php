@@ -6,15 +6,19 @@ use App\Livewire\Concerns\AuthorizesActions;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\StockMovement;
 use App\Services\BarcodeService;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class ProductManager extends Component
 {
     use WithPagination;
+    use WithFileUploads;
     use AuthorizesActions;
 
     // protected string $paginationTheme = 'bootstrap';
@@ -42,6 +46,10 @@ class ProductManager extends Component
     public $stock = 0;
     public string $unit = 'عدد';
     public string $is_active = '1';
+
+    // تصاویر محصول: صف جدید (TemporaryUploadedFile) و تصاویر ذخیره‌شده‌ی فعلی
+    public array $photos = [];
+    public array $existingImages = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -108,6 +116,11 @@ class ProductManager extends Component
             'stock' => ['required', 'numeric', 'min:0'],
             'unit' => ['required', 'string', 'max:20'],
             'is_active' => ['required', 'boolean'],
+            'photos' => ['array', 'max:10'],
+            'photos.*' => ['image', 'mimes:jpeg,png,jpg,webp,gif', 'max:4096'],
+            'existingImages' => ['array', 'max:10'],
+            'existingImages.*.id' => ['nullable', 'integer'],
+            'existingImages.*.path' => ['nullable', 'string'],
             // 'brand_id' validation handled above
         ];
     }
@@ -123,6 +136,10 @@ class ProductManager extends Component
             'sell_price.required' => 'وارد کردن قیمت فروش الزامی است.',
             'stock.required' => 'وارد کردن موجودی الزامی است.',
             'unit.required' => 'وارد کردن واحد الزامی است.',
+            'photos.max' => 'حداکثر ۱۰ تصویر مجاز است.',
+            'photos.*.image' => 'فایل انتخاب‌شده باید تصویر باشد.',
+            'photos.*.mimes' => 'فرمت تصویر مجاز نیست (jpeg, png, jpg, webp, gif).',
+            'photos.*.max' => 'هر تصویر حداکثر ۴ مگابایت باشد.',
         ];
     }
 
@@ -139,7 +156,7 @@ class ProductManager extends Component
 
     public function openEditModal(int $productId): void
     {
-        $product = Product::findOrFail($productId);
+        $product = Product::with('images')->findOrFail($productId);
 
         $this->editingProductId = $product->id;
         $this->barcode = $product->barcode;
@@ -151,9 +168,51 @@ class ProductManager extends Component
         $this->stock = $product->stock;
         $this->unit = $product->unit;
         $this->is_active = $product->is_active ? '1' : '0';
+        $this->photos = [];
+        $this->existingImages = $product->images->map(fn ($img) => [
+            'id' => $img->id,
+            'path' => $img->path,
+        ])->all();
 
         $this->resetErrorBag();
         $this->showFormModal = true;
+    }
+
+    /**
+     * حذف یک تصویر ذخیره‌شده‌ی موجود (فقط از لیست محلی؛ هنگام ذخیره اعمال می‌شود)
+     */
+    public function removeExistingImage(int $imageId): void
+    {
+        $this->existingImages = array_values(array_filter(
+            $this->existingImages,
+            fn ($img) => (int) $img['id'] !== $imageId
+        ));
+    }
+
+    /**
+     * حذف یک تصویر موقتِ تازه انتخاب‌شده از صف
+     */
+    public function removePhoto(int $index): void
+    {
+        $photos = $this->photos;
+        unset($photos[$index]);
+        $this->photos = array_values($photos);
+    }
+
+    /**
+     * جابه‌جایی ترتیب تصاویر موقت (بالا/پایین)
+     */
+    public function movePhoto(int $index, string $direction): void
+    {
+        $photos = $this->photos;
+        $target = $direction === 'up' ? $index - 1 : $index + 1;
+        if ($target < 0 || $target >= count($photos)) {
+            return;
+        }
+        $tmp = $photos[$target];
+        $photos[$target] = $photos[$index];
+        $photos[$index] = $tmp;
+        $this->photos = array_values($photos);
     }
 
     public function confirmDelete(int $productId): void
@@ -212,9 +271,50 @@ class ProductManager extends Component
             session()->flash('success', 'کالا با موفقیت ثبت شد');
         }
 
+        // ذخیره تصاویر
+        $this->syncImages($product);
+
         $this->showFormModal = false;
         $this->resetForm();
         $this->resetPage();
+    }
+
+    /**
+     * همگام‌سازی تصاویر محصول:
+     *  - حذف تصاویر موجودی که کاربر از لیست برداشته است (هم از DB و هم از دیسک)
+     *  - ذخیره تصاویر جدید انتخاب‌شده
+     */
+    protected function syncImages(Product $product): void
+    {
+        // ۱) حذف تصاویری که در لیست باقی‌مانده نیستند
+        $keptIds = collect($this->existingImages)
+            ->pluck('id')
+            ->filter()
+            ->map(fn ($id) => (int) $id)
+            ->all();
+
+        $removedImages = $product->images()
+            ->whereNotIn('id', $keptIds)
+            ->get();
+
+        foreach ($removedImages as $image) {
+            if (Storage::disk('public')->exists($image->path)) {
+                Storage::disk('public')->delete($image->path);
+            }
+            $image->delete();
+        }
+
+        // تعیین sort_orderِ ادامه‌دار بر اساس تصاویر باقی‌مانده به ترتیب موجود
+        $baseOrder = $product->images()->whereIn('id', $keptIds)->count();
+
+        // ۲) ذخیره تصاویر جدید
+        foreach ($this->photos as $photo) {
+            $path = $photo->store('products', 'public');
+            $product->images()->create([
+                'path' => $path,
+                'sort_order' => $baseOrder++,
+            ]);
+        }
     }
 
     /*
@@ -227,7 +327,13 @@ class ProductManager extends Component
         $this->authorizeAction('products.delete');
 
         if ($this->deletingId) {
-            Product::findOrFail($this->deletingId)->delete();
+            $product = Product::with('images')->findOrFail($this->deletingId);
+            foreach ($product->images as $image) {
+                if (Storage::disk('public')->exists($image->path)) {
+                    Storage::disk('public')->delete($image->path);
+                }
+            }
+            $product->delete();
             session()->flash('success', 'کالا با موفقیت حذف شد');
         }
 
@@ -253,12 +359,14 @@ class ProductManager extends Component
         $this->stock = 0;
         $this->unit = 'عدد';
         $this->is_active = '1';
+        $this->photos = [];
+        $this->existingImages = [];
         $this->resetErrorBag();
     }
 
     public function render()
     {
-        $query = Product::with(['category', 'brand']);
+        $query = Product::with(['category', 'brand', 'images']);
 
         if ($this->search !== '') {
             $query->where(function ($q) {

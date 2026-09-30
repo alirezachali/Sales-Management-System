@@ -96,6 +96,150 @@
         }
     </style>
 
+    {{-- ======== استایل انتخاب و پیش‌نمایش تصاویر محصول ======== --}}
+    <style>
+        .product-images-card {
+            background: linear-gradient(160deg, rgba(66,99,235,.05), rgba(255,255,255,.6));
+            border: 1px solid #e3e7f3;
+            border-radius: 18px;
+            padding: 16px;
+        }
+
+        .product-images-dropzone {
+            position: relative;
+            border: 2px dashed #cfd6e8;
+            border-radius: 14px;
+            background: rgba(255,255,255,.75);
+            transition: border-color .2s ease, background .2s ease, transform .2s ease;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .product-images-dropzone:hover {
+            border-color: var(--tblr-primary, #4263eb);
+            background: rgba(255,255,255,.95);
+        }
+        .product-images-dropzone.is-invalid {
+            border-color: #dc3545;
+        }
+        .product-images-dropzone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .product-images-dropzone-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 22px 16px;
+            text-align: center;
+            pointer-events: none;
+        }
+        .product-images-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--tblr-primary, #4263eb), #7048e8);
+            color: #fff;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 18px rgba(66,99,235,.28);
+            margin-bottom: 6px;
+        }
+        .product-images-title {
+            font-weight: 700;
+            color: #2b3350;
+            font-size: .95rem;
+        }
+        .product-images-sub {
+            font-size: .8rem;
+            color: #6b7390;
+        }
+
+        .product-images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .product-image-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #e3e7f3;
+            background: #f2f4fb;
+            box-shadow: 0 4px 10px rgba(20,30,70,.06);
+        }
+        .product-image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .product-image-order {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(15,20,45,.65);
+            color: #fff;
+            font-size: .65rem;
+            font-weight: 700;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .product-image-actions {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: rgba(15,20,45,.35);
+            opacity: 0;
+            transition: opacity .18s ease;
+        }
+        .product-image-item:hover .product-image-actions {
+            opacity: 1;
+        }
+        .product-image-del,
+        .product-image-move {
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: .85rem;
+            cursor: pointer;
+            transition: transform .12s ease, background .12s ease;
+        }
+        .product-image-del {
+            background: #e03131;
+        }
+        .product-image-move {
+            background: rgba(255,255,255,.85);
+            color: #2b3350;
+        }
+        .product-image-del:hover,
+        .product-image-move:hover {
+            transform: scale(1.08);
+        }
+    </style>
+
 
     {{--======== کارت‌های آماری ========--}}
     <div class="row row-cards mb-4">
@@ -195,6 +339,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th width="60"></th>
                             <th width="130">بارکد</th>
                             <th>نام کالا</th>
                             <th>دسته بندی</th>
@@ -207,6 +352,24 @@
                         @forelse ($products as $product)
                             <tr wire:key="product-{{ $product->id }}">
                                 <td>{{ $loop->iteration + ($products->currentPage() - 1) * $products->perPage() }}</td>
+                                <td>
+                                    @if ($product->images->isNotEmpty() && \Illuminate\Support\Facades\Storage::disk('public')->exists($product->images->first()->path))
+                                        <img src="{{ asset('storage/' . $product->images->first()->path) }}"
+                                            alt="{{ $product->name }}"
+                                            class="rounded-3 border"
+                                            style="width: 44px; height: 44px; object-fit: cover;"
+                                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="d-none align-items-center justify-content-center rounded-3 bg-secondary bg-opacity-25"
+                                            style="width: 44px; height: 44px;">
+                                            <i class="bi bi-image text-muted"></i>
+                                        </div>
+                                    @else
+                                        <div class="d-flex align-items-center justify-content-center rounded-3 bg-secondary bg-opacity-25"
+                                            style="width: 44px; height: 44px;">
+                                            <i class="bi bi-image text-muted"></i>
+                                        </div>
+                                    @endif
+                                </td>
                                 <td>
                                     <strong>
                                         {{ $product->barcode }}
@@ -261,7 +424,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">
+                                <td colspan="8" class="text-center py-4 text-muted">
                                     هیچ کالایی ثبت نشده است.
                                 </td>
                             </tr>
@@ -298,6 +461,71 @@
                         </div>
 
                         <div class="modal-body">
+
+                            {{--============= کارت انتخاب تصاویر محصول =============--}}
+                            <div class="product-images-card mb-3">
+                                <div class="product-images-dropzone @error('photos') is-invalid @enderror">
+                                    <input type="file" wire:model="photos" multiple
+                                        accept="image/jpeg,image/png,image/jpg,image/webp,image/gif"
+                                        id="product-photos-input">
+                                    <div class="product-images-dropzone-inner">
+                                        <div class="product-images-icon"><i class="bi bi-images"></i></div>
+                                        <div class="product-images-title">تصاویر محصول را انتخاب کنید</div>
+                                        <div class="product-images-sub">درگ کنید یا کلیک کنید تا یک تا چند تصویر انتخاب شود</div>
+                                        <small class="text-muted">فرمت: jpeg, png, jpg, webp, gif &nbsp;•&nbsp; حداکثر ۴MB و ۱۰ تصویر</small>
+                                    </div>
+                                </div>
+                                @error('photos')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                                @error('photos.*')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+
+                                {{-- پیش‌نمایش تصاویر --}}
+                                @if ($existingImages || $photos)
+                                    <div class="product-images-grid">
+                                        @foreach ($existingImages as $index => $img)
+                                            <div class="product-image-item" wire:key="exist-{{ $img['id'] }}">
+                                                <img src="{{ asset('storage/' . $img['path']) }}"
+                                                    alt="تصویر محصول" onerror="this.style.visibility='hidden';">
+                                                <div class="product-image-actions">
+                                                    <button type="button" class="product-image-del"
+                                                        wire:click="removeExistingImage({{ $img['id'] }})"
+                                                        title="حذف تصویر">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        @endforeach
+
+                                        @foreach ($photos as $index => $photo)
+                                            <div class="product-image-item" wire:key="photo-{{ $loop->index }}">
+                                                <img src="{{ $photo->temporaryUrl() }}" alt="تصویر جدید">
+                                                <span class="product-image-order">{{ $index + 1 }}</span>
+                                                <div class="product-image-actions">
+                                                    <button type="button" class="product-image-move"
+                                                        wire:click="movePhoto({{ $index }}, 'up')"
+                                                        title="جابه‌جایی به بالا">
+                                                        <i class="bi bi-arrow-bar-up"></i>
+                                                    </button>
+                                                    <button type="button" class="product-image-move"
+                                                        wire:click="movePhoto({{ $index }}, 'down')"
+                                                        title="جابه‌جایی به پایین">
+                                                        <i class="bi bi-arrow-bar-down"></i>
+                                                    </button>
+                                                    <button type="button" class="product-image-del"
+                                                        wire:click="removePhoto({{ $index }})"
+                                                        title="حذف تصویر">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+
                             <div class="row g-3">
 
                                 <div class="col-md-5">
