@@ -7,7 +7,9 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\PurchaseInvoice;
 use App\Models\StockMovement;
+use App\Models\Supplier;
 use App\Services\BarcodeService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -59,6 +61,24 @@ class ProductManager extends Component
     public bool $showFormModal = false;
     public bool $showDeleteModal = false;
     public ?int $deletingId = null;
+    public bool $showDetailsModal = false;
+
+    /*
+    |--------------------------------------------------------------------------
+    |                     داده‌های مودال جزئیات محصول                      |
+    |--------------------------------------------------------------------------
+    | همه به‌صورت آرایه/اسکالر نگه داشته می‌شوند تا سریال‌سازی Livewire
+    | سبک و بدون دردسر هیدریت مدل باشد.
+    */
+    public ?array $detailProduct = null;
+    public array $detailImages = [];
+    public array $detailWarehouseStocks = [];
+    public array $detailSuppliers = [];
+    public ?array $detailBrand = null;
+    public float $detailSoldQuantity = 0;
+    public float $detailWarehouseTotal = 0;
+    public string $detailBarcodeSvg = '';
+    public string $detailSupplierSource = '';
 
     /*
     |--------------------------------------------------------------------------
@@ -179,6 +199,124 @@ class ProductManager extends Component
     }
 
     /**
+     * باز کردن مودال جزئیات کامل محصول و آماده‌سازی همه‌ی داده‌های نمایشی
+     */
+    public function openDetailsModal(int $productId): void
+    {
+        $product = Product::with([
+            'category',
+            'brand',
+            'images',
+            'warehouseStocks.warehouse',
+        ])->findOrFail($productId);
+
+        $this->detailProduct = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'barcode' => $product->barcode,
+            'category_name' => $product->category?->name,
+            'buy_price' => (float) $product->buy_price,
+            'sell_price' => (float) $product->sell_price,
+            'stock' => (float) $product->stock,
+            'formatted_stock' => $product->formatted_stock,
+            'unit' => $product->unit,
+            'is_active' => (bool) $product->is_active,
+            'created_at' => $product->created_at?->format('Y/m/d H:i'),
+            'updated_at' => $product->updated_at?->format('Y/m/d H:i'),
+        ];
+
+        // تصاویر محصول
+        $this->detailImages = $product->images
+            ->map(fn ($img) => ['path' => $img->path])
+            ->all();
+
+        // موجودی تفکیک‌شده در هر انبار
+        $this->detailWarehouseStocks = $product->warehouseStocks
+            ->map(fn ($row) => [
+                'warehouse_name' => $row->warehouse?->name ?? 'انبار حذف‌شده',
+                'warehouse_code' => $row->warehouse?->code,
+                'quantity' => (float) $row->quantity,
+                'is_default' => (bool) ($row->warehouse?->is_default),
+            ])
+            ->all();
+
+        $this->detailWarehouseTotal = (float) $product->warehouseStocks->sum('quantity');
+
+        // کارت برند (یا حالت پیش‌فرض در صورت نبود برند)
+        $this->detailBrand = $product->brand ? [
+            'id' => $product->brand->id,
+            'name' => $product->brand->name,
+            'description' => $product->brand->description,
+            'logo' => $product->brand->logo,
+            'is_active' => (bool) $product->brand->is_active,
+            'suppliers_count' => $product->brand->suppliers()->count(),
+        ] : null;
+
+        // تامین‌کنندگان: اول از تاریخچه خرید همین کالا، در نبود آن از برند
+        // منبع نمایش نیز داخل همین متد تعیین می‌شود تا با شاخه‌ی واقعی هم‌خوان باشد.
+        $this->detailSuppliers = $this->resolveProductSuppliers($product);
+
+        // تصویر بارکد (SVG) برای نمایش در مودال
+        $this->detailBarcodeSvg = $product->barcode
+            ? app(BarcodeService::class)->render($product->barcode)
+            : '';
+
+        // تعداد کل فروخته‌شده از این کالا
+        $this->detailSoldQuantity = (float) $product->saleItems()->sum('quantity');
+
+        $this->resetErrorBag();
+        $this->showDetailsModal = true;
+    }
+
+    public function closeDetailsModal(): void
+    {
+        $this->showDetailsModal = false;
+        $this->detailProduct = null;
+        $this->detailImages = [];
+        $this->detailWarehouseStocks = [];
+        $this->detailSuppliers = [];
+        $this->detailBrand = null;
+        $this->detailSoldQuantity = 0;
+        $this->detailWarehouseTotal = 0;
+        $this->detailBarcodeSvg = '';
+        $this->detailSupplierSource = '';
+    }
+
+    /**
+     * یافتن تامین‌کنندگان یک کالا.
+     * ترتیب اولویت: تامین‌کنندگانی که واقعاً این کالا را تامین کرده‌اند
+     * (از روی فاکتورهای خرید)، و در نبود آن تامین‌کنندگان برند کالا.
+     * همچنین detailSupplierSource را با شاخهٔ واقعیِ انتخاب‌شده مقداردهی می‌کند.
+     */
+    protected function resolveProductSuppliers(Product $product): array
+    {
+        $supplierIds = PurchaseInvoice::query()
+            ->whereHas('items', fn ($q) => $q->where('product_id', $product->id))
+            ->pluck('supplier_id')
+            ->filter()
+            ->unique();
+
+        if ($supplierIds->isNotEmpty()) {
+            $suppliers = Supplier::whereIn('id', $supplierIds)->get();
+            $this->detailSupplierSource = 'purchase';
+        } else {
+            $suppliers = $product->brand ? $product->brand->suppliers : collect();
+            $this->detailSupplierSource = $suppliers->isNotEmpty() ? 'brand' : '';
+        }
+
+        return $suppliers->map(fn ($supplier) => [
+            'id' => $supplier->id,
+            'name' => $supplier->name,
+            'company_name' => $supplier->company_name,
+            'mobile' => $supplier->mobile,
+            'city' => $supplier->city,
+            'type' => $supplier->type,
+            'logo' => $supplier->logo,
+            'is_active' => (bool) $supplier->is_active,
+        ])->values()->all();
+    }
+
+    /**
      * حذف یک تصویر ذخیره‌شده‌ی موجود (فقط از لیست محلی؛ هنگام ذخیره اعمال می‌شود)
      */
     public function removeExistingImage(int $imageId): void
@@ -225,6 +363,7 @@ class ProductManager extends Component
     {
         $this->showFormModal = false;
         $this->showDeleteModal = false;
+        $this->closeDetailsModal();
         $this->resetForm();
     }
 

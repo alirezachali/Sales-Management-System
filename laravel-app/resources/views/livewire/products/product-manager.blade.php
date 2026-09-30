@@ -238,6 +238,176 @@
         .product-image-move:hover {
             transform: scale(1.08);
         }
+
+        /* ======== مودال جزئیات محصول ======== */
+        .product-details-header {
+            background: linear-gradient(135deg, rgba(66,99,235,.10), rgba(112,72,232,.06));
+            border-bottom: 1px solid #e3e7f3;
+        }
+        .product-details-avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--tblr-primary, #4263eb), #7048e8);
+            color: #fff;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 18px rgba(66,99,235,.3);
+        }
+        .product-details-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+            gap: 10px;
+        }
+        .product-details-thumb {
+            aspect-ratio: 1 / 1;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #e3e7f3;
+            background: #f2f4fb;
+            box-shadow: 0 4px 10px rgba(20,30,70,.06);
+            display: block;
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+        .product-details-thumb:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(20,30,70,.14);
+        }
+        .product-details-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .product-details-empty {
+            aspect-ratio: 3 / 2;
+            border: 2px dashed #dcdfe9;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #8b93ad;
+            background: rgba(248,249,253,.7);
+            font-size: .85rem;
+        }
+        .product-details-empty i {
+            font-size: 1.8rem;
+        }
+
+        .product-details-specs {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .product-details-specs li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 9px 0;
+            border-bottom: 1px dashed #c57ee0;
+        }
+        .product-details-specs li:last-child {
+            border-bottom: none;
+        }
+        .product-details-specs .spec-label {
+            color: #b3b4b8;
+            font-size: .85rem;
+            white-space: nowrap;
+        }
+        .product-details-specs .spec-label i {
+            color: var(--tblr-primary, #c20caa);
+        }
+        .product-details-specs .spec-value {
+            font-weight: 700;
+            color: #909194;
+            text-align: left;
+        }
+
+        .product-details-barcode {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            background: #3d3d3d;
+            /* border: 1px solid #f3eef3; */
+            text-align: center;
+        }
+        .product-details-barcode svg {
+            max-width: 100%;
+            height: auto;
+        }
+        .product-details-barcode-code {
+            margin-top: 6px;
+            font-size: .8rem;
+            letter-spacing: 2px;
+            color: #030303;
+        }
+
+        .product-stat-card {
+            height: 100%;
+            background: #26252c;
+            /* border: 1px solid #e3e7f3; */
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 4px 12px rgba(20,30,70,.05);
+            text-align: center;
+        }
+        .product-stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+        }
+        .product-stat-label {
+            font-size: .78rem;
+            color: #c521ee;
+            margin-bottom: 2px;
+        }
+        .product-stat-value {
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: #dadbdd;
+        }
+        .product-stat-value small {
+            font-size: .7rem;
+            font-weight: 500;
+            color: #aeaeb1;
+        }
+
+        .brand-logo-placeholder {
+            width: 84px;
+            height: 84px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--tblr-primary, #4263eb), #7048e8);
+            color: #fff;
+            font-size: 2rem;
+            box-shadow: 0 .35rem .9rem rgba(66,99,235,.25);
+        }
+        .brand-logo-placeholder--muted {
+            background: #eef0f6;
+            color: #a3aabd;
+            box-shadow: none;
+        }
+        .brand-empty-state {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px;
+            border: 1px dashed #dcdfe9;
+            border-radius: 14px;
+            background: rgba(248,249,253,.7);
+        }
     </style>
 
 
@@ -342,10 +512,10 @@
                             <th width="60"></th>
                             <th width="130">بارکد</th>
                             <th>نام کالا</th>
-                            <th>دسته بندی</th>
+                            {{-- <th>دسته بندی</th> --}}
                             <th width="130">قیمت ({{ setting('currency', 'تومان') }})</th>
                             <th width="100">موجودی</th>
-                            <th width="130">عملیات</th>
+                            <th width="160">عملیات</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -380,7 +550,7 @@
                                         {{ $product->name }}
                                     </strong>
                                 </td>
-                                <td>{{ $product->category?->name }}</td>
+                                {{-- <td>{{ $product->category?->name }}</td> --}}
                                 <td>
                                     <strong class="text-success">
                                         {{ number_format($product->sell_price) }}
@@ -393,6 +563,13 @@
                                     </span>
                                 </td>
                                 <td>
+                                    {{--===== دکمه نمایش جزئیات کامل کالا =====--}}
+                                    <button type="button" class="btn btn-sm btn-outline-info"
+                                        wire:click="openDetailsModal({{ $product->id }})"
+                                        title="نمایش اطلاعات کامل این محصول">
+                                        <i class="bi bi-info-circle"></i>
+                                    </button>
+
                                     {{--===== دکمه ویرایش کالا =====--}}
                                     @can('products.edit')
                                     <button type="button" class="btn btn-sm btn-outline-warning"
@@ -643,6 +820,371 @@
 
                 </form>
 
+            </div>
+        </div>
+    @endif
+
+    {{-- =================== مودال جزئیات کامل محصول =================== --}}
+    @if ($showDetailsModal && $detailProduct)
+        <div class="modal modal-blur fade show d-block" tabindex="-1" style="background: rgba(0,0,0,.5);"
+            wire:key="product-details-modal">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content glass-card overflow-hidden">
+
+                    {{-- هدر --}}
+                    <div class="modal-header product-details-header">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="product-details-avatar">
+                                <i class="bi bi-box-seam-fill"></i>
+                            </span>
+                            <div>
+                                <h5 class="modal-title fw-bold mb-2 mt-2">{{ $detailProduct['name'] }}</h5>
+                                <div class="d-flex align-items-center gap-2 flex-wrap mb-2 mt-2">
+                                    <span class="badge bg-primary text-dark" dir="ltr">
+                                        {{ $detailProduct['barcode'] }}
+                                    </span>
+                                    @if ($detailProduct['is_active'])
+                                        <span class="badge bg-success text-dark">
+                                            <i class="bi bi-check-circle me-1"></i>فعال
+                                        </span>
+                                    @else
+                                        <span class="badge bg-secondary text-dark">
+                                            <i class="bi bi-x-circle me-1"></i>غیرفعال
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" wire:click="closeDetailsModal" title="بستن"></button>
+                    </div>
+
+                    <div class="modal-body pt-3 d-flex flex-column gap-3">
+
+                        {{-- ============ کارت ۱: تصاویر و مشخصات پایه ============ --}}
+                        <div class="card mb-0 shadow-sm">
+                            <div class="card-header bg-primary-lt py-2">
+                                <h4 class="card-title mt-2 mb-2 fw-bold">
+                                    <i class="bi bi-images text-primary"></i>
+                                    تصاویر و مشخصات کالا
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    {{-- گالری تصاویر --}}
+                                    <div class="col-lg-7">
+                                        @if (count($detailImages))
+                                            <div class="product-details-gallery">
+                                                @foreach ($detailImages as $image)
+                                                    <a href="{{ asset('storage/' . $image['path']) }}" target="_blank"
+                                                        class="product-details-thumb" wire:key="detail-img-{{ $loop->index }}">
+                                                        <img src="{{ asset('storage/' . $image['path']) }}"
+                                                            alt="{{ $detailProduct['name'] }}">
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <div class="product-details-empty">
+                                                <i class="bi bi-image"></i>
+                                                <span>تصویری برای این محصول ثبت نشده است.</span>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    {{-- مشخصات --}}
+                                    <div class="col-lg-5">
+                                        <ul class="product-details-specs">
+                                            <li>
+                                                <span class="spec-label"><i class="bi bi-tag"></i> نام کالا</span>
+                                                <span class="spec-value">{{ $detailProduct['name'] }}</span>
+                                            </li>
+                                            <li>
+                                                <span class="spec-label"><i class="bi bi-diagram-3"></i> دسته‌بندی</span>
+                                                <span class="spec-value">
+                                                    {{ $detailProduct['category_name'] ?: 'بدون دسته‌بندی' }}
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="spec-label"><i class="bi bi-upc-scan"></i> بارکد</span>
+                                                <span class="spec-value" dir="ltr">{{ $detailProduct['barcode'] }}</span>
+                                            </li>
+                                            <li>
+                                                <span class="spec-label"><i class="bi bi-rulers"></i> واحد</span>
+                                                <span class="spec-value">{{ $detailProduct['unit'] }}</span>
+                                            </li>
+                                        </ul>
+
+                                        {{-- تصویر بارکد --}}
+                                        <div class="product-details-barcode">
+                                            @if ($detailBarcodeSvg)
+                                                {!! $detailBarcodeSvg !!}
+                                                <div class="product-details-barcode-code" dir="ltr">
+                                                    {{ $detailProduct['barcode'] }}
+                                                </div>
+                                            @else
+                                                <span class="text-muted small">بارکدی ثبت نشده است.</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- ============ کارت ۲: قیمت‌ها، موجودی و فروش ============ --}}
+                        <div class="row g-3">
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="product-stat-card">
+                                    <div class="product-stat-icon bg-azure-lt text-azure">
+                                        <i class="bi bi-cart-dash"></i>
+                                    </div>
+                                    <div class="product-stat-label">قیمت خرید</div>
+                                    <div class="product-stat-value">
+                                        {{ number_format($detailProduct['buy_price']) }}
+                                        <small>{{ setting('currency', 'تومان') }}</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="product-stat-card">
+                                    <div class="product-stat-icon bg-green-lt text-green">
+                                        <i class="bi bi-cart-plus"></i>
+                                    </div>
+                                    <div class="product-stat-label">قیمت فروش</div>
+                                    <div class="product-stat-value">
+                                        {{ number_format($detailProduct['sell_price']) }}
+                                        <small>{{ setting('currency', 'تومان') }}</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="product-stat-card">
+                                    <div class="product-stat-icon bg-orange-lt text-orange">
+                                        <i class="bi bi-boxes"></i>
+                                    </div>
+                                    <div class="product-stat-label">موجودی فعلی</div>
+                                    <div class="product-stat-value">
+                                        {{ $detailProduct['formatted_stock'] }}
+                                        <small>{{ $detailProduct['unit'] }}</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="product-stat-card">
+                                    <div class="product-stat-icon bg-purple-lt text-purple">
+                                        <i class="bi bi-graph-up-arrow"></i>
+                                    </div>
+                                    <div class="product-stat-label">تعداد کل فروخته‌شده</div>
+                                    <div class="product-stat-value">
+                                        {{ rtrim(rtrim(number_format($detailSoldQuantity, 3, '.', ','), '0'), '.') }}
+                                        <small>{{ $detailProduct['unit'] }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- ============ کارت ۳: موجودی تفکیک‌شده انبارها ============ --}}
+                        <div class="card border-3 mb-0 shadow-sm">
+                            <div class="card-header bg-primary-lt py-2 d-flex justify-content-between align-items-center">
+                                <h4 class="card-title mb-0 fw-bold">
+                                    <i class="bi bi-buildings text-primary me-2"></i>
+                                    موجودی در انبارها
+                                </h4>
+                                <span class="badge bg-primary">
+                                    مجموع:
+                                    {{ rtrim(rtrim(number_format($detailWarehouseTotal, 3, '.', ','), '0'), '.') }}
+                                    {{ $detailProduct['unit'] }}
+                                </span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="50">ردیف</th>
+                                                <th>انبار</th>
+                                                <th width="90">کد</th>
+                                                <th width="150">موجودی</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($detailWarehouseStocks as $row)
+                                                <tr wire:key="wh-stock-{{ $loop->index }}">
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td class="fw-semibold">
+                                                        <i class="bi bi-box-seam text-muted me-1"></i>
+                                                        {{ $row['warehouse_name'] }}
+                                                        @if ($row['is_default'])
+                                                            <span class="badge bg-blue-lt text-blue ms-1">پیش‌فرض</span>
+                                                        @endif
+                                                    </td>
+                                                    <td dir="ltr" class="text-end">
+                                                        <span class="badge bg-secondary-subtle text-secondary">
+                                                            {{ $row['warehouse_code'] ?: '—' }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge {{ $row['quantity'] > 0 ? 'bg-success-subtle text-success-emphasis' : 'bg-danger-subtle text-danger-emphasis' }}">
+                                                            {{ rtrim(rtrim(number_format($row['quantity'], 3, '.', ','), '0'), '.') }}
+                                                            {{ $detailProduct['unit'] }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="4" class="text-center py-4 text-muted">
+                                                        <i class="bi bi-buildings me-1"></i>
+                                                        موجودی این کالا در هیچ انباری ثبت نشده است.
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- ============ کارت ۴: برند محصول ============ --}}
+                        <div class="card border-3 mb-0 shadow-sm">
+                            <div class="card-header bg-primary-lt py-2">
+                                <h4 class="card-title mb-0 fw-bold">
+                                    <i class="bi bi-bing text-primary me-2"></i>
+                                    برند محصول
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                @if ($detailBrand)
+                                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                                        @if ($detailBrand['logo'] && \Illuminate\Support\Facades\Storage::disk('public')->exists($detailBrand['logo']))
+                                            <img src="{{ asset('storage/' . $detailBrand['logo']) }}"
+                                                alt="{{ $detailBrand['name'] }}"
+                                                style="width: 84px; height: 84px; border-radius: 18px; object-fit: cover; background:#fff; padding:6px; box-shadow: 0 .35rem .9rem rgba(0,0,0,.12);">
+                                        @else
+                                            <div class="brand-logo-placeholder">
+                                                <i class="bi bi-award"></i>
+                                            </div>
+                                        @endif
+
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                                                <h3 class="fw-bold mb-0">{{ $detailBrand['name'] }}</h3>
+                                                @if ($detailBrand['is_active'])
+                                                    <span class="badge bg-success text-dark">فعال</span>
+                                                @else
+                                                    <span class="badge bg-secondary text-dark">غیرفعال</span>
+                                                @endif
+                                                <span class="badge bg-info-subtle text-info-emphasis">
+                                                    {{ $detailBrand['suppliers_count'] }} تامین‌کننده
+                                                </span>
+                                            </div>
+                                            <p class="text-muted mb-0">
+                                                {{ $detailBrand['description'] ?: 'توضیحاتی برای این برند ثبت نشده است.' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="brand-empty-state">
+                                        <div class="brand-logo-placeholder brand-logo-placeholder--muted">
+                                            <i class="bi bi-award"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold text-muted">برندی برای این محصول ثبت نشده است</div>
+                                            <small class="text-muted">
+                                                برای این کالا برندی انتخاب نشده؛ می‌توانید از دکمه ویرایش، برند آن را تعیین کنید.
+                                            </small>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        {{-- ============ کارت ۵: تامین‌کنندگان محصول ============ --}}
+                        <div class="card border-3 mb-0 shadow-sm">
+                            <div class="card-header bg-primary-lt py-2 d-flex justify-content-between align-items-center">
+                                <h4 class="card-title mb-0 fw-bold">
+                                    <i class="bi bi-truck text-primary me-2"></i>
+                                    تامین‌کنندگان این محصول
+                                </h4>
+                                @if (count($detailSuppliers))
+                                    <span class="badge bg-primary">{{ count($detailSuppliers) }}</span>
+                                @endif
+                            </div>
+                            <div class="card-body p-0">
+                                @if (count($detailSuppliers))
+                                    @if ($detailSupplierSource === 'brand')
+                                        <div class="alert alert-info m-3 mb-0 py-2">
+                                            <i class="bi bi-info-circle me-1"></i>
+                                            تامین‌کنندگان زیر بر اساس برند این کالا نمایش داده می‌شوند.
+                                        </div>
+                                    @endif
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th width="50">ردیف</th>
+                                                    <th>نام تامین‌کننده</th>
+                                                    <th>نام شرکت</th>
+                                                    <th>موبایل</th>
+                                                    <th>شهر</th>
+                                                    <th width="80">نوع</th>
+                                                    <th width="90">وضعیت</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($detailSuppliers as $supplier)
+                                                    <tr wire:key="detail-supplier-{{ $supplier['id'] }}">
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td class="fw-semibold">
+                                                            <span class="avatar avatar-xs me-2"
+                                                                style="background: rgba(66,99,235,.08);">
+                                                                <i class="bi bi-person text-primary"></i>
+                                                            </span>
+                                                            {{ $supplier['name'] }}
+                                                        </td>
+                                                        <td>{{ $supplier['company_name'] ?: '—' }}</td>
+                                                        <td dir="ltr" class="text-end">{{ $supplier['mobile'] ?: '—' }}</td>
+                                                        <td>{{ $supplier['city'] ?: '—' }}</td>
+                                                        <td>
+                                                            <span class="badge {{ $supplier['type'] === 'company' ? 'bg-purple-lt text-purple' : 'bg-azure-lt text-azure' }}">
+                                                                {{ $supplier['type'] === 'company' ? 'حقوقی' : 'حقیقی' }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            @if ($supplier['is_active'])
+                                                                <span class="badge bg-success-subtle text-success-emphasis">فعال</span>
+                                                            @else
+                                                                <span class="badge bg-secondary-subtle text-secondary-emphasis">غیرفعال</span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @else
+                                    <div class="text-center py-4 text-muted">
+                                        <i class="bi bi-truck me-1"></i>
+                                        هیچ تامین‌کننده‌ای برای این محصول ثبت نشده است.
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <small class="me-auto">
+                            <i class="bi bi-clock-history me-1"></i>
+                            ثبت: {{ $detailProduct['created_at'] ?: '—' }}
+                            &nbsp;•&nbsp;
+                            آخرین ویرایش: {{ $detailProduct['updated_at'] ?: '—' }}
+                        </small>
+                        <button type="button" class="btn btn-secondary" wire:click="closeDetailsModal" title="بستن">
+                            <i class="bi bi-x-lg me-1"></i>بستن
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     @endif
