@@ -93,6 +93,48 @@
             color: #22c55e;
         }
 
+        /* نشانگر تیک سبز روی کارت انتخاب‌شده */
+        .pay-type-btn .pay-check {
+            position: absolute;
+            top: 8px;
+            inset-inline-start: 8px;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #22c55e;
+            color: #04210f;
+            font-size: .68rem;
+            line-height: 1;
+            box-shadow: 0 6px 14px -6px rgba(34, 197, 94, 1);
+            opacity: 0;
+            transform: scale(.3);
+            transition: opacity .2s ease, transform .25s cubic-bezier(.2, .9, .3, 1.5);
+        }
+
+        .pay-type-btn.active .pay-check {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* لرزش کوتاه کارت نسیه وقتی مشتری حذف می‌شود */
+        @keyframes pay-shake {
+            0%, 100% { transform: translateX(0); }
+            15%  { transform: translateX(-7px); }
+            30%  { transform: translateX(6px); }
+            45%  { transform: translateX(-5px); }
+            60%  { transform: translateX(4px); }
+            75%  { transform: translateX(-2px); }
+        }
+
+        .pay-type-btn.is-shaking {
+            animation: pay-shake .55s cubic-bezier(.36, .07, .19, .97);
+            border-color: rgba(239, 68, 68, .7) !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, .2) !important;
+        }
+
         .pay-type-btn.active .pay-type {
             transform: scale(1.06);
         }
@@ -123,6 +165,605 @@
             .pay-type-btn .label {
                 font-size: .68rem;
             }
+        }
+
+        /* ==========================================================
+           مودال پرداخت و تسویه — پوسته مدرن (Glass / Aurora)
+           ========================================================== */
+        .checkout-modal {
+            --co-text: #e2e8f0;
+            --co-text-dim: #94a3b8;
+            --co-field-bg: rgba(9, 13, 26, .55);
+            --tblr-border-radius: 12px;
+        }
+
+        [data-bs-theme="light"] .checkout-modal {
+            --co-text: #1e293b;
+            --co-text-dim: #64748b;
+            --co-field-bg: #ffffff;
+        }
+
+        /* پوسته مودال: گردی، هاله بنفش و انیمیشن ورود */
+        .checkout-modal .modal-content {
+            position: relative;
+            overflow: hidden;
+            color: var(--co-text);
+            border: 1px solid rgba(124, 92, 255, .3) !important;
+            box-shadow:
+                0 30px 80px -24px rgba(0, 0, 0, .8),
+                0 0 70px -18px rgba(124, 92, 255, .6);
+            animation: co-pop .32s cubic-bezier(.2, .9, .3, 1.15) both;
+        }
+
+        @keyframes co-pop {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* هاله‌های رنگی پشت محتوا */
+        .checkout-modal .modal-content::before,
+        .checkout-modal .modal-content::after {
+            content: "";
+            position: absolute;
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            filter: blur(75px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .checkout-modal .modal-content::before {
+            top: -180px;
+            inset-inline-end: -90px;
+            background: rgba(124, 92, 255, .38);
+        }
+
+        .checkout-modal .modal-content::after {
+            bottom: -190px;
+            inset-inline-start: -70px;
+            background: rgba(62, 166, 255, .3);
+        }
+
+        .checkout-modal form {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---------- هدر ---------- */
+        .checkout-modal .modal-header {
+            position: relative;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--lux-border) !important;
+            background: linear-gradient(180deg, rgba(124, 92, 255, .16), transparent);
+        }
+
+        /* نوار رنگی بالای مودال */
+        .checkout-modal .modal-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--lux-gradient, linear-gradient(135deg, #7c5cff, #3ea6ff));
+        }
+
+        .checkout-modal .modal-title {
+            display: flex;
+            align-items: center;
+            gap: .65rem;
+            font-size: 1.02rem;
+        }
+
+        .checkout-modal .co-title-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            color: #fff;
+            background: var(--lux-gradient, linear-gradient(135deg, #7c5cff, #3ea6ff));
+            box-shadow: 0 10px 22px -10px rgba(124, 92, 255, 1);
+        }
+
+        .checkout-modal .btn-close {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            border-radius: 10px;
+            background-size: 12px;
+            background-color: rgba(148, 163, 184, .14);
+            opacity: .85;
+            transition: background-color .2s ease, transform .25s ease, opacity .2s ease;
+        }
+
+        .checkout-modal .btn-close:hover {
+            opacity: 1;
+            background-color: rgba(239, 68, 68, .25);
+            transform: rotate(90deg);
+        }
+
+        /* ---------- بدنه ---------- */
+        .checkout-modal .modal-body {
+            max-height: min(74vh, 700px);
+            overflow-y: auto;
+            padding: 18px 20px;
+        }
+
+        /* ---------- پنل‌های بخش‌بندی ---------- */
+        .checkout-modal .co-section {
+            padding: 14px;
+            margin-bottom: 14px;
+            border-radius: 18px;
+            border: 1px solid var(--lux-border);
+            background: rgba(148, 163, 184, .055);
+            transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+        }
+
+        .checkout-modal .co-section:focus-within {
+            border-color: rgba(124, 92, 255, .45);
+            background: rgba(124, 92, 255, .07);
+            box-shadow: 0 0 0 3px rgba(124, 92, 255, .1);
+        }
+
+        .checkout-modal .co-label {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            margin-bottom: .6rem;
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--co-text);
+        }
+
+        .checkout-modal .co-label > i {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+            font-size: .72rem;
+            color: #c4b5fd;
+            background: rgba(124, 92, 255, .18);
+        }
+
+        .checkout-modal .co-hint {
+            display: flex;
+            align-items: flex-start;
+            gap: .35rem;
+            margin-top: .65rem;
+            font-size: .78rem;
+            line-height: 1.6;
+            color: var(--co-text-dim);
+        }
+
+        /* ---------- فرم‌ها ---------- */
+        .checkout-modal .form-label {
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--co-text-dim);
+        }
+
+        .checkout-modal .form-control,
+        .checkout-modal .input-group-text {
+            background-color: var(--co-field-bg);
+            border-color: var(--lux-border);
+            color: var(--co-text);
+            transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+        }
+
+        .checkout-modal .input-group-text {
+            color: var(--co-text-dim);
+        }
+
+        .checkout-modal .form-control:focus {
+            background-color: var(--co-field-bg);
+            border-color: rgba(124, 92, 255, .65);
+            box-shadow: 0 0 0 .2rem rgba(124, 92, 255, .18);
+            color: var(--co-text);
+        }
+
+        .checkout-modal .form-control::placeholder {
+            color: var(--co-text-dim);
+            opacity: .8;
+        }
+
+        /* ---------- فیلد جستجوی مشتری ---------- */
+        .checkout-modal .cust-search {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            padding: 6px;
+            border-radius: 16px;
+            border: 1px solid var(--lux-border);
+            background: var(--co-field-bg);
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .checkout-modal .cust-search:focus-within {
+            border-color: rgba(124, 92, 255, .6);
+            box-shadow: 0 0 0 .2rem rgba(124, 92, 255, .16), 0 14px 34px -22px rgba(124, 92, 255, 1);
+        }
+
+        .checkout-modal .cust-search-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            flex: 0 0 36px;
+            border-radius: 12px;
+            font-size: .82rem;
+            color: #c4b5fd;
+            background: rgba(124, 92, 255, .18);
+        }
+
+        .checkout-modal .cust-search .form-control {
+            padding-inline: 2px;
+            font-size: .88rem;
+            border: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .checkout-modal .cust-search-clear {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            flex: 0 0 28px;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(148, 163, 184, .16);
+            color: var(--co-text-dim);
+            font-size: .68rem;
+            cursor: pointer;
+            transition: background-color .18s ease, color .18s ease;
+        }
+
+        .checkout-modal .cust-search-clear:hover {
+            background: rgba(239, 68, 68, .2);
+            color: #f87171;
+        }
+
+        .checkout-modal .cust-any {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            padding: 8px 12px;
+            border: 0;
+            border-radius: 12px;
+            background: rgba(148, 163, 184, .14);
+            color: var(--co-text-dim);
+            font-size: .74rem;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background-color .18s ease, color .18s ease, transform .18s ease;
+        }
+
+        .checkout-modal .cust-any:hover {
+            color: #7ec8ff;
+            background: rgba(62, 166, 255, .2);
+            transform: translateY(-1px);
+        }
+
+        /* ---------- لیست نتایج جستجوی مشتری ---------- */
+        .checkout-modal .cust-results {
+            margin-top: .6rem;
+            border-radius: 16px;
+            border: 1px solid rgba(124, 92, 255, .28);
+            background: var(--lux-dropdown-bg, rgba(16, 21, 40, .96));
+            box-shadow: 0 26px 55px -30px rgba(0, 0, 0, 1);
+            overflow: hidden;
+            animation: co-pop .2s ease both;
+        }
+
+        .checkout-modal .cust-results-head {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            padding: 8px 12px;
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--co-text-dim);
+            background: rgba(124, 92, 255, .1);
+            border-bottom: 1px solid var(--lux-border);
+        }
+
+        .checkout-modal .cust-list {
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        .checkout-modal .cust-item {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            gap: .7rem;
+            padding: 10px 12px;
+            border: 0;
+            border-bottom: 1px solid var(--lux-border);
+            background: transparent;
+            color: var(--co-text);
+            text-align: start;
+            cursor: pointer;
+            transition: background-color .16s ease;
+        }
+
+        .checkout-modal .cust-item:last-child {
+            border-bottom: 0;
+        }
+
+        .checkout-modal .cust-item:hover {
+            background: rgba(124, 92, 255, .16);
+        }
+
+        /* ---------- آواتار و مشخصات مشتری ---------- */
+        .checkout-modal .cust-avatar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            flex: 0 0 36px;
+            border-radius: 50%;
+            font-size: .84rem;
+            font-weight: 700;
+            color: #c4b5fd;
+            background: linear-gradient(135deg, rgba(124, 92, 255, .3), rgba(62, 166, 255, .16));
+            box-shadow: inset 0 0 0 1px rgba(124, 92, 255, .35);
+            transition: color .18s ease, background .18s ease;
+        }
+
+        .checkout-modal .cust-item:hover .cust-avatar,
+        .checkout-modal .cust-item:focus-visible .cust-avatar {
+            color: #fff;
+            background: var(--lux-gradient, linear-gradient(135deg, #7c5cff, #3ea6ff));
+        }
+
+        .checkout-modal .cust-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .checkout-modal .cust-name {
+            font-size: .86rem;
+            font-weight: 700;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .checkout-modal .cust-mobile {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            font-size: .72rem;
+            color: var(--co-text-dim);
+        }
+
+        .checkout-modal .cust-pick {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            flex: 0 0 28px;
+            border-radius: 9px;
+            font-size: .8rem;
+            color: var(--co-text-dim);
+            background: rgba(148, 163, 184, .12);
+            opacity: 0;
+            transform: scale(.8);
+            transition: opacity .18s ease, transform .18s ease, background-color .18s ease, color .18s ease;
+        }
+
+        .checkout-modal .cust-item:hover .cust-pick,
+        .checkout-modal .cust-item:focus-visible .cust-pick {
+            opacity: 1;
+            transform: none;
+            color: #22c55e;
+            background: rgba(34, 197, 94, .2);
+        }
+
+        /* ---------- هیچ مشتری‌ای پیدا نشد ---------- */
+        .checkout-modal .cust-empty {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            margin-top: .6rem;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px dashed rgba(148, 163, 184, .32);
+            background: rgba(148, 163, 184, .06);
+            font-size: .78rem;
+            color: var(--co-text-dim);
+        }
+
+        /* ---------- چیپ مشتری انتخاب‌شده ---------- */
+        .checkout-modal .cust-chip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .75rem;
+            padding: 8px 8px 8px 10px;
+            border-radius: 16px;
+            border: 1px solid rgba(34, 197, 94, .38);
+            background: linear-gradient(135deg, rgba(34, 197, 94, .16), rgba(62, 166, 255, .07));
+            animation: co-pop .25s ease both;
+        }
+
+        .checkout-modal .cust-chip-main {
+            display: flex;
+            align-items: center;
+            gap: .65rem;
+            min-width: 0;
+        }
+
+        .checkout-modal .cust-chip .cust-avatar {
+            color: #22c55e;
+            background: rgba(34, 197, 94, .18);
+            box-shadow: inset 0 0 0 1px rgba(34, 197, 94, .4);
+        }
+
+        .checkout-modal .cust-chip-clear {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            flex: 0 0 32px;
+            border: 0;
+            border-radius: 10px;
+            background: rgba(148, 163, 184, .14);
+            color: var(--co-text-dim);
+            font-size: .74rem;
+            cursor: pointer;
+            transition: background-color .18s ease, color .18s ease, transform .18s ease;
+        }
+
+        .checkout-modal .cust-chip-clear:hover {
+            background: rgba(239, 68, 68, .22);
+            color: #f87171;
+            transform: rotate(90deg);
+        }
+
+        /* ---------- جعبه امتیاز وفاداری ---------- */
+        .checkout-modal .loyalty-box {
+            padding: 14px;
+            margin-bottom: 14px;
+            border-radius: 18px;
+            border: 1px solid rgba(217, 70, 239, .35);
+            background: linear-gradient(135deg, rgba(217, 70, 239, .14), rgba(124, 92, 255, .08));
+        }
+
+        /* ---------- دکمه دوحالته نسیه (نقدی / کارتخوان) ---------- */
+        .checkout-modal .mini-pay-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            padding: 3px;
+            border-radius: 12px;
+            border: 1px solid var(--lux-border);
+            background: rgba(148, 163, 184, .12);
+        }
+
+        .checkout-modal .mini-pay-toggle button {
+            padding: 6px 10px;
+            border: 0;
+            border-radius: 9px;
+            background: transparent;
+            color: var(--co-text-dim);
+            font-size: .72rem;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background-color .18s ease, color .18s ease, box-shadow .18s ease;
+        }
+
+        .checkout-modal .mini-pay-toggle button.active-cash {
+            color: #22c55e;
+            background: rgba(34, 197, 94, .2);
+            box-shadow: inset 0 0 0 1px rgba(34, 197, 94, .45);
+        }
+
+        .checkout-modal .mini-pay-toggle button.active-card {
+            color: #3ea6ff;
+            background: rgba(62, 166, 255, .2);
+            box-shadow: inset 0 0 0 1px rgba(62, 166, 255, .45);
+        }
+
+        /* ---------- پنل مبلغ بر اساس روش پرداخت ---------- */
+        .checkout-modal .co-amount {
+            position: relative;
+            padding: 16px 16px 16px 18px;
+            margin-bottom: 14px;
+            border-radius: 18px;
+            border: 1px solid rgba(124, 92, 255, .28);
+            background: rgba(124, 92, 255, .06);
+        }
+
+        .checkout-modal .co-amount::before {
+            content: "";
+            position: absolute;
+            inset-inline-start: 0;
+            top: 16px;
+            bottom: 16px;
+            width: 3px;
+            border-radius: 999px;
+            background: var(--lux-gradient, linear-gradient(135deg, #7c5cff, #3ea6ff));
+        }
+
+        /* ---------- نوار مبلغ نهایی ---------- */
+        .checkout-modal .co-total {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 12px 16px;
+            border-radius: 16px !important;
+            border-color: rgba(124, 92, 255, .42) !important;
+            background: linear-gradient(135deg, rgba(124, 92, 255, .22), rgba(62, 166, 255, .12)) !important;
+            box-shadow: 0 14px 34px -20px rgba(124, 92, 255, 1);
+        }
+
+        /* ---------- فوتر ---------- */
+        .checkout-modal .modal-footer {
+            gap: .5rem;
+            padding: 14px 20px;
+            border-top: 1px solid var(--lux-border) !important;
+            background: linear-gradient(0deg, rgba(124, 92, 255, .1), transparent);
+        }
+
+        .checkout-modal .btn-co-cancel {
+            border-radius: 14px !important;
+            border: 1px solid var(--lux-border) !important;
+            background: rgba(148, 163, 184, .12) !important;
+            color: var(--co-text) !important;
+            transition: background-color .18s ease, transform .18s ease;
+        }
+
+        .checkout-modal .btn-co-cancel:hover {
+            background: rgba(239, 68, 68, .18) !important;
+            transform: translateY(-2px);
+        }
+
+        .checkout-modal .btn-co-submit {
+            border: 0 !important;
+            border-radius: 14px !important;
+            color: #fff !important;
+            background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+            box-shadow: 0 14px 28px -14px rgba(34, 197, 94, 1);
+            transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+        }
+
+        .checkout-modal .btn-co-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            filter: brightness(1.07);
+            box-shadow: 0 18px 32px -14px rgba(34, 197, 94, 1);
+        }
+
+        .checkout-modal .btn-co-submit:disabled {
+            filter: grayscale(.5);
+            transform: none;
         }
     </style>
 
@@ -372,69 +1013,99 @@
 
     {{--===================== مودال پرداخت / تسویه ====================--}}
     @if ($showCheckoutModal)
-        <div class="modal modal-blur fade show d-block pos-modal" tabindex="-1"
-            style="background: rgba(15,23,42,.55);" wire:key="checkout-modal">
+        <div class="modal modal-blur fade show d-block pos-modal checkout-modal" tabindex="-1"
+            style="background: rgba(9,13,26,.72);" wire:key="checkout-modal">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <form wire:submit="checkout">
                         <div class="modal-header">
                             <h5 class="modal-title fw-bold">
-                                <i class="bi bi-credit-card-2-front-fill text-primary me-1"></i>
+                                <span class="co-title-icon"><i class="bi bi-credit-card-2-front-fill"></i></span>
                                 تـسـویـه و ثـبـت فـاکـتـور فـروش
                             </h5>
-                            <button type="button" class="btn-close" wire:click="closeModals"></button>
+                            <button type="button" class="btn-close" wire:click="closeModals"
+                                aria-label="بستن"></button>
                         </div>
 
                         <div class="modal-body">
 
                             {{-- ============ انتخاب مشتری با جستجوی لایو ============ --}}
-                            <div class="mb-4">
-                                <label class="form-label fw-bold">
-                                    <i class="bi bi-person-fill me-1 text-primary"></i>مـشـتـری
-                                </label>
+                            <div class="co-section">
+                                <span class="co-label">
+                                    <i class="bi bi-person-fill"></i>مـشـتـری
+                                </span>
 
                                 @if ($customerId)
                                     <div class="cust-chip">
-                                        <span>
-                                            <i class="bi bi-patch-check-fill text-success me-1"></i>
-                                            <strong>{{ $customerName }}</strong>
+                                        <span class="cust-chip-main">
+                                            <span class="cust-avatar">
+                                                <i class="bi bi-patch-check-fill"></i>
+                                            </span>
+                                            <span class="cust-info">
+                                                <span class="cust-name">{{ $customerName }}</span>
+                                                <span class="cust-mobile">مـشـتـری ثـبـت‌شـده</span>
+                                            </span>
                                         </span>
-                                        <button type="button" class="btn btn-sm btn-dark text-danger border"
+                                        <button type="button" class="cust-chip-clear"
                                             wire:click="clearCustomer" title="حذف مشتری">
                                             <i class="bi bi-x-lg"></i>
                                         </button>
                                     </div>
                                 @else
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-search text-muted"></i>
+                                    <div class="cust-search">
+                                        <span class="cust-search-icon">
+                                            <i class="bi bi-search"></i>
                                         </span>
-                                        <input type="text" class="form-control" placeholder="نام یا موبایل مشتری را تایپ کنید…"
+                                        <input type="text" class="form-control"
+                                            placeholder="نام یا موبایل مشتری را تایپ کنید…"
                                             wire:model.live.debounce.300ms="customerQuery" autocomplete="off">
-                                        <button type="button" class="btn btn-outline-secondary"
-                                            wire:click="clearCustomer">
-                                            مشتری متفرقه
+                                        @if ($customerQuery !== '')
+                                            <button type="button" class="cust-search-clear" wire:click="$set('customerQuery', '')"
+                                                title="پاک کردن جستجو">
+                                                <i class="bi bi-x-lg"></i>
+                                            </button>
+                                        @endif
+                                        <button type="button" class="cust-any" wire:click="clearCustomer"
+                                            title="ثبت فاکتور بدون انتخاب مشتری">
+                                            <i class="bi bi-person-dash"></i>
+                                            <span>متفرقه</span>
                                         </button>
                                     </div>
 
                                     @if (trim($customerQuery) !== '')
                                         @if (count($this->customerResults))
                                             <div class="cust-results">
-                                                @foreach ($this->customerResults as $customer)
-                                                    <button type="button" class="cust-item list-group-item-action"
-                                                        wire:click="selectCustomer({{ $customer['id'] }})">
-                                                        <span class="fw-semibold">
-                                                            <i class="bi bi-person-circle text-primary ms-1"></i>
-                                                            {{ $customer['name'] }}
-                                                        </span>
-                                                        <small class="text-warning">{{ $customer['mobile'] }}</small>
-                                                    </button>
-                                                @endforeach
+                                                <div class="cust-results-head">
+                                                    <i class="bi bi-people-fill"></i>
+                                                    <span>{{ number_format(count($this->customerResults)) }} مشتری یافت شد</span>
+                                                </div>
+                                                <div class="cust-list">
+                                                    @foreach ($this->customerResults as $customer)
+                                                        <button type="button" class="cust-item"
+                                                            wire:click="selectCustomer({{ $customer['id'] }})">
+                                                            <span class="cust-avatar">
+                                                                {{ mb_substr(trim($customer['name']), 0, 1) ?: '؟' }}
+                                                            </span>
+                                                            <span class="cust-info">
+                                                                <span class="cust-name">{{ $customer['name'] }}</span>
+                                                                @if (!empty($customer['mobile']))
+                                                                    <span class="cust-mobile">
+                                                                        <i class="bi bi-telephone-fill"></i>
+                                                                        {{ $customer['mobile'] }}
+                                                                    </span>
+                                                                @endif
+                                                            </span>
+                                                            <span class="cust-pick">
+                                                                <i class="bi bi-check2"></i>
+                                                            </span>
+                                                        </button>
+                                                    @endforeach
+                                                </div>
                                             </div>
                                         @else
-                                            <div class="text-info small mt-1">
-                                                <i class="bi bi-info-circle me-1"></i>مشتری‌ای با این مشخصات یافت نشد —
-                                                با دکمه «مشتری متفرقه» بدون انتخاب مشتری ادامه دهید.
+                                            <div class="cust-empty">
+                                                <i class="bi bi-person-x"></i>
+                                                <span>مشتری‌ای با این مشخصات یافت نشد — با دکمه «متفرقه» بدون انتخاب مشتری ادامه دهید.</span>
                                             </div>
                                         @endif
                                     @endif
@@ -443,7 +1114,7 @@
 
                             {{-- ============ استفاده از امتیاز وفاداری ============ --}}
                             @if ($customerId && $customerAvailablePoints > 0 && setting('loyalty_enabled', '1') == '1')
-                                <div class="mb-4 loyalty-box">
+                                <div class="loyalty-box">
                                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                                         <div>
                                             <span class="fw-bold"><i class="bi bi-gem text-fuchsia me-1"></i>امتیاز قابل استفاده:
@@ -471,67 +1142,77 @@
                             @endif
 
                             {{-- ============ روش پرداخت ============ --}}
-                            <label class="form-label fw-bold">
-                                <i class="bi bi-wallet2 me-1 text-primary"></i>روش پـرداخـت
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="pay-type-row mt-2" dir="rtl">
-                                <button type="button"
-                                    class="pay-type-btn pay-cash {{ $paymentType === 'cash' ? 'active' : '' }}"
-                                    wire:click="setPaymentType('cash')" title="پرداخت نقدی">
-                                    <x-icon name="cash" class="pay-type" alt="نقدی" />
-                                    <span class="label">نـقـدی</span>
-                                </button>
+                            <div class="co-section">
+                                <span class="co-label">
+                                    <i class="bi bi-wallet2"></i>روش پـرداخـت
+                                    <span class="text-danger">*</span>
+                                </span>
+                                <div class="pay-type-row" dir="rtl">
+                                    <button type="button"
+                                        class="pay-type-btn pay-cash {{ $paymentType === 'cash' ? 'active' : '' }}"
+                                        wire:click="setPaymentType('cash')" title="پرداخت نقدی">
+                                        <x-icon name="cash" class="pay-type" alt="نقدی" />
+                                        <span class="label">نـقـدی</span>
+                                        <span class="pay-check"><i class="bi bi-check-lg"></i></span>
+                                    </button>
 
-                                <button type="button"
-                                    class="pay-type-btn pay-card {{ $paymentType === 'card' ? 'active' : '' }}"
-                                    wire:click="setPaymentType('card')" title="پرداخت با کارتخوان">
-                                    <x-icon name="bank_cards" class="pay-type" alt="کارتخوان" />
-                                    <span class="label">کـارتـخـوان</span>
-                                </button>
+                                    <button type="button"
+                                        class="pay-type-btn pay-card {{ $paymentType === 'card' ? 'active' : '' }}"
+                                        wire:click="setPaymentType('card')" title="پرداخت با کارتخوان">
+                                        <x-icon name="bank_cards" class="pay-type" alt="کارتخوان" />
+                                        <span class="label">کـارتـخـوان</span>
+                                        <span class="pay-check"><i class="bi bi-check-lg"></i></span>
+                                    </button>
 
-                                <button type="button"
-                                    class="pay-type-btn pay-credit {{ $paymentType === 'credit' ? 'active' : '' }}"
-                                    @disabled(! $customerId)
-                                    wire:click="setPaymentType('credit')"
-                                    title="{{ $customerId ? 'فروش نسیه' : 'نسیه فقط برای مشتری ثبت‌شده امکان‌پذیر است' }}">
-                                    <x-icon name="credit" class="pay-type" alt="نسیه" />
-                                    <span class="label">نـسـیـه</span>
-                                </button>
+                                    <button type="button"
+                                        class="pay-type-btn pay-credit {{ $paymentType === 'credit' ? 'active' : '' }}"
+                                        x-data="{ blocked: false }"
+                                        @credit-blocked.window="blocked = true; setTimeout(() => blocked = false, 750)"
+                                        :class="blocked && 'is-shaking'"
+                                        @disabled(! $customerId)
+                                        wire:click="setPaymentType('credit')"
+                                        title="{{ $customerId ? 'فروش نسیه' : 'نسیه فقط برای مشتری ثبت‌شده امکان‌پذیر است' }}">
+                                        <x-icon name="credit" class="pay-type" alt="نسیه" />
+                                        <span class="label">نـسـیـه</span>
+                                        <span class="pay-check"><i class="bi bi-check-lg"></i></span>
+                                    </button>
 
-                                <button type="button"
-                                    class="pay-type-btn pay-mixed {{ $paymentType === 'mixed' ? 'active' : '' }}"
-                                    wire:click="setPaymentType('mixed')" title="پرداخت ترکیبی نقدی و کارتخوان">
-                                    <x-icon name="cash_card" class="pay-type" alt="ترکیبی" />
-                                    <span class="label">تـرکـیـبـی</span>
-                                </button>
+                                    <button type="button"
+                                        class="pay-type-btn pay-mixed {{ $paymentType === 'mixed' ? 'active' : '' }}"
+                                        wire:click="setPaymentType('mixed')" title="پرداخت ترکیبی نقدی و کارتخوان">
+                                        <x-icon name="cash_card" class="pay-type" alt="ترکیبی" />
+                                        <span class="label">تـرکـیـبـی</span>
+                                        <span class="pay-check"><i class="bi bi-check-lg"></i></span>
+                                    </button>
+                                </div>
+                                <div class="co-hint">
+                                    <i class="bi bi-lightbulb-fill text-warning"></i>
+                                    <span>
+                                        @switch($paymentType)
+                                            @case('cash')
+                                                دریافت کل یا بخشی بیش از مبلغ فاکتور به‌صورت نقدی (باقی محاسبه می‌شود).
+                                            @break
+                                            @case('card')
+                                                پرداخت دقیقاً از طریق کارتخوان.
+                                            @break
+                                            @case('mixed')
+                                                بخشی نقدی و بخشی با کارتخوان؛ مجموع باید برابر مبلغ فاکتور باشد.
+                                            @break
+                                            @case('credit')
+                                                ثبت بدهی روی حساب مشتری؛ امکان پیش‌پرداخت نقدی یا کارتخوان وجود دارد.
+                                            @break
+                                        @endswitch
+                                    </span>
+                                </div>
+
+                                @error('paymentType')
+                                    <div class="alert alert-warning py-2 small mt-3"><i
+                                            class="bi bi-exclamation-triangle-fill me-1"></i>{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="text-muted small mb-3">
-                                <i class="bi bi-lightbulb-fill text-warning me-1"></i>
-                                @switch($paymentType)
-                                    @case('cash')
-                                        دریافت کل یا بخشی بیش از مبلغ فاکتور به‌صورت نقدی (باقی محاسبه می‌شود).
-                                    @break
-                                    @case('card')
-                                        پرداخت دقیقاً از طریق کارتخوان.
-                                    @break
-                                    @case('mixed')
-                                        بخشی نقدی و بخشی با کارتخوان؛ مجموع باید برابر مبلغ فاکتور باشد.
-                                    @break
-                                    @case('credit')
-                                        ثبت بدهی روی حساب مشتری؛ امکان پیش‌پرداخت نقدی یا کارتخوان وجود دارد.
-                                    @break
-                                @endswitch
-                            </div>
-
-                            @error('paymentType')
-                                <div class="alert alert-warning py-2 small"><i
-                                        class="bi bi-exclamation-triangle-fill me-1"></i>{{ $message }}</div>
-                            @enderror
 
                             {{-- ============ فیلدهای مبلغ بر اساس روش پرداخت ============ --}}
-                            <div class="border rounded-4 p-3 mb-3"
-                                style="border-color: var(--tblr-border-color, rgba(120,130,155,.2)) !important;">
+                            <div class="co-amount">
 
                                 @if ($paymentType === 'cash')
                                     <div class="row g-3 align-items-end">
@@ -664,7 +1345,7 @@
                             </div>
 
                             {{-- خلاصه فاکتور --}}
-                            <div class="alert alert-primary d-flex justify-content-between align-items-center mb-0">
+                            <div class="alert alert-primary co-total mb-0">
                                 <span class="fw-semibold">
                                     <i class="bi bi-receipt me-1"></i>مبلغ قابل پرداخت:
                                 </span>
@@ -673,10 +1354,10 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" wire:click="closeModals">
+                            <button type="button" class="btn btn-co-cancel" wire:click="closeModals">
                                 <i class="bi bi-x-lg me-1"></i>انصراف
                             </button>
-                            <button type="submit" class="btn btn-success text-white fw-bold px-4"
+                            <button type="submit" class="btn btn-co-submit fw-bold px-4"
                                 wire:loading.attr="disabled" wire:target="checkout">
                                 <span wire:loading wire:target="checkout"
                                     class="spinner-border spinner-border-sm ms-1"></span>

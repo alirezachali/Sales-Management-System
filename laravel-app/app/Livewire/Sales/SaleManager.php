@@ -41,9 +41,22 @@ class SaleManager extends Component
     public string $creditPayMethod = 'cash'; // نسیه: روش پرداخت مبلغ پیش‌پرداخت
 
     // امتیاز و وفاداری
-    public int $pointsToRedeem = 0;
+    // float است تا ورودی اعشاری هم خطای سرور ندهد؛ در updatedPointsToRedeem به عدد صحیح تبدیل می‌شود.
+    public float $pointsToRedeem = 0;
     public int $customerAvailablePoints = 0;
     public int $pointValue = 100;
+
+    /**
+     * فیلدهای عددی که کاربر می‌تواند خالی بگذارند.
+     * مقدار پیش‌فرض هر فیلد وقتی خالی شد.
+     */
+    protected const NUMERIC_INPUTS = [
+        'discount' => 0.0,
+        'paidAmount' => 0.0,
+        'cashAmount' => 0.0,
+        'cardAmount' => 0.0,
+        'pointsToRedeem' => 0.0,
+    ];
 
     // مودال‌ها
     public bool $showCheckoutModal = false;
@@ -64,6 +77,34 @@ class SaleManager extends Component
     public function mount(): void
     {
         $this->resetCart();
+    }
+
+    /**
+     * وقتی کاربر یک فیلد عددی را کاملاً خالی می‌کند، Livewire مقدار خالی را
+     * نمی‌تواند در پراپرتی‌های typed بگذارد، پس آن‌ها را unset می‌کند و هر خواندن
+     * بعدی از پراپرتی به خطای PropertyNotFoundException منجر می‌شود.
+     * اینجا هر فیلد عددیِ خالی به صفر برمی‌گردد تا خالی گذاشتن فیلد خطای سرور ندهد.
+     */
+    public function hydrate(): void
+    {
+        $this->normalizeNumericInputs();
+    }
+
+    public function updated(string $property, mixed $value): void
+    {
+        if (array_key_exists($property, self::NUMERIC_INPUTS)) {
+            $this->normalizeNumericInputs();
+        }
+    }
+
+    private function normalizeNumericInputs(): void
+    {
+        foreach (self::NUMERIC_INPUTS as $property => $default) {
+            // پراپرتیِ unset شده با isset قابل تشخیص است (null هم به صفر تبدیل می‌شود)
+            if (! isset($this->{$property})) {
+                $this->{$property} = $default;
+            }
+        }
     }
 
     /**
@@ -150,6 +191,9 @@ class SaleManager extends Component
         // نسیه فقط برای مشتری ثبت‌شده معتبر است
         if ($this->paymentType === 'credit') {
             $this->paymentType = 'cash';
+
+            // به کاربر نشان بده که با حذف مشتری، گزینه نسیه غیرفعال شد
+            $this->dispatch('credit-blocked');
         }
     }
 
