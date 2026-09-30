@@ -553,3 +553,16 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
     color: #202124;
 }
 
+
+/* ---------- افکت ظاهر شدن پیام‌های فلش همراه با صدا ---------- */
+@keyframes flash-alert-pop {
+    0% { opacity: 0; transform: translateY(-8px) scale(0.98); }
+    60% { opacity: 1; transform: translateY(0) scale(1.01); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.flash-alert-pop,
+[data-flash-alert].flash-alert-pop,
+[data-notify-sound].flash-alert-pop {
+    animation: flash-alert-pop 0.38s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+}

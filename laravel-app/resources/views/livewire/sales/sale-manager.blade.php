@@ -789,7 +789,7 @@
     </div>
 
     @error('checkout')
-        <div class="alert alert-danger"><i class="bi bi-exclamation-octagon-fill me-2"></i>{{ $message }}</div>
+        <div class="alert alert-danger" data-notify-sound="error"><i class="bi bi-exclamation-octagon-fill me-2"></i>{{ $message }}</div>
     @enderror
 
     <div class="row g-3">
@@ -859,7 +859,8 @@
 
             {{-- اخطار کمبود موجودی --}}
             @if ($stockError)
-                <div class="alert alert-warning border-0 d-flex align-items-center gap-2 mb-3 shadow-sm" dir="rtl">
+                <div class="alert alert-warning border-0 d-flex align-items-center gap-2 mb-3 shadow-sm" dir="rtl"
+                    data-notify-sound="off" wire:key="stock-error-{{ $stockError }}">
                     <div class="flex-shrink-0">
                         <i class="bi bi-exclamation-triangle-fill" style="font-size: 25px; color:rgb(235, 202, 17)"></i>
                     </div>
@@ -1036,7 +1037,7 @@
                         <div class="modal-body">
 
                             @error('checkout')
-                                <div class="alert alert-danger py-2 small">
+                                <div class="alert alert-danger py-2 small" data-notify-sound="error">
                                     <i class="bi bi-exclamation-octagon-fill me-1"></i>{{ $message }}
                                 </div>
                             @enderror
@@ -1218,7 +1219,7 @@
                                 </div>
 
                                 @error('paymentType')
-                                    <div class="alert alert-warning py-2 small mt-3"><i
+                                    <div class="alert alert-warning py-2 small mt-3" data-notify-sound="warning"><i
                                             class="bi bi-exclamation-triangle-fill me-1"></i>{{ $message }}</div>
                                 @enderror
                             </div>
@@ -1246,12 +1247,14 @@
                                     </div>
 
                                     @if ($this->change > 0)
-                                        <div class="alert alert-success mt-3 mb-0 d-flex justify-content-between py-2">
+                                        <div class="alert alert-success mt-3 mb-0 d-flex justify-content-between py-2"
+                                            data-notify-sound="off">
                                             <span><i class="bi bi-arrow-repeat me-1"></i>بـاقـی وجـه مـشـتـری:</span>
                                             <strong>{{ number_format($this->change) }} تـومـان</strong>
                                         </div>
                                     @elseif ($this->cashShortfall > 0.001)
-                                        <div class="alert alert-danger mt-3 mb-0 d-flex justify-content-between py-2">
+                                        <div class="alert alert-danger mt-3 mb-0 d-flex justify-content-between py-2"
+                                            data-notify-sound="off">
                                             <span><i class="bi bi-exclamation-triangle-fill me-1"></i>مـبـلـغ پـرداخـتـی کـمـتـر از سـبـد خـریـد اسـت:</span>
                                             <strong>کمبود {{ number_format($this->cashShortfall) }} تـومـان</strong>
                                         </div>
@@ -1367,7 +1370,7 @@
                             </div>
 
                             {{-- خلاصه فاکتور --}}
-                            <div class="alert alert-primary co-total mb-0">
+                            <div class="alert alert-primary co-total mb-0" data-notify-sound="off">
                                 <span class="fw-semibold">
                                     <i class="bi bi-receipt me-1"></i>مبلغ قابل پرداخت:
                                 </span>

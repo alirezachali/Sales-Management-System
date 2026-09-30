@@ -26,6 +26,7 @@ class SettingSeeder extends Seeder
             'default_discount' => '0',
             'sell_without_inventory' => '0', // آیا فروش کالا با موجودی صفر کجاز است؟
             'barcode_sound' => '1', // آیا هنگام اسکن بارکد صدا بخش شود؟
+            'notify_sound' => '1', // پخش صدای اعلان برای پیام‌ها و اخطارها
             'auto_print' => '0', // آیا فاکتور بعد از فروش خودکار چاپ شود؟
             'paper_size' => '80', // سایز فاکتور برای چاپ
             'print_logo' => '1', // آیا لوگو فروشگاه در فاکتور چاپ شود؟

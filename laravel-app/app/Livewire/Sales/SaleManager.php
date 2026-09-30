@@ -305,8 +305,14 @@ class SaleManager extends Component
             return;
         }
 
+        $prevQty = $this->cart[$product->id]['quantity'] ?? 0;
         $this->addProduct($product->id);
         $this->barcode = '';
+
+        $newQty = $this->cart[$product->id]['quantity'] ?? 0;
+        if ($newQty > $prevQty) {
+            $this->dispatch('app-sound', type: 'scan');
+        }
     }
 
     /**
@@ -334,6 +340,7 @@ class SaleManager extends Component
         // بررسی موجودی
         if ($requestedQty > $product->stock) {
             $this->stockError = $product->name;
+            $this->dispatch('app-sound', type: 'warning');
 
             return;
         }
@@ -374,6 +381,7 @@ class SaleManager extends Component
         // بررسی موجودی
         if (($currentQty + 1) > $product->stock) {
             $this->stockError = $product->name;
+            $this->dispatch('app-sound', type: 'warning');
 
             return;
         }

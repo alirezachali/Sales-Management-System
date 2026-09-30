@@ -59,7 +59,7 @@ class SettingsManager extends Component
     */
     protected array $booleanKeys = [
         // فروش
-        'allow_negative_stock', 'auto_print_invoice', 'barcode_sound', 'confirm_delete_invoice',
+        'allow_negative_stock', 'auto_print_invoice', 'barcode_sound', 'notify_sound', 'confirm_delete_invoice',
         // چاپ
         'print_logo', 'print_address', 'print_phone', 'print_barcode', 'print_qrcode', 'print_datetime',
         // بارکد و لیبل
@@ -114,6 +114,7 @@ class SettingsManager extends Component
             'allow_negative_stock' => false,
             'auto_print_invoice' => false,
             'barcode_sound' => true,
+            'notify_sound' => true,
             'confirm_delete_invoice' => true,
 
             // چاپ

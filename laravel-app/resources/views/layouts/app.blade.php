@@ -90,10 +90,14 @@
         'enabled' => in_array((string) setting('hotkeys_enabled', '1'), ['1', 'true', 'on'], true),
         'keys' => hotkeyData(),
     ]);
+    window.APP_SOUNDS = @js([
+        'notify' => in_array((string) setting('notify_sound', '1'), ['1', 'true', 'on'], true),
+        'barcode' => in_array((string) setting('barcode_sound', '1'), ['1', 'true', 'on'], true),
+    ]);
 </script>
 <script src="{{ asset('js/hotkeys.js') }}"></script>
 
 @livewireScripts
-<script src="{{ asset('js/alerts.js') }}"></script>
+<script src="{{ asset('js/alerts.js') }}?v=2"></script>
 </body>
 </html>
