@@ -76,7 +76,7 @@ class LoyaltyService
             return null;
         }
 
-        return DB::transaction(function () use ($customer, $points, $reference, $description) {
+        $apply = function () use ($customer, $points, $reference, $description) {
             $customer->increment('points', $points);
             $customer->refresh();
 
@@ -90,7 +90,9 @@ class LoyaltyService
                 'description' => $description ?: 'کسب امتیاز از خرید',
                 'user_id' => auth()->id(),
             ]);
-        });
+        };
+
+        return DB::transactionLevel() > 0 ? $apply() : DB::transaction($apply);
     }
 
     /**
@@ -103,10 +105,12 @@ class LoyaltyService
         }
 
         if ($this->availablePoints($customer) < $points) {
-            throw new \InvalidArgumentException('امتیاز کافی موجود نیست.');
+            throw new \InvalidArgumentException(
+                'امتیاز کافی موجود نیست. موجود: '.number_format($this->availablePoints($customer)).'، درخواستی: '.number_format($points).'.'
+            );
         }
 
-        return DB::transaction(function () use ($customer, $points, $reference, $description) {
+        $apply = function () use ($customer, $points, $reference, $description) {
             $customer->increment('spent_points', $points);
             $customer->refresh();
 
@@ -120,7 +124,9 @@ class LoyaltyService
                 'description' => $description ?: 'استفاده از امتیاز به‌عنوان تخفیف',
                 'user_id' => auth()->id(),
             ]);
-        });
+        };
+
+        return DB::transactionLevel() > 0 ? $apply() : DB::transaction($apply);
     }
 
     /**

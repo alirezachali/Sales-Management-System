@@ -970,6 +970,12 @@
                         <label class="form-label fw-semibold">تـخـفـیـف (تـومـان)</label>
                         <input type="number" min="0" step="any" class="form-control pos-scan-input"
                             wire:model.live.debounce.500ms="discount" placeholder="0">
+                        @if ($discount > $this->subtotal && $this->subtotal > 0)
+                            <div class="text-danger small mt-1">
+                                <i class="bi bi-exclamation-circle me-1"></i>
+                                تخفیف بیشتر از جمع سبد خرید ({{ number_format($this->subtotal) }} تومان) است.
+                            </div>
+                        @endif
                     </div>
 
                     <div class="">
@@ -1028,6 +1034,12 @@
                         </div>
 
                         <div class="modal-body">
+
+                            @error('checkout')
+                                <div class="alert alert-danger py-2 small">
+                                    <i class="bi bi-exclamation-octagon-fill me-1"></i>{{ $message }}
+                                </div>
+                            @enderror
 
                             {{-- ============ انتخاب مشتری با جستجوی لایو ============ --}}
                             <div class="co-section">
@@ -1238,6 +1250,11 @@
                                             <span><i class="bi bi-arrow-repeat me-1"></i>بـاقـی وجـه مـشـتـری:</span>
                                             <strong>{{ number_format($this->change) }} تـومـان</strong>
                                         </div>
+                                    @elseif ($this->cashShortfall > 0.001)
+                                        <div class="alert alert-danger mt-3 mb-0 d-flex justify-content-between py-2">
+                                            <span><i class="bi bi-exclamation-triangle-fill me-1"></i>مـبـلـغ پـرداخـتـی کـمـتـر از سـبـد خـریـد اسـت:</span>
+                                            <strong>کمبود {{ number_format($this->cashShortfall) }} تـومـان</strong>
+                                        </div>
                                     @endif
 
                                 @elseif ($paymentType === 'card')
@@ -1339,6 +1356,11 @@
                                             <span class="text-muted small d-block">ثبت نسیه روی حساب مشتری</span>
                                             <strong class="fs-5 text-danger">{{ number_format($this->creditRemain) }}</strong>
                                             <span class="small text-danger">تومان</span>
+                                            @if ($this->paidAmount > $this->finalPrice + 0.001)
+                                                <div class="text-warning small mt-1">
+                                                    پیش‌پرداخت بیشتر از مبلغ فاکتور است.
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @endif
@@ -1358,7 +1380,8 @@
                                 <i class="bi bi-x-lg me-1"></i>انصراف
                             </button>
                             <button type="submit" class="btn btn-co-submit fw-bold px-4"
-                                wire:loading.attr="disabled" wire:target="checkout">
+                                wire:loading.attr="disabled" wire:target="checkout"
+                                @if ($this->checkoutBlocked) disabled title="مبالغ پرداخت با مبلغ سبد خرید هم‌خوانی ندارد" @endif>
                                 <span wire:loading wire:target="checkout"
                                     class="spinner-border spinner-border-sm ms-1"></span>
                                 <i class="bi bi-check2-circle me-1"></i>ثبت نهایی فاکتور

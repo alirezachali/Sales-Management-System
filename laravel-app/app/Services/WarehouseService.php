@@ -27,7 +27,7 @@ class WarehouseService
         string $description = 'ورود کالا',
         ?int $userId = null,
     ): void {
-        DB::transaction(function () use ($product, $warehouseId, $quantity, $type, $description, $userId) {
+        $apply = function () use ($product, $warehouseId, $quantity, $type, $description, $userId) {
             $stock = ProductWarehouseStock::firstOrCreate(
                 ['product_id' => $product->id, 'warehouse_id' => $warehouseId],
                 ['quantity' => 0],
@@ -38,7 +38,9 @@ class WarehouseService
             $product->increment('stock', $quantity);
 
             $this->logMovement($product, $warehouseId, $type, $quantity, $description, $userId);
-        });
+        };
+
+        DB::transactionLevel() > 0 ? $apply() : DB::transaction($apply);
     }
 
     /**
@@ -52,7 +54,7 @@ class WarehouseService
         string $description = 'خروج کالا',
         ?int $userId = null,
     ): void {
-        DB::transaction(function () use ($product, $warehouseId, $quantity, $type, $description, $userId) {
+        $apply = function () use ($product, $warehouseId, $quantity, $type, $description, $userId) {
             $stock = ProductWarehouseStock::firstOrCreate(
                 ['product_id' => $product->id, 'warehouse_id' => $warehouseId],
                 ['quantity' => 0],
@@ -63,7 +65,10 @@ class WarehouseService
             $product->decrement('stock', $quantity);
 
             $this->logMovement($product, $warehouseId, $type, $quantity, $description, $userId);
-        });
+        };
+
+        // داخل checkout فروش از قبل تراکنش باز است؛ savepoint اضافه نساز
+        DB::transactionLevel() > 0 ? $apply() : DB::transaction($apply);
     }
 
     /**

@@ -61,13 +61,21 @@ class SaleController extends Controller
     {
         $data = $request->validated();
 
-        $sale = $this->saleService->checkout(
-            $data['cart'],
-            $data['discount'] ?? 0,
-            $data['payment_type'],
-            $data['customer_id'] ?? null,
-            $data['payments'] ?? [],
-        );
+        try {
+            $sale = $this->saleService->checkout(
+                $data['cart'],
+                $data['discount'] ?? 0,
+                $data['payment_type'],
+                $data['customer_id'] ?? null,
+                $data['payments'] ?? [],
+                (int) ($data['points_to_redeem'] ?? 0),
+            );
+        } catch (\InvalidArgumentException|\DomainException|\App\Exceptions\Business\InsufficientStockException|\App\Exceptions\Business\ProductNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
 
         return response()->json([
             'success' => true,

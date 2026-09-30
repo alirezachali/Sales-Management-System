@@ -53,7 +53,7 @@ class CashboxService
             throw new InvalidArgumentException('مبلغ تراکنش باید بزرگ‌تر از صفر باشد.');
         }
 
-        return DB::transaction(function () use ($cashbox, $type, $amount, $description, $reference, $userId) {
+        $apply = function () use ($cashbox, $type, $amount, $description, $reference, $userId) {
             $delta = match (true) {
                 $type === 'adjustment' => $amount,
                 in_array($type, self::INCREASE_TYPES, true) => abs($amount),
@@ -76,7 +76,10 @@ class CashboxService
                 'description' => $description,
                 'user_id' => $userId ?? auth()->id(),
             ]);
-        });
+        };
+
+        // اگر از قبل داخل تراکنش هستیم (مثل checkout فروش)، از savepoint تودرتو پرهیز کن
+        return DB::transactionLevel() > 0 ? $apply() : DB::transaction($apply);
     }
 
     /**
@@ -113,8 +116,17 @@ class CashboxService
 
         $change = (float) ($sale->change_amount ?? 0);
 
+        // یک‌بار resolve برای هر نوع پرداخت (جلوگیری از کوئری تکراری در حلقه)
+        $cashboxes = [];
+
         foreach ($sale->payments as $payment) {
-            $cashbox = $this->resolveCashboxFor($payment->payment_type);
+            $type = $payment->payment_type;
+
+            if (! array_key_exists($type, $cashboxes)) {
+                $cashboxes[$type] = $this->resolveCashboxFor($type);
+            }
+
+            $cashbox = $cashboxes[$type];
 
             if (! $cashbox) {
                 continue;

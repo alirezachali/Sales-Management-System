@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\Business\InsufficientStockException;
 use App\Exceptions\Business\ProductNotFoundException;
 use App\Models\Customer;
 use App\Models\Payment;
@@ -9,6 +10,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class SaleService
 {
@@ -51,6 +53,18 @@ class SaleService
         array $payments = [],
         int $pointsToRedeem = 0,
     ): Sale {
+        if ($cart === []) {
+            throw new \InvalidArgumentException('سبد فروش خالی است.');
+        }
+
+        if ($discount < 0) {
+            throw new \InvalidArgumentException('مبلغ تخفیف نمی‌تواند منفی باشد.');
+        }
+
+        if ($pointsToRedeem < 0) {
+            throw new \InvalidArgumentException('تعداد امتیاز مصرفی نامعتبر است.');
+        }
+
         return DB::transaction(function () use (
             $cart,
             $discount,
@@ -59,43 +73,65 @@ class SaleService
             $payments,
             $pointsToRedeem,
         ) {
-            $productIds = collect($cart)
-                ->pluck('id')
-                ->unique()
-                ->values();
+            $cart = $this->normalizeCart($cart);
 
+            $productIds = collect($cart)->pluck('id')->unique()->values();
+
+            /** @var \Illuminate\Support\Collection<int, Product> $products */
             $products = Product::query()
                 ->whereIn('id', $productIds)
                 ->lockForUpdate()
                 ->get()
                 ->keyBy('id');
 
+            // اعتبارسنجی کالاها و موجودی قبل از ایجاد فاکتور (کاهش کارهای بیهوده در rollback)
+            $this->assertCartProducts($cart, $products);
+
             $total = $this->calculator->total($cart, $products);
 
-            // تبدیل امتیاز مشتری به تخفیف (در همین تراکنش ثبت می‌شود)
+            if ($discount > $total) {
+                throw new \InvalidArgumentException(
+                    'تخفیف ('.$this->money($discount).') نمی‌تواند بیشتر از جمع سبد خرید ('.$this->money($total).') باشد.'
+                );
+            }
+
+            $customer = null;
             $pointsValue = 0.0;
 
+            if ($pointsToRedeem > 0 || $customerId) {
+                if ($customerId) {
+                    $customer = Customer::query()
+                        ->whereKey($customerId)
+                        ->lockForUpdate()
+                        ->first();
+
+                    if (! $customer) {
+                        throw new \InvalidArgumentException('مشتری یافت نشد.');
+                    }
+                }
+            }
+
             if ($pointsToRedeem > 0) {
-                if (! $customerId) {
+                if (! $customer) {
                     throw new \InvalidArgumentException(
                         'برای استفاده از امتیاز باید مشتری انتخاب شده باشد.'
                     );
                 }
 
-                $customer = Customer::query()
-                    ->whereKey($customerId)
-                    ->lockForUpdate()
-                    ->first();
+                $available = $this->loyaltyService->availablePoints($customer);
 
-                if (! $customer) {
-                    throw new \InvalidArgumentException('مشتری یافت نشد.');
+                if ($pointsToRedeem > $available) {
+                    throw new \InvalidArgumentException(
+                        'امتیاز درخواستی ('.number_format($pointsToRedeem).') بیشتر از امتیاز موجود مشتری ('.number_format($available).') است.'
+                    );
                 }
 
                 $pointsValue = $pointsToRedeem * $this->loyaltyService->pointValue();
+                $payableBeforePoints = $total - $discount;
 
-                if ($pointsValue > $total - $discount) {
+                if ($pointsValue > $payableBeforePoints) {
                     throw new \InvalidArgumentException(
-                        'مبلغ تخفیف امتیازی بیشتر از مبلغ قابل پرداخت فاکتور است.'
+                        'مبلغ تخفیف امتیازی ('.$this->money($pointsValue).') بیشتر از مبلغ قابل پرداخت فاکتور ('.$this->money($payableBeforePoints).') است.'
                     );
                 }
 
@@ -109,90 +145,27 @@ class SaleService
                 $discount += $pointsValue;
             }
 
-            $finalPrice = $total - $discount;
+            $finalPrice = round($total - $discount, 2);
 
             if ($finalPrice < 0) {
-                throw new \InvalidArgumentException(
-                    'مبلغ نهایی فروش نمی‌تواند منفی باشد.'
-                );
+                throw new \InvalidArgumentException('مبلغ نهایی فروش نمی‌تواند منفی باشد.');
             }
 
-            // نرمال‌سازی پرداخت‌ها: حذف مقادیر صفر/منفی و تجمیع هر نوع پرداخت
             $payments = $this->normalizePayments($payments);
+            $paidAmount = round(array_sum($payments), 2);
 
-            $paidAmount = array_sum($payments);
-
-            $changeAmount = 0.0;
-            $debtAmount = 0.0;
-
-            switch ($paymentType) {
-                case 'cash':
-                    $this->assertOnlyPaymentType($payments, 'cash');
-
-                    if ($paidAmount < $finalPrice) {
-                        throw new \InvalidArgumentException(
-                            'مبلغ پرداختی کمتر از مبلغ نهایی فروش است.'
-                        );
-                    }
-
-                    // در پرداخت نقدی امکان دریافت بیش از مبلغ (برای بازگرداندن باقی) وجود دارد
-                    $changeAmount = $paidAmount - $finalPrice;
-                    $paidAmount = $finalPrice + $changeAmount;
-                    break;
-
-                case 'card':
-                    $this->assertOnlyPaymentType($payments, 'card');
-
-                    if (abs($paidAmount - $finalPrice) > 0.001) {
-                        throw new \InvalidArgumentException(
-                            'مبلغ پرداختی با کارتخوان باید دقیقاً برابر مبلغ نهایی فروش باشد.'
-                        );
-                    }
-                    break;
-
-                case 'mixed':
-                    $this->assertOnlyPaymentType($payments, ['cash', 'card']);
-
-                    if (($payments['cash'] ?? 0) <= 0 || ($payments['card'] ?? 0) <= 0) {
-                        throw new \InvalidArgumentException(
-                            'در پرداخت ترکیبی باید هر دو مبلغ نقدی و کارتخوان بزرگ‌تر از صفر باشد.'
-                        );
-                    }
-
-                    if (abs($paidAmount - $finalPrice) > 0.001) {
-                        throw new \InvalidArgumentException(
-                            'مجموع مبالغ نقدی و کارتخوان باید دقیقاً برابر مبلغ نهایی فروش باشد.'
-                        );
-                    }
-                    break;
-
-                case 'credit':
-                    if ($customerId === null) {
-                        throw new \InvalidArgumentException(
-                            'برای فروش نسیه باید مشتری انتخاب شده باشد.'
-                        );
-                    }
-
-                    if ($paidAmount > $finalPrice) {
-                        throw new \InvalidArgumentException(
-                            'مبلغ پرداختی نمی‌تواند بیشتر از مبلغ نهایی فروش باشد.'
-                        );
-                    }
-
-                    // باقی‌مانده به حساب نسیه‌ی مشتری ثبت می‌شود
-                    $debtAmount = $finalPrice - $paidAmount;
-                    break;
-
-                default:
-                    throw new \InvalidArgumentException(
-                        'روش پرداخت نامعتبر است.'
-                    );
-            }
+            [$paidAmount, $changeAmount, $debtAmount] = $this->assertPayments(
+                $paymentType,
+                $payments,
+                $paidAmount,
+                $finalPrice,
+                $customerId,
+            );
 
             $cashbox = $this->cashboxService->resolveCashboxFor($paymentType);
 
             $sale = Sale::create([
-                'invoice_number' => 'INV-'.now()->format('YmdHis'),
+                'invoice_number' => $this->generateInvoiceNumber(),
                 'user_id' => auth()->id() ?? 1,
                 'customer_id' => $customerId,
                 'total_price' => $total,
@@ -205,20 +178,7 @@ class SaleService
                 'status' => 'completed',
             ]);
 
-            // ثبت تیکه‌های پرداخت (نقدی / کارتخوان)
-            foreach ($payments as $type => $amount) {
-                if ($amount <= 0) {
-                    continue;
-                }
-
-                Payment::create([
-                    'sale_id' => $sale->id,
-                    'payment_type' => $type,
-                    'amount' => $amount,
-                ]);
-            }
-
-            // ثبت واریزی‌ها در صندوق‌ها
+            $this->storePayments($sale, $payments);
             $this->cashboxService->recordSale($sale);
 
             if ($paymentType === 'credit') {
@@ -228,7 +188,6 @@ class SaleService
                     'فروش نسیه'
                 );
 
-                // اگر مشتری بخشی از مبلغ را نقد/کارت پرداخت کرده، در حسابش تهاتر می‌شود
                 if ($paidAmount > 0) {
                     $this->customerAccountService->addPayment(
                         $sale,
@@ -238,48 +197,10 @@ class SaleService
                 }
             }
 
-            foreach ($cart as $item) {
-                $product = $products->get($item['id']);
+            $this->storeSaleItemsAndReduceStock($sale, $cart, $products);
 
-                // اکر کالا وجود نداشته باشد
-                if (! $product) {
-                    throw new ProductNotFoundException;
-                }
-
-                // گرفتن قیمت فروش کالا از دیتابیس
-                $price = $product->sell_price;
-
-                $quantity = (int) $item['quantity'];
-
-                $lineTotal = $price * $quantity;
-
-                // چک کردن موجودی کالا
-                $this->stockService->ensureAvailable(
-                    $product,
-                    $quantity
-                );
-
-                // ساخت آیتم فروش
-                SaleItem::create([
-                    'sale_id' => $sale->id,
-                    'product_id' => $product->id,
-                    'quantity' => $quantity,
-                    'unit_price' => $price,
-                    'cost_price' => (float) $product->buy_price,
-                    'line_total' => $lineTotal,
-                ]);
-
-                // ثبت فروش کالا و کم کردن موجودی کالا
-                $this->stockService->remove(
-                    $product,
-                    $quantity,
-                    'فروش کالا'
-                );
-            }
-
-            // کسب امتیاز وفاداری برای مشتری ثبت‌شده
             if ($sale->customer_id) {
-                $customer = $sale->customer;
+                $customer ??= $sale->customer;
 
                 if ($customer) {
                     $this->loyaltyService->earn(
@@ -296,7 +217,254 @@ class SaleService
     }
 
     /**
+     * تجمیع تعداد کالاهای تکراری و حذف مقادیر نامعتبر
+     *
+     * @return array<int, array{id: int, quantity: int}>
+     */
+    private function normalizeCart(array $cart): array
+    {
+        $merged = [];
+
+        foreach ($cart as $item) {
+            $id = (int) ($item['id'] ?? 0);
+            $qty = (int) ($item['quantity'] ?? 0);
+
+            if ($id <= 0 || $qty <= 0) {
+                throw new \InvalidArgumentException(
+                    'تعداد کالا در سبد خرید باید حداقل ۱ باشد.'
+                );
+            }
+
+            $merged[$id] = ($merged[$id] ?? 0) + $qty;
+        }
+
+        if ($merged === []) {
+            throw new \InvalidArgumentException('سبد فروش خالی است.');
+        }
+
+        return collect($merged)
+            ->map(fn (int $quantity, int $id) => ['id' => $id, 'quantity' => $quantity])
+            ->values()
+            ->all();
+    }
+
+    /**
+     * @param  array<int, array{id: int, quantity: int}>  $cart
+     * @param  \Illuminate\Support\Collection<int, Product>  $products
+     */
+    private function assertCartProducts(array $cart, $products): void
+    {
+        foreach ($cart as $item) {
+            $product = $products->get($item['id']);
+
+            if (! $product) {
+                throw new ProductNotFoundException;
+            }
+
+            if (! $product->is_active) {
+                throw new \InvalidArgumentException(
+                    'کالای «'.$product->name.'» غیرفعال است و قابل فروش نیست.'
+                );
+            }
+
+            try {
+                $this->stockService->ensureAvailable($product, $item['quantity']);
+            } catch (InsufficientStockException $e) {
+                throw $e;
+            }
+        }
+    }
+
+    /**
+     * @param  array<string, float>  $payments
+     * @return array{0: float, 1: float, 2: float} [paidAmount, changeAmount, debtAmount]
+     */
+    private function assertPayments(
+        string $paymentType,
+        array $payments,
+        float $paidAmount,
+        float $finalPrice,
+        ?int $customerId,
+    ): array {
+        $changeAmount = 0.0;
+        $debtAmount = 0.0;
+
+        switch ($paymentType) {
+            case 'cash':
+                $this->assertOnlyPaymentType($payments, 'cash');
+
+                if ($payments === []) {
+                    throw new \InvalidArgumentException(
+                        'مبلغ نقدی دریافتی را وارد کنید. مبلغ قابل پرداخت: '.$this->money($finalPrice).'.'
+                    );
+                }
+
+                if ($paidAmount < $finalPrice) {
+                    $shortage = round($finalPrice - $paidAmount, 2);
+
+                    throw new \InvalidArgumentException(
+                        'مبلغ پرداختی ('.$this->money($paidAmount).') کمتر از مبلغ سبد خرید ('.$this->money($finalPrice).') است. کمبود: '.$this->money($shortage).'.'
+                    );
+                }
+
+                $changeAmount = round($paidAmount - $finalPrice, 2);
+                break;
+
+            case 'card':
+                $this->assertOnlyPaymentType($payments, 'card');
+
+                if ($payments === []) {
+                    throw new \InvalidArgumentException(
+                        'مبلغ کارتخوان را وارد کنید. مبلغ قابل پرداخت: '.$this->money($finalPrice).'.'
+                    );
+                }
+
+                if (abs($paidAmount - $finalPrice) > 0.001) {
+                    throw new \InvalidArgumentException(
+                        $this->exactPaymentMismatchMessage('کارتخوان', $paidAmount, $finalPrice)
+                    );
+                }
+                break;
+
+            case 'mixed':
+                $this->assertOnlyPaymentType($payments, ['cash', 'card']);
+
+                if (($payments['cash'] ?? 0) <= 0 || ($payments['card'] ?? 0) <= 0) {
+                    throw new \InvalidArgumentException(
+                        'در پرداخت ترکیبی باید هر دو مبلغ نقدی و کارتخوان بزرگ‌تر از صفر باشد.'
+                    );
+                }
+
+                if (abs($paidAmount - $finalPrice) > 0.001) {
+                    throw new \InvalidArgumentException(
+                        $this->exactPaymentMismatchMessage('ترکیبی', $paidAmount, $finalPrice)
+                    );
+                }
+                break;
+
+            case 'credit':
+                if ($customerId === null) {
+                    throw new \InvalidArgumentException(
+                        'برای فروش نسیه باید مشتری انتخاب شده باشد.'
+                    );
+                }
+
+                if ($paidAmount > $finalPrice) {
+                    $extra = round($paidAmount - $finalPrice, 2);
+
+                    throw new \InvalidArgumentException(
+                        'مبلغ پیش‌پرداخت ('.$this->money($paidAmount).') بیشتر از مبلغ سبد خرید ('.$this->money($finalPrice).') است. اضافه: '.$this->money($extra).'.'
+                    );
+                }
+
+                $debtAmount = round($finalPrice - $paidAmount, 2);
+                break;
+
+            default:
+                throw new \InvalidArgumentException('روش پرداخت نامعتبر است.');
+        }
+
+        return [$paidAmount, $changeAmount, $debtAmount];
+    }
+
+    private function exactPaymentMismatchMessage(string $label, float $paidAmount, float $finalPrice): string
+    {
+        $diff = round($paidAmount - $finalPrice, 2);
+
+        if ($diff < 0) {
+            return 'مجموع پرداخت '.$label.' ('.$this->money($paidAmount).') کمتر از مبلغ سبد خرید ('.$this->money($finalPrice).') است. کمبود: '.$this->money(abs($diff)).'.';
+        }
+
+        return 'مجموع پرداخت '.$label.' ('.$this->money($paidAmount).') بیشتر از مبلغ سبد خرید ('.$this->money($finalPrice).') است. اضافه: '.$this->money($diff).'.';
+    }
+
+    /**
+     * @param  array<string, float>  $payments
+     */
+    private function storePayments(Sale $sale, array $payments): void
+    {
+        if ($payments === []) {
+            return;
+        }
+
+        $now = now();
+        $rows = [];
+
+        foreach ($payments as $type => $amount) {
+            if ($amount <= 0) {
+                continue;
+            }
+
+            $rows[] = [
+                'sale_id' => $sale->id,
+                'payment_type' => $type,
+                'amount' => $amount,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        }
+
+        if ($rows !== []) {
+            Payment::insert($rows);
+            $sale->unsetRelation('payments');
+        }
+    }
+
+    /**
+     * @param  array<int, array{id: int, quantity: int}>  $cart
+     * @param  \Illuminate\Support\Collection<int, Product>  $products
+     */
+    private function storeSaleItemsAndReduceStock(Sale $sale, array $cart, $products): void
+    {
+        $now = now();
+        $rows = [];
+
+        foreach ($cart as $item) {
+            $product = $products->get($item['id']);
+
+            if (! $product) {
+                throw new ProductNotFoundException;
+            }
+
+            $quantity = (int) $item['quantity'];
+            $price = (float) $product->sell_price;
+
+            $rows[] = [
+                'sale_id' => $sale->id,
+                'product_id' => $product->id,
+                'quantity' => $quantity,
+                'unit_price' => $price,
+                'cost_price' => (float) $product->buy_price,
+                'line_total' => $price * $quantity,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+
+            // موجودی قبلاً در assertCartProducts بررسی شده؛ remove دوباره ensure می‌کند
+            $this->stockService->remove(
+                $product,
+                $quantity,
+                'فروش کالا'
+            );
+        }
+
+        SaleItem::insert($rows);
+    }
+
+    private function generateInvoiceNumber(): string
+    {
+        return 'INV-'.now()->format('YmdHis').'-'.Str::upper(Str::random(4));
+    }
+
+    private function money(float $amount): string
+    {
+        return number_format($amount).' تومان';
+    }
+
+    /**
      * تبدیل لیست پرداخت‌ها به دیکشنری [نوع => مبلغ] با حذف صفرها
+     *
+     * @return array<string, float>
      */
     private function normalizePayments(array $payments): array
     {
@@ -318,6 +486,8 @@ class SaleService
 
     /**
      * مطمئن شو فقط نوع/انواع پرداخت مجاز در لیست وجود دارد
+     *
+     * @param  array<string, float>  $payments
      */
     private function assertOnlyPaymentType(array $payments, string|array $allowed): void
     {
