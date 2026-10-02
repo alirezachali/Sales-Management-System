@@ -16,6 +16,8 @@
     pointer-events: auto;
     opacity: 1;
     visibility: visible;
+    -webkit-backdrop-filter: blur(2px) saturate(100%);
+    backdrop-filter: blur(2px) saturate(100%);
 }
 
 .app-loader__backdrop {
