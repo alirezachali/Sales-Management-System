@@ -354,16 +354,6 @@
                                     <div class="col-md-6 mt-3">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
-                                                wire:model="data.notify_sound" id="notify_sound">
-                                            <label class="form-check-label" for="notify_sound">
-                                                پخش صدای پیام‌ها و اخطارها
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mt-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
                                                 wire:model="data.confirm_delete_invoice" id="confirm_delete_invoice">
                                             <label class="form-check-label" for="confirm_delete_invoice">
                                                 تایید قبل از حذف فاکتور
@@ -709,6 +699,16 @@
                                                 wire:model="data.check_update" id="check_update">
                                             <label class="form-check-label" for="check_update">بررسی بروزرسانی هنگام
                                                 اجرا</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mt-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="data.notify_sound" id="notify_sound">
+                                            <label class="form-check-label" for="notify_sound">
+                                                پخش صدا در هنگام نمایش هشدارها
+                                            </label>
                                         </div>
                                     </div>
 

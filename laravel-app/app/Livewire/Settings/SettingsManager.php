@@ -59,13 +59,15 @@ class SettingsManager extends Component
     */
     protected array $booleanKeys = [
         // فروش
-        'allow_negative_stock', 'auto_print_invoice', 'barcode_sound', 'notify_sound', 'confirm_delete_invoice',
+        'allow_negative_stock', 'auto_print', 'barcode_sound', 'confirm_delete_invoice',
         // چاپ
-        'print_logo', 'print_address', 'print_phone', 'print_barcode', 'print_qrcode', 'print_datetime',
+        'print_logo', 'print_address', 'print_phone', 'print_qrcode', 'print_datetime',
         // بارکد و لیبل
         'label_show_name', 'label_show_price', 'label_show_barcode', 'label_show_code', 'label_show_unit',
         // سیستم
         'system_log', 'remember_login', 'maintenance_mode', 'developer_mode', 'enable_cache', 'check_update',
+        // صدا
+        'notify_sound',
         // پشتیبان‌گیری
         'auto_backup', 'backup_before_restore',
         // کلیدهای میانبر
@@ -112,15 +114,13 @@ class SettingsManager extends Component
             'stock_alert' => 5,
             'max_invoice_items' => 100,
             'allow_negative_stock' => false,
-            'auto_print_invoice' => false,
             'barcode_sound' => true,
-            'notify_sound' => true,
             'confirm_delete_invoice' => true,
 
             // چاپ
             'paper_size' => '80',
             'print_copies' => 1,
-            'auto_print' => '0',
+            'auto_print' => false,
             'print_logo' => true,
             'print_address' => true,
             'print_phone' => true,
@@ -152,6 +152,7 @@ class SettingsManager extends Component
             'developer_mode' => false,
             'enable_cache' => true,
             'check_update' => true,
+            'notify_sound' => true,
             'session_timeout' => 120,
             'pagination_limit' => 15,
 

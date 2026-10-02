@@ -31,7 +31,6 @@ class SettingSeeder extends Seeder
             'max_invoice_items' => '100', // حداکثر تعداد آیتم در هر فاکتور
             'allow_negative_stock' => '0', // اجازه فروش با موجودی منفی
             'barcode_sound' => '1', // آیا هنگام اسکن بارکد صدا بخش شود؟
-            'notify_sound' => '1', // پخش صدای اعلان برای پیام‌ها و اخطارها
             'confirm_delete_invoice' => '1', // تایید قبل از حذف فاکتور
              // تنظیمات چاپ
             'paper_size' => '80', // سایز فاکتور برای چاپ
@@ -67,6 +66,7 @@ class SettingSeeder extends Seeder
             'check_update' => '1', // بررسی بروزرسانی هنگام اجرا
             'session_timeout' => '120', // مدت زمان انقضای نشست (دقیقه)
             'pagination_limit' => '15', // تعداد رکورد در هر صفحه
+            'notify_sound' => '1', // پخش صدا در هنگام نمایش هشدارها
              // تنظیمات کلیدهای میانبر
             'hotkeys_enabled' => '1', // فعال بودن کلیدهای میانبر
              // تنظیمات پشتیبان گیری
