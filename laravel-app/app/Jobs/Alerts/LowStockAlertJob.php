@@ -18,8 +18,8 @@ class LowStockAlertJob extends AlertJob
     }
 
     protected function build(): array
-    {
-        $threshold = (float) setting('Out_of_stock_alert', setting('stock_alert', 5));
+    {    // گرفتن تعداد هشدار اتمام موجودی از دیتابیس
+        $threshold = (float) setting('stock_alert', 5);
 
         return Product::query()
             ->where('is_active', true)
