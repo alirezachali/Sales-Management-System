@@ -51,17 +51,37 @@
         .pay-type-btn.pay-cash {
             --pay-accent: 34, 197, 94;
         }
+        .pay-type-btn.pay-cash.active {
+            border-color: #22c55e;
+            background-image: linear-gradient(180deg, rgba(34, 197, 94, .18), rgba(34, 197, 94, .05));
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, .18), 0 0 18px 2px rgba(34, 197, 94, .45);
+        }
 
         .pay-type-btn.pay-card {
             --pay-accent: 62, 166, 255;
+        }
+        .pay-type-btn.pay-card.active {
+            border-color: #14d9e7;
+            background-image: linear-gradient(180deg, rgba(25, 105, 224, 0.18), rgba(10, 101, 219, 0.05));
+            box-shadow: 0 0 0 3px rgba(6, 109, 194, 0.18), 0 0 18px 2px rgba(6, 71, 146, 0.45);
         }
 
         .pay-type-btn.pay-credit {
             --pay-accent: 249, 115, 22;
         }
+        .pay-type-btn.pay-credit.active {
+            border-color: #d63b0c;
+            background-image: linear-gradient(180deg, rgba(224, 95, 9, 0.18), rgba(197, 107, 34, 0.05));
+            box-shadow: 0 0 0 3px rgba(197, 113, 34, 0.18), 0 0 18px 2px rgba(128, 30, 6, 0.45);
+        }
 
         .pay-type-btn.pay-mixed {
             --pay-accent: 217, 70, 239;
+        }
+        .pay-type-btn.pay-mixed.active {
+            border-color: #a522c5;
+            background-image: linear-gradient(180deg, rgba(110, 34, 197, 0.18), rgba(69, 34, 197, 0.05));
+            box-shadow: 0 0 0 3px rgba(197, 34, 189, 0.18), 0 0 18px 2px rgba(197, 34, 156, 0.45);
         }
 
         /* هاور: بالا آمدن، هاله رنگی و روشن‌تر شدن کارت */
@@ -83,11 +103,11 @@
         }
 
         /* حالت انتخاب‌شده: هاله و خط بردر سبز */
-        .pay-type-btn.active {
+        /* .pay-type-btn.active {
             border-color: #22c55e;
             background-image: linear-gradient(180deg, rgba(34, 197, 94, .18), rgba(34, 197, 94, .05));
             box-shadow: 0 0 0 3px rgba(34, 197, 94, .18), 0 0 18px 2px rgba(34, 197, 94, .45);
-        }
+        } */
 
         .pay-type-btn.active .label {
             color: #22c55e;
@@ -188,10 +208,6 @@
             position: relative;
             overflow: hidden;
             color: var(--co-text);
-            border: 1px solid rgba(124, 92, 255, .3) !important;
-            box-shadow:
-                0 30px 80px -24px rgba(0, 0, 0, .8),
-                0 0 70px -18px rgba(124, 92, 255, .6);
             animation: co-pop .32s cubic-bezier(.2, .9, .3, 1.15) both;
         }
 
@@ -205,19 +221,6 @@
                 opacity: 1;
                 transform: none;
             }
-        }
-
-        /* هاله‌های رنگی پشت محتوا */
-        .checkout-modal .modal-content::before,
-        .checkout-modal .modal-content::after {
-            content: "";
-            position: absolute;
-            width: 340px;
-            height: 340px;
-            border-radius: 50%;
-            filter: blur(75px);
-            pointer-events: none;
-            z-index: 0;
         }
 
         .checkout-modal .modal-content::before {
