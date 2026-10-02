@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Dashboard;
 
+use App\Models\AttendanceRecord;
+use App\Models\Employee;
 use App\Models\Expense;
 use App\Models\Product;
 use App\Models\Sale;
@@ -23,6 +25,9 @@ class Overview extends Component
     | و بدون دخالت کاربر، هر چند ثانیه یک بار خودکار تازه شود.
     */
     public int $pollingSeconds = 900;
+
+    /** ماه شمسی انتخاب‌شده برای کارت حضور و غیاب؛ نمونه: 1405-06 */
+    public string $attendanceMonth = '';
 
     /*
     |--------------------------------------------------------------------------
@@ -70,6 +75,9 @@ class Overview extends Component
         // تفکیک مالی ماه جاری شمسی برای چارت دایره‌ای
         $finance = $this->buildFinanceBreakdown();
 
+        // داده‌های حضور و غیاب ماه جاری شمسی
+        $attendance = $this->buildAttendanceData();
+
         // به نمودار Chart.js سمت کلاینت اطلاع می‌دهیم داده‌ی تازه‌ای آماده است.
         // کنواس نمودارها در ویو با wire:ignore محافظت شده‌اند، پس با هر poll
         // دوباره ساخته نمی‌شوند و فقط از طریق این رویدادها آپدیت می‌شوند
@@ -92,7 +100,67 @@ class Overview extends Component
             'topProductData',
             'topProductRevenue',
             'finance',
+            'attendance',
         ));
+    }
+
+    /**
+     * داده‌های حضور و غیابِ ماه شمسی انتخاب‌شده برای نمایش در داشبورد.
+     *
+     * اگر ماهی انتخاب نشده باشد (attendanceMonth خالی) به ماه جاری شمسی
+     * برمی‌گردد. خروجی هم‌ساختار با AttendanceManager است: لیست کارمندان
+     * فعال، روزهای ماه، رکوردهای هر کارمند-روز و عنوان ماه شمسی. همان کلاس‌های
+     * CSS رنگ‌آمیزی (att-present, att-absent و …) برای سازگاری بصری با
+     * صفحه‌ی اصلی حضور و غیاب استفاده می‌شوند.
+     *
+     * @return array{employees: \Illuminate\Support\Collection, records: \Illuminate\Support\Collection, days: array<int, int>, monthJalali: string, monthTitle: string}
+     */
+    protected function buildAttendanceData(): array
+    {
+        // از ماه شمسی به‌صورت مستقیم شروع می‌کنیم (نه از تاریخ میلادی)
+        // تا عنوان ماه و شماره‌ی روزها درست شمسی باشند.
+        $monthJalali = $this->attendanceMonth ?: Verta::now()->format('Y-m');
+
+        [$y, $m] = array_map('intval', explode('-', $monthJalali));
+        $firstDay = Verta::parse($y.'-'.str_pad((string) $m, 2, '0', STR_PAD_LEFT).'-01');
+
+        // بازه‌ی میلادی برای کوئری رکوردها
+        $monthStart = $firstDay->toCarbon()->toDateString();
+        $monthEnd = $firstDay->copy()->endMonth()->toCarbon()->toDateString();
+
+        $employees = Employee::active()
+            ->orderBy('first_name')
+            ->get(['id', 'first_name', 'last_name', 'job_title']);
+
+        $records = AttendanceRecord::whereBetween('date', [$monthStart, $monthEnd])
+            ->get()
+            ->keyBy(fn ($r) => $r->employee_id.'|'.$r->date->format('Y-m-d'));
+
+        $daysInMonth = (int) $firstDay->copy()->endMonth()->format('j');
+        $days = range(1, $daysInMonth);
+
+        // عنوان ماه شمسی، مثل "1405/06"
+        $monthTitle = $y.'/'.str_pad((string) $m, 2, '0', STR_PAD_LEFT);
+
+        return [
+            'employees' => $employees,
+            'records' => $records,
+            'days' => $days,
+            'monthJalali' => $monthJalali,
+            'monthTitle' => $monthTitle,
+        ];
+    }
+
+    /** رفتن به ماه قبلی/بعدی در کارت حضور و غیاب داشبورد */
+    public function changeAttendanceMonth(string $direction): void
+    {
+        $current = $this->attendanceMonth ?: Verta::now()->format('Y-m');
+
+        [$y, $m] = array_map('intval', explode('-', $current));
+        $v = Verta::parse($y.'-'.str_pad((string) $m, 2, '0', STR_PAD_LEFT).'-01');
+        $v = $direction === 'next' ? $v->copy()->addMonth() : $v->copy()->subMonth();
+
+        $this->attendanceMonth = $v->format('Y-m');
     }
 
     /**

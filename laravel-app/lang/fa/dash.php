@@ -21,6 +21,14 @@ return [
         'fin_cogs' => 'بـهـای تـمـام‌شـده کـالـا',
         'fin_net_profit' => 'سـود خـالـص',
         'fin_loss' => 'زیـان',
+        'attendance_title' => 'حـضـور و غـیـاب کـارکـنـان',
+        'attendance_employee' => 'نـام کـارمـنـد',
+        'attendance_full' => 'صـفـحـه کـامـل',
+        'att_present' => 'حـاضـر',
+        'att_absent' => 'غـایـب',
+        'att_leave' => 'مـرخـصـی',
+        'att_half' => 'نـیـمـه‌وقـت',
+        'att_holiday' => 'تـعـطـیـل',
     ],
 
     'cashier' => [

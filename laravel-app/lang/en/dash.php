@@ -21,6 +21,14 @@ return [
         'fin_cogs' => 'Cost of goods sold',
         'fin_net_profit' => 'Net profit',
         'fin_loss' => 'Loss',
+        'attendance_title' => 'Staff attendance',
+        'attendance_employee' => 'Employee',
+        'attendance_full' => 'Full page',
+        'att_present' => 'Present',
+        'att_absent' => 'Absent',
+        'att_leave' => 'Leave',
+        'att_half' => 'Half-day',
+        'att_holiday' => 'Holiday',
     ],
 
     'cashier' => [

@@ -99,9 +99,7 @@
                     {{-- wire:ignore: کنواس دست‌نخورده می‌ماند و فقط با رویداد
                          top-products-chart-updated دوباره پر می‌شود --}}
                     <div wire:ignore style="height: 320px">
-                        <canvas id="topProductsChart"
-                            x-data="topProductsChart(@js($topProductLabels), @js($topProductData), @js($topProductRevenue))"
-                            x-init="init()"></canvas>
+                        <canvas id="topProductsChart" x-data="topProductsChart(@js($topProductLabels), @js($topProductData), @js($topProductRevenue))" x-init="init()"></canvas>
                     </div>
                     @if (empty($topProductLabels))
                         <p class="text-center text-muted mb-0 mt-2">{{ __('dash.admin.chart_empty') }}</p>
@@ -119,9 +117,7 @@
                 </div>
                 <div class="card-body">
                     <div wire:ignore style="height: 260px">
-                        <canvas id="financeChart"
-                            x-data="financeChart(@js($finance['labels']), @js($finance['data']), @js($finance['colors']), @js($finance['sales']))"
-                            x-init="init()"></canvas>
+                        <canvas id="financeChart" x-data="financeChart(@js($finance['labels']), @js($finance['data']), @js($finance['colors']), @js($finance['sales']))" x-init="init()"></canvas>
                     </div>
 
                     {{-- خلاصه‌ی عددی ترکیب مالی --}}
@@ -155,7 +151,9 @@
                         </div>
                         <div class="col-6">
                             <div class="border rounded-3 p-2 h-100">
-                                <div class="small text-muted">{{ $finance['isLoss'] ? __('dash.admin.fin_loss') : __('dash.admin.fin_net_profit') }}</div>
+                                <div class="small text-muted">
+                                    {{ $finance['isLoss'] ? __('dash.admin.fin_loss') : __('dash.admin.fin_net_profit') }}
+                                </div>
                                 <div class="fw-bold {{ $finance['isLoss'] ? 'text-danger' : 'text-success' }}">
                                     {{ number_format($finance['netProfit']) }}
                                     <small>{{ setting('currency', '') }}</small>
@@ -169,7 +167,7 @@
 
     </div>
 
-    <div class="row g-3">
+    <div class="row g-3 mb-3">
 
         <!-- کارت آخرین فروش‌ها-->
         <div class="col-md-6">
@@ -245,80 +243,193 @@
                 <livewire:dashboard.users-online-card />
 
                 <!-- کارت کارهای در حال انجام -->
+                <div class="col-12">
+                    <div class="card dashboard-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <strong>
+                                ✅ لـــیست وظـــیفه‌هـــای درحـــال انـــجام
+                            </strong>
+                            <a href="{{ route('todos.index') }}" class="btn btn-sm btn-outline-primary">
+                                مشاهده‌همه
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>عنوان</th>
+                                        <th>انجام‌دهنده</th>
+                                        <th>اولویت</th>
+                                        <th>سررسید</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($inProgressTodos as $todo)
+                                        <tr wire:key="in-progress-todo-{{ $todo->id }}">
+                                            <td class="fw-bold">{{ $todo->title }}</td>
+                                            <td>
+                                                @if ($todo->assignee)
+                                                    <span
+                                                        class="badge bg-secondary-subtle text-secondary-emphasis">{{ $todo->assignee->name }}</span>
+                                                @else
+                                                    <span class="text-muted">—</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="badge bg-{{ $todo->priority_color }}-subtle text-{{ $todo->priority_color }}-emphasis">
+                                                    {{ $todo->priority_label }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @if ($todo->due_date)
+                                                    <span
+                                                        class="{{ $todo->due_date->isPast() ? 'text-danger-emphasis fw-bold' : '' }}">
+                                                        {{ jalaliDate($todo->due_date) }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-muted">—</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted">
+                                                هیچ کار در حال انجامی وجود ندارد.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {{-- کارت حضور و غیاب ماه جاری --}}
+    <div class="row g-3 mb-3">
+
         <div class="col-12">
             <div class="card dashboard-card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <strong>
-                       ✅ لـــیست وظـــیفه‌هـــای درحـــال انـــجام
-                    </strong>
-                    <a href="{{ route('todos.index') }}" class="btn btn-sm btn-outline-primary">
-                        مشاهده‌همه
-                    </a>
+                <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-primary" title="ماه قبلی"
+                            wire:click="changeAttendanceMonth('prev')">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+
+                        <strong class="d-flex align-items-center gap-1">
+                            📅 {{ __('dash.admin.attendance_title') }}
+                            <span class="badge bg-info-subtle text-info-emphasis">{{ $attendance['monthTitle'] }}</span>
+                        </strong>
+
+                        <button type="button" class="btn btn-sm btn-outline-primary" title="ماه بعدی"
+                            wire:click="changeAttendanceMonth('next')">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                    </div>
+                    <div class="d-flex flex-wrap gap-1">
+                        <span class="badge att-legend att-present">{{ __('dash.admin.att_present') }}</span>
+                        <span class="badge att-legend att-absent">{{ __('dash.admin.att_absent') }}</span>
+                        <span class="badge att-legend att-leave">{{ __('dash.admin.att_leave') }}</span>
+                        <span class="badge att-legend att-half">{{ __('dash.admin.att_half') }}</span>
+                        <span class="badge att-legend att-holiday">{{ __('dash.admin.att_holiday') }}</span>
+                        <a href="{{ route('attendance.index') }}" class="btn btn-sm btn-outline-primary ms-auto">
+                            <i class="bi bi-box-arrow-up-left"></i>
+                            {{ __('dash.admin.attendance_full') }}
+                        </a>
+                    </div>
                 </div>
+                <div class="card-body p-2">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-sm align-middle mb-2 attendance-grid" style="font-size:1rem">
                         <thead>
                             <tr>
-                                <th>عنوان</th>
-                                <th>انجام‌دهنده</th>
-                                <th>اولویت</th>
-                                <th>سررسید</th>
+                                <th width="110" class="sticky-col">
+                                    {{ __('dash.admin.attendance_employee') }}</th>
+                                @foreach ($attendance['days'] as $day)
+                                    <th class="text-center p-0" width="25" height="25">
+                                        {{ $day }}</th>
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($inProgressTodos as $todo)
-                                <tr wire:key="in-progress-todo-{{ $todo->id }}">
-                                    <td class="fw-bold">{{ $todo->title }}</td>
-                                    <td>
-                                        @if ($todo->assignee)
-                                            <span class="badge bg-secondary-subtle text-secondary-emphasis">{{ $todo->assignee->name }}</span>
-                                        @else
-                                            <span class="text-muted">—</span>
-                                        @endif
+                            @forelse ($attendance['employees'] as $employee)
+                                @php
+                                    $recs = $attendance['records'];
+                                    $month = $attendance['monthJalali'];
+                                @endphp
+                                <tr wire:key="att-emp-{{ $employee->id }}">
+                                    <td class="sticky-col fw-semibold">
+                                        {{ $employee->full_name }}
                                     </td>
-                                    <td>
-                                        <span class="badge bg-{{ $todo->priority_color }}-subtle text-{{ $todo->priority_color }}-emphasis">
-                                            {{ $todo->priority_label }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        @if ($todo->due_date)
-                                            <span class="{{ $todo->due_date->isPast() ? 'text-danger-emphasis fw-bold' : '' }}">
-                                                {{ jalaliDate($todo->due_date) }}
-                                            </span>
-                                        @else
-                                            <span class="text-muted">—</span>
-                                        @endif
-                                    </td>
+                                    @foreach ($attendance['days'] as $day)
+                                        @php
+                                            $greg = \Hekmatinasser\Verta\Verta::parse(
+                                                $month . '-' . str_pad((string) $day, 2, '0', STR_PAD_LEFT),
+                                            )
+                                                ->toCarbon()
+                                                ->toDateString();
+                                            $rec = optional($recs->get($employee->id . '|' . $greg))->first();
+                                        @endphp
+                                        <td class="text-center p-0">
+                                            <div class="att-cell {{ $rec ? 'att-' . $rec->status : 'att-empty' }}"
+                                                title="{{ $rec ? $rec->statusText() : '' }}">
+                                                @if ($rec)
+                                                    @switch($rec->status)
+                                                        @case('present')
+                                                            <i class="bi bi-check-lg"></i>
+                                                        @break
+
+                                                        @case('absent')
+                                                            <i class="bi bi-x-lg"></i>
+                                                        @break
+
+                                                        @case('leave')
+                                                            <i class="bi bi-dash-lg"></i>
+                                                        @break
+
+                                                        @case('half')
+                                                            <i class="bi bi-circle-half"></i>
+                                                        @break
+
+                                                        @default
+                                                            <i class="bi bi-sun"></i>
+                                                    @endswitch
+                                                @endif
+                                            </div>
+                                        </td>
+                                    @endforeach
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="text-center text-muted">
-                                        هیچ کار در حال انجامی وجود ندارد.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                                @empty
+                                    <tr>
+                                        <td colspan="{{ count($attendance['days']) + 1 }}"
+                                            class="text-center py-3 text-muted">
+                                            کارمندی یافت نشد.
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
 
-            </div>
-        </div>
-
-        
-
         <!-- کارت نمودار فروش 30 روز گذشته-->
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="card dashboard-card">
                 <div class="card-header">
                     <strong>
-                       📈 نـــــمودار مـــــبلغ فـــــروش ۳۰ روز گـــــذشته
+                        📈 نـــــمودار مـــــبلغ فـــــروش ۳۰ روز گـــــذشته
                     </strong>
                 </div>
                 {{-- wire:ignore باعث می‌شود کنواس با هر poll دوباره ساخته نشود؛
-             آپدیت داده‌ها فقط از طریق رویداد sales-chart-updated انجام می‌شود --}}
+                         آپدیت داده‌ها فقط از طریق رویداد sales-chart-updated انجام می‌شود --}}
                 <div class="card-body" wire:ignore style="height: 340px">
                     <canvas id="salesChart" x-data="salesChart(@js($labels), @js($chartData))" x-init="init()"></canvas>
                 </div>
@@ -327,249 +438,251 @@
 
     </div>
 
-</div>
+    @script
+        <script>
+            Alpine.data('salesChart', (initialLabels, initialData) => ({
+                chart: null,
 
-@script
-    <script>
-        Alpine.data('salesChart', (initialLabels, initialData) => ({
-            chart: null,
+                init() {
+                    // رنگ‌آمیزی هر میله با یک طیف از رنگین‌کمان + گرادیان عمودی،
+                    // تا نمودار فروش ۳۰ روزه رنگی و چشم‌نواز شود.
+                    const barColors = (context) => {
+                        const {
+                            ctx,
+                            chartArea
+                        } = context.chart;
 
-            init() {
-                // رنگ‌آمیزی هر میله با یک طیف از رنگین‌کمان + گرادیان عمودی،
-                // تا نمودار فروش ۳۰ روزه رنگی و چشم‌نواز شود.
-                const barColors = (context) => {
-                    const {
-                        ctx,
-                        chartArea
-                    } = context.chart;
+                        // در اولین رندر قبل از محاسبه‌ی ابعاد، یک رنگ ساده برگردانده می‌شود
+                        if (!chartArea) return 'rgba(99,102,241,.85)';
 
-                    // در اولین رندر قبل از محاسبه‌ی ابعاد، یک رنگ ساده برگردانده می‌شود
-                    if (!chartArea) return 'rgba(99,102,241,.85)';
+                        const total = Math.max(1, context.dataset.data.length - 1);
+                        const hue = 205 + (context.dataIndex / total) * 135;
+                        const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                        gradient.addColorStop(0, `hsla(${hue}, 85%, 58%, .25)`);
+                        gradient.addColorStop(1, `hsla(${hue}, 90%, 58%, .95)`);
 
-                    const total = Math.max(1, context.dataset.data.length - 1);
-                    const hue = 205 + (context.dataIndex / total) * 135;
-                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                    gradient.addColorStop(0, `hsla(${hue}, 85%, 58%, .25)`);
-                    gradient.addColorStop(1, `hsla(${hue}, 90%, 58%, .95)`);
+                        return gradient;
+                    };
 
-                    return gradient;
-                };
-
-                this.chart = new Chart(this.$el, {
-                    type: 'bar',
-                    data: {
-                        labels: initialLabels,
-                        datasets: [{
-                            label: 'فروش',
-                            data: initialData,
-                            backgroundColor: barColors,
-                            hoverBackgroundColor: barColors,
-                            borderRadius: 6,
-                            borderSkipped: false,
-                            maxBarThickness: 26,
-                        }],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                rtl: true,
-                                callbacks: {
-                                    label: (ctx) => ` فروش: ${Number(ctx.parsed.y).toLocaleString()}`,
-                                },
-                            },
+                    this.chart = new Chart(this.$el, {
+                        type: 'bar',
+                        data: {
+                            labels: initialLabels,
+                            datasets: [{
+                                label: 'فروش',
+                                data: initialData,
+                                backgroundColor: barColors,
+                                hoverBackgroundColor: barColors,
+                                borderRadius: 6,
+                                borderSkipped: false,
+                                maxBarThickness: 26,
+                            }],
                         },
-                        scales: {
-                            x: {
-                                grid: {
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
                                     display: false
                                 },
-                                ticks: {
-                                    maxRotation: 0,
-                                    autoSkip: true,
-                                    maxTicksLimit: 10
+                                tooltip: {
+                                    rtl: true,
+                                    callbacks: {
+                                        label: (ctx) => ` فروش: ${Number(ctx.parsed.y).toLocaleString()}`,
+                                    },
                                 },
                             },
-                            y: {
-                                beginAtZero: true,
-                                grid: {
-                                    color: 'rgba(148,163,184,.2)'
+                            scales: {
+                                x: {
+                                    grid: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        maxRotation: 0,
+                                        autoSkip: true,
+                                        maxTicksLimit: 10
+                                    },
                                 },
-                                ticks: {
-                                    callback: (value) => Number(value).toLocaleString()
-                                },
-                            },
-                        },
-                    },
-                });
-
-                // با هر رندر مجدد کامپوننت (مثلاً هر بار wire:poll) این رویداد از
-                // سرور با داده‌ی تازه شلیک می‌شود و فقط داده‌ی نمودار آپدیت می‌شود.
-                Livewire.on('sales-chart-updated', ({
-                    labels,
-                    data
-                }) => {
-                    this.chart.data.labels = labels;
-                    this.chart.data.datasets[0].data = data;
-                    this.chart.update();
-                });
-            },
-        }));
-
-        Alpine.data('topProductsChart', (initialLabels, initialData, initialRevenue) => ({
-            chart: null,
-            revenue: initialRevenue || [],
-
-            init() {
-                // پالت رنگی؛ به تعداد میله‌ها تکرار می‌شود
-                const palette = ['#6366f1', '#0ea5e9', '#22c55e', '#f59e0b', '#ef4444', '#a855f7', '#14b8a6'];
-
-                this.chart = new Chart(this.$el, {
-                    type: 'bar',
-                    data: {
-                        labels: initialLabels,
-                        datasets: [{
-                            label: 'تعداد فروش',
-                            data: initialData,
-                            backgroundColor: initialLabels.map((_, i) => palette[i % palette.length]),
-                            borderRadius: 8,
-                            maxBarThickness: 34,
-                        }],
-                    },
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                rtl: true,
-                                callbacks: {
-                                    label: (ctx) => ` تعداد فروش: ${Number(ctx.parsed.x).toLocaleString()}`,
-                                    afterLabel: (ctx) => {
-                                        const value = this.revenue?.[ctx.dataIndex] ?? 0;
-                                        return ` درآمد: ${Number(value).toLocaleString()}`;
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: 'rgba(148,163,184,.2)'
+                                    },
+                                    ticks: {
+                                        callback: (value) => Number(value).toLocaleString()
                                     },
                                 },
                             },
                         },
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                grid: {
-                                    color: 'rgba(148,163,184,.2)'
-                                },
-                            },
-                            y: {
-                                grid: {
+                    });
+
+                    // با هر رندر مجدد کامپوننت (مثلاً هر بار wire:poll) این رویداد از
+                    // سرور با داده‌ی تازه شلیک می‌شود و فقط داده‌ی نمودار آپدیت می‌شود.
+                    Livewire.on('sales-chart-updated', ({
+                        labels,
+                        data
+                    }) => {
+                        this.chart.data.labels = labels;
+                        this.chart.data.datasets[0].data = data;
+                        this.chart.update();
+                    });
+                },
+            }));
+
+            Alpine.data('topProductsChart', (initialLabels, initialData, initialRevenue) => ({
+                chart: null,
+                revenue: initialRevenue || [],
+
+                init() {
+                    // پالت رنگی؛ به تعداد میله‌ها تکرار می‌شود
+                    const palette = ['#6366f1', '#0ea5e9', '#22c55e', '#f59e0b', '#ef4444', '#a855f7', '#14b8a6'];
+
+                    this.chart = new Chart(this.$el, {
+                        type: 'bar',
+                        data: {
+                            labels: initialLabels,
+                            datasets: [{
+                                label: 'تعداد فروش',
+                                data: initialData,
+                                backgroundColor: initialLabels.map((_, i) => palette[i % palette
+                                    .length]),
+                                borderRadius: 8,
+                                maxBarThickness: 34,
+                            }],
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
                                     display: false
                                 },
-                            },
-                        },
-                    },
-                });
-
-                Livewire.on('top-products-chart-updated', ({
-                    labels,
-                    data,
-                    revenue
-                }) => {
-                    this.revenue = revenue || [];
-                    this.chart.data.labels = labels;
-                    this.chart.data.datasets[0].data = data;
-                    this.chart.data.datasets[0].backgroundColor = labels.map((_, i) => palette[i % palette.length]);
-                    this.chart.update();
-                });
-            },
-        }));
-
-        Alpine.data('financeChart', (initialLabels, initialData, initialColors, initialTotal) => ({
-            chart: null,
-            total: initialTotal,
-
-            init() {
-                // پلاگین کوچک برای نوشتن مبلغ فروش در وسط چارت دایره‌ای
-                const centerText = {
-                    id: 'financeCenterText',
-                    afterDraw: (chart) => {
-                        const {
-                            ctx,
-                            chartArea
-                        } = chart;
-                        if (!chartArea) return;
-
-                        const x = (chartArea.left + chartArea.right) / 2;
-                        const y = (chartArea.top + chartArea.bottom) / 2;
-
-                        ctx.save();
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillStyle = '#64748b';
-                        ctx.font = '600 12px Vazirmatn, Tahoma, sans-serif';
-                        ctx.fillText('فروش این ماه', x, y - 12);
-                        ctx.fillStyle = '#0f172a';
-                        ctx.font = '800 18px Vazirmatn, Tahoma, sans-serif';
-                        ctx.fillText(Number(this.total || 0).toLocaleString(), x, y + 14);
-                        ctx.restore();
-                    },
-                };
-
-                this.chart = new Chart(this.$el, {
-                    type: 'doughnut',
-                    plugins: [centerText],
-                    data: {
-                        labels: initialLabels,
-                        datasets: [{
-                            data: initialData,
-                            backgroundColor: initialColors,
-                            borderWidth: 2,
-                            borderColor: '#fff',
-                            hoverOffset: 8,
-                        }],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '62%',
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                rtl: true,
-                                labels: {
-                                    usePointStyle: true,
-                                    boxWidth: 8,
-                                    padding: 14
+                                tooltip: {
+                                    rtl: true,
+                                    callbacks: {
+                                        label: (ctx) =>
+                                            ` تعداد فروش: ${Number(ctx.parsed.x).toLocaleString()}`,
+                                        afterLabel: (ctx) => {
+                                            const value = this.revenue?.[ctx.dataIndex] ?? 0;
+                                            return ` درآمد: ${Number(value).toLocaleString()}`;
+                                        },
+                                    },
                                 },
                             },
-                            tooltip: {
-                                rtl: true,
-                                callbacks: {
-                                    label: (ctx) => ` ${ctx.label}: ${Number(ctx.parsed).toLocaleString()}`,
+                            scales: {
+                                x: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: 'rgba(148,163,184,.2)'
+                                    },
+                                },
+                                y: {
+                                    grid: {
+                                        display: false
+                                    },
                                 },
                             },
                         },
-                    },
-                });
+                    });
 
-                Livewire.on('finance-chart-updated', ({
-                    labels,
-                    data,
-                    colors,
-                    total
-                }) => {
-                    this.total = total;
-                    this.chart.data.labels = labels;
-                    this.chart.data.datasets[0].data = data;
-                    this.chart.data.datasets[0].backgroundColor = colors;
-                    this.chart.update();
-                });
-            },
-        }));
-    </script>
-@endscript
+                    Livewire.on('top-products-chart-updated', ({
+                        labels,
+                        data,
+                        revenue
+                    }) => {
+                        this.revenue = revenue || [];
+                        this.chart.data.labels = labels;
+                        this.chart.data.datasets[0].data = data;
+                        this.chart.data.datasets[0].backgroundColor = labels.map((_, i) => palette[i %
+                            palette.length]);
+                        this.chart.update();
+                    });
+                },
+            }));
+
+            Alpine.data('financeChart', (initialLabels, initialData, initialColors, initialTotal) => ({
+                chart: null,
+                total: initialTotal,
+
+                init() {
+                    // پلاگین کوچک برای نوشتن مبلغ فروش در وسط چارت دایره‌ای
+                    const centerText = {
+                        id: 'financeCenterText',
+                        afterDraw: (chart) => {
+                            const {
+                                ctx,
+                                chartArea
+                            } = chart;
+                            if (!chartArea) return;
+
+                            const x = (chartArea.left + chartArea.right) / 2;
+                            const y = (chartArea.top + chartArea.bottom) / 2;
+
+                            ctx.save();
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillStyle = '#64748b';
+                            ctx.font = '600 12px Vazirmatn, Tahoma, sans-serif';
+                            ctx.fillText('فروش این ماه', x, y - 12);
+                            ctx.fillStyle = '#0f172a';
+                            ctx.font = '800 18px Vazirmatn, Tahoma, sans-serif';
+                            ctx.fillText(Number(this.total || 0).toLocaleString(), x, y + 14);
+                            ctx.restore();
+                        },
+                    };
+
+                    this.chart = new Chart(this.$el, {
+                        type: 'doughnut',
+                        plugins: [centerText],
+                        data: {
+                            labels: initialLabels,
+                            datasets: [{
+                                data: initialData,
+                                backgroundColor: initialColors,
+                                borderWidth: 2,
+                                borderColor: '#fff',
+                                hoverOffset: 8,
+                            }],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '62%',
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    rtl: true,
+                                    labels: {
+                                        usePointStyle: true,
+                                        boxWidth: 8,
+                                        padding: 14
+                                    },
+                                },
+                                tooltip: {
+                                    rtl: true,
+                                    callbacks: {
+                                        label: (ctx) =>
+                                            ` ${ctx.label}: ${Number(ctx.parsed).toLocaleString()}`,
+                                    },
+                                },
+                            },
+                        },
+                    });
+
+                    Livewire.on('finance-chart-updated', ({
+                        labels,
+                        data,
+                        colors,
+                        total
+                    }) => {
+                        this.total = total;
+                        this.chart.data.labels = labels;
+                        this.chart.data.datasets[0].data = data;
+                        this.chart.data.datasets[0].backgroundColor = colors;
+                        this.chart.update();
+                    });
+                },
+            }));
+        </script>
+    @endscript
