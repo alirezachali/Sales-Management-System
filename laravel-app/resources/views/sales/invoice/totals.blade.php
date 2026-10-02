@@ -7,7 +7,17 @@
     @if ($sale->discount > 0)
         <div class="trow discount">
             <span>تخفیف</span>
-            <span class="tval">{{ number_format($sale->discount) }}</span>
+            <span class="tval">-{{ number_format($sale->discount) }}</span>
+        </div>
+    @endif
+
+    @if ($sale->points_redeemed > 0)
+        <div class="trow" style="color: #d946ef;">
+            <span>
+                <i class="bi bi-star-fill"></i>
+                امتیاز مصرف‌شده ({{ number_format($sale->points_redeemed) }} امتیاز)
+            </span>
+            <span class="tval">-{{ number_format((float) $sale->loyalty_discount) }}</span>
         </div>
     @endif
 
@@ -54,6 +64,16 @@
         <div class="trow">
             <span>باقی وجه</span>
             <span class="tval">{{ number_format($sale->change_amount) }}</span>
+        </div>
+    @endif
+
+    @if ($sale->relationLoaded('customer') && $sale->customer && $sale->points_redeemed > 0)
+        <div class="trow" style="color: #a855f7; font-size: 0.85em;">
+            <span>
+                <i class="bi bi-gem"></i>
+                مانده امتیاز مشتری پس از خرید
+            </span>
+            <span class="tval">{{ number_format($sale->customer->available_points ?? 0) }}</span>
         </div>
     @endif
 

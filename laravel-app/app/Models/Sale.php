@@ -19,6 +19,8 @@ class Sale extends Model
         'customer_id',
         'total_price',
         'discount',
+        'points_redeemed',
+        'loyalty_discount',
         'final_price',
         'payment_type',
         'cashbox_id',
@@ -33,6 +35,8 @@ class Sale extends Model
         return [
             'total_price' => 'decimal:2',
             'discount' => 'decimal:2',
+            'points_redeemed' => 'integer',
+            'loyalty_discount' => 'decimal:2',
             'final_price' => 'decimal:2',
             'paid_amount' => 'decimal:2',
             'change_amount' => 'decimal:2',

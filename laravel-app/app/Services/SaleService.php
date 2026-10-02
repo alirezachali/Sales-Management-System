@@ -142,7 +142,12 @@ class SaleService
                     'تخفیف امتیازی در لحظه فروش',
                 );
 
+                // ذخیره جداگانه تخفیف امتیازی
+                $loyaltyDiscount = $pointsValue;
+
                 $discount += $pointsValue;
+            } else {
+                $loyaltyDiscount = 0.0;
             }
 
             $finalPrice = round($total - $discount, 2);
@@ -170,6 +175,8 @@ class SaleService
                 'customer_id' => $customerId,
                 'total_price' => $total,
                 'discount' => $discount,
+                'points_redeemed' => $pointsToRedeem,
+                'loyalty_discount' => $loyaltyDiscount,
                 'final_price' => $finalPrice,
                 'payment_type' => $paymentType,
                 'cashbox_id' => $cashbox?->id,
