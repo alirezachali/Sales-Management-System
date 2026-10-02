@@ -30,7 +30,7 @@ class LowStockAlertJob extends AlertJob
             ->get(['id', 'name', 'stock', 'unit'])
             ->map(fn (Product $product) => [
                 'title' => $product->name,
-                'meta' => 'موجودی: '.number_format((float) $product->stock, 1).' '.$product->unit,
+                'meta' => 'موجودی: '.number_format((float) $product->stock, 0).' '.$product->unit,
                 'url' => route('products.stock', $product->id, false),
             ])
             ->all();
