@@ -175,17 +175,17 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label class="form-label">تلفن</label>
+                                                <label class="form-label">تلفن فروشگاه</label>
                                                 <input type="text" class="form-control" wire:model="data.phone">
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label class="form-label">موبایل</label>
+                                                <label class="form-label">موبایل مدیر</label>
                                                 <input type="text" class="form-control" wire:model="data.mobile">
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label class="form-label">ایمیل</label>
+                                                <label class="form-label">ایمیل فروشگاه</label>
                                                 <input type="email"
                                                     class="form-control @error('data.email') is-invalid @enderror"
                                                     wire:model="data.email">
@@ -195,12 +195,12 @@
                                             </div>
 
                                             <div class="col-md-6">
-                                                <label class="form-label">وب سایت</label>
+                                                <label class="form-label">وب سایت فروشگاه</label>
                                                 <input type="text" class="form-control" wire:model="data.website">
                                             </div>
 
                                             <div class="col-12">
-                                                <label class="form-label">آدرس</label>
+                                                <label class="form-label">آدرس فروشگاه</label>
                                                 <textarea class="form-control" rows="3" wire:model="data.address"></textarea>
                                             </div>
 
@@ -277,7 +277,7 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label class="form-label">شماره شروع فاکتور</label>
+                                        <label class="form-label">شروع شماره فاکتور از</label>
                                         <input type="number" class="form-control" wire:model="data.invoice_start">
                                     </div>
 
@@ -337,16 +337,6 @@
                                                 wire:model="data.allow_negative_stock" id="allow_negative_stock">
                                             <label class="form-check-label" for="allow_negative_stock">
                                                 اجازه فروش با موجودی منفی
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                wire:model="data.auto_print_invoice" id="auto_print_invoice">
-                                            <label class="form-check-label" for="auto_print_invoice">
-                                                چاپ خودکار فاکتور بعد از ثبت
                                             </label>
                                         </div>
                                     </div>
@@ -468,7 +458,7 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.print_logo" id="print_logo">
-                                            <label class="form-check-label" for="print_logo">چاپ لوگوی فروشگاه</label>
+                                            <label class="form-check-label" for="print_logo">چاپ لوگوی فروشگاه در فاکتور</label>
                                         </div>
                                     </div>
 
@@ -476,7 +466,7 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.print_address" id="print_address">
-                                            <label class="form-check-label" for="print_address">چاپ آدرس
+                                            <label class="form-check-label" for="print_address">چاپ آدرس در فاکتور
                                                 فروشگاه</label>
                                         </div>
                                     </div>
@@ -485,7 +475,7 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.print_phone" id="print_phone">
-                                            <label class="form-check-label" for="print_phone">چاپ شماره تلفن</label>
+                                            <label class="form-check-label" for="print_phone">چاپ شماره تلفن در فاکتور</label>
                                         </div>
                                     </div>
 
@@ -493,16 +483,7 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.print_barcode" id="print_barcode">
-                                            <label class="form-check-label" for="print_barcode">چاپ بارکد روی
-                                                فاکتور</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mt-3">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                wire:model="data.print_qrcode" id="print_qrcode">
-                                            <label class="form-check-label" for="print_qrcode">چاپ QR Code</label>
+                                            <label class="form-check-label" for="print_qrcode">چاپ کیوآر کد در فاکتور فروش</label>
                                         </div>
                                     </div>
 
@@ -510,8 +491,7 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.print_datetime" id="print_datetime">
-                                            <label class="form-check-label" for="print_datetime">چاپ تاریخ و
-                                                ساعت</label>
+                                            <label class="form-check-label" for="print_datetime">چاپ تاریخ و ساعت در فاکتور</label>
                                         </div>
                                     </div>
 
@@ -1144,7 +1124,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <label class="form-label">فرمت فایل</label>
+                                        <label class="form-label">فرمت فایل پشتیبان</label>
                                         <select class="form-select" wire:model="data.backup_format">
                                             <option value="zip">ZIP</option>
                                             <option value="sql">SQL</option>
