@@ -134,7 +134,11 @@ class Overview extends Component
 
         $records = AttendanceRecord::whereBetween('date', [$monthStart, $monthEnd])
             ->get()
-            ->keyBy(fn ($r) => $r->employee_id.'|'.$r->date->format('Y-m-d'));
+            // مثل صفحه‌ی اصلی، گروه‌بندی می‌کنیم تا $records->get(کلید)
+            // یک Collection از رکوردها برگرداند و ".first()" در ویو درست عمل کند.
+            // (در صورت keyBy، روشن شدن ".first()" روی مدل به کوئری لِک می‌کرد
+            //  و اولین رکورد جدول را - معمولاً present - برمی‌گرداند.)
+            ->groupBy(fn ($r) => $r->employee_id.'|'.$r->date->format('Y-m-d'));
 
         $daysInMonth = (int) $firstDay->copy()->endMonth()->format('j');
         $days = range(1, $daysInMonth);
