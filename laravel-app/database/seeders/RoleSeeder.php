@@ -46,6 +46,13 @@ class RoleSeeder extends Seeder
                 'color' => 'info',
                 'icon' => 'bi bi-calculator',
             ],
+            [
+                'name' => 'courier',
+                'display_name' => 'پیک',
+                'description' => 'رساندن خریدهای غیر حضوری به مشتری',
+                'color' => 'warning',
+                'icon' => 'bi bi-bicycle',
+            ],
         ]);
     }
 }
