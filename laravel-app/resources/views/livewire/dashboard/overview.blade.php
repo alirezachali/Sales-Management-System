@@ -319,7 +319,7 @@
                 </div>
                 {{-- wire:ignore باعث می‌شود کنواس با هر poll دوباره ساخته نشود؛
              آپدیت داده‌ها فقط از طریق رویداد sales-chart-updated انجام می‌شود --}}
-                <div class="card-body" wire:ignore>
+                <div class="card-body" wire:ignore style="height: 340px">
                     <canvas id="salesChart" x-data="salesChart(@js($labels), @js($chartData))" x-init="init()"></canvas>
                 </div>
             </div>
@@ -335,21 +335,75 @@
             chart: null,
 
             init() {
+                // رنگ‌آمیزی هر میله با یک طیف از رنگین‌کمان + گرادیان عمودی،
+                // تا نمودار فروش ۳۰ روزه رنگی و چشم‌نواز شود.
+                const barColors = (context) => {
+                    const {
+                        ctx,
+                        chartArea
+                    } = context.chart;
+
+                    // در اولین رندر قبل از محاسبه‌ی ابعاد، یک رنگ ساده برگردانده می‌شود
+                    if (!chartArea) return 'rgba(99,102,241,.85)';
+
+                    const total = Math.max(1, context.dataset.data.length - 1);
+                    const hue = 205 + (context.dataIndex / total) * 135;
+                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                    gradient.addColorStop(0, `hsla(${hue}, 85%, 58%, .25)`);
+                    gradient.addColorStop(1, `hsla(${hue}, 90%, 58%, .95)`);
+
+                    return gradient;
+                };
+
                 this.chart = new Chart(this.$el, {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels: initialLabels,
                         datasets: [{
                             label: 'فروش',
                             data: initialData,
-                            borderWidth: 3,
-                            fill: true,
-                            tension: .4,
+                            backgroundColor: barColors,
+                            hoverBackgroundColor: barColors,
+                            borderRadius: 6,
+                            borderSkipped: false,
+                            maxBarThickness: 26,
                         }],
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                rtl: true,
+                                callbacks: {
+                                    label: (ctx) => ` فروش: ${Number(ctx.parsed.y).toLocaleString()}`,
+                                },
+                            },
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxRotation: 0,
+                                    autoSkip: true,
+                                    maxTicksLimit: 10
+                                },
+                            },
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(148,163,184,.2)'
+                                },
+                                ticks: {
+                                    callback: (value) => Number(value).toLocaleString()
+                                },
+                            },
+                        },
                     },
                 });
 
