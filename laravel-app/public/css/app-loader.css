@@ -1,0 +1,80 @@
+/* لودر سراسری — اسپینر استاندارد، صفحه زیر واضح می‌ماند */
+.app-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.app-loader.is-visible {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+}
+
+.app-loader__backdrop {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+}
+
+.app-loader__stage {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 16px;
+    background: var(--lux-surface, rgba(15, 23, 42, 0.78));
+    border: 1px solid var(--lux-border, rgba(148, 163, 184, 0.2));
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
+}
+
+.app-loader__spinner {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid rgba(148, 163, 184, 0.28);
+    border-top-color: #7c5cff;
+    border-right-color: #3ea6ff;
+    animation: app-loader-spin 0.7s linear infinite;
+}
+
+.app-loader__caption {
+    font-family: Vazirmatn, "Segoe UI", Tahoma, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+[data-bs-theme="light"] .app-loader__caption {
+    color: #1e293b;
+}
+
+[data-bs-theme="light"] .app-loader__stage {
+    background: rgba(255, 255, 255, 0.92);
+}
+
+.app-loader__dots::after {
+    content: "";
+    animation: app-loader-dots 1.2s steps(4, end) infinite;
+}
+
+@keyframes app-loader-spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes app-loader-dots {
+    0% { content: ""; }
+    25% { content: "."; }
+    50% { content: ".."; }
+    75% { content: "..."; }
+}

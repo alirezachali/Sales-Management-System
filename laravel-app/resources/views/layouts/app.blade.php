@@ -35,6 +35,7 @@
 
     {{-- پوسته لوکس باید بعد از Tabler/vite بارگذاری شود --}}
     <link href="{{ asset('css/luxury.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app-loader.css') }}" rel="stylesheet">
 
     {{-- استایل اختصاصی صفحه تنظیمات (بعد از پوسته لوکس) --}}
     <link href="{{ asset('css/settings.css') }}" rel="stylesheet">
@@ -54,6 +55,8 @@
             localStorage.setItem('app-sidebar-collapsed', this.sidebarCollapsed ? '1' : '0');
         }
     }" x-init="document.documentElement.setAttribute('data-bs-theme', theme)">
+
+@include('partials.app-loader')
 
 <!-- Navbar -->
 @include('partials.navbar')
@@ -98,6 +101,7 @@
 <script src="{{ asset('js/hotkeys.js') }}"></script>
 
 @livewireScripts
-<script src="{{ asset('js/alerts.js') }}?v=2"></script>
+<script src="{{ asset('js/app-loader.js') }}"></script>
+	<script src="{{ asset('js/alerts.js') }}?v=2"></script>
 </body>
 </html>

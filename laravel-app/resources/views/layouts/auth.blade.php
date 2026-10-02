@@ -23,6 +23,7 @@
     <link rel="icon" href="{{ storeFavicon() }}">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app-loader.css') }}">
     <!-- Bootstrap CDN CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -42,12 +43,15 @@
         }
     }" x-init="document.documentElement.setAttribute('data-bs-theme', theme)">
     
+    @include('partials.app-loader')
+
     <div class="auth-wrapper">
         @yield('content')
     </div>
     
     <!-- Bootstrap CDN JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/app-loader.js') }}"></script>
     <script src="{{ asset('js/alerts.js') }}"></script>
     @stack('scripts')
 
