@@ -1148,10 +1148,26 @@
                                             </button>
                                         </div>
                                     </div>
+
+                                    {{-- جزئیات محاسبه تخفیف امتیازی --}}
                                     @if ($pointsToRedeem > 0)
-                                        <div class="alert alert-fuchsia mt-2 mb-0 py-2 small d-flex justify-content-between">
-                                            <span><i class="bi bi-ticket-perforated me-1"></i>تـخـفـیـف امـتـیـازی:</span>
-                                            <strong>{{ number_format($this->pointsDiscount) }} تـومـان</strong>
+                                        <div class="points-summary mt-3 p-3 rounded-4" style="background: rgba(232,62,140,0.08); border: 1px solid rgba(232,62,140,0.2);">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class="small"><i class="bi bi-cart3 me-1"></i>مبلغ سبد خرید:</span>
+                                                <strong class="text-warning">{{ number_format($this->subtotalBeforePointsDiscount) }} تومان</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class="small"><i class="bi bi-calculator me-1"></i>تعداد امتیاز × {{ number_format($pointValue) }}:</span>
+                                                <strong class="text-fuchsia">{{ number_format($pointsToRedeem) }} × {{ number_format($pointValue) }}</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center pb-2 border-bottom border-secondary opacity-70">
+                                                <span class="small"><i class="bi bi-ticket-perforated me-1"></i>تخفیف امتیازی:</span>
+                                                <strong class="text-fuchsia">{{ number_format($this->pointsDiscount) }} تومان</strong>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                <span class="fw-bold"><i class="bi bi-receipt me-1"></i>مبلغ نهایی قابل پرداخت:</span>
+                                                <strong class="fs-5 text-success">{{ number_format($this->finalPrice) }} تومان</strong>
+                                            </div>
                                         </div>
                                     @endif
                                 </div>
@@ -1231,38 +1247,15 @@
                             <div class="co-amount">
 
                                 @if ($paymentType === 'cash')
-                                    <div class="row g-3 align-items-end">
-                                        <div class="col-md-7">
-                                            <label class="form-label fw-semibold">مـبـلـغ نـقـدی دریـافـتـی</label>
-                                            <input type="number" min="0" step="any"
-                                                class="form-control @error('paidAmount') is-invalid @enderror"
-                                                wire:model.live.debounce.400ms="paidAmount">
-                                            @error('paidAmount')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                    <div class="cash-display p-4 rounded-4 text-center" style="background: rgba(22,163,74,0.08); border: 1px solid rgba(22,163,74,0.2);">
+                                        <div class="text-muted small mb-2">
+                                            <i class="bi bi-cash-stack me-1"></i>مبلغ قابل دریافت به‌صورت نقدی
                                         </div>
-                                        <div class="col-md-5">
-                                            <button type="button" class="btn btn-sm btn-outline-success rounded-pill w-100"
-                                                wire:click="$set('paidAmount', {{ $this->finalPrice }})">
-                                                <i class="bi bi-magic me-1"></i>پـرداخـت دقـیـق ({{ number_format($this->finalPrice) }})
-                                            </button>
+                                        <div class="fs-2 fw-bold text-success">
+                                            {{ number_format($this->finalPrice) }}
+                                            <small class="fs-6 fw-normal text-muted">تومان</small>
                                         </div>
                                     </div>
-
-                                    @if ($this->change > 0)
-                                        <div class="alert alert-success mt-3 mb-0 d-flex justify-content-between py-2"
-                                            data-notify-sound="off">
-                                            <span><i class="bi bi-arrow-repeat me-1"></i>بـاقـی وجـه مـشـتـری:</span>
-                                            <strong>{{ number_format($this->change) }} تـومـان</strong>
-                                        </div>
-                                    @elseif ($this->cashShortfall > 0.001)
-                                        <div class="alert alert-danger mt-3 mb-0 d-flex justify-content-between py-2"
-                                            data-notify-sound="off">
-                                            <span><i class="bi bi-exclamation-triangle-fill me-1"></i>مـبـلـغ پـرداخـتـی کـمـتـر از سـبـد خـریـد اسـت:</span>
-                                            <strong>کمبود {{ number_format($this->cashShortfall) }} تـومـان</strong>
-                                        </div>
-                                    @endif
-
                                 @elseif ($paymentType === 'card')
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="fw-semibold">
@@ -1280,7 +1273,7 @@
                                             </label>
                                             <input type="number" min="0" step="any"
                                                 class="form-control @error('cashAmount') is-invalid @enderror"
-                                                wire:model.live.debounce.400ms="cashAmount" placeholder="0">
+                                                wire:model.live="cashAmount" placeholder="0">
                                             @error('cashAmount')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -1291,14 +1284,14 @@
                                             </label>
                                             <input type="number" min="0" step="any"
                                                 class="form-control @error('cardAmount') is-invalid @enderror"
-                                                wire:model.live.debounce.400ms="cardAmount" placeholder="0">
+                                                wire:model.live="cardAmount" placeholder="0">
                                             @error('cardAmount')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    @if (!$errors->has('cardAmount'))
+                                    @if (!$errors->has('cardAmount') && !$errors->has('cashAmount'))
                                         <div class="mt-3 d-flex justify-content-between small">
                                             <span class="text-muted">مـجـمـوع وارد شـده:
                                                 <strong>{{ number_format($this->cashAmount + $this->cardAmount) }}</strong>
@@ -1306,23 +1299,16 @@
                                             <span
                                                 class="{{ abs($this->mixedDiff) < 0.001 ? 'text-success' : ($this->mixedDiff > 0 ? 'text-danger' : 'text-warning') }}">
                                                 @if (abs($this->mixedDiff) < 0.001)
-                                                    <i class="bi bi-check-circle-fill me-1"></i>تـسـویـه کـامـل شـد
+                                                    <i class="bi bi-check-circle-fill me-1"></i>تـسـویـه کـامـل شـد ✓
                                                 @elseif ($this->mixedDiff > 0)
                                                     <i class="bi bi-arrow-down-circle me-1"></i>بـاقـی‌مـانـده:
-                                                    {{ number_format($this->mixedDiff) }}
+                                                    {{ number_format($this->mixedDiff) }} تومان
                                                 @else
                                                     <i class="bi bi-arrow-up-circle me-1"></i>اضـافـه:
-                                                    {{ number_format(abs($this->mixedDiff)) }}
+                                                    {{ number_format(abs($this->mixedDiff)) }} تومان
                                                 @endif
                                             </span>
                                         </div>
-                                    @endif
-
-                                    @if ($this->mixedDiff > 0.001)
-                                        <button type="button" class="btn btn-sm btn-primary-lt rounded-pill mt-2"
-                                            wire:click="$set('cardAmount', {{ $this->mixedDiff + $this->cardAmount }})">
-                                            <i class="bi bi-magic me-1"></i>تـکـمـیـل خـودکـار بـا کـارتـخـوان
-                                        </button>
                                     @endif
 
                                 @elseif ($paymentType === 'credit')

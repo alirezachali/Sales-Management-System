@@ -75,6 +75,9 @@ class SaleManager extends Component
     // خطای موجودی کالا
     public ?string $stockError = null;
 
+    // پرداخت ترکیبی: track می‌کند کدام فیلد آخرین بار توسط کاربر ویرایش شده
+    public ?string $mixedLastEdited = null;
+
     protected array $messages = [
         'cart.required' => 'سبد فروش خالی است.',
         'paymentType.required' => 'روش پرداخت را انتخاب کنید.',
@@ -223,6 +226,36 @@ class SaleManager extends Component
         $this->syncAmountsWithFinalPrice();
     }
 
+    /**
+     * وقتی مبلغ نقدی تغییر می‌کند، مبلغ کارتخوان خودکار محاسبه شود
+     */
+    public function updatedCashAmount(): void
+    {
+        if ($this->paymentType !== 'mixed') {
+            return;
+        }
+
+        $this->mixedLastEdited = 'cash';
+
+        $remaining = max(0, $this->finalPrice - $this->cashAmount);
+        $this->cardAmount = round($remaining, 0);
+    }
+
+    /**
+     * وقتی مبلغ کارتخوان تغییر می‌کند، مبلغ نقدی خودکار محاسبه شود
+     */
+    public function updatedCardAmount(): void
+    {
+        if ($this->paymentType !== 'mixed') {
+            return;
+        }
+
+        $this->mixedLastEdited = 'card';
+
+        $remaining = max(0, $this->finalPrice - $this->cardAmount);
+        $this->cashAmount = round($remaining, 0);
+    }
+
     public function applyAllPoints(): void
     {
         $this->refreshCustomerPoints();
@@ -276,12 +309,18 @@ class SaleManager extends Component
     {
         $final = $this->finalPrice;
 
+        if ($this->paymentType === 'cash') {
+            $this->paidAmount = $final;
+        }
+
         if ($this->paymentType === 'card') {
             $this->paidAmount = $final;
         }
 
-        if ($this->paymentType === 'mixed' && abs($this->mixedDiff) < 0.001) {
-            // اگر قبلاً تسویه بوده، نسبت را حفظ نکن؛ فقط وقتی مودال تازه باز می‌شود مقداردهی می‌شود
+        if ($this->paymentType === 'mixed') {
+            $this->cashAmount = round($final / 2);
+            $this->cardAmount = round($final - $this->cashAmount);
+            $this->mixedLastEdited = null;
         }
     }
 
@@ -419,6 +458,14 @@ class SaleManager extends Component
     public function getSubtotalProperty(): float
     {
         return collect($this->cart)->sum(fn ($item) => $item['price'] * $item['quantity']);
+    }
+
+    /**
+     * مبلغ سبد خرید قبل از تخفیف امتیازی (بعد از تخفیف دستی)
+     */
+    public function getSubtotalBeforePointsDiscountProperty(): float
+    {
+        return max(0, $this->subtotal - $this->discount);
     }
 
     /**
