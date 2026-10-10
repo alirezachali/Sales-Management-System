@@ -14,7 +14,7 @@ use Livewire\Component;
  */
 class UsersOnlineCard extends Component
 {
-    public int $pollingSeconds = 10;
+    public int $pollingSeconds = 60;
 
     public function render()
     {
