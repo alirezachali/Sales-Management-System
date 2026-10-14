@@ -19,5 +19,8 @@
         "@tabler/icons": "^3.46.0",
         "bootstrap-icons": "^1.13.1",
         "heroicons": "^2.2.0"
+    },
+    "allowScripts": {
+        "esbuild@0.28.1": true
     }
 }
