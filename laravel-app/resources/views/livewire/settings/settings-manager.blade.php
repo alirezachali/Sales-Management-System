@@ -156,7 +156,7 @@
                                 <div class="card border-4 shadow-sm mb-4">
                                     <div class="card-header">
                                         <strong>
-                                            <i class="bi bi-shop"></i>
+                                            <img src="{{ asset('images/icons/sidebar/small_business_480px.png') }}" alt="" class="icon-png">
                                             اطلاعات فروشگاه
                                         </strong>
                                     </div>
@@ -264,7 +264,7 @@
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
-                                    <i class="bi bi-receipt"></i>
+                                    <img src="{{ asset('images/icons/sidebar/document_480px.png') }}" alt="" class="icon-png">
                                     تنظیمات فروش
                                 </strong>
                             </div>
@@ -371,7 +371,7 @@
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
-                                    <i class="bi bi-gem"></i>
+                                    <img src="{{ asset('images/icons/sidebar/Gift_480px.png') }}" alt="" class="icon-png">
                                     باشگاه امتیازات مشتریان
                                 </strong>
                             </div>
@@ -410,7 +410,7 @@
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
-                                    <i class="bi bi-printer"></i>
+                                    <img src="{{ asset('images/icons/sidebar/pdf_480px.png') }}" alt="" class="icon-png">
                                     تنظیمات چاپ
                                 </strong>
                             </div>
@@ -505,7 +505,7 @@
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
-                                    <i class="bi bi-upc-scan"></i>
+                                    <img src="{{ asset('images/icons/sidebar/search_480px.png') }}" alt="" class="icon-png">
                                     تنظیمات بارکد و چاپ لیبل
                                 </strong>
                             </div>
@@ -535,7 +535,7 @@
                                 <hr class="my-4">
 
                                 <h5 class="mb-3">
-                                    <i class="bi bi-layout-text-window"></i>
+                                    <img src="{{ asset('images/icons/sidebar/tag_window_480px.png') }}" alt="" class="icon-png">
                                     تنظیمات ظاهر لیبل
                                 </h5>
 
@@ -608,7 +608,7 @@
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
-                                    <i class="bi bi-cpu"></i>
+                                    <img src="{{ asset('images/icons/sidebar/console_480px.png') }}" alt="" class="icon-png">
                                     تنظیمات سیستم
                                 </strong>
                             </div>
@@ -739,7 +739,7 @@
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
-                                    <i class="bi bi-keyboard"></i>
+                                    <img src="{{ asset('images/icons/sidebar/keyboard_480px.png') }}" alt="" class="icon-png">
                                     کلیدهای میانبر
                                 </strong>
                             </div>
@@ -917,7 +917,7 @@
                         <div class="card border-4 shadow-sm">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <strong>
-                                    <i class="bi bi-bell-fill text-fuchsia"></i>
+                                    <img src="{{ asset('images/icons/sidebar/alarm_480px.png') }}" alt="" class="icon-png">
                                     سرویس‌های هشدار هوشمند
                                 </strong>
                                 <small class="text-muted">تغییرات هر سرویس بلافاصله ذخیره می‌شود</small>
@@ -942,7 +942,7 @@
                                                 <tr wire:key="alert-service-{{ $key }}">
                                                     <td>
                                                         <div class="d-flex align-items-start gap-2">
-                                                            <i class="bi {{ $service['icon'] }} text-{{ $service['color'] }} fs-5"></i>
+                                                            {{ iconHtml($service['icon'], 'bi', 'text-' . $service['color'] . ' fs-5') }}
                                                             <div>
                                                                 <div class="fw-semibold">{{ $service['label'] }}</div>
                                                                 <div class="text-info" style="font-size:.75rem">
@@ -1051,7 +1051,7 @@
                         <div class="card border-4 shadow-sm">
                             <div class="card-header">
                                 <strong>
-                                    <i class="bi bi-database"></i>
+                                    <img src="{{ asset('images/icons/sidebar/tape_drive_480px.png') }}" alt="" class="icon-png">
                                     پشتیبان گیری و بازیابی
                                 </strong>
                             </div>

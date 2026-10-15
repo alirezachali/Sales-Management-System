@@ -3,7 +3,7 @@
     <div class="card dashboard-card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <strong>
-                <i class="bi bi-card-checklist text-primary"></i>
+                <img src="{{ asset('images/icons/sidebar/checklist_480px.png') }}" alt="" class="icon-png">
                 لــــــــیست کــــــــارهای مــــــــن
             </strong>
             <div class="d-flex gap-2">

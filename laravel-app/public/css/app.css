@@ -81,3 +81,12 @@ body a:hover {
     border-bottom: none !important;
     margin-bottom: 24px;
 }
+
+/* ---------- آیکن‌های رنگی PNG در عناوین، منوها و لینک‌های سریع ---------- */
+.icon-png {
+    width: 1.15em;
+    height: 1.15em;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: -0.2em;
+}

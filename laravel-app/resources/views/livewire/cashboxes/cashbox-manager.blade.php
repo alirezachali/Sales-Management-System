@@ -71,7 +71,7 @@
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-header flex-wrap gap-2">
                         <div>
-                            <h3 class="fw-bold mb-1"><i class="bi bi-arrow-repeat text-primary"></i> گردش {{ $selected->name }}</h3>
+                            <h3 class="fw-bold mb-1"><img src="{{ asset('images/icons/sidebar/synchronize_480px.png') }}" alt="" class="icon-png"> گردش {{ $selected->name }}</h3>
                             <small class="text-muted">موجودی فعلی: {{ number_format((float) $selected->balance) }} تومان</small>
                         </div>
                         <div class="ms-auto d-flex gap-2">

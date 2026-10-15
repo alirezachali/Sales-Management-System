@@ -60,7 +60,7 @@
                         مـــجوزهـــای نـــقش:
                         <span class="badge bg-{{ $role->color ?? 'secondary' }} text-dark">
                             {{ $role->name }}
-                            <i class="{{ $role->icon }}"></i>
+                            {{ iconHtml($role->icon) }}
                         </span>
                     </h2>
                     <div>
@@ -100,7 +100,7 @@
 
                         <div class="card-header d-flex justify-content-between align-items-center text-fuchsia">
                             <strong>
-                                <i class="bi {{ $group->icon }}"></i>
+                                {{ iconHtml($group->icon, 'bi') }}
                                 {{ $group->name }}
                             </strong>
 

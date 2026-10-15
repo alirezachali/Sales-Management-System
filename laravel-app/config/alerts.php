@@ -65,7 +65,7 @@ return [
         'low_stock' => [
             'label' => 'کالاهای زیر حد موجودی',
             'description' => 'کالاهایی که موجودی آن‌ها به حد هشدار رسیده یا کمتر شده است.',
-            'icon' => 'bi-exclamation-octagon',
+            'icon' => 'alarm_480px.png',
             'color' => 'danger',
             // بدون مجوز خاص؛ مثل قبل برای همه‌ی کاربران سیستم نمایش داده می‌شود.
             'permission' => null,
@@ -76,7 +76,7 @@ return [
         'debt_due' => [
             'label' => 'سررسید بدهی‌ها',
             'description' => 'بدهی‌های پرداخت‌نشده‌ای که سررسیدشان نزدیک است یا گذشته است.',
-            'icon' => 'bi-calendar-x',
+            'icon' => 'hourglass_480px.png',
             'color' => 'warning',
             'permission' => 'debts.view',
             'job' => DebtDueAlertJob::class,
@@ -86,7 +86,7 @@ return [
         'birthdays' => [
             'label' => 'تولد مشتریان امروز',
             'description' => 'مشتریانی که امروز تولدشان است (بر اساس تقویم شمسی).',
-            'icon' => 'bi-gift',
+            'icon' => 'Gift_480px.png',
             'color' => 'info',
             'permission' => 'customers.view',
             'job' => BirthdayAlertJob::class,
@@ -96,7 +96,7 @@ return [
         'pending_transfers' => [
             'label' => 'انتقالات بین انبار در انتظار تأیید',
             'description' => 'انتقال‌های انبار که هنوز تأیید نشده‌اند.',
-            'icon' => 'bi-arrow-left-right',
+            'icon' => 'left_and_right_arrows_480px.png',
             'color' => 'primary',
             'permission' => 'transfers.view',
             'job' => PendingTransferAlertJob::class,

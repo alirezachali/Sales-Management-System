@@ -74,7 +74,7 @@
                                 <td>
                                     @if ($customer->role)
                                         <span class="badge bg-{{ $customer->role->color }}-subtle text-{{ $customer->role->color }}-emphasis">
-                                            <i class="bi {{ $customer->role->icon }}"></i> {{ $customer->role->name }}
+                                            {{ iconHtml($customer->role->icon, 'bi') }} {{ $customer->role->name }}
                                         </span>
                                     @else
                                         <span class="text-muted">—</span>

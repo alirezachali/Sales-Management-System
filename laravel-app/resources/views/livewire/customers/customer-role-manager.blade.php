@@ -48,7 +48,7 @@
                             <td>{{ $role->sort_order }}</td>
                             <td>
                                 <span class="badge bg-{{ $role->color }}-subtle text-{{ $role->color }}-emphasis">
-                                    <i class="bi {{ $role->icon }}"></i>
+                                    {{ iconHtml($role->icon, 'bi') }}
                                     {{ $role->name }}
                                 </span>
                             </td>

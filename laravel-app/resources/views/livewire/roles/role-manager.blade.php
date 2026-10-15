@@ -104,7 +104,7 @@
                                 <td>
                                     <span class="badge bg-{{ $role->color ?? 'secondary' }}-subtle text-{{ $role->color ?? 'secondary' }}-emphasis">
                                         {{ $role->name }}
-                                        <i class="{{ $role->icon }}"></i>
+                                        {{ iconHtml($role->icon) }}
                                     </span>
                                 </td>
                                 <td>{{ $role->description }}</td>

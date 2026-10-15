@@ -127,7 +127,7 @@
         <div class="card border-0 shadow-sm mt-4 count-page" wire:key="count-{{ $active->id }}">
             <div class="card-header flex-wrap gap-2">
                 <div>
-                    <h3 class="fw-bold mb-1"><i class="bi bi-clipboard-check text-success"></i> شمارش — {{ $active->reference }}</h3>
+                    <h3 class="fw-bold mb-1"><img src="{{ asset('images/icons/sidebar/clipboard_480px.png') }}" alt="" class="icon-png"> شمارش — {{ $active->reference }}</h3>
                     <small class="text-muted">انبار: {{ $active->warehouse?->name }} | با بارکدخوان اسکن کنید یا مقدار را دستی وارد کنید.</small>
                 </div>
                 <div class="ms-auto d-flex gap-2">

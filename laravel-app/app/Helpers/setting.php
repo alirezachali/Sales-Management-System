@@ -57,3 +57,32 @@ if (! function_exists('storeFavicon')) {
     return asset('images/default-favicon.ico');
 }
 }
+
+/*
+|--------------------------------------------------------------------------
+| رندر آیکن منو/بخش: فایل‌های PNG رنگی یا کلاس آیکن‌های Bootstrap
+|--------------------------------------------------------------------------
+| اگر مقدار تمام .png باشد، تگ img از پوشه‌ی آیکن‌های سایدبار رندر می‌شود؛
+| در غیر این صورت مثل قبل یک <i> با کلاس داده‌شده ساخته می‌شود. رشته‌ی
+| $prefix معمولاً "" برای مقادیری مثل "bi bi-..." یا "bi" برای مثل "bi-..." است.
+*/
+if (! function_exists('iconHtml')) {
+
+    /*
+    |--------------------------------------------------------------------------
+    | خروجی HtmlString برمی‌گردد تا در قالب با {{ }} صدا زده شود و Blade
+    | | آن را escape نکند؛ وگرنه تگ <img> به‌صورت متن خام نمایش داده می‌شود.
+    */
+    function iconHtml(string $icon, string $prefix = '', string $extra = ''): \Illuminate\Support\HtmlString
+    {
+        $icon = trim($icon);
+
+        if ($icon !== '' && str_ends_with(strtolower($icon), '.png')) {
+            $html = '<img src="' . e(asset('images/icons/sidebar/' . $icon)) . '" alt="" class="icon-png ' . e($extra) . '">';
+        } else {
+            $html = '<i class="' . e(trim($prefix . ' ' . $icon . ' ' . $extra)) . '"></i>';
+        }
+
+        return new \Illuminate\Support\HtmlString($html);
+    }
+}

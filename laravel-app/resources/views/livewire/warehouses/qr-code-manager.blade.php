@@ -43,7 +43,7 @@
     {{-- نوار ابزار --}}
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-header bg-white d-flex flex-wrap gap-2 justify-content-between align-items-center">
-            <h5 class="mb-0"><i class="bi bi-qr-code me-1"></i> چیدمان و مدیریت محصولات انبار</h5>
+            <h5 class="mb-0"><img src="{{ asset('images/icons/sidebar/search_480px.png') }}" alt="" class="icon-png me-1"> چیدمان و مدیریت محصولات انبار</h5>
             <button class="btn btn-primary btn-sm" wire:click="openCreateModal">
                 <i class="bi bi-plus-lg"></i> ساخت QR Code جدید
             </button>
@@ -298,7 +298,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-qr-code"></i> QR Code</h5>
+                    <h5 class="modal-title"><img src="{{ asset('images/icons/sidebar/search_480px.png') }}" alt="" class="icon-png"> QR Code</h5>
                     <button type="button" class="btn-close" wire:click="closeModals"></button>
                 </div>
                 <div class="modal-body text-center">

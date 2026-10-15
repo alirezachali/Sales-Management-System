@@ -6,7 +6,7 @@
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="fw-bold mb-1">
-                <i class="bi bi-cash-stack text-success"></i>
+                <img src="{{ asset('images/icons/sidebar/cash_register_480px.png') }}" alt="" class="icon-png">
                 داشبورد صندوقدار
             </h3>
             <small class="text-muted d-flex align-items-center gap-1">
@@ -23,7 +23,7 @@
         <div class="card-body">
             @can('pos.view')
                 <a href="{{ route('pos.index') }}" class="btn btn-success btn-lg">
-                    <i class="bi bi-cart-check"></i>
+                    <img src="{{ asset('images/icons/sidebar/shopping_cart_480px.png') }}" alt="" class="icon-png">
                     رفتن به صندوق فروش
                 </a>
             @endcan
@@ -131,7 +131,7 @@
             <div class="card dashboard-card">
                 <div class="card-header">
                     <strong>
-                        <i class="bi bi-person-exclamation"></i>
+                        <img src="{{ asset('images/icons/sidebar/billing_480px.png') }}" alt="" class="icon-png">
                         مشتریان بدهکار
                     </strong>
                 </div>

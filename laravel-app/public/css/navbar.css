@@ -477,6 +477,14 @@
     text-align: center;
 }
 
+/* آیکن‌های رنگی PNG در آیتم‌های منو */
+.dropdown-item-link .dropdown-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
 .dropdown-item-link:hover {
     background: var(--lux-gradient);
     color: #fff;

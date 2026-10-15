@@ -4,7 +4,7 @@
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="fw-bold mb-1">
-                <i class="bi bi-speedometer2 text-primary"></i>
+                <img src="{{ asset('images/icons/sidebar/analytics_480px.png') }}" alt="" class="icon-png">
                 {{ __('dash.admin.title') }}
             </h3>
             <small class="text-muted d-flex align-items-center gap-1">

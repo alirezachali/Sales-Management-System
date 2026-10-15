@@ -86,7 +86,7 @@
                             <td>
                                 @if ($debtor->role)
                                     <span class="badge bg-{{ $debtor->role->color }} text-dark">
-                                        <i class="bi {{ $debtor->role->icon }}"></i>
+                                        {{ iconHtml($debtor->role->icon, 'bi') }}
                                         {{ $debtor->role->name }}
                                     </span>
                                 @else

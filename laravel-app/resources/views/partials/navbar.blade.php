@@ -116,7 +116,7 @@
 
                         {{--===== پروفایل =====--}}
                         <a class="dropdown-item-link glow-btn" href="{{ route('profile.show', auth()->user()->username) }}">
-                            <i class="bi bi-person"></i>
+                            <img src="{{ asset('images/icons/sidebar/user_480px.png') }}" alt="" class="dropdown-icon">
                             <span>{{ __('navbar.profile') }}</span>
                         </a>
 
@@ -124,7 +124,7 @@
                         @cannot('messages.view')
                             @php $unreadMessages = auth()->user()->unreadMessagesCount(); @endphp
                             <a class="dropdown-item-link glow-btn" href="{{ route('messages.inbox') }}">
-                                <i class="bi bi-envelope"></i>
+                                <img src="{{ asset('images/icons/sidebar/inbox_480px.png') }}" alt="" class="dropdown-icon">
                                 <span>
                                     {{ __('navbar.messages') }}
                                     @if ($unreadMessages > 0)
@@ -137,7 +137,7 @@
                         {{--===== تنظیمات =====--}}
                         @can('settings.view')
                             <a class="dropdown-item-link glow-btn" href="{{ route('settings.index') }}">
-                                <i class="bi bi-gear"></i>
+                                <img src="{{ asset('images/icons/sidebar/settings_480px.png') }}" alt="" class="dropdown-icon">
                                 <span>{{ __('navbar.settings') }}</span>
                             </a>
                         @endcan
@@ -146,7 +146,7 @@
                         <form action="{{ route('logout') }}" method="POST" class="m-0">
                             @csrf
                             <button type="submit" class="dropdown-item-link glow-btn logout-item">
-                                <i class="bi bi-box-arrow-right"></i>
+                                <img src="{{ asset('images/icons/sidebar/outbox_480px.png') }}" alt="" class="dropdown-icon">
                                 <span>{{ __('navbar.logout_btn') }}</span>
                             </button>
                         </form>

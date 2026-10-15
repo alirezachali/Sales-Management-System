@@ -27,7 +27,7 @@
             @forelse ($this->alerts as $group)
                 <div class="alerts-group">
                     <div class="alerts-group-title text-{{ $group['color'] }}">
-                        <i class="bi {{ $group['icon'] }}"></i> {{ $group['group'] }}
+                        {{ iconHtml($group['icon'], 'bi') }} {{ $group['group'] }}
                     </div>
                     @foreach ($group['items'] as $item)
                         <a href="{{ $item['url'] }}" class="alerts-item">

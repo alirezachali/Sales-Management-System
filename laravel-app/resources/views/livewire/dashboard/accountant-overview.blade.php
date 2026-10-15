@@ -6,7 +6,7 @@
     <div class="card shadow-sm mb-4">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h3 class="fw-bold mb-1">
-                <i class="bi bi-calculator text-primary"></i>
+                <img src="{{ asset('images/icons/sidebar/calculator_480px.png') }}" alt="" class="icon-png">
                 داشبورد حسابدار
             </h3>
             <div class="d-flex align-items-center gap-3">
@@ -31,32 +31,32 @@
         <div class="card-body py-2 d-flex flex-wrap gap-2">
             @can('financial.view')
                 <a href="{{ route('financial.index') }}" class="btn btn-sm btn-outline-primary">
-                    <i class="bi bi-bank"></i> مدیریت مالی
+                    <img src="{{ asset('images/icons/sidebar/bank_480px.png') }}" alt="" class="icon-png"> مدیریت مالی
                 </a>
             @endcan
             @can('reports.profit')
                 <a href="{{ route('reports.profit') }}" class="btn btn-sm btn-outline-success">
-                    <i class="bi bi-graph-up-arrow"></i> گزارش سود و زیان
+                    <img src="{{ asset('images/icons/sidebar/profit_480px.png') }}" alt="" class="icon-png"> گزارش سود و زیان
                 </a>
             @endcan
             @can('cashboxes.view')
                 <a href="{{ route('cashboxes.index') }}" class="btn btn-sm btn-outline-warning">
-                    <i class="bi bi-safe"></i> صندوق‌ها
+                    <img src="{{ asset('images/icons/sidebar/coins_480px.png') }}" alt="" class="icon-png"> صندوق‌ها
                 </a>
             @endcan
             @can('debts.view')
                 <a href="{{ route('debts.index') }}" class="btn btn-sm btn-outline-danger">
-                    <i class="bi bi-journal-minus"></i> بدهی‌ها
+                    <img src="{{ asset('images/icons/sidebar/money_bag_480px.png') }}" alt="" class="icon-png"> بدهی‌ها
                 </a>
             @endcan
             @can('payrolls.view')
                 <a href="{{ route('payrolls.index') }}" class="btn btn-sm btn-outline-info">
-                    <i class="bi bi-cash-coin"></i> حقوق‌ها
+                    <img src="{{ asset('images/icons/sidebar/bank_card_dollar_480px.png') }}" alt="" class="icon-png"> حقوق‌ها
                 </a>
             @endcan
             @can('expenses.view')
                 <a href="{{ route('expenses.index') }}" class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-wallet2"></i> هزینه‌ها
+                    <img src="{{ asset('images/icons/sidebar/wallet_480px.png') }}" alt="" class="icon-png"> هزینه‌ها
                 </a>
             @endcan
         </div>
@@ -212,12 +212,12 @@
     <div class="card dashboard-card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <strong>
-                <i class="bi bi-graph-up-arrow text-success"></i>
+                <img src="{{ asset('images/icons/sidebar/profit_480px.png') }}" alt="" class="icon-png">
                 خلاصه سود و زیان ({{ $monthStartJalali }} تا {{ $monthEndJalali }})
             </strong>
             @can('reports.profit')
                 <a href="{{ route('reports.profit') }}" class="btn btn-sm btn-outline-success">
-                    <i class="bi bi-graph-up-arrow"></i> گزارش کامل سود و زیان
+                    <img src="{{ asset('images/icons/sidebar/profit_480px.png') }}" alt="" class="icon-png"> گزارش کامل سود و زیان
                 </a>
             @endcan
         </div>
@@ -279,7 +279,7 @@
         <div class="col-md-6">
             <div class="card dashboard-card h-100">
                 <div class="card-header">
-                    <strong><i class="bi bi-safe text-warning"></i> مانده صندوق‌ها</strong>
+                    <strong><img src="{{ asset('images/icons/sidebar/coins_480px.png') }}" alt="" class="icon-png"> مانده صندوق‌ها</strong>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
@@ -317,7 +317,7 @@
         <div class="col-md-6">
             <div class="card dashboard-card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <strong><i class="bi bi-cash-coin text-info"></i> حقوق‌های در انتظار پرداخت (بازه انتخابی)</strong>
+                    <strong><img src="{{ asset('images/icons/sidebar/bank_card_dollar_480px.png') }}" alt="" class="icon-png"> حقوق‌های در انتظار پرداخت (بازه انتخابی)</strong>
                     @can('payrolls.view')
                         <a href="{{ route('payrolls.index') }}" class="btn btn-sm btn-outline-info">مشاهده همه</a>
                     @endcan
@@ -360,7 +360,7 @@
         <div class="col-md-6">
             <div class="card dashboard-card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <strong><i class="bi bi-journal-minus text-danger"></i> بدهی‌های پرداخت‌نی</strong>
+                    <strong><img src="{{ asset('images/icons/sidebar/money_bag_480px.png') }}" alt="" class="icon-png"> بدهی‌های پرداخت‌نی</strong>
                     @can('debts.view')
                         <a href="{{ route('debts.index') }}" class="btn btn-sm btn-outline-danger">مشاهده همه</a>
                     @endcan
@@ -414,7 +414,7 @@
         <div class="col-md-6">
             <div class="card dashboard-card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <strong><i class="bi bi-person-exclamation text-primary"></i> طلب از مشتریان (حساب بستانکار)</strong>
+                    <strong><img src="{{ asset('images/icons/sidebar/billing_480px.png') }}" alt="" class="icon-png"> طلب از مشتریان (حساب بستانکار)</strong>
                     @can('customers.debtors')
                         <a href="{{ route('customer-debtors.index') }}" class="btn btn-sm btn-outline-primary">مشاهده همه</a>
                     @endcan
@@ -461,7 +461,7 @@
             <div class="card dashboard-card">
                 <div class="card-header">
                     <strong>
-                        <i class="bi bi-bar-chart-line text-success"></i>
+                        <img src="{{ asset('images/icons/sidebar/bar_chart_480px.png') }}" alt="" class="icon-png">
                         نمودار فروش در برابر هزینه — ۳۰ روز گذشته
                     </strong>
                 </div>
@@ -475,7 +475,7 @@
         <div class="col-md-6">
             <div class="card dashboard-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <strong><i class="bi bi-receipt text-success"></i> آخرین فروش‌ها</strong>
+                    <strong><img src="{{ asset('images/icons/sidebar/document_480px.png') }}" alt="" class="icon-png"> آخرین فروش‌ها</strong>
                     @can('reports.sales')
                         <a href="{{ route('reports.sales') }}" class="btn btn-sm btn-outline-success">گزارش فروش</a>
                     @endcan
@@ -521,7 +521,7 @@
         <div class="col-md-6">
             <div class="card dashboard-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <strong><i class="bi bi-wallet2 text-warning"></i> آخرین هزینه‌ها</strong>
+                    <strong><img src="{{ asset('images/icons/sidebar/wallet_480px.png') }}" alt="" class="icon-png"> آخرین هزینه‌ها</strong>
                     @can('expenses.view')
                         <a href="{{ route('expenses.index') }}" class="btn btn-sm btn-outline-warning">هزینه‌ها</a>
                     @endcan

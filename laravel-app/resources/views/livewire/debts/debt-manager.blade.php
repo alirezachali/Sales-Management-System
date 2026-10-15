@@ -317,7 +317,7 @@
             <div class="modal-dialog modal-sm modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header bg-success text-dark">
-                        <h5 class="modal-title"><i class="bi bi-cash-coin me-2"></i>ثبت پرداخت</h5>
+                        <h5 class="modal-title"><img src="{{ asset('images/icons/sidebar/bank_card_dollar_480px.png') }}" alt="" class="icon-png me-2">ثبت پرداخت</h5>
                         <button type="button" class="btn-close" wire:click="closeModal"></button>
                     </div>
                     <div class="modal-body">

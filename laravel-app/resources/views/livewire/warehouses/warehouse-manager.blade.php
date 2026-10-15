@@ -145,7 +145,7 @@
         <div class="card border-0 shadow-sm mt-4" wire:key="inventory-{{ $viewing->id }}">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <div>
-                    <h3 class="fw-bold mb-1"><i class="bi bi-boxes text-info"></i> چیدمان کالا — {{ $viewing->name }}</h3>
+                    <h3 class="fw-bold mb-1"><img src="{{ asset('images/icons/sidebar/search_480px.png') }}" alt="" class="icon-png"> چیدمان کالا — {{ $viewing->name }}</h3>
                     <small class="text-muted">فقط محصولاتی که در این انبار رکورد دارند نمایش داده می‌شوند.</small>
                 </div>
                 <div class="d-flex gap-2 align-items-center">

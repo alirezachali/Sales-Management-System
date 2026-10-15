@@ -3,7 +3,7 @@
     <div class="card shadow-sm border-3 mb-4" wire:loading.class="opacity-50">
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h2 class="fw-bold mb-1">
-                <i class="bi bi-bank text-primary"></i>
+                <img src="{{ asset('images/icons/sidebar/bank_480px.png') }}" alt="" class="icon-png">
                 مــدیــریــت مــالــی
             </h2>
             <small class="text-muted d-flex align-items-center gap-1">
@@ -158,7 +158,7 @@
 {{--==================== جزئیات فرمول سود ====================--}}
     <div class="card border-3">
         <div class="card-header bg-secondary">
-            <strong><i class="bi bi-calculator text-primary"></i> نحوه محاسبه سود خالص ({{ $displayFrom }} تا {{ $displayTo }})</strong>
+            <strong><img src="{{ asset('images/icons/sidebar/calculator_480px.png') }}" alt="" class="icon-png"> نحوه محاسبه سود خالص ({{ $displayFrom }} تا {{ $displayTo }})</strong>
         </div>
         <div class="card-body">
             <div class="row g-3 text-center">

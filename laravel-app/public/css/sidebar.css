@@ -38,7 +38,8 @@
     padding: 10px 0;
 }
 
-.sidebar.collapsed .sidebar-link i {
+.sidebar.collapsed .sidebar-link i,
+.sidebar.collapsed .sidebar-link .sidebar-icon {
     margin: 0;
 }
 
@@ -77,6 +78,19 @@
 [data-bs-theme="light"] .sidebar-link { color: rgba(30, 41, 59, 0.75); }
 
 .sidebar-link i { font-size: 1.15rem; flex-shrink: 0; width: 24px; text-align: center; }
+
+/* آیکن‌های رنگی PNG کنار منوها */
+.sidebar-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    object-fit: contain;
+    display: block;
+}
+
+.sidebar-link.active .sidebar-icon {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
 
 .sidebar-link:hover {
     background: rgba(124, 92, 255, 0.14);

@@ -6,7 +6,7 @@
 
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="fw-bold">
-                <i class="bi bi-box-seam-fill text-primary"></i>
+                <img src="{{ asset('images/icons/sidebar/box_480px.png') }}" alt="" class="icon-png">
                 داشــــــــــبورد انــــــــــباردار
             </h3>
             <small class="text-muted d-flex align-items-center gap-1">
@@ -24,19 +24,19 @@
         <div class="card-body d-flex flex-wrap gap-2">
             @can('products.view')
                 <a href="{{ route('products.index') }}" class="btn btn-primary">
-                    <i class="bi bi-box-seam"></i>
+                    <img src="{{ asset('images/icons/sidebar/box_480px.png') }}" alt="" class="icon-png">
                     لـــیست مـــحصولات
                 </a>
             @endcan
             @can('categories.view')
                 <a href="{{ route('categories.index') }}" class="btn btn-info text-dark">
-                    <i class="bi bi-grid"></i>
+                    <img src="{{ asset('images/icons/sidebar/opened_folder_480px.png') }}" alt="" class="icon-png">
                     دســـته‌بـــندی‌ها
                 </a>
             @endcan
             @can('purchases.view')
                 <a href="{{ route('purchase-invoices.index') }}" class="btn btn-success">
-                    <i class="bi bi-file-earmark-plus"></i>
+                    <img src="{{ asset('images/icons/sidebar/document_480px.png') }}" alt="" class="icon-png">
                     ثـــبت فـــاکتور خـــرید
                 </a>
             @endcan
@@ -97,7 +97,7 @@
             <div class="card dashboard-card">
                 <div class="card-header">
                     <strong>
-                        <i class="bi bi-exclamation-triangle"></i>
+                        <img src="{{ asset('images/icons/sidebar/alarm_480px.png') }}" alt="" class="icon-png">
                         کــــــــالاهای در حــــــــال اتــــــــمام
                         <small class="text-muted fw-normal">(موجودی ≤ {{ number_format($stockAlert, 0, '.', ',') }})</small>
                     </strong>

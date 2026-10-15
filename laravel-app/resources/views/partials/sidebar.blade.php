@@ -14,14 +14,14 @@
         @if ($dashboardRoute !== 'dashboard')
             <a href="{{ route($dashboardRoute) }}" class="sidebar-link glow-btn {{ request()->routeIs($dashboardRoute) ? 'active' : '' }}"
                 title="{{ __('sidebar.dashboard') }}">
-                <i class="bi bi-speedometer2"></i>
+                <img src="{{ asset('images/icons/sidebar/analytics_480px.png') }}" alt="" class="sidebar-icon">
                 <span>{{ __('sidebar.dashboard') }}</span>
             </a>
         @else
             @can('dashboard.view')
                 <a href="{{ route('dashboard') }}" class="sidebar-link glow-btn {{ request()->routeIs('dashboard') ? 'active' : '' }}"
                     title="{{ __('sidebar.dashboard') }}">
-                    <i class="bi bi-speedometer2"></i>
+                    <img src="{{ asset('images/icons/sidebar/analytics_480px.png') }}" alt="" class="sidebar-icon">
                     <span>{{ __('sidebar.dashboard') }}</span>
                 </a>
             @endcan
@@ -31,7 +31,7 @@
         @can('couriers.view')
             <a href="{{ route('couriers.index') }}" class="sidebar-link glow-btn {{ request()->routeIs('couriers.*') ? 'active' : '' }}"
                 title="{{ __('sidebar.couriers') }}">
-                <i class="bi bi-bicycle"></i>
+                <img src="{{ asset('images/icons/sidebar/motorcycle_480px.png') }}" alt="" class="sidebar-icon">
                 <span>{{ __('sidebar.couriers') }}</span>
             </a>
         @endcan
@@ -40,26 +40,26 @@
         @php
             $salesItems = [];
             if (auth()->user()->hasPermission('pos.view')) {
-                $salesItems[] = ['route' => 'pos.index', 'label' => __('sidebar.sales_counter'), 'icon' => 'bi-cash-stack', 'is' => 'pos.*'];
+                $salesItems[] = ['route' => 'pos.index', 'label' => __('sidebar.sales_counter'), 'icon' => 'cash_register_480px.png', 'is' => 'pos.*'];
             }
             if (auth()->user()->hasPermission('online-orders.view')) {
-                $salesItems[] = ['route' => 'online-orders.index', 'label' => __('sidebar.online_orders'), 'icon' => 'bi-bag-heart', 'is' => 'online-orders.*'];
+                $salesItems[] = ['route' => 'online-orders.index', 'label' => __('sidebar.online_orders'), 'icon' => 'shopping_cart_480px.png', 'is' => 'online-orders.*'];
             }
             if (auth()->user()->hasPermission('customers.view')) {
-                $salesItems[] = ['route' => 'customers.index', 'label' => __('sidebar.customer_club'), 'icon' => 'bi-person-vcard', 'is' => 'customers.index'];
-                $salesItems[] = ['route' => 'online-customers.index', 'label' => __('sidebar.online_customers'), 'icon' => 'bi-phone', 'is' => 'online-customers.*'];
+                $salesItems[] = ['route' => 'customers.index', 'label' => __('sidebar.customer_club'), 'icon' => 'address_book_480px.png', 'is' => 'customers.index'];
+                $salesItems[] = ['route' => 'online-customers.index', 'label' => __('sidebar.online_customers'), 'icon' => 'phone_480px.png', 'is' => 'online-customers.*'];
             }
             if (auth()->user()->hasPermission('loyalty.view')) {
-                $salesItems[] = ['route' => 'loyalty.index', 'label' => __('sidebar.loyalty'), 'icon' => 'bi-gem', 'is' => 'loyalty.*'];
+                $salesItems[] = ['route' => 'loyalty.index', 'label' => __('sidebar.loyalty'), 'icon' => 'Gift_480px.png', 'is' => 'loyalty.*'];
             }
             if (auth()->user()->hasPermission('customers.debtors')) {
-                $salesItems[] = ['route' => 'customer-debtors.index', 'label' => __('sidebar.customer_debtors'), 'icon' => 'bi-person-exclamation', 'is' => 'customer-debtors.*'];
+                $salesItems[] = ['route' => 'customer-debtors.index', 'label' => __('sidebar.customer_debtors'), 'icon' => 'billing_480px.png', 'is' => 'customer-debtors.*'];
             }
             if (auth()->user()->hasPermission('customers.view')) {
-                $salesItems[] = ['route' => 'customer-purchases.index', 'label' => __('sidebar.customer_purchases'), 'icon' => 'bi-bag-check', 'is' => 'customer-purchases.*'];
+                $salesItems[] = ['route' => 'customer-purchases.index', 'label' => __('sidebar.customer_purchases'), 'icon' => 'basket_480px.png', 'is' => 'customer-purchases.*'];
             }
             if (auth()->user()->hasPermission('customers.roles_view')) {
-                $salesItems[] = ['route' => 'customer-roles.index', 'label' => __('sidebar.customer_club_roles'), 'icon' => 'bi-award', 'is' => 'customer-roles.*'];
+                $salesItems[] = ['route' => 'customer-roles.index', 'label' => __('sidebar.customer_club_roles'), 'icon' => 'hierarchy_480px.png', 'is' => 'customer-roles.*'];
             }
         @endphp
         @if (count($salesItems))
@@ -70,7 +70,7 @@
                 <a href="{{ route($item['route']) }}"
                     class="sidebar-link glow-btn {{ ($item['active'] ?? request()->routeIs($item['is'])) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
-                    <i class="bi {{ $item['icon'] }}"></i>
+                    <img src="{{ asset('images/icons/sidebar/' . $item['icon']) }}" alt="" class="sidebar-icon">
                     <span>{{ $item['label'] }}</span>
                 </a>
             @endforeach
@@ -80,25 +80,25 @@
         @php
             $stockItems = [];
             if (auth()->user()->hasPermission('products.view')) {
-                $stockItems[] = ['route' => 'products.index', 'label' => __('sidebar.products'), 'icon' => 'bi-box-seam', 'is' => 'products.*'];
+                $stockItems[] = ['route' => 'products.index', 'label' => __('sidebar.products'), 'icon' => 'box_480px.png', 'is' => 'products.*'];
             }
             if (auth()->user()->hasPermission('categories.view')) {
-                $stockItems[] = ['route' => 'categories.index', 'label' => __('sidebar.categories'), 'icon' => 'bi-grid', 'is' => 'categories.*'];
+                $stockItems[] = ['route' => 'categories.index', 'label' => __('sidebar.categories'), 'icon' => 'opened_folder_480px.png', 'is' => 'categories.*'];
             }
             if (auth()->user()->hasPermission('brands.view')) {
-                $stockItems[] = ['route' => 'brands.index', 'label' => __('sidebar.brands'), 'icon' => 'bi-award', 'is' => 'brands.*'];
+                $stockItems[] = ['route' => 'brands.index', 'label' => __('sidebar.brands'), 'icon' => 'gold_medal_480px.png', 'is' => 'brands.*'];
             }
             if (auth()->user()->hasPermission('warehouses.view')) {
-                $stockItems[] = ['route' => 'warehouses.index', 'label' => __('sidebar.warehouses'), 'icon' => 'bi-buildings', 'is' => 'warehouses.*'];
+                $stockItems[] = ['route' => 'warehouses.index', 'label' => __('sidebar.warehouses'), 'icon' => 'company_480px.png', 'is' => 'warehouses.*'];
             }
             if (auth()->user()->hasPermission('qrcodes.view')) {
-                $stockItems[] = ['route' => 'warehouse-qrcodes.index', 'label' => __('sidebar.warehouse_qrcodes'), 'icon' => 'bi-qr-code', 'is' => 'warehouse-qrcodes.*'];
+                $stockItems[] = ['route' => 'warehouse-qrcodes.index', 'label' => __('sidebar.warehouse_qrcodes'), 'icon' => 'search_480px.png', 'is' => 'warehouse-qrcodes.*'];
             }
             if (auth()->user()->hasPermission('transfers.view')) {
-                $stockItems[] = ['route' => 'transfers.index', 'label' => __('sidebar.transfers'), 'icon' => 'bi-arrow-left-right', 'is' => 'transfers.*'];
+                $stockItems[] = ['route' => 'transfers.index', 'label' => __('sidebar.transfers'), 'icon' => 'left_and_right_arrows_480px.png', 'is' => 'transfers.*'];
             }
             if (auth()->user()->hasPermission('counts.view')) {
-                $stockItems[] = ['route' => 'counts.index', 'label' => __('sidebar.stock_counts'), 'icon' => 'bi-clipboard-check', 'is' => 'counts.*'];
+                $stockItems[] = ['route' => 'counts.index', 'label' => __('sidebar.stock_counts'), 'icon' => 'clipboard_480px.png', 'is' => 'counts.*'];
             }
         @endphp
         @if (count($stockItems))
@@ -108,7 +108,7 @@
             @foreach ($stockItems as $item)
                 <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ request()->routeIs($item['is']) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
-                    <i class="bi {{ $item['icon'] }}"></i>
+                    <img src="{{ asset('images/icons/sidebar/' . $item['icon']) }}" alt="" class="sidebar-icon">
                     <span>{{ $item['label'] }}</span>
                 </a>
             @endforeach
@@ -118,10 +118,10 @@
         @php
             $purchaseItems = [];
             if (auth()->user()->hasPermission('purchases.view')) {
-                $purchaseItems[] = ['route' => 'purchase-invoices.index', 'label' => __('sidebar.reg_purchase_invoice'), 'icon' => 'bi-file-earmark-plus', 'is' => 'purchase-invoices.*'];
+                $purchaseItems[] = ['route' => 'purchase-invoices.index', 'label' => __('sidebar.reg_purchase_invoice'), 'icon' => 'document_480px.png', 'is' => 'purchase-invoices.*'];
             }
             if (auth()->user()->hasPermission('suppliers.view')) {
-                $purchaseItems[] = ['route' => 'suppliers.index', 'label' => __('sidebar.suppliers'), 'icon' => 'bi-truck', 'is' => 'suppliers.*'];
+                $purchaseItems[] = ['route' => 'suppliers.index', 'label' => __('sidebar.suppliers'), 'icon' => 'truck_480px.png', 'is' => 'suppliers.*'];
             }
         @endphp
         @if (count($purchaseItems))
@@ -131,7 +131,7 @@
             @foreach ($purchaseItems as $item)
                 <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ request()->routeIs($item['is']) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
-                    <i class="bi {{ $item['icon'] }}"></i>
+                    <img src="{{ asset('images/icons/sidebar/' . $item['icon']) }}" alt="" class="sidebar-icon">
                     <span>{{ $item['label'] }}</span>
                 </a>
             @endforeach
@@ -141,19 +141,19 @@
         @php
             $financeItems = [];
             if (auth()->user()->hasPermission('financial.view')) {
-                $financeItems[] = ['route' => 'financial.index', 'label' => __('sidebar.financial_manage'), 'icon' => 'bi-bank', 'is' => 'financial.*'];
+                $financeItems[] = ['route' => 'financial.index', 'label' => __('sidebar.financial_manage'), 'icon' => 'bank_480px.png', 'is' => 'financial.*'];
             }
             if (auth()->user()->hasPermission('cashboxes.view')) {
-                $financeItems[] = ['route' => 'cashboxes.index', 'label' => __('sidebar.cashboxes'), 'icon' => 'bi-safe', 'is' => 'cashboxes.*'];
+                $financeItems[] = ['route' => 'cashboxes.index', 'label' => __('sidebar.cashboxes'), 'icon' => 'coins_480px.png', 'is' => 'cashboxes.*'];
             }
             if (auth()->user()->hasPermission('expenses.view')) {
-                $financeItems[] = ['route' => 'expenses.index', 'label' => __('sidebar.cost_manage'), 'icon' => 'bi-wallet2', 'is' => 'expenses.*'];
+                $financeItems[] = ['route' => 'expenses.index', 'label' => __('sidebar.cost_manage'), 'icon' => 'wallet_480px.png', 'is' => 'expenses.*'];
             }
             if (auth()->user()->hasPermission('debts.view')) {
-                $financeItems[] = ['route' => 'debts.index', 'label' => __('sidebar.debt_manage'), 'icon' => 'bi-journal-minus', 'is' => 'debts.*'];
+                $financeItems[] = ['route' => 'debts.index', 'label' => __('sidebar.debt_manage'), 'icon' => 'money_bag_480px.png', 'is' => 'debts.*'];
             }
             if (auth()->user()->hasPermission('payrolls.view')) {
-                $financeItems[] = ['route' => 'payrolls.index', 'label' => __('sidebar.payrolls'), 'icon' => 'bi-cash-coin', 'is' => 'payrolls.*'];
+                $financeItems[] = ['route' => 'payrolls.index', 'label' => __('sidebar.payrolls'), 'icon' => 'bank_card_dollar_480px.png', 'is' => 'payrolls.*'];
             }
         @endphp
         @if (count($financeItems))
@@ -163,7 +163,7 @@
             @foreach ($financeItems as $item)
                 <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ request()->routeIs($item['is']) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
-                    <i class="bi {{ $item['icon'] }}"></i>
+                    <img src="{{ asset('images/icons/sidebar/' . $item['icon']) }}" alt="" class="sidebar-icon">
                     <span>{{ $item['label'] }}</span>
                 </a>
             @endforeach
@@ -173,10 +173,10 @@
         @php
             $hrItems = [];
             if (auth()->user()->hasPermission('employees.view')) {
-                $hrItems[] = ['route' => 'employees.index', 'label' => __('sidebar.employee_manage'), 'icon' => 'bi-person-badge', 'is' => 'employees.*'];
+                $hrItems[] = ['route' => 'employees.index', 'label' => __('sidebar.employee_manage'), 'icon' => 'suitcase_480px.png', 'is' => 'employees.*'];
             }
             if (auth()->user()->hasPermission('attendance.view')) {
-                $hrItems[] = ['route' => 'attendance.index', 'label' => __('sidebar.attendance'), 'icon' => 'bi-calendar-check', 'is' => 'attendance.*'];
+                $hrItems[] = ['route' => 'attendance.index', 'label' => __('sidebar.attendance'), 'icon' => 'calendar_480px.png', 'is' => 'attendance.*'];
             }
         @endphp
         @if (count($hrItems))
@@ -186,7 +186,7 @@
             @foreach ($hrItems as $item)
                 <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ request()->routeIs($item['is']) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
-                    <i class="bi {{ $item['icon'] }}"></i>
+                    <img src="{{ asset('images/icons/sidebar/' . $item['icon']) }}" alt="" class="sidebar-icon">
                     <span>{{ $item['label'] }}</span>
                 </a>
             @endforeach
@@ -196,19 +196,19 @@
         @php
             $reportItems = [];
             if (auth()->user()->hasPermission('reports.sales')) {
-                $reportItems[] = ['route' => 'reports.sales', 'label' => __('sidebar.sales_report'), 'icon' => 'bi-clipboard-data'];
+                $reportItems[] = ['route' => 'reports.sales', 'label' => __('sidebar.sales_report'), 'icon' => 'bar_chart_480px.png'];
             }
             if (auth()->user()->hasPermission('reports.purchases')) {
-                $reportItems[] = ['route' => 'reports.purchases', 'label' => __('sidebar.purchases_report'), 'icon' => 'bi-archive'];
+                $reportItems[] = ['route' => 'reports.purchases', 'label' => __('sidebar.purchases_report'), 'icon' => 'pie_chart_480px.png'];
             }
             if (auth()->user()->hasPermission('reports.view')) {
-                $reportItems[] = ['route' => 'reports.stockmovements', 'label' => __('sidebar.warehouse_manage'), 'icon' => 'bi-boxes'];
+                $reportItems[] = ['route' => 'reports.stockmovements', 'label' => __('sidebar.warehouse_manage'), 'icon' => 'synchronize_480px.png'];
             }
             if (auth()->user()->hasPermission('reports.profit')) {
-                $reportItems[] = ['route' => 'reports.profit', 'label' => __('sidebar.profit_report'), 'icon' => 'bi-graph-up-arrow'];
+                $reportItems[] = ['route' => 'reports.profit', 'label' => __('sidebar.profit_report'), 'icon' => 'profit_480px.png'];
             }
             if (auth()->user()->hasPermission('todos.view')) {
-                $reportItems[] = ['route' => 'todos.index', 'label' => __('sidebar.todo'), 'icon' => 'bi-check2-square'];
+                $reportItems[] = ['route' => 'todos.index', 'label' => __('sidebar.todo'), 'icon' => 'checklist_480px.png'];
             }
         @endphp
         @if (count($reportItems))
@@ -218,7 +218,7 @@
             @foreach ($reportItems as $item)
                 <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ request()->routeIs($item['route']) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
-                    <i class="bi {{ $item['icon'] }}"></i>
+                    <img src="{{ asset('images/icons/sidebar/' . $item['icon']) }}" alt="" class="sidebar-icon">
                     <span>{{ $item['label'] }}</span>
                 </a>
             @endforeach
@@ -228,19 +228,19 @@
         @php
             $systemItems = [];
             if (auth()->user()->hasPermission('users.view')) {
-                $systemItems[] = ['route' => 'users.index', 'label' => __('sidebar.users'), 'icon' => 'bi-people', 'active' => request()->routeIs('users.*')];
+                $systemItems[] = ['route' => 'users.index', 'label' => __('sidebar.users'), 'icon' => 'user_480px.png', 'active' => request()->routeIs('users.*')];
             }
             if (auth()->user()->hasPermission('roles.view')) {
-                $systemItems[] = ['route' => 'roles.index', 'label' => __('sidebar.roles'), 'icon' => 'bi-shield-lock', 'active' => request()->routeIs('roles.*')];
+                $systemItems[] = ['route' => 'roles.index', 'label' => __('sidebar.roles'), 'icon' => 'shield_480px.png', 'active' => request()->routeIs('roles.*')];
             }
             if (auth()->user()->hasPermission('messages.view')) {
-                $systemItems[] = ['route' => 'messages.index', 'label' => __('sidebar.messages'), 'icon' => 'bi-envelope-paper', 'active' => request()->routeIs('messages.index')];
+                $systemItems[] = ['route' => 'messages.index', 'label' => __('sidebar.messages'), 'icon' => 'messages_480px.png', 'active' => request()->routeIs('messages.index')];
             }
             if (auth()->user()->hasPermission('messages.inbox')) {
-                $systemItems[] = ['route' => 'messages.inbox', 'label' => __('sidebar.my_messages'), 'icon' => 'bi-envelope-paper', 'active' => request()->routeIs('messages.inbox')];
+                $systemItems[] = ['route' => 'messages.inbox', 'label' => __('sidebar.my_messages'), 'icon' => 'inbox_480px.png', 'active' => request()->routeIs('messages.inbox')];
             }
             if (auth()->user()->hasPermission('settings.view')) {
-                $systemItems[] = ['route' => 'settings.index', 'label' => __('sidebar.settings'), 'icon' => 'bi-gear', 'active' => request()->routeIs('settings.*')];
+                $systemItems[] = ['route' => 'settings.index', 'label' => __('sidebar.settings'), 'icon' => 'settings_480px.png', 'active' => request()->routeIs('settings.*')];
             }
         @endphp
         @if (count($systemItems))
@@ -250,7 +250,7 @@
             @foreach ($systemItems as $item)
                 <a href="{{ route($item['route']) }}" class="sidebar-link glow-btn {{ ($item['active'] ?? false) ? 'active' : '' }}"
                     title="{{ $item['label'] }}">
-                    <i class="bi {{ $item['icon'] }}"></i>
+                    <img src="{{ asset('images/icons/sidebar/' . $item['icon']) }}" alt="" class="sidebar-icon">
                     <span>{{ $item['label'] }}</span>
                 </a>
             @endforeach

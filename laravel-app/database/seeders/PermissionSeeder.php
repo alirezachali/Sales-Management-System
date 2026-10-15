@@ -15,7 +15,7 @@ class PermissionSeeder extends Seeder
         $modules = [
             [
                 'name' => 'داشبورد',
-                'icon' => 'bi-speedometer2',
+                'icon' => 'analytics_480px.png',
                 'sort_order' => 1,
                 'permissions' => [
                     [
@@ -26,7 +26,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'کاربران',
-                'icon' => 'bi-people',
+                'icon' => 'user_480px.png',
                 'sort_order' => 2,
                 'permissions' => [
                     [
@@ -53,7 +53,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'نقش ها',
-                'icon' => 'bi-shield-lock',
+                'icon' => 'shield_480px.png',
                 'sort_order' => 3,
                 'permissions' => [
                     [
@@ -80,7 +80,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'کالاها',
-                'icon' => 'bi-box-seam',
+                'icon' => 'box_480px.png',
                 'sort_order' => 4,
                 'permissions' => [
                     [
@@ -115,7 +115,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'دسته بندیها',
-                'icon' => 'bi-diagram-3',
+                'icon' => 'opened_folder_480px.png',
                 'sort_order' => 5,
                 'permissions' => [
                     [
@@ -138,7 +138,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'فروش',
-                'icon' => 'bi-cart-check',
+                'icon' => 'shopping_cart_480px.png',
                 'sort_order' => 9,
                 'permissions' => [
                     [
@@ -189,7 +189,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'پیک‌ها',
-                'icon' => 'bi-bicycle',
+                'icon' => 'motorcycle_480px.png',
                 'sort_order' => 8,
                 'permissions' => [
                     [
@@ -212,7 +212,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'خرید',
-                'icon' => 'bi-cart-plus',
+                'icon' => 'shopping_bag_480px.png',
                 'sort_order' => 10,
                 'permissions' => [
                     [
@@ -239,7 +239,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'مشتریها',
-                'icon' => 'bi-person-vcard',
+                'icon' => 'address_book_480px.png',
                 'sort_order' => 11,
                 'permissions' => [
                     [
@@ -282,7 +282,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'تامین کنندگان',
-                'icon' => 'bi-truck',
+                'icon' => 'truck_480px.png',
                 'sort_order' => 12,
                 'permissions' => [
                     [
@@ -309,7 +309,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'تنظیمات',
-                'icon' => 'bi-gear',
+                'icon' => 'settings_480px.png',
                 'sort_order' => 19,
                 'permissions' => [
                     [
@@ -336,7 +336,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'گزارش گیری',
-                'icon' => 'bi-bar-chart',
+                'icon' => 'bar_chart_480px.png',
                 'sort_order' => 17,
                 'permissions' => [
                     [
@@ -375,7 +375,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'چاپ',
-                'icon' => 'bi-printer',
+                'icon' => 'pdf_480px.png',
                 'sort_order' => 18,
                 'permissions' => [
                     [
@@ -394,7 +394,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'پشتیبان گیری',
-                'icon' => 'bi-cloud-arrow-up',
+                'icon' => 'tape_drive_480px.png',
                 'sort_order' => 20,
                 'permissions' => [
                     [
@@ -413,7 +413,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'لاگ سیستم',
-                'icon' => 'bi-journal-text',
+                'icon' => 'scroll_480px.png',
                 'sort_order' => 21,
                 'permissions' => [
                     [
@@ -428,7 +428,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'اعلان ها',
-                'icon' => 'bi-bell',
+                'icon' => 'alarm_480px.png',
                 'sort_order' => 22,
                 'permissions' => [
                     [
@@ -443,7 +443,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'دستگاه ها',
-                'icon' => 'bi-pc-display',
+                'icon' => 'laptop_480px.png',
                 'sort_order' => 23,
                 'permissions' => [
                     [
@@ -462,7 +462,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'درآمدها',
-                'icon' => 'bi-currency-dollar',
+                'icon' => 'stack_of_money_480px.png',
                 'sort_order' => 16,
                 'permissions' => [
                     [
@@ -485,7 +485,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'هزینه ها',
-                'icon' => 'bi-wallet2',
+                'icon' => 'wallet_480px.png',
                 'sort_order' => 15,
                 'permissions' => [
                     [
@@ -508,7 +508,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'پرداخت ها',
-                'icon' => 'bi-credit-card',
+                'icon' => 'bank_cards_480px.png',
                 'sort_order' => 14,
                 'permissions' => [
                     [
@@ -527,7 +527,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'واحدهای اندازه گیری',
-                'icon' => 'bi-rulers',
+                'icon' => 'price_tag_480px.png',
                 'sort_order' => 7,
                 'permissions' => [
                     [
@@ -550,7 +550,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'برندها',
-                'icon' => 'bi-award',
+                'icon' => 'gold_medal_480px.png',
                 'sort_order' => 6,
                 'permissions' => [
                     [
@@ -573,7 +573,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'صندوق',
-                'icon' => 'bi-cash-stack',
+                'icon' => 'cash_register_480px.png',
                 'sort_order' => 13,
                 'permissions' => [
                     [
@@ -600,7 +600,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'کارکنان',
-                'icon' => 'bi-person-badge',
+                'icon' => 'suitcase_480px.png',
                 'sort_order' => 24,
                 'permissions' => [
                     [
@@ -623,7 +623,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'مدیریت مالی',
-                'icon' => 'bi-cash-coin',
+                'icon' => 'bank_480px.png',
                 'sort_order' => 25,
                 'permissions' => [
                     [
@@ -634,7 +634,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'بدهی ها',
-                'icon' => 'bi-journal-minus',
+                'icon' => 'money_bag_480px.png',
                 'sort_order' => 26,
                 'permissions' => [
                     [
@@ -661,7 +661,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'لیست کارها',
-                'icon' => 'bi-check2-square',
+                'icon' => 'checklist_480px.png',
                 'sort_order' => 27,
                 'permissions' => [
                     [
@@ -684,7 +684,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'انبارها',
-                'icon' => 'bi-buildings',
+                'icon' => 'company_480px.png',
                 'sort_order' => 28,
                 'permissions' => [
                     [
@@ -751,7 +751,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'صندوق‌ها',
-                'icon' => 'bi-safe',
+                'icon' => 'coins_480px.png',
                 'sort_order' => 29,
                 'permissions' => [
                     [
@@ -790,7 +790,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'حقوق و دستمزد',
-                'icon' => 'bi-cash-coin',
+                'icon' => 'bank_card_dollar_480px.png',
                 'sort_order' => 30,
                 'permissions' => [
                     [
@@ -825,7 +825,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'باشگاه امتیازات',
-                'icon' => 'bi-gem',
+                'icon' => 'Gift_480px.png',
                 'sort_order' => 31,
                 'permissions' => [
                     [
@@ -844,7 +844,7 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'پیام‌ها',
-                'icon' => 'bi-envelope-paper',
+                'icon' => 'messages_480px.png',
                 'sort_order' => 32,
                 'permissions' => [
                     [
