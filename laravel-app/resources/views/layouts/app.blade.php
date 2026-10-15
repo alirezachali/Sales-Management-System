@@ -101,6 +101,7 @@
 <script src="{{ asset('js/hotkeys.js') }}"></script>
 
 @livewireScripts
+<script src="{{ asset('js/app-loader-messages.js') }}"></script>
 <script src="{{ asset('js/app-loader.js') }}"></script>
 	<script src="{{ asset('js/alerts.js') }}?v=2"></script>
 </body>

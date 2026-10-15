@@ -143,6 +143,20 @@
     background-size: 220% 100%;
 }
 
+/* متن پیام؛ در یک خط می‌ماند تا کارت هنگام تغییر پیام جابه‌جا نشود */
+.app-loader__text {
+    white-space: nowrap;
+}
+
+/*
+ * تغییر نرم متن وقتی عملیات تازه‌ای شروع می‌شود.
+ * انیمیشن روی خود caption است، نه روی span داخلش؛ چون opacity روی عنصر فرزند
+ * یک لایه نقاشی جدا می‌سازد و متن گرادیانی (background-clip: text) ناپدید می‌شود.
+ */
+.app-loader__caption.is-swapping {
+    animation: app-loader-text-in 0.28s ease both;
+}
+
 .app-loader__dots::after {
     content: "";
     animation: app-loader-dots 1.2s steps(4, end) infinite;
@@ -178,6 +192,11 @@
 @keyframes app-loader-fade {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+@keyframes app-loader-text-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
 }
 
 @keyframes app-loader-dots {
