@@ -206,10 +206,38 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label">آیکن (Bootstrap Icons)</label>
-                                    <input type="text" wire:model="icon" class="form-control"
-                                        placeholder="bi-shield-lock">
+                                <div class="col-md-12">
+                                    <label class="form-label">آیکن نقش</label>
+
+                                    {{-- پیش‌نمایش زنده آیکن انتخاب‌شده --}}
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <span class="icon-preview-box">{{ iconHtml($icon) }}</span>
+                                        <input type="text" wire:model.live="icon" class="form-control form-control-sm"
+                                            placeholder="bi-shield-lock یا نام فایل png">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                                            wire:click="$set('icon', '')" title="حذف آیکن">✕</button>
+                                    </div>
+
+                                    {{-- گالری آیکن‌های رنگی با جستجو --}}
+                                    <input type="text" wire:model.live.debounce.250ms="iconSearch"
+                                        class="form-control form-control-sm mb-2" placeholder="جستجوی آیکن...">
+                                    @php
+                                        $filteredIcons = collect($icons)->when(
+                                            $iconSearch !== '',
+                                            fn ($c) => $c->filter(fn ($f) => str_contains($f, $iconSearch))
+                                        );
+                                    @endphp
+                                    <div class="icon-picker-grid">
+                                        @forelse ($filteredIcons as $file)
+                                            <button type="button"
+                                                class="icon-picker-item {{ $icon === $file ? 'active' : '' }}"
+                                                wire:click="selectIcon('{{ $file }}')" title="{{ $file }}">
+                                                <img src="{{ asset('images/icons/sidebar/' . $file) }}" alt="">
+                                            </button>
+                                        @empty
+                                            <div class="text-muted small mb-0">آیکنی با این عبارت پیدا نشد.</div>
+                                        @endforelse
+                                    </div>
                                 </div>
 
                                 <div class="col-md-12">

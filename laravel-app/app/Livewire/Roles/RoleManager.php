@@ -10,8 +10,8 @@ use Livewire\WithPagination;
 
 class RoleManager extends Component
 {
-    use WithPagination;
     use AuthorizesActions;
+    use WithPagination;
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -23,11 +23,19 @@ class RoleManager extends Component
     |--------------------------------------------------------------------|
     */
     public ?int $editingId = null;
+
     public string $display_name = '';
+
     public string $name = '';
+
     public ?string $description = null;
+
     public string $color = 'primary';
+
     public string $icon = 'bi-shield-lock';
+
+    /* جستجوی آیکن داخل گالری انتخاب‌گر رنگی */
+    public string $iconSearch = '';
 
     /*
     |--------------------------------------------------------------------|
@@ -35,8 +43,11 @@ class RoleManager extends Component
     |--------------------------------------------------------------------|
     */
     public bool $showFormModal = false;
+
     public bool $showDeleteModal = false;
+
     public ?int $deletingId = null;
+
     public string $deletingName = '';
 
     public function updatingSearch(): void
@@ -44,17 +55,26 @@ class RoleManager extends Component
         $this->resetPage();
     }
 
+    /* انتخاب یک آیکن رنگی از گالری (با اعتبارسنجی نام فایل) */
+    public function selectIcon(string $file): void
+    {
+        if (in_array($file, $this->iconChoices(), true)) {
+            $this->icon = $file;
+            $this->resetErrorBag('icon');
+        }
+    }
+
     protected function rules(): array
     {
         return [
             'display_name' => ['required', 'string', 'max:255'],
-            'name'         => [
+            'name' => [
                 'required', 'string', 'max:255',
                 Rule::unique('roles', 'name')->ignore($this->editingId),
             ],
-            'description'  => ['nullable', 'string', 'max:500'],
-            'color'        => ['nullable', 'string', 'max:20'],
-            'icon'         => ['nullable', 'string', 'max:100'],
+            'description' => ['nullable', 'string', 'max:500'],
+            'color' => ['nullable', 'string', 'max:20'],
+            'icon' => ['nullable', 'string', 'max:100'],
         ];
     }
 
@@ -62,8 +82,8 @@ class RoleManager extends Component
     {
         return [
             'display_name.required' => 'وارد کردن نام نقش الزامی است.',
-            'name.required'         => 'وارد کردن شناسه نقش الزامی است.',
-            'name.unique'           => 'این شناسه قبلاً برای نقش دیگری ثبت شده است.',
+            'name.required' => 'وارد کردن شناسه نقش الزامی است.',
+            'name.unique' => 'این شناسه قبلاً برای نقش دیگری ثبت شده است.',
         ];
     }
 
@@ -82,12 +102,12 @@ class RoleManager extends Component
     {
         $role = Role::findOrFail($id);
 
-        $this->editingId    = $role->id;
+        $this->editingId = $role->id;
         $this->display_name = $role->display_name;
-        $this->name         = $role->name;
-        $this->description  = $role->description;
-        $this->color        = $role->color ?? 'primary';
-        $this->icon         = $role->icon ?? 'bi-shield-lock';
+        $this->name = $role->name;
+        $this->description = $role->description;
+        $this->color = $role->color ?? 'primary';
+        $this->icon = $role->icon ?? 'bi-shield-lock';
 
         $this->resetErrorBag();
         $this->showFormModal = true;
@@ -121,7 +141,7 @@ class RoleManager extends Component
     {
         $role = Role::findOrFail($id);
 
-        $this->deletingId   = $role->id;
+        $this->deletingId = $role->id;
         $this->deletingName = $role->display_name;
         $this->showDeleteModal = true;
     }
@@ -160,12 +180,13 @@ class RoleManager extends Component
 
     private function resetForm(): void
     {
-        $this->editingId    = null;
+        $this->editingId = null;
         $this->display_name = '';
-        $this->name         = '';
-        $this->description  = null;
-        $this->color        = 'primary';
-        $this->icon         = 'bi-shield-lock';
+        $this->name = '';
+        $this->description = null;
+        $this->color = 'primary';
+        $this->icon = 'bi-shield-lock';
+        $this->iconSearch = '';
         $this->resetErrorBag();
     }
 
@@ -175,13 +196,27 @@ class RoleManager extends Component
 
         if ($this->search !== '') {
             $query->where(function ($q) {
-                $q->where('display_name', 'like', '%' . $this->search . '%')
-                    ->orWhere('name', 'like', '%' . $this->search . '%');
+                $q->where('display_name', 'like', '%'.$this->search.'%')
+                    ->orWhere('name', 'like', '%'.$this->search.'%');
             });
         }
 
         return view('livewire.roles.role-manager', [
             'roles' => $query->latest()->paginate(15),
+            'icons' => $this->iconChoices(),
         ]);
+    }
+
+    /**
+     * فهرست نام فایل‌های آیکن رنگی موجود در پوشه آیکن‌های سایدبار
+     */
+    private function iconChoices(): array
+    {
+        $dir = public_path('images/icons/sidebar');
+        $files = is_dir($dir) ? glob($dir.'/*.png') : [];
+        $files = array_map('basename', $files);
+        sort($files, SORT_NATURAL | SORT_FLAG_CASE);
+
+        return $files;
     }
 }

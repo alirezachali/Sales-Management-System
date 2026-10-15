@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Setting;
-use App\Http\controllers\SettingController;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\HtmlString;
 
 if (! function_exists('setting')) {
 
@@ -18,7 +18,7 @@ if (! function_exists('setting')) {
         static $all = null;
 
         if ($all === null) {
-            $all = \Illuminate\Support\Facades\Cache::remember(
+            $all = Cache::remember(
                 'all-settings',
                 now()->addMinutes(5),
                 fn () => Setting::pluck('value', 'key')->all()
@@ -33,29 +33,29 @@ if (! function_exists('setting')) {
 if (! function_exists('storeLogo')) {
 
     function storeLogo()
-{
-    $path = setting('store_logo');
+    {
+        $path = setting('store_logo');
 
-    if ($path) {
-        return asset('storage/' . $path);
+        if ($path) {
+            return asset('storage/'.$path);
+        }
+
+        return asset('images/default-logo.png');
     }
-
-    return asset('images/default-logo.png');
-}
 }
 
 if (! function_exists('storeFavicon')) {
 
     function storeFavicon()
-{
-    $path = setting('store_favicon');
+    {
+        $path = setting('store_favicon');
 
-    if ($path) {
-        return asset('storage/' . $path);
+        if ($path) {
+            return asset('storage/'.$path);
+        }
+
+        return asset('images/default-favicon.ico');
     }
-
-    return asset('images/default-favicon.ico');
-}
 }
 
 /*
@@ -73,16 +73,16 @@ if (! function_exists('iconHtml')) {
     | خروجی HtmlString برمی‌گردد تا در قالب با {{ }} صدا زده شود و Blade
     | | آن را escape نکند؛ وگرنه تگ <img> به‌صورت متن خام نمایش داده می‌شود.
     */
-    function iconHtml(string $icon, string $prefix = '', string $extra = ''): \Illuminate\Support\HtmlString
+    function iconHtml(string $icon, string $prefix = '', string $extra = ''): HtmlString
     {
         $icon = trim($icon);
 
         if ($icon !== '' && str_ends_with(strtolower($icon), '.png')) {
-            $html = '<img src="' . e(asset('images/icons/sidebar/' . $icon)) . '" alt="" class="icon-png ' . e($extra) . '">';
+            $html = '<img src="'.e(asset('images/icons/sidebar/'.$icon)).'" alt="" class="icon-png '.e($extra).'">';
         } else {
-            $html = '<i class="' . e(trim($prefix . ' ' . $icon . ' ' . $extra)) . '"></i>';
+            $html = '<i class="'.e(trim($prefix.' '.$icon.' '.$extra)).'"></i>';
         }
 
-        return new \Illuminate\Support\HtmlString($html);
+        return new HtmlString($html);
     }
 }
