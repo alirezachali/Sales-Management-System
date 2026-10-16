@@ -1,4 +1,6 @@
-<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
+{{-- Enter: افزودن کالای بارکدشده یا رفتن به مرحله بعدی فروش (منطق در handleEnterKey) --}}
+<div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}"
+    wire:keydown.enter.window="handleEnterKey($event.target?.tagName, $event.target?.id)">
 
     <style>
         /* ============ انتخاب روش پرداخت (مودال تسویه) ============ */
@@ -774,17 +776,47 @@
             position: sticky;
             bottom: 0;
             z-index: 5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             padding: 12px 0;
             background: var(--lux-surface, rgba(255, 255, 255, .045));
             backdrop-filter: blur(18px) saturate(140%);
             border-top: 1px solid var(--lux-border, rgba(148, 163, 184, .16));
+            border-radius: 15px;
+        }
+
+        .pos-bar-summary {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.25;
+            white-space: nowrap;
+            margin-right: 20px;
+            margin-left: 15px;
+        }
+
+        .pos-bar-count {
+            font-size: 15px;
+            color: var(--lux-text-dim, #eceef0);
+        }
+
+        .pos-bar-total {
+            font-weight: 700;
+        }
+
+        .pos-bar-total small {
+            font-weight: 400;
+            font-size: .72rem;
         }
 
         .pos-action-bar .pos-action-btn {
+            flex: 1 1 auto;
             font-weight: 700;
             border-radius: 14px;
             padding: .75rem 1rem;
             letter-spacing: 0;
+            margin-left: 20px;
+
         }
     </style>
 
@@ -837,7 +869,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control"
                                     placeholder="اسـکـن یـا وارد کـردن بـارکـد…" wire:model="barcode"
-                                    wire:keydown.enter="addByBarcode" autofocus>
+                                    autofocus id="{{ \App\Livewire\Sales\SaleManager::BARCODE_INPUT_ID }}">
                                 <span class="input-group-text"><i class="bi bi-upc-scan text-primary"></i></span>
                             </div>
                         </div>
@@ -981,10 +1013,19 @@
 
     {{--=========== نوار چسبان پایین: رفتن به مرحله بعدی فروش ===========--}}
     <div class="pos-action-bar">
-        <button type="button" class="btn btn-success text-dark w-100 pos-action-btn"
+        <div class="pos-bar-summary">
+            @if (count($cart))
+                <span class="pos-bar-count">{{ number_format(count($cart)) }} قــلــم کــالا</span>
+                <span class="pos-bar-total">{{ number_format($this->finalPrice) }} <small>تــومــان</small></span>
+            @else
+                <span class="pos-bar-count">ســبــد خــالــی اســت</span>
+            @endif
+        </div>
+
+        <button type="button" class="btn btn-success text-dark pos-action-btn"
             wire:click="openCheckoutModal" @if (empty($cart)) disabled @endif>
             <i class="bi bi-cash-coin me-2"></i>
-            پـــرداخـــت و ثـــبـــت فـــاکـــتـــور
+            ادامــه و تــســویــه
         </button>
     </div>
 

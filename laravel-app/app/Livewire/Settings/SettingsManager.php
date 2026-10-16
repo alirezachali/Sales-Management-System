@@ -110,7 +110,6 @@ class SettingsManager extends Component
             'currency' => 'تومان',
             'price_decimal' => 0,
             'tax_percent' => 0,
-            'default_discount' => 0,
             'stock_alert' => 5,
             'max_invoice_items' => 100,
             'allow_negative_stock' => false,
@@ -367,7 +366,6 @@ class SettingsManager extends Component
             'data.currency' => ['nullable', 'string', 'max:20'],
             'data.price_decimal' => ['nullable', 'integer', 'min:0', 'max:4'],
             'data.tax_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
-            'data.default_discount' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'data.stock_alert' => ['nullable', 'integer', 'min:0'],
             'data.max_invoice_items' => ['nullable', 'integer', 'min:1'],
 

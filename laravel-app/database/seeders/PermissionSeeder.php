@@ -166,10 +166,6 @@ class PermissionSeeder extends Seeder
                         'display_name' => 'ثبت مرجوعی فروش',
                     ],
                     [
-                        'name' => 'sales.discount',
-                        'display_name' => 'ثبت تخفیف در فروش',
-                    ],
-                    [
                         'name' => 'sales.reprint',
                         'display_name' => 'چاپ مجدد فاکتورهای فروش',
                     ],

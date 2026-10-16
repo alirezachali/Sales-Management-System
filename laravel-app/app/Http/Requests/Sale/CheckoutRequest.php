@@ -32,11 +32,7 @@ class CheckoutRequest extends FormRequest
                 'integer',
                 'min:1',
             ],
-            'discount' => [
-                'nullable',
-                'numeric',
-                'min:0',
-            ],
+
             // روش پرداخت حتما باید انتخاب شود
             'payment_type' => [
                 'required',
@@ -79,7 +75,6 @@ class CheckoutRequest extends FormRequest
             'cart.*.id.exists' => 'یکی از کالاهای سبد در سیستم یافت نشد.',
             'cart.*.quantity.required' => 'تعداد کالا الزامی است.',
             'cart.*.quantity.min' => 'تعداد هر کالا باید حداقل ۱ باشد.',
-            'discount.min' => 'تخفیف نمی‌تواند منفی باشد.',
             'payment_type.required' => 'روش پرداخت را انتخاب کنید.',
             'payment_type.in' => 'روش پرداخت نامعتبر است.',
             'payments.*.type.in' => 'نوع پرداخت فقط نقدی یا کارتخوان مجاز است.',
@@ -94,7 +89,6 @@ class CheckoutRequest extends FormRequest
     {
         return [
             'cart' => 'سبد فروش',
-            'discount' => 'تخفیف',
             'payment_type' => 'روش پرداخت',
             'customer_id' => 'مشتری',
             'payments' => 'پرداخت‌ها',

@@ -59,6 +59,11 @@ class SaleManager extends Component
         'pointsToRedeem' => 0.0,
     ];
 
+    /**
+     * شناسه فیلد بارکد در ویو؛ در handleEnterKey برای تشخیص Enter روی همین فیلد استفاده می‌شود.
+     */
+    public const BARCODE_INPUT_ID = 'pos-barcode-input';
+
     // مودال‌ها
     public bool $showCheckoutModal = false;
 
@@ -335,6 +340,39 @@ class SaleManager extends Component
     }
 
     /**
+     * مدیریت Enter در صفحه صندوق فروش:
+     * - روی فیلد بارکد: اگر بارکدی وارد شده باشد کالا افزوده می‌شود، در غیر این صورت به مرحله پرداخت می‌رود.
+     * - بیرون از فیلدها و دکمه‌ها: رفتن به مرحله پرداخت.
+     * - داخل مودال‌های باز و سایر فیلدها: رفتار پیش‌فرض مرورگر حفظ می‌شود.
+     */
+    public function handleEnterKey(?string $tagName = null, ?string $elementId = null): void
+    {
+        if ($this->showCheckoutModal || $this->showInvoiceModal) {
+            return;
+        }
+
+        if ($elementId === self::BARCODE_INPUT_ID) {
+            if (filled($this->barcode)) {
+                $this->addByBarcode();
+            } elseif (! empty($this->cart)) {
+                $this->openCheckoutModal();
+            }
+
+            return;
+        }
+
+        if (in_array(strtoupper((string) $tagName), ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'A'], true)) {
+            return;
+        }
+
+        if (empty($this->cart)) {
+            return;
+        }
+
+        $this->openCheckoutModal();
+    }
+
+    /**
      * افزودن کالا به سبد بر اساس شناسه
      */
     public function addProduct(int $productId): void
@@ -379,6 +417,9 @@ class SaleManager extends Component
                 'stock' => $product->stock,
             ];
         }
+
+        // فوکوس به فیلد بارکد برمی‌گردد تا اسکن/تایپ کالای بعدی و زدن Enter بی‌وقفه ممکن باشد
+        $this->js('document.getElementById("'.self::BARCODE_INPUT_ID.'")?.focus()');
     }
 
     public function incrementQty(int $productId): void

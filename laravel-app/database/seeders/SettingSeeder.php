@@ -26,7 +26,6 @@ class SettingSeeder extends Seeder
             'currency' => 'تومان', // واحد پول
             'price_decimal' => '0', // تعداد اعشار قیمت
             'tax_percent' => '0', // نرخ مالیات
-            'default_discount' => '0', // تخفیف پیشفرض
             'stock_alert' => '5', // هشدار اتمام موجودی
             'max_invoice_items' => '100', // حداکثر تعداد آیتم در هر فاکتور
             'allow_negative_stock' => '0', // اجازه فروش با موجودی منفی

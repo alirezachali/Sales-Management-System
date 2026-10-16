@@ -310,12 +310,6 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label class="form-label">تخفیف پیش فرض (%)</label>
-                                        <input type="number" class="form-control"
-                                            wire:model="data.default_discount">
-                                    </div>
-
-                                    <div class="col-md-4">
                                         <label class="form-label">هشدار اتمام موجودی</label>
                                         <input type="number" class="form-control" wire:model="data.stock_alert">
                                     </div>
