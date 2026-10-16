@@ -61,11 +61,9 @@ class SaleManagerNumericInputTest extends TestCase
     {
         Livewire::actingAs($this->makeUser())
             ->test(SaleManager::class)
-            ->set('discount', '')
             ->set('paidAmount', '')
             ->set('cashAmount', '')
             ->set('cardAmount', '')
-            ->assertSet('discount', 0)
             ->assertSet('paidAmount', 0)
             ->assertSet('cashAmount', 0)
             ->assertSet('cardAmount', 0);

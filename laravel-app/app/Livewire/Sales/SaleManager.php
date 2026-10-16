@@ -22,9 +22,6 @@ class SaleManager extends Component
     // سبد فروش (Cart)
     public array $cart = [];
 
-    // اطلاعات فاکتور
-    public float $discount = 0;
-
     // انتخاب مشتری (داخل مودال پرداخت)
     public string $customerQuery = '';
 
@@ -56,7 +53,6 @@ class SaleManager extends Component
      * مقدار پیش‌فرض هر فیلد وقتی خالی شد.
      */
     protected const NUMERIC_INPUTS = [
-        'discount' => 0.0,
         'paidAmount' => 0.0,
         'cashAmount' => 0.0,
         'cardAmount' => 0.0,
@@ -82,9 +78,6 @@ class SaleManager extends Component
         'cart.required' => 'سبد فروش خالی است.',
         'paymentType.required' => 'روش پرداخت را انتخاب کنید.',
         'paymentType.in' => 'روش پرداخت نامعتبر است.',
-        'discount.numeric' => 'تخفیف باید عدد باشد.',
-        'discount.min' => 'تخفیف نمی‌تواند منفی باشد.',
-        'discount.max' => 'تخفیف نمی‌تواند بیشتر از جمع سبد خرید باشد.',
         'paidAmount.required' => 'مبلغ پرداختی را وارد کنید.',
         'paidAmount.numeric' => 'مبلغ پرداختی باید عدد باشد.',
         'paidAmount.min' => 'مبلغ پرداختی کمتر از مبلغ سبد خرید است.',
@@ -205,22 +198,9 @@ class SaleManager extends Component
             $this->pointsToRedeem = $this->customerAvailablePoints;
         }
 
-        $maxByInvoice = (int) floor(max(0, $this->subtotal - $this->discount) / max(1, $this->pointValue));
+        $maxByInvoice = (int) floor($this->subtotal / max(1, $this->pointValue));
         if ($this->pointsToRedeem > $maxByInvoice) {
             $this->pointsToRedeem = $maxByInvoice;
-        }
-
-        $this->syncAmountsWithFinalPrice();
-    }
-
-    public function updatedDiscount(): void
-    {
-        if ($this->discount < 0) {
-            $this->discount = 0;
-        }
-
-        if ($this->discount > $this->subtotal) {
-            // اجازه ورود می‌دهیم ولی در checkout اعتبارسنجی می‌شود؛ هشدار در UI نشان داده می‌شود
         }
 
         $this->syncAmountsWithFinalPrice();
@@ -260,7 +240,7 @@ class SaleManager extends Component
     {
         $this->refreshCustomerPoints();
 
-        $maxPoints = (int) floor(max(0, $this->subtotal - $this->discount) / max(1, $this->pointValue));
+        $maxPoints = (int) floor($this->subtotal / max(1, $this->pointValue));
         $this->pointsToRedeem = min($this->customerAvailablePoints, $maxPoints);
         $this->syncAmountsWithFinalPrice();
     }
@@ -461,24 +441,16 @@ class SaleManager extends Component
     }
 
     /**
-     * مبلغ سبد خرید قبل از تخفیف امتیازی (بعد از تخفیف دستی)
-     */
-    public function getSubtotalBeforePointsDiscountProperty(): float
-    {
-        return max(0, $this->subtotal - $this->discount);
-    }
-
-    /**
      * مبلغ تخفیف ناشی از امتیاز مصرف‌شده
      */
     public function getPointsDiscountProperty(): float
     {
-        return min($this->pointsToRedeem * $this->pointValue, max(0, $this->subtotal - $this->discount));
+        return min($this->pointsToRedeem * $this->pointValue, $this->subtotal);
     }
 
     public function getFinalPriceProperty(): float
     {
-        return max(0, $this->subtotal - $this->discount - $this->pointsDiscount);
+        return max(0, $this->subtotal - $this->pointsDiscount);
     }
 
     /**
@@ -534,15 +506,6 @@ class SaleManager extends Component
             return;
         }
 
-        if ($this->discount > $this->subtotal) {
-            session()->flash(
-                'error',
-                'تخفیف ('.number_format($this->discount).' تومان) بیشتر از جمع سبد خرید ('.number_format($this->subtotal).' تومان) است.'
-            );
-
-            return;
-        }
-
         $this->paidAmount = $this->finalPrice;
         $this->cashAmount = round($this->finalPrice / 2);
         $this->cardAmount = $this->finalPrice - $this->cashAmount;
@@ -564,12 +527,10 @@ class SaleManager extends Component
             return;
         }
 
-        $subtotal = $this->subtotal;
         $final = $this->finalPrice;
 
         $this->validate([
             'paymentType' => 'required|in:cash,card,mixed,credit',
-            'discount' => 'nullable|numeric|min:0|max:'.$subtotal,
             'pointsToRedeem' => 'nullable|numeric|min:0|max:'.$this->customerAvailablePoints,
         ]);
 
@@ -661,12 +622,11 @@ class SaleManager extends Component
             ])->values()->all();
 
             $sale = $saleService->checkout(
-                $cartPayload,
-                $this->discount,
-                $this->paymentType,
-                $this->customerId,
-                $payments,
-                (int) $this->pointsToRedeem,
+                cart: $cartPayload,
+                paymentType: $this->paymentType,
+                customerId: $this->customerId,
+                payments: $payments,
+                pointsToRedeem: (int) $this->pointsToRedeem,
             );
 
             session()->flash('success', 'فاکتور فروش با موفقیت ثبت شد.');
@@ -705,7 +665,6 @@ class SaleManager extends Component
     private function resetCart(): void
     {
         $this->cart = [];
-        $this->discount = 0;
         $this->paidAmount = 0;
         $this->cashAmount = 0;
         $this->cardAmount = 0;

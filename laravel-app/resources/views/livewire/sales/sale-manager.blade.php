@@ -768,6 +768,24 @@
             filter: grayscale(.5);
             transform: none;
         }
+
+        /* ============ نوار چسبان پایین صفحه (مرحله بعدی فروش) ============ */
+        .pos-action-bar {
+            position: sticky;
+            bottom: 0;
+            z-index: 5;
+            padding: 12px 0;
+            background: var(--lux-surface, rgba(255, 255, 255, .045));
+            backdrop-filter: blur(18px) saturate(140%);
+            border-top: 1px solid var(--lux-border, rgba(148, 163, 184, .16));
+        }
+
+        .pos-action-bar .pos-action-btn {
+            font-weight: 700;
+            border-radius: 14px;
+            padding: .75rem 1rem;
+            letter-spacing: 0;
+        }
     </style>
 
     @include('partials.flash-messages')
@@ -796,7 +814,7 @@
     @enderror
 
     <div class="row g-3">
-        <div class="col-lg-7">
+        <div class="col-12">
 
             {{-- جستجو و افزودن کالا --}}
             <div class="card mb-3">
@@ -959,65 +977,15 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        {{--=============== ستون جمع‌بندی و پرداخت ===============--}}
-        <div class="col-lg-5">
-            <div class="card">
-                <div class="card-header">
-                    <h3>
-                        <i class="bi bi-receipt-cutoff"></i>
-                        جـمـع‌بـنـدی فـاکـتـور
-                    </h3>
-                </div>
-                <div class="card-body">
-                    <div class="mb-2">
-                        <label class="form-label fw-semibold">تـخـفـیـف (تـومـان)</label>
-                        <input type="number" min="0" step="any" class="form-control pos-scan-input"
-                            wire:model.live.debounce.500ms="discount" placeholder="0">
-                        @if ($discount > $this->subtotal && $this->subtotal > 0)
-                            <div class="text-danger small mt-1">
-                                <i class="bi bi-exclamation-circle me-1"></i>
-                                تخفیف بیشتر از جمع سبد خرید ({{ number_format($this->subtotal) }} تومان) است.
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="">
-                        <span class="text-muted">جـمـع کـل ({{ number_format(count($cart)) }} قـلـم)</span>
-                        <strong>{{ number_format($this->subtotal) }}</strong>
-                    </div>
-
-                    @if ($discount > 0)
-                        <div class="text-success">
-                            <span>تـخـفـیـف</span>
-                            <strong>{{ number_format(min($discount, $this->subtotal)) }}</strong>
-                        </div>
-                    @endif
-
-                    <hr class="my-2">
-
-                    <div class=" mb-3">
-                        <span class="fw-bold">مـبـلـغ قـابـل پـرداخـت</span>
-                        <strong class="fs-4 text-success">{{ number_format($this->finalPrice) }}
-                            <small class="fw-normal">تـومـان</small>
-                        </strong>
-                    </div>
-
-                    <button type="button" class="btn btn-success text-dark w-100"
-                        wire:click="openCheckoutModal" @if (empty($cart)) disabled @endif>
-                        <i class="bi bi-cash-coin me-4"></i>
-                        پـــرداخـــت و ثـــبـــت فـــاکـــتـــور
-                    </button>
-
-                    {{-- <div class="text-center mt-2">
-                        <small class="text-muted">
-                            <i class="bi bi-person-badge me-1"></i>
-                            صـنـدوقـدار: {{ auth()->user()->name ?? '—' }}
-                        </small>
-                    </div> --}}
-                </div>
-            </div>
-        </div>
+    {{--=========== نوار چسبان پایین: رفتن به مرحله بعدی فروش ===========--}}
+    <div class="pos-action-bar">
+        <button type="button" class="btn btn-success text-dark w-100 pos-action-btn"
+            wire:click="openCheckoutModal" @if (empty($cart)) disabled @endif>
+            <i class="bi bi-cash-coin me-2"></i>
+            پـــرداخـــت و ثـــبـــت فـــاکـــتـــور
+        </button>
     </div>
 
 
@@ -1154,7 +1122,7 @@
                                         <div class="points-summary mt-3 p-3 rounded-4" style="background: rgba(232,62,140,0.08); border: 1px solid rgba(232,62,140,0.2);">
                                             <div class="d-flex justify-content-between align-items-center mb-2">
                                                 <span class="small"><i class="bi bi-cart3 me-1"></i>مبلغ سبد خرید:</span>
-                                                <strong class="text-warning">{{ number_format($this->subtotalBeforePointsDiscount) }} تومان</strong>
+                                                <strong class="text-warning">{{ number_format($this->subtotal) }} تومان</strong>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center mb-2">
                                                 <span class="small"><i class="bi bi-calculator me-1"></i>تعداد امتیاز × {{ number_format($pointValue) }}:</span>

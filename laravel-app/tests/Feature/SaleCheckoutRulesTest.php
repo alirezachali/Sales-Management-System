@@ -114,20 +114,6 @@ class SaleCheckoutRulesTest extends TestCase
             ->assertSet('paymentType', 'cash');
     }
 
-    public function test_discount_greater_than_subtotal_is_blocked(): void
-    {
-        $product = $this->makeProduct(price: 2000);
-
-        Livewire::actingAs($this->makeUser())
-            ->test(SaleManager::class)
-            ->call('addProduct', $product->id)
-            ->set('discount', 5000)
-            ->call('openCheckoutModal')
-            ->assertSet('showCheckoutModal', false);
-
-        $this->assertSame(0, Sale::count());
-    }
-
     public function test_sale_service_rejects_cash_underpayment_with_amounts(): void
     {
         $this->actingAs($this->makeUser());
