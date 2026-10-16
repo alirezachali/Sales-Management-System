@@ -453,7 +453,7 @@
                         } = context.chart;
 
                         // در اولین رندر قبل از محاسبه‌ی ابعاد، یک رنگ ساده برگردانده می‌شود
-                        if (!chartArea) return 'rgba(99,102,241,.85)';
+                        if (!chartArea) return 'rgba(255, 149, 0,.85)';
 
                         const total = Math.max(1, context.dataset.data.length - 1);
                         const hue = 205 + (context.dataIndex / total) * 135;
@@ -535,7 +535,7 @@
 
                 init() {
                     // پالت رنگی؛ به تعداد میله‌ها تکرار می‌شود
-                    const palette = ['#6366f1', '#0ea5e9', '#22c55e', '#f59e0b', '#ef4444', '#a855f7', '#14b8a6'];
+                    const palette = ['#ff9500', '#0ea5e9', '#22c55e', '#ffd60a', '#ef4444', '#a3a3ad', '#14b8a6'];
 
                     this.chart = new Chart(this.$el, {
                         type: 'bar',

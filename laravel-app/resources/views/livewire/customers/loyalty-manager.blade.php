@@ -6,7 +6,7 @@
         <div class="col-sm-6 col-lg-3">
             <div class="card stat-card border-0 h-100">
                 <div class="card-body">
-                    <div class="stat-icon" style="--icon-bg: rgba(217,70,239,.15); --icon-color:#d946ef">
+                    <div class="stat-icon" style="--icon-bg: rgba(255, 122, 0,.15); --icon-color:#ff7a00">
                         <i class="bi bi-gem"></i>
                     </div>
                     <div class="subheader">جمع امتیازهای فعال</div>

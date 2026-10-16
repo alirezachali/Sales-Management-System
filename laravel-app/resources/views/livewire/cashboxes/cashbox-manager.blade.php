@@ -29,7 +29,7 @@
                             wire:click="viewCashbox({{ $cashbox->id }})" style="cursor:pointer">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <div class="stat-icon" style="--icon-bg: rgba(99,102,241,.15); --icon-color:#6366f1">
+                                    <div class="stat-icon" style="--icon-bg: rgba(255, 149, 0,.15); --icon-color:#ff9500">
                                         <i class="bi {{ $cashbox->type === 'bank' ? 'bi-bank' : ($cashbox->type === 'wallet' ? 'bi-wallet2' : 'bi-cash-stack') }}"></i>
                                     </div>
                                     <div class="d-flex gap-1">

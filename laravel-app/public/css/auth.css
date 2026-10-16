@@ -1,9 +1,9 @@
 :root{
-    --bg:#0f172a;
-    --bg2:#1e293b;
-    --glass:rgba(255,255,255,.08);
+    --bg:#0a0a0d;
+    --bg2:#141417;
+    --glass:rgba(255,255,255,.06);
     --border:rgba(255,255,255,.12);
-    --text:#f3f1ee;
+    --text:#f2f2f4;
 }
 
 html,
@@ -15,7 +15,7 @@ body{
 body{
     margin:0;
     font-family:Vazirmatn,sans-serif;
-    background:radial-gradient(circle at top,#1a1919 0%,#171718 45%,#06070c 100%);
+    background:radial-gradient(circle at top,#141416 0%,#0c0c0e 45%,#040405 100%);
     color:var(--text);
     overflow:hidden;
 }
@@ -35,10 +35,10 @@ body{
     max-width:100%;
     padding:20px;
     border-radius:22px;
-    background:rgba(88, 87, 87, 0.096);
+    background:rgba(24, 24, 28, 0.35);
     backdrop-filter:blur(18px);
-    border:3px solid rgba(255,255,255,.12);
-    box-shadow:0 20px 60px rgba(0,0,0,.35);
+    border:1px solid rgba(255, 149, 0, 0.28);
+    box-shadow:0 20px 60px rgba(0,0,0,.55), 0 0 34px rgba(255, 149, 0, 0.14);
     animation:fadeUp .9s ease;
 }
 
@@ -78,8 +78,8 @@ body{
 .form-control:focus{
     background:rgba(255,255,255,.08);
     color:#fff;
-    border-color:#0d6efd;
-    box-shadow:none;
+    border-color:#ff9500;
+    box-shadow:0 0 0 3px rgba(255, 149, 0, 0.18);
 }
 
 .form-control::placeholder{

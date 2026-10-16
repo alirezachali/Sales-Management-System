@@ -28,7 +28,7 @@
         <div class="col-sm-6 col-lg-4">
             <div class="card stat-card border-0 h-100">
                 <div class="card-body">
-                    <div class="stat-icon" style="--icon-bg: rgba(168,85,247,.15); --icon-color:#a855f7">
+                    <div class="stat-icon" style="--icon-bg: rgba(255, 122, 0,.15); --icon-color:#ff7a00">
                         <i class="bi bi-box-seam"></i>
                     </div>
                     <div class="subheader">جمع موجودی کل</div>

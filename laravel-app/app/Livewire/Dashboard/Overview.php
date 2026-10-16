@@ -265,7 +265,7 @@ class Overview extends Component
         $isLoss = $totals['netProfit'] < 0;
 
         $slices = [
-            ['label' => __('dash.admin.fin_cogs'), 'value' => $totals['cogs'], 'color' => '#6366f1'],
+            ['label' => __('dash.admin.fin_cogs'), 'value' => $totals['cogs'], 'color' => '#a3a3ad'],
             ['label' => __('dash.admin.fin_salary'), 'value' => $totals['salary'], 'color' => '#f59e0b'],
             ['label' => __('dash.admin.fin_other_expenses'), 'value' => $totals['otherExpenses'], 'color' => '#ef4444'],
             [

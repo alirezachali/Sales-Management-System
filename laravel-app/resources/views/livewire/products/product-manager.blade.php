@@ -99,7 +99,7 @@
     {{-- ======== استایل انتخاب و پیش‌نمایش تصاویر محصول ======== --}}
     <style>
         .product-images-card {
-            background: linear-gradient(160deg, rgba(66,99,235,.05), rgba(255,255,255,.6));
+            background: linear-gradient(160deg, rgba(255, 149, 0,.05), rgba(255,255,255,.6));
             border: 1px solid #e3e7f3;
             border-radius: 18px;
             padding: 16px;
@@ -115,7 +115,7 @@
             cursor: pointer;
         }
         .product-images-dropzone:hover {
-            border-color: var(--tblr-primary, #4263eb);
+            border-color: var(--tblr-primary, #ff9500);
             background: rgba(255,255,255,.95);
         }
         .product-images-dropzone.is-invalid {
@@ -146,10 +146,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--tblr-primary, #4263eb), #7048e8);
+            background: linear-gradient(135deg, var(--tblr-primary, #ff9500), #ffd60a);
             color: #fff;
             font-size: 1.5rem;
-            box-shadow: 0 8px 18px rgba(66,99,235,.28);
+            box-shadow: 0 8px 18px rgba(255, 149, 0,.28);
             margin-bottom: 6px;
         }
         .product-images-title {
@@ -241,7 +241,7 @@
 
         /* ======== مودال جزئیات محصول ======== */
         .product-details-header {
-            background: linear-gradient(135deg, rgba(66,99,235,.10), rgba(112,72,232,.06));
+            background: linear-gradient(135deg, rgba(255, 149, 0,.10), rgba(255, 214, 10,.06));
             border-bottom: 1px solid #e3e7f3;
         }
         .product-details-avatar {
@@ -251,10 +251,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--tblr-primary, #4263eb), #7048e8);
+            background: linear-gradient(135deg, var(--tblr-primary, #ff9500), #ffd60a);
             color: #fff;
             font-size: 1.5rem;
-            box-shadow: 0 8px 18px rgba(66,99,235,.3);
+            box-shadow: 0 8px 18px rgba(255, 149, 0,.3);
         }
         .product-details-gallery {
             display: grid;
@@ -320,7 +320,7 @@
             white-space: nowrap;
         }
         .product-details-specs .spec-label i {
-            color: var(--tblr-primary, #c20caa);
+            color: var(--tblr-primary, #ff9500);
         }
         .product-details-specs .spec-value {
             font-weight: 700;
@@ -389,10 +389,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--tblr-primary, #4263eb), #7048e8);
+            background: linear-gradient(135deg, var(--tblr-primary, #ff9500), #ffd60a);
             color: #fff;
             font-size: 2rem;
-            box-shadow: 0 .35rem .9rem rgba(66,99,235,.25);
+            box-shadow: 0 .35rem .9rem rgba(255, 149, 0,.25);
         }
         .brand-logo-placeholder--muted {
             background: #eef0f6;
@@ -1137,7 +1137,7 @@
                                                         <td>{{ $loop->iteration }}</td>
                                                         <td class="fw-semibold">
                                                             <span class="avatar avatar-xs me-2"
-                                                                style="background: rgba(66,99,235,.08);">
+                                                                style="background: rgba(255, 149, 0,.08);">
                                                                 <i class="bi bi-person text-primary"></i>
                                                             </span>
                                                             {{ $supplier['name'] }}

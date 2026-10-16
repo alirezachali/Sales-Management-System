@@ -312,7 +312,7 @@
                         <div class="card border-3 mb-0 shadow-sm">
                             <div class="row g-0">
                                 <div class="col-auto d-flex align-items-center justify-content-center"
-                                    style="background: linear-gradient(135deg, var(--tblr-primary-rgb, 66,99,235) 0%, rgba(66,99,235,.06) 100%); min-width: 160px; padding: 1.5rem;">
+                                    style="background: linear-gradient(135deg, rgb(var(--tblr-primary-rgb, 255, 149, 0)) 0%, rgba(255, 149, 0,.06) 100%); min-width: 160px; padding: 1.5rem;">
                                     @if ($detailBrand->logo && \Illuminate\Support\Facades\Storage::disk('public')->exists($detailBrand->logo))
                                         <img src="{{ asset('storage/' . $detailBrand->logo) }}"
                                             alt="{{ $detailBrand->name }}"
@@ -348,7 +348,7 @@
                                                 <span>{{ $detailBrand->suppliers_count ?? $detailBrand->suppliers->count() }} تـامـیـن‌کـنـنـده</span>
                                             </div>
                                         </div>
-                                        <div class="p-3 rounded-3" style="background: rgba(66,99,235,.06); border-right: 4px solid var(--tblr-primary);">
+                                        <div class="p-3 rounded-3" style="background: rgba(255, 149, 0,.06); border-right: 4px solid var(--tblr-primary);">
                                             <i class="bi bi-chat-left-quote text-primary me-1"></i>
                                             <span class="text-muted">{{ $detailBrand->description ?: 'توضیحاتی برای این برند ثبت نشده است.' }}</span>
                                         </div>
@@ -387,7 +387,7 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td class="fw-semibold">
-                                                        <span class="avatar avatar-xs me-2" style="background: rgba(66,99,235,.08);">
+                                                        <span class="avatar avatar-xs me-2" style="background: rgba(255, 149, 0,.08);">
                                                             <i class="bi bi-person text-primary"></i>
                                                         </span>
                                                         {{ $supplier->name }}

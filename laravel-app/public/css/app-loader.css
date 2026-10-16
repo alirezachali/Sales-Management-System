@@ -29,7 +29,7 @@
 .app-loader__backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(7, 10, 20, 0.45);
+    background: rgba(3, 3, 5, 0.5);
     -webkit-backdrop-filter: blur(3px) saturate(120%);
     backdrop-filter: blur(3px) saturate(120%);
     animation: app-loader-fade 0.25s ease both;
@@ -76,7 +76,7 @@
     position: absolute;
     inset: -30%;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(124, 92, 255, 0.3), transparent 68%);
+    background: radial-gradient(circle, rgba(255, 149, 0, 0.3), transparent 68%);
     filter: blur(7px);
     animation: app-loader-breathe 2.4s ease-in-out infinite;
 }
@@ -87,11 +87,11 @@
     inset: 0;
     border-radius: 50%;
     background: conic-gradient(from 0turn,
-            rgba(124, 92, 255, 0) 0deg,
-            rgba(124, 92, 255, 0.12) 45deg,
-            var(--lux-accent-1, #7c5cff) 165deg,
-            var(--lux-accent-2, #3ea6ff) 300deg,
-            rgba(62, 166, 255, 0) 360deg);
+            rgba(255, 149, 0, 0) 0deg,
+            rgba(255, 149, 0, 0.16) 45deg,
+            var(--lux-accent-3, #ffd60a) 165deg,
+            var(--lux-accent-2, #ff9500) 300deg,
+            rgba(255, 149, 0, 0) 360deg);
     -webkit-mask: radial-gradient(farthest-side,
             transparent calc(100% - var(--loader-thickness)),
             #000 calc(100% - var(--loader-thickness)));
@@ -101,15 +101,15 @@
     animation: app-loader-spin 1s linear infinite;
 }
 
-/* حلقه درونی: کمان کوتاه‌تر بنفش‌صورتی در جهت مخالف */
+/* حلقه درونی: کمان کوتاه‌تر نارنجی در جهت مخالف */
 .app-loader__ring--inner {
     --loader-thickness: 2px;
     inset: 21%;
     background: conic-gradient(from 0.5turn,
-            rgba(217, 70, 239, 0) 0deg,
-            rgba(217, 70, 239, 0.85) 110deg,
-            rgba(124, 92, 255, 0) 260deg,
-            rgba(124, 92, 255, 0) 360deg);
+            rgba(255, 122, 0, 0) 0deg,
+            rgba(255, 122, 0, 0.85) 110deg,
+            rgba(255, 149, 0, 0) 260deg,
+            rgba(255, 149, 0, 0) 360deg);
     animation: app-loader-spin-reverse 1.6s linear infinite;
 }
 
@@ -118,8 +118,8 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: var(--lux-gradient, linear-gradient(135deg, #7c5cff, #3ea6ff));
-    box-shadow: 0 0 14px rgba(124, 92, 255, 0.75), 0 0 30px rgba(62, 166, 255, 0.35);
+    background: var(--lux-gradient, linear-gradient(135deg, #3a3a42, #ff9500));
+    box-shadow: 0 0 14px rgba(255, 149, 0, 0.75), 0 0 30px rgba(255, 214, 10, 0.4);
     animation: app-loader-pulse 1.5s ease-in-out infinite;
 }
 
@@ -128,7 +128,7 @@
     font-family: Vazirmatn, "Segoe UI", Tahoma, sans-serif;
     font-size: 0.82rem;
     font-weight: 700;
-    background: linear-gradient(90deg, #a78bfa, #7dd3fc, #a78bfa);
+    background: linear-gradient(90deg, #ffb74d, #ffe066, #ffb74d);
     background-size: 220% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -139,7 +139,7 @@
 
 [data-bs-theme="light"] .app-loader__caption {
     /* با background-image بازنویسی می‌شود تا background-clip: text از بین نرود */
-    background-image: linear-gradient(90deg, #6d4bff, #1f7fd0, #6d4bff);
+    background-image: linear-gradient(90deg, #d97706, #ca8a04, #d97706);
     background-size: 220% 100%;
 }
 

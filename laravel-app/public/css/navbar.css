@@ -3,8 +3,8 @@
    ========================================================================== */
 :root {
     --nav-height: 70px;
-    --nav-accent: #df17e6c0;
-    --nav-accent-contrast: #fcfbfc;
+    --nav-accent: #ff9500;
+    --nav-accent-contrast: #16161a;
     --nav-radius: 20px;
 }
 
@@ -24,10 +24,10 @@
 }
 
 [data-bs-theme="dark"] .top-navbar {
-    background: rgba(51, 45, 73, 0.479);
+    background: rgba(14, 14, 16, 0.62);
 }
 [data-bs-theme="light"] .top-navbar {
-    background: rgba(77, 60, 85, 0.438);
+    background: rgba(236, 236, 240, 0.66);
 }
 
 .navbar-inner {
@@ -71,7 +71,7 @@
 }
 
 .navbar-bells .alerts-toggle:hover {
-    background: rgba(124, 92, 255, 0.12);
+    background: rgba(255, 149, 0, 0.12);
 }
 
 .navbar-bells .alerts-badge {
@@ -192,9 +192,10 @@
 
 .user-menu-toggle.is-open {
     background: var(--lux-gradient) !important;
-    box-shadow: 0 6px 20px rgba(124, 92, 255, 0.35);
+    box-shadow: 0 6px 20px rgba(255, 149, 0, 0.35);
     font-weight: 800;
-    color: #202124;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
 }
 
 /* تصویر پروفایل در نوار */
@@ -266,9 +267,9 @@
 
 [data-bs-theme="dark"] .user-dropdown {
     background:
-        radial-gradient(600px 280px at 88% -10%, rgba(124, 92, 255, 0.14), transparent 60%),
-        radial-gradient(500px 240px at -10% 20%, rgba(62, 166, 255, 0.10), transparent 55%),
-        rgba(13, 18, 34, 0.55);
+        radial-gradient(600px 280px at 88% -10%, rgba(255, 149, 0, 0.10), transparent 60%),
+        radial-gradient(500px 240px at -10% 20%, rgba(255, 214, 10, 0.07), transparent 55%),
+        rgba(8, 8, 10, 0.68);
 }
 [data-bs-theme="light"] .user-dropdown {
     background: rgba(255, 255, 255, 0.65);
@@ -305,7 +306,7 @@
     border-radius: 50%;
     object-fit: cover;
     border: 1px dashed var(--nav-accent);
-    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.12);
+    box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.12);
 }
 
 .dropdown-avatar-fallback {

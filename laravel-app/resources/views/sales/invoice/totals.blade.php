@@ -12,7 +12,7 @@
     @endif
 
     @if ($sale->points_redeemed > 0)
-        <div class="trow" style="color: #d946ef;">
+        <div class="trow" style="color: #ffd60a;">
             <span>
                 <i class="bi bi-star-fill"></i>
                 امتیاز مصرف‌شده ({{ number_format($sale->points_redeemed) }} امتیاز)
@@ -68,7 +68,7 @@
     @endif
 
     @if ($sale->relationLoaded('customer') && $sale->customer && $sale->points_redeemed > 0)
-        <div class="trow" style="color: #a855f7; font-size: 0.85em;">
+        <div class="trow" style="color: #ffb74d; font-size: 0.85em;">
             <span>
                 <i class="bi bi-gem"></i>
                 مانده امتیاز مشتری پس از خرید

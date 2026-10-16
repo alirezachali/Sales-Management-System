@@ -15,13 +15,14 @@ html {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(76, 38, 82, 0.397);
+    background: rgba(18, 18, 22, 0.6);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    color: #c4c4c4;
+    color: #e8e8ec;
     font-size: 40px;
     line-height: 1;
-    box-shadow: 0 4px 9px rgba(76, 13, 82, 0.507);
+    border: 1px solid rgba(255, 149, 0, 0.35);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55), 0 0 16px rgba(255, 149, 0, 0.25);
     /* انیمیشن ظاهر/محو شدن */
     opacity: 0;
     visibility: hidden;
@@ -47,9 +48,10 @@ html {
 }
 
 .back-to-top:hover {
-    background:  #030303;
+    background:  #141418;
+    color: #ffb74d;
     transform: translateY(-3px);
-    box-shadow: 0 4px 9px rgba(8, 8, 8, 0.507);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55), 0 0 22px rgba(255, 149, 0, 0.45);
 }
 
 .back-to-top:active {

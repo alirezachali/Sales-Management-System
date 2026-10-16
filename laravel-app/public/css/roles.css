@@ -102,11 +102,11 @@
 
 .icon-picker-item:hover {
     transform: translateY(-1px);
-    border-color: rgba(124, 92, 255, 0.6);
+    border-color: rgba(255, 149, 0, 0.6);
 }
 
 .icon-picker-item.active {
-    border-color: #7c5cff;
-    background: rgba(124, 92, 255, 0.18);
-    box-shadow: 0 0 0 2px rgba(124, 92, 255, 0.25);
+    border-color: #ff9500;
+    background: rgba(255, 149, 0, 0.18);
+    box-shadow: 0 0 0 2px rgba(255, 149, 0, 0.25);
 }

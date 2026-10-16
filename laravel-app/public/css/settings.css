@@ -63,18 +63,18 @@
 
 .settings-page .settings-tabs .nav-link:hover {
     opacity: 1;
-    background: rgba(124, 92, 255, 0.12);
+    background: rgba(255, 149, 0, 0.12);
     color: inherit;
 }
 
 .settings-page .settings-tabs .nav-link:focus-visible {
-    outline: 2px solid rgba(124, 92, 255, 0.55);
+    outline: 2px solid rgba(255, 149, 0, 0.55);
     outline-offset: 1px;
 }
 
 .settings-page .settings-tabs .nav-link.active {
     opacity: 1;
-    background: rgba(124, 92, 255, 0.16);
+    background: rgba(255, 149, 0, 0.16);
     font-weight: 800;
 }
 
@@ -88,7 +88,7 @@
     height: 3px;
     border-radius: 999px;
     background: var(--lux-gradient);
-    box-shadow: 0 0 12px rgba(124, 92, 255, 0.7);
+    box-shadow: 0 0 12px rgba(255, 149, 0, 0.7);
     opacity: 0;
     pointer-events: none;
     transform: translateX(0);

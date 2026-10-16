@@ -4,27 +4,40 @@
    ============================================================ */
 
 :root {
-    --lux-accent-1: #7c5cff;
-    --lux-accent-2: #3ea6ff;
-    --lux-accent-3: #d946ef;
+    /* ---------- پالت تیره: مشکی/خاکستری + نئون زرد-نارنجی ---------- */
+    /* جانشین بنفش قبلی: گرافیتی تیره */
+    --lux-accent-1: #3a3a42;
+    /* رنگ نئون اصلی: نارنجی */
+    --lux-accent-2: #ff9500;
+    /* رنگ نئون دوم: زرد */
+    --lux-accent-3: #ffd60a;
+    /* خاکستری خنثی برای سطوح و حاشیه‌ها */
+    --lux-graphite: #232328;
     --lux-gradient: linear-gradient(135deg, var(--lux-accent-1), var(--lux-accent-2));
-    --lux-gradient-warm: linear-gradient(135deg, var(--lux-accent-3), var(--lux-accent-1));
-    --lux-bg-0: #070a14;
-    --lux-bg-1: #0b1120;
-    --lux-surface: rgba(255, 255, 255, 0.045);
-    --lux-border: rgba(148, 163, 184, 0.16);
-    --lux-glow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    --lux-gradient-warm: linear-gradient(135deg, var(--lux-accent-3), var(--lux-accent-2));
+    /* هاله نئون برای جلوه‌های درخشان */
+    --lux-neon-shadow: 0 0 18px rgba(255, 149, 0, 0.5);
+    --lux-neon-shadow-soft: 0 0 26px rgba(255, 149, 0, 0.28);
+    /* پس‌زمینه تیره‌تر و خنثی (بدون ته‌رنگ بنفش) */
+    --lux-bg-0: #040405;
+    --lux-bg-1: #0a0a0d;
+    --lux-surface: rgba(255, 255, 255, 0.026);
+    --lux-border: rgba(150, 150, 160, 0.14);
+    --lux-glow: 0 10px 34px rgba(0, 0, 0, 0.65);
     --nav-height: 64px;
     /* باعث می‌شود ویجت‌های نیتیو مثل لیست بازشوی select در تم تیره رندر شوند */
     color-scheme: dark;
     /* رنگ زمینه و متن لیست بازشوی select در حالت دارک */
-    --lux-dropdown-bg: #101528;
-    --lux-dropdown-text: #e2e8f0;
+    --lux-dropdown-bg: #0f0f12;
+    --lux-dropdown-text: #e6e6e9;
 }
 
 [data-bs-theme="light"] {
-    --lux-bg-0: #eef1fb;
-    --lux-bg-1: #f6f8ff;
+    --lux-accent-1: #6b6b73;
+    --lux-accent-2: #ff9500;
+    --lux-accent-3: #ffd60a;
+    --lux-bg-0: #ebebee;
+    --lux-bg-1: #f6f6f8;
     --lux-surface: rgba(255, 255, 255, 0.72);
     --lux-border: rgba(15, 23, 42, 0.09);
     --lux-glow: 0 8px 28px rgba(30, 41, 59, 0.10);
@@ -34,12 +47,12 @@
     --lux-dropdown-text: #1e293b;
 }
 
-/* ---------- پس‌زمینه کهکشانی ---------- */
+/* ---------- پس‌زمینه تیره با هاله‌های نئون ---------- */
 body {
     background:
-        radial-gradient(1100px 520px at 88% -10%, rgba(124, 92, 255, 0.16), transparent 60%),
-        radial-gradient(900px 480px at -10% 20%, rgba(62, 166, 255, 0.13), transparent 55%),
-        radial-gradient(700px 700px at 60% 110%, rgba(217, 70, 239, 0.08), transparent 60%),
+        radial-gradient(1100px 520px at 88% -10%, rgba(255, 149, 0, 0.10), transparent 60%),
+        radial-gradient(900px 480px at -10% 20%, rgba(255, 214, 10, 0.06), transparent 55%),
+        radial-gradient(700px 700px at 60% 110%, rgba(255, 122, 0, 0.05), transparent 60%),
         linear-gradient(180deg, var(--lux-bg-0), var(--lux-bg-1)) !important;
     background-attachment: fixed !important;
 }
@@ -66,7 +79,7 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 }
 
 .card:hover {
-    border-color: rgba(124, 92, 255, 0.28) !important;
+    border-color: rgba(255, 149, 0, 0.28) !important;
 }
 
 .card-header {
@@ -81,7 +94,7 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 }
 
 .glass-card {
-    background: linear-gradient(160deg, rgba(124, 92, 255, 0.10), rgba(62, 166, 255, 0.06)) !important;
+    background: linear-gradient(160deg, rgba(255, 149, 0, 0.10), rgba(255, 214, 10, 0.06)) !important;
 }
 
 /* ---------- کارت‌های آماری ---------- */
@@ -91,7 +104,7 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 
 .stat-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 14px 38px rgba(124, 92, 255, 0.16);
+    box-shadow: 0 14px 38px rgba(255, 149, 0, 0.16);
 }
 
 .stat-icon {
@@ -102,8 +115,8 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
-    background: var(--icon-bg, rgba(124, 92, 255, 0.15));
-    color: var(--icon-color, #7c5cff);
+    background: var(--icon-bg, rgba(255, 149, 0, 0.15));
+    color: var(--icon-color, #ff9500);
     margin-bottom: 0.45rem;
 }
 
@@ -117,13 +130,13 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 
 /* ---------- هدر گرادیانی صفحه ---------- */
 .gradient-header {
-    background: linear-gradient(120deg, rgba(124, 92, 255, 0.85), rgba(62, 166, 255, 0.65)) !important;
+    background: linear-gradient(120deg, rgba(255, 149, 0, 0.85), rgba(255, 214, 10, 0.65)) !important;
     border: none !important;
     animation: luxRise 0.5s ease both;
 }
 
 [data-bs-theme="light"] .gradient-header {
-    background: linear-gradient(120deg, #7c5cff, #3ea6ff) !important;
+    background: linear-gradient(120deg, #ff9500, #ffd60a) !important;
 }
 
 /* ---------- دکمه‌ها ---------- */
@@ -133,7 +146,7 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 
 .btn-primary {
     background: var(--lux-gradient) !important;
-    box-shadow: 0 6px 20px rgba(124, 92, 255, 0.35);
+    box-shadow: 0 6px 20px rgba(255, 149, 0, 0.35);
 }
 
 .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
@@ -192,7 +205,7 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 }
 
 .table-hover tbody tr:hover {
-    background: rgba(124, 92, 255, 0.07) !important;
+    background: rgba(255, 149, 0, 0.07) !important;
 }
 
 .table-light {
@@ -222,8 +235,8 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: rgba(124, 92, 255, 0.6) !important;
-    box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.14) !important;
+    border-color: rgba(255, 149, 0, 0.6) !important;
+    box-shadow: 0 0 0 4px rgba(255, 149, 0, 0.14) !important;
 }
 
 /* لیست بازشوی select: هر تم رنگ خودش را دارد تا متن گزینه‌ها نخوانده نشود */
@@ -235,7 +248,7 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 .input-group-text {
     border-radius: 12px 0 0 12px;
     border: 1px solid var(--lux-border) !important;
-    background: rgba(124, 92, 255, 0.08) !important;
+    background: rgba(255, 149, 0, 0.08) !important;
 }
 
 .form-check-input:checked {
@@ -247,7 +260,7 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 .modal-content {
     border-radius: 22px !important;
     border: 1px solid var(--lux-border) !important;
-    background: rgba(13, 18, 34, 0.92) !important;
+    background: rgba(8, 8, 10, 0.92) !important;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
 }
@@ -268,24 +281,24 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 }
 
 .alert-fuchsia {
-    background: rgba(217, 70, 239, 0.12) !important;
-    color: #e879f9 !important;
+    background: rgba(255, 122, 0, 0.12) !important;
+    color: #ffc14d !important;
 }
 
 /* ---------- اسکرول‌بار ---------- */
 ::-webkit-scrollbar { width: 9px; height: 9px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(124, 92, 255, 0.55), rgba(62, 166, 255, 0.55));
+    background: linear-gradient(180deg, rgba(255, 149, 0, 0.55), rgba(255, 214, 10, 0.55));
     border-radius: 999px;
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(124, 92, 255, 0.85); }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 149, 0, 0.85); }
 
-::selection { background: rgba(124, 92, 255, 0.35); }
+::selection { background: rgba(255, 149, 0, 0.35); }
 
 /* ---------- رینگ انتخاب ---------- */
 .ring-selected {
-    box-shadow: 0 0 0 2px var(--lux-accent-2), 0 10px 30px rgba(62, 166, 255, 0.2) !important;
+    box-shadow: 0 0 0 2px var(--lux-accent-2), 0 10px 30px rgba(255, 214, 10, 0.2) !important;
 }
 
 /* ---------- صفحه انبارگردانی ---------- */
@@ -394,16 +407,16 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 
 /* ---------- امتیازدهی ---------- */
 .loyalty-box {
-    background: linear-gradient(140deg, rgba(217, 70, 239, 0.12), rgba(124, 92, 255, 0.08));
-    border: 1px solid rgba(217, 70, 239, 0.25);
+    background: linear-gradient(140deg, rgba(255, 122, 0, 0.12), rgba(255, 149, 0, 0.08));
+    border: 1px solid rgba(255, 122, 0, 0.25);
     border-radius: 16px;
     padding: 0.85rem 1rem;
     margin-bottom: 1rem;
 }
 
-.text-fuchsia { color: #d946ef !important; }
-.bg-fuchsia-subtle { background: rgba(217, 70, 239, 0.14) !important; }
-.text-fuchsia-emphasis { color: #e879f9 !important; }
+.text-fuchsia { color: #ff7a00 !important; }
+.bg-fuchsia-subtle { background: rgba(255, 122, 0, 0.14) !important; }
+.text-fuchsia-emphasis { color: #ffc14d !important; }
 
 /* ---------- زنگ هشدار ---------- */
 .alerts-bell { position: relative; }
@@ -441,7 +454,7 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
     width: 340px;
     max-height: 430px;
     overflow-y: auto;
-    background: rgba(13, 18, 34, 0.95);
+    background: rgba(8, 8, 10, 0.95);
     backdrop-filter: blur(22px);
     border: 1px solid var(--lux-border);
     border-radius: 18px;
@@ -486,8 +499,8 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 }
 
 .alerts-refresh-btn:hover:not(:disabled) {
-    background: rgba(124, 92, 255, 0.16);
-    color: #a78bfa;
+    background: rgba(255, 149, 0, 0.16);
+    color: #ffb74d;
 }
 
 .alerts-refresh-btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -522,7 +535,7 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
     transition: background 0.15s ease;
 }
 
-.alerts-item:hover { background: rgba(124, 92, 255, 0.12); color: inherit; }
+.alerts-item:hover { background: rgba(255, 149, 0, 0.12); color: inherit; }
 
 .alerts-empty {
     padding: 1.6rem;
@@ -548,9 +561,22 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 
 .nav-tabs .nav-link.active {
     background: var(--lux-gradient) !important;
-    box-shadow: 0 6px 20px rgba(124, 92, 255, 0.35);
+    box-shadow: 0 6px 20px rgba(255, 149, 0, 0.35);
     font-weight: 800;
-    color: #202124;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+
+/* ---------- خوانایی متن روی سطوح گرادیانی تیره-نئون ---------- */
+.btn-primary,
+.sidebar-link.active,
+.dropdown-item-link:hover,
+.pagination .page-item.active .page-link {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.pagination .page-item.active .page-link {
+    color: #fff !important;
 }
 
 
@@ -565,4 +591,31 @@ h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
 [data-flash-alert].flash-alert-pop,
 [data-notify-sound].flash-alert-pop {
     animation: flash-alert-pop 0.38s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+}
+
+/* ============================================================
+   هماهنگ‌سازی توکن‌های رنگی Tabler با پالت تیره نئون
+   (مشکی/خاکستری + کهربایی نئون؛ حذف آبی/بنفش پیش‌فرض)
+   ============================================================ */
+:root,
+[data-bs-theme="dark"] {
+    --tblr-primary: #ff9500;
+    --tblr-primary-rgb: 255, 149, 0;
+    --tblr-link-color: #ffb74d;
+    --tblr-link-hover-color: #ffd60a;
+    --tblr-purple: #ff9500;
+    --tblr-purple-rgb: 255, 149, 0;
+    --tblr-purple-lt: rgba(255, 149, 0, 0.16);
+    --tblr-purple-fg: #ffc14d;
+}
+
+[data-bs-theme="light"] {
+    --tblr-primary: #e07c00;
+    --tblr-primary-rgb: 224, 124, 0;
+    --tblr-link-color: #b45309;
+    --tblr-link-hover-color: #92400e;
+    --tblr-purple: #e07c00;
+    --tblr-purple-rgb: 224, 124, 0;
+    --tblr-purple-lt: rgba(224, 124, 0, 0.14);
+    --tblr-purple-fg: #b45309;
 }
