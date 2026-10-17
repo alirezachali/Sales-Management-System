@@ -104,12 +104,7 @@
             transform: translateY(-1px) scale(.98);
         }
 
-        /* حالت انتخاب‌شده: هاله و خط بردر سبز */
-        /* .pay-type-btn.active {
-            border-color: #22c55e;
-            background-image: linear-gradient(180deg, rgba(34, 197, 94, .18), rgba(34, 197, 94, .05));
-            box-shadow: 0 0 0 3px rgba(34, 197, 94, .18), 0 0 18px 2px rgba(34, 197, 94, .45);
-        } */
+
 
         .pay-type-btn.active .label {
             color: #22c55e;
@@ -206,12 +201,14 @@
         }
 
         /* پوسته مودال: گردی، هاله بنفش و انیمیشن ورود */
+
         .checkout-modal .modal-content {
             position: relative;
             overflow: hidden;
             color: var(--co-text);
             animation: co-pop .32s cubic-bezier(.2, .9, .3, 1.15) both;
         }
+
 
         @keyframes co-pop {
             from {
@@ -228,13 +225,13 @@
         .checkout-modal .modal-content::before {
             top: -180px;
             inset-inline-end: -90px;
-            background: rgba(255, 149, 0, .38);
+
         }
 
         .checkout-modal .modal-content::after {
             bottom: -190px;
             inset-inline-start: -70px;
-            background: rgba(255, 214, 10, .3);
+
         }
 
         .checkout-modal form {
@@ -247,20 +244,10 @@
             position: relative;
             align-items: center;
             padding: 16px 20px;
-            border-bottom: 1px solid var(--lux-border) !important;
-            background: linear-gradient(180deg, rgba(255, 149, 0, .16), transparent);
+            border-bottom: 1px solid rgb(80, 79, 79) !important;
         }
 
-        /* نوار رنگی بالای مودال */
-        .checkout-modal .modal-header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--lux-gradient, linear-gradient(135deg, #3a3a42, #ff9500));
-        }
+
 
         .checkout-modal .modal-title {
             display: flex;
@@ -280,13 +267,14 @@
             font-size: 1.05rem;
             color: #fff;
             background: var(--lux-gradient, linear-gradient(135deg, #3a3a42, #ff9500));
-            box-shadow: 0 10px 22px -10px rgba(255, 149, 0, 1);
+
         }
 
         .checkout-modal .btn-close {
             width: 32px;
             height: 32px;
-            padding: 0;
+            left: 20px;
+
             border-radius: 10px;
             background-size: 12px;
             background-color: rgba(148, 163, 184, .14);
@@ -296,7 +284,7 @@
 
         .checkout-modal .btn-close:hover {
             opacity: 1;
-            background-color: rgba(239, 68, 68, .25);
+            background-color: rgba(241, 7, 7, 0.884);
             transform: rotate(90deg);
         }
 
@@ -318,9 +306,9 @@
         }
 
         .checkout-modal .co-section:focus-within {
-            border-color: rgba(255, 149, 0, .45);
-            background: rgba(255, 149, 0, .07);
-            box-shadow: 0 0 0 3px rgba(255, 149, 0, .1);
+            border-color: rgba(250, 249, 248, 0.45);
+            background: rgba(192, 191, 190, 0.07);
+
         }
 
         .checkout-modal .co-label {
@@ -342,7 +330,7 @@
             border-radius: 8px;
             font-size: .72rem;
             color: #c4b5fd;
-            background: rgba(255, 149, 0, .18);
+            background: rgba(250, 249, 248, 0.18);
         }
 
         .checkout-modal .co-hint {
@@ -376,8 +364,8 @@
 
         .checkout-modal .form-control:focus {
             background-color: var(--co-field-bg);
-            border-color: rgba(255, 149, 0, .65);
-            box-shadow: 0 0 0 .2rem rgba(255, 149, 0, .18);
+            border-color: rgba(247, 246, 244, 0.65);
+
             color: var(--co-text);
         }
 
@@ -394,13 +382,12 @@
             padding: 6px;
             border-radius: 16px;
             border: 1px solid var(--lux-border);
-            background: var(--co-field-bg);
+            background: rgb(26, 25, 25);
             transition: border-color .2s ease, box-shadow .2s ease;
         }
 
         .checkout-modal .cust-search:focus-within {
-            border-color: rgba(255, 149, 0, .6);
-            box-shadow: 0 0 0 .2rem rgba(255, 149, 0, .16), 0 14px 34px -22px rgba(255, 149, 0, 1);
+            border-color: rgba(243, 241, 239, 0.6);
         }
 
         .checkout-modal .cust-search-icon {
@@ -413,7 +400,7 @@
             border-radius: 12px;
             font-size: .82rem;
             color: #c4b5fd;
-            background: rgba(255, 149, 0, .18);
+            background: rgba(0, 81, 255, 0.281);
         }
 
         .checkout-modal .cust-search .form-control {
@@ -441,8 +428,8 @@
         }
 
         .checkout-modal .cust-search-clear:hover {
-            background: rgba(239, 68, 68, .2);
-            color: #f87171;
+            background: rgba(226, 32, 32, 0.212);
+            color: #e91c1c;
         }
 
         .checkout-modal .cust-any {
@@ -471,7 +458,7 @@
         .checkout-modal .cust-results {
             margin-top: .6rem;
             border-radius: 16px;
-            border: 1px solid rgba(255, 149, 0, .28);
+            border: 1px solid rgba(241, 241, 239, 0.28);
             background: var(--lux-dropdown-bg, rgba(16, 21, 40, .96));
             box-shadow: 0 26px 55px -30px rgba(0, 0, 0, 1);
             overflow: hidden;
@@ -486,7 +473,7 @@
             font-size: .72rem;
             font-weight: 700;
             color: var(--co-text-dim);
-            background: rgba(255, 149, 0, .1);
+            background: rgba(12, 12, 12, 0.1);
             border-bottom: 1px solid var(--lux-border);
         }
 
@@ -515,7 +502,7 @@
         }
 
         .checkout-modal .cust-item:hover {
-            background: rgba(255, 149, 0, .16);
+            background: rgba(238, 237, 237, 0.16);
         }
 
         /* ---------- آواتار و مشخصات مشتری ---------- */
@@ -530,15 +517,14 @@
             font-size: .84rem;
             font-weight: 700;
             color: #c4b5fd;
-            background: linear-gradient(135deg, rgba(255, 149, 0, .3), rgba(255, 214, 10, .16));
-            box-shadow: inset 0 0 0 1px rgba(255, 149, 0, .35);
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.3), rgba(10, 165, 255, 0.16));
             transition: color .18s ease, background .18s ease;
         }
 
         .checkout-modal .cust-item:hover .cust-avatar,
         .checkout-modal .cust-item:focus-visible .cust-avatar {
             color: #fff;
-            background: var(--lux-gradient, linear-gradient(135deg, #3a3a42, #ff9500));
+            background: linear-gradient(135deg, #32527a, #0044ff);
         }
 
         .checkout-modal .cust-info {
@@ -646,8 +632,8 @@
         }
 
         .checkout-modal .cust-chip-clear:hover {
-            background: rgba(239, 68, 68, .22);
-            color: #f87171;
+            background: rgba(239, 68, 68, 0.425);
+            color: #ee1a1a;
             transform: rotate(90deg);
         }
 
@@ -656,8 +642,8 @@
             padding: 14px;
             margin-bottom: 14px;
             border-radius: 18px;
-            border: 1px solid rgba(255, 122, 0, .35);
-            background: linear-gradient(135deg, rgba(255, 122, 0, .14), rgba(255, 149, 0, .08));
+            border: 1px solid rgba(255, 0, 157, 0.35);
+            background: linear-gradient(135deg, rgba(255, 0, 149, 0.178), rgba(255, 0, 179, 0.144));
         }
 
         /* ---------- دکمه دوحالته نسیه (نقدی / کارتخوان) ---------- */
@@ -702,8 +688,8 @@
             padding: 16px 16px 16px 18px;
             margin-bottom: 14px;
             border-radius: 18px;
-            border: 1px solid rgba(255, 149, 0, .28);
-            background: rgba(255, 149, 0, .06);
+            border: 1px solid rgba(201, 204, 201, 0.28);
+            background: rgba(74, 75, 74, 0.164);
         }
 
         .checkout-modal .co-amount::before {
@@ -714,7 +700,7 @@
             bottom: 16px;
             width: 3px;
             border-radius: 999px;
-            background: var(--lux-gradient, linear-gradient(135deg, #3a3a42, #ff9500));
+            background: linear-gradient(135deg, #434344, #4e4e4e);
         }
 
         /* ---------- نوار مبلغ نهایی ---------- */
@@ -725,17 +711,16 @@
             gap: 1rem;
             padding: 12px 16px;
             border-radius: 16px !important;
-            border-color: rgba(255, 149, 0, .42) !important;
-            background: linear-gradient(135deg, rgba(255, 149, 0, .22), rgba(255, 214, 10, .12)) !important;
-            box-shadow: 0 14px 34px -20px rgba(255, 149, 0, 1);
+            border-color: rgba(9, 255, 0, 0.42) !important;
+            background: linear-gradient(135deg, rgba(81, 255, 0, 0.22), rgba(10, 255, 71, 0.288)) !important;
         }
 
         /* ---------- فوتر ---------- */
         .checkout-modal .modal-footer {
             gap: .5rem;
             padding: 14px 20px;
-            border-top: 1px solid var(--lux-border) !important;
-            background: linear-gradient(0deg, rgba(255, 149, 0, .1), transparent);
+            border-top: 1px solid rgb(80, 79, 79) !important;
+            background: linear-gradient(0deg, rgba(65, 64, 64, 0.1), transparent);
         }
 
         .checkout-modal .btn-co-cancel {
@@ -747,7 +732,7 @@
         }
 
         .checkout-modal .btn-co-cancel:hover {
-            background: rgba(239, 68, 68, .18) !important;
+            background: rgba(239, 68, 68, 0.349) !important;
             transform: translateY(-2px);
         }
 
@@ -756,7 +741,6 @@
             border-radius: 14px !important;
             color: #fff !important;
             background: linear-gradient(135deg, #16a34a, #22c55e) !important;
-            box-shadow: 0 14px 28px -14px rgba(34, 197, 94, 1);
             transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
         }
 
@@ -1040,7 +1024,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title fw-bold">
                                 <span class="co-title-icon"><i class="bi bi-credit-card-2-front-fill"></i></span>
-                                تـسـویـه و ثـبـت فـاکـتـور فـروش
+                                پــرداخـــت و ثـبـت فـاکـتـور
                             </h5>
                             <button type="button" class="btn-close" wire:click="closeModals"
                                 aria-label="بستن"></button>
