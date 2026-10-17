@@ -871,14 +871,24 @@
                             @foreach ($products as $product)
                                 <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
                                     wire:click="addProduct({{ $product->id }})">
-                                    <span>
-                                        <span style="font-size:1rem;">
-                                            <span style="font-size:1.4rem;">📦</span>
-                                            {{ $product->name }}
+                                    <span class="d-flex align-items-center gap-3">
+                                        @php($image = $product->images->first())
+                                        @if ($image && \Illuminate\Support\Facades\Storage::disk('public')->exists($image->path))
+                                            <img src="{{ asset('storage/' . $image->path) }}" alt="{{ $product->name }}"
+                                                class="border flex-shrink-0"
+                                                style="width: 52px; height: 52px; object-fit: cover; border-radius: 16px;">
+                                        @else
+                                            <span class="d-flex align-items-center justify-content-center bg-secondary bg-opacity-25 flex-shrink-0"
+                                                style="width: 52px; height: 52px; font-size: 2rem; border-radius: 16px;">📦</span>
+                                        @endif
+                                        <span>
+                                            <span style="font-size:1rem;">
+                                                {{ $product->name }}
+                                            </span>
+                                            <small class="d-block text-info" style="font-size:.72rem;">
+                                                بـارکـد: {{ $product->barcode }} 🔰 مـوجـودی: {{ $product->formatted_stock }}
+                                            </small>
                                         </span>
-                                        <small class="d-block text-info" style="font-size:.72rem;">
-                                            بـارکـد: {{ $product->barcode }} 🔰 مـوجـودی: {{ $product->formatted_stock }}
-                                        </small>
                                     </span>
                                     <span class="badge bg-success-lt rounded-pill text-success-emphasis">
                                         {{ number_format($product->sell_price) }} تـومـان

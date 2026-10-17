@@ -724,7 +724,8 @@ class SaleManager extends Component
         return view('livewire.sales.sale-manager', [
             'products' => blank($this->search)
                 ? collect()
-                : Product::where('is_active', true)
+                : Product::with('images')
+                    ->where('is_active', true)
                     ->where(function ($q) {
                         $q->where('name', 'like', "%{$this->search}%")
                             ->orWhere('barcode', 'like', "%{$this->search}%");
