@@ -1,5 +1,11 @@
 <div dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
 
+    <style>
+        .modal-footer {
+            background-color: rgba(3, 3, 3, 0);
+         }
+    </style>
+
     @include('partials.flash-messages')
 
     {{-- =================== کارت‌های آماری =================== --}}
@@ -247,7 +253,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
                                 wire:click="closeModals">{{ __('brands.cancel') }}</button>
-                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled"
+                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled"
                                 wire:target="save">
                                 <span wire:loading wire:target="save" class="spinner-border spinner-border-sm"></span>
                                 {{ $brandId ? __('brands.save_changes') : __('brands.save_brand') }}
@@ -291,7 +297,7 @@
             wire:key="brand-details-modal">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content overflow-hidden">
- 
+
                     {{-- هدر مودال --}}
                     <div class="modal-header border-0 pb-0">
                         <div class="d-flex align-items-center gap-2">
@@ -305,9 +311,9 @@
                         <button type="button" class="btn-close" wire:click="$set('showDetailsModal', false)" title="بستن">
                         </button>
                     </div>
- 
+
                     <div class="modal-body pt-3 d-flex flex-column gap-3">
- 
+
                         {{-- ============ کارت ۱: معرفی برند ============ --}}
                         <div class="card border-3 mb-0 shadow-sm">
                             <div class="row g-0">
@@ -356,7 +362,7 @@
                                 </div>
                             </div>
                         </div>
- 
+
                         {{-- ============ کارت ۲: تامین‌کنندگان برند ============ --}}
                         <div class="card border-3 mb-0 shadow-sm">
                             <div class="card-header bg-primary-lt py-2">
@@ -420,7 +426,7 @@
                                 </div>
                             </div>
                         </div>
- 
+
                         {{-- ============ کارت ۳: محصولات برند ============ --}}
                         <div class="card border-3 mb-0 shadow-sm">
                             <div class="card-header bg-primary-lt py-2">
@@ -484,9 +490,9 @@
                                 </div>
                             </div>
                         </div>
- 
+
                     </div>
- 
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" wire:click="$set('showDetailsModal', false)" title="بستن">
                             <i class="bi bi-x-lg me-1"></i>بستن
