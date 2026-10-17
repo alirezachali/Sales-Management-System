@@ -7,6 +7,7 @@ use App\Alerts\AlertRegistry;
 use App\Alerts\AlertStore;
 use App\Models\AlertService;
 use App\Models\Setting;
+use App\Support\Progress\ProgressReporter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -530,7 +531,7 @@ class SettingsManager extends Component
     |             ساخت خروجی SQL از کل دیتابیس (بدون ابزار خارجی)        |
     |--------------------------------------------------------------------|
     */
-    protected function generateSqlDump(): string
+    protected function generateSqlDump(?ProgressReporter $progress = null): string
     {
         $pdo = DB::getPdo();
 
@@ -538,6 +539,22 @@ class SettingsManager extends Component
         $sql .= "SET FOREIGN_KEY_CHECKS=0;\n\n";
 
         $tables = DB::select('SHOW TABLES');
+
+        /*
+         * شمارش رکوردهای همه‌ی جدول‌ها پیش از شروع، تا لودر بتواند درصد واقعی
+         * نشان دهد (تعداد کل ردیف‌هایی که باید خوانده شود).
+         */
+        $progress?->stage('در حال شمارش رکوردها…');
+
+        $totalRows = 0;
+
+        foreach ($tables as $tableRow) {
+            $name = array_values((array) $tableRow)[0];
+            $totalRows += (int) DB::table($name)->count();
+        }
+
+        $processed = 0;
+        $progress?->step(0, $totalRows, 'در حال خواندن جدول‌های دیتابیس…');
 
         foreach ($tables as $tableRow) {
             $tableName = array_values((array) $tableRow)[0];
@@ -568,6 +585,8 @@ class SettingsManager extends Component
                 $valueList = implode(', ', $values);
 
                 $sql .= "INSERT INTO `{$tableName}` ({$columnList}) VALUES ({$valueList});\n";
+
+                $progress?->step(++$processed);
             }
 
             $sql .= "\n";
@@ -585,12 +604,18 @@ class SettingsManager extends Component
     */
     public function createBackup(): void
     {
+        $progress = ProgressReporter::forRequest();
+
         try {
             $directory = $this->backupDirectory();
             $timestamp = now()->format('Ymd_His');
             $format = ($this->data['backup_format'] ?? 'zip') === 'sql' ? 'sql' : 'zip';
 
-            $sqlDump = $this->generateSqlDump();
+            $progress->begin('در حال آماده‌سازی نسخه پشتیبان…');
+
+            $sqlDump = $this->generateSqlDump($progress);
+
+            $progress->stage('در حال ساخت فایل پشتیبان…');
 
             if ($format === 'zip' && class_exists(\ZipArchive::class)) {
                 $fileName = "backup_{$timestamp}.zip";
@@ -606,6 +631,8 @@ class SettingsManager extends Component
                 File::put($fullPath, $sqlDump);
             }
 
+            $progress->stage('در حال به‌روزرسانی فهرست پشتیبان‌ها…');
+
             Setting::updateOrCreate(
                 ['key' => 'last_backup'],
                 ['value' => now()->toDateTimeString()]
@@ -613,8 +640,12 @@ class SettingsManager extends Component
 
             $this->pruneOldBackups($directory);
 
+            $progress->finish('نسخه پشتیبان ساخته شد');
+
             session()->flash('success', "نسخه‌ی پشتیبان با موفقیت ساخته شد: {$fileName}");
         } catch (\Throwable $e) {
+            $progress->abort();
+
             session()->flash('error', 'خطا در ساخت نسخه‌ی پشتیبان: ' . $e->getMessage());
         }
     }
@@ -718,6 +749,8 @@ class SettingsManager extends Component
     */
     public function restoreBackup(): void
     {
+        $progress = ProgressReporter::forRequest();
+
         $this->validate([
             'restoreFile' => ['required', 'file', 'mimes:sql,zip,txt', 'max:51200'],
         ], [
@@ -727,10 +760,15 @@ class SettingsManager extends Component
         ]);
 
         try {
+            $progress->begin('در حال آماده‌سازی بازیابی…');
+
             // در صورت فعال بودن گزینه، ابتدا از وضعیت فعلی نسخه‌ی پشتیبان بگیر
             if (! empty($this->data['backup_before_restore'])) {
                 $this->createBackup();
             }
+
+            // خواندن و باز کردن فایل پشتیبان (بدون شمارش دقیق => فقط متن مرحله)
+            $progress->begin('در حال خواندن فایل پشتیبان…');
 
             $realPath = $this->restoreFile->getRealPath();
             $extension = strtolower($this->restoreFile->getClientOriginalExtension());
@@ -756,17 +794,30 @@ class SettingsManager extends Component
             }
 
             if (empty($sql)) {
+                $progress->abort();
+
                 session()->flash('error', 'فایل پشتیبان معتبری برای بازیابی یافت نشد.');
 
                 return;
             }
 
+            /*
+             * اجرای کل فایل یک‌جا انجام می‌شود (بدون شمارش دقیق)؛ چون تقسیم
+             * دستورات SQL برای نمایش درصد، می‌تواند به داده‌های داخل رشته‌ها
+             * آسیب بزند. پس فقط مراحل به لودر گزارش می‌شود.
+             */
+            $progress->stage('در حال اعمال اطلاعات روی دیتابیس…');
+
             DB::unprepared($sql);
+
+            $progress->finish('بازیابی اطلاعات تمام شد');
 
             $this->reset('restoreFile');
 
             session()->flash('success', 'اطلاعات با موفقیت از نسخه‌ی پشتیبان بازیابی شد.');
         } catch (\Throwable $e) {
+            $progress->abort();
+
             session()->flash('error', 'خطا در بازیابی اطلاعات: ' . $e->getMessage());
         }
     }

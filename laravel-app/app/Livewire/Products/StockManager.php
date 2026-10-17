@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\StockMovement;
 use App\Models\Warehouse;
 use App\Services\WarehouseService;
+use App\Support\Progress\ProgressReporter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Livewire\Component;
@@ -191,22 +192,28 @@ class StockManager extends Component
     // همه‌ی گردش‌های کالا (بدون محدودیت صفحه‌بندی) به‌صورت آرایه‌ای از ردیف‌ها
     private function exportRows(): array
     {
-        return $this->product
+        $query = $this->product
             ->stockMovements()
             ->with('user:id,name')
             ->latest()
-            ->get()
-            ->map(function ($movement) {
-                return [
-                    jalaliDateTime($movement->created_at),
-                    $this->movementTypeLabel($movement->type),
-                    $movement->quantity,
-                    $this->product->unit,
-                    $movement->description,
-                    $movement->user?->name ?? '—',
-                ];
-            })
-            ->all();
+            // ترتیب دوم فقط برای پیمایش تکه‌تکه‌ی پایدار
+            ->orderByDesc('id');
+
+        $rows = [];
+
+        // خواندن تکه‌تکه + گزارش درصد واقعی به لودر
+        ProgressReporter::forRequest()->eachRow($query, 500, function ($movement) use (&$rows) {
+            $rows[] = [
+                jalaliDateTime($movement->created_at),
+                $this->movementTypeLabel($movement->type),
+                $movement->quantity,
+                $this->product->unit,
+                $movement->description,
+                $movement->user?->name ?? '—',
+            ];
+        }, 'در حال خواندن گردش کالا…');
+
+        return $rows;
     }
 
     public function exportCsv(): StreamedResponse

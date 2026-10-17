@@ -9,6 +9,12 @@
     /* مدت یک بار اسکن پرتو (چپ به راست)؛ کوتاه است تا در پردازش‌های سریع هم حرکت دیده شود */
     --scan-duration: 1.25s;
     --beam-width: 2px;
+    /* اندازه‌ی پلاک اسکنر (جاوااسکریپت و نوار پیشرفت هم از همین‌ها استفاده می‌کنند) */
+    --chip-w: 176px;
+    --chip-h: 72px;
+    --chip-pad: 13px;
+    /* نسبت پیشرفت واقعی (۰ تا ۱)؛ جاوااسکریپت آن را ست می‌کند */
+    --progress-ratio: 0;
     /* روشنایی میله‌ها در حالت استراحت (بدون پرتو) */
     --bar-idle: 0.28;
     /*
@@ -79,9 +85,6 @@
 
 /* ---------- پلاک اسکن (بارکد + پرتو) ---------- */
 .app-loader__scanner {
-    --chip-w: 176px;
-    --chip-h: 72px;
-    --chip-pad: 13px;
     /* مسیر حرکت پرتو: از لبه چپ ناحیه بارکد تا لبه راست آن */
     --scan-travel: calc(var(--chip-w) - (2 * var(--chip-pad)) - var(--beam-width));
     position: relative;
@@ -205,6 +208,78 @@
             rgba(255, 183, 77, 0.3),
             rgba(255, 149, 0, 0));
     filter: blur(3px);
+}
+
+/* ---------- نوار درصد پیشرفت واقعی ---------- */
+.app-loader__progress {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: var(--chip-w);
+    /* مثل حرکت پرتو، از چپ پر می‌شود */
+    direction: ltr;
+    animation: app-loader-text-in 0.25s ease both;
+}
+
+/* خصیصه hidden باید بر display:flex بالاتر باشد */
+.app-loader__progress[hidden] {
+    display: none;
+}
+
+.app-loader__track {
+    position: relative;
+    flex: 1 1 auto;
+    height: 4px;
+    border-radius: 99px;
+    background: rgba(148, 163, 184, 0.2);
+    overflow: hidden;
+}
+
+[data-bs-theme="light"] .app-loader__track {
+    background: rgba(15, 23, 42, 0.1);
+}
+
+.app-loader__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(var(--progress-ratio) * 100%);
+    border-radius: 99px;
+    background: linear-gradient(90deg, #ff8a00, #ffd60a);
+    box-shadow: 0 0 10px rgba(255, 149, 0, 0.7);
+    transition: width 0.3s ease;
+}
+
+.app-loader__percent {
+    flex: 0 0 auto;
+    min-width: 3em;
+    font-family: Vazirmatn, "Segoe UI", Tahoma, sans-serif;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-align: right;
+    color: #ffc061;
+    font-variant-numeric: tabular-nums;
+}
+
+[data-bs-theme="light"] .app-loader__percent {
+    color: #b45309;
+}
+
+/* ---------- حالت قطعی: پرتو روی موقعیت پیشرفت می‌ایستد ---------- */
+.app-loader.is-determinate .app-loader__beam {
+    animation: none;
+    opacity: 1;
+    left: calc(var(--chip-pad) + var(--progress-ratio) * var(--scan-travel));
+    transition: left 0.3s ease;
+}
+
+/* در حالت قطعی، فلاش دوره‌ای میله‌ها متوقف می‌شود و پیشرفت جای آن را می‌گیرد */
+.app-loader.is-determinate .app-loader__bar {
+    animation: none;
+}
+
+.app-loader__bar.is-lit {
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(255, 149, 0, 0.7);
 }
 
 /* ---------- متن زیر لودر با گرادیان هم‌رنگ برند ---------- */
@@ -391,7 +466,18 @@
         opacity: 0.8;
     }
 
+    /* میله‌های عبورشده در حالت پیشرفت واقعی کاملاً روشن بمانند */
+    .app-loader .app-loader__bar.is-lit {
+        opacity: 1;
+    }
+
     .app-loader .app-loader__beam {
         display: none;
+    }
+
+    /* تغییر عرض نوار و حرکت پرتو هم بدون انیمیشن باشد */
+    .app-loader .app-loader__fill,
+    .app-loader.is-determinate .app-loader__beam {
+        transition: none !important;
     }
 }

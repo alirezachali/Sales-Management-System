@@ -3,6 +3,7 @@
 namespace App\Livewire\Reports;
 
 use App\Models\Sale;
+use App\Support\Progress\ProgressReporter;
 use Illuminate\Support\Facades\Response;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -180,19 +181,32 @@ class SalesReport extends Component
             ->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc');
 
-        return $query->get()->map(function (Sale $sale) {
-            return [
-                $sale->invoice_number,
-                $sale->customer?->full_name ?? 'مشتری ناشناس',
-                $sale->isOnline() ? 'آنلاین' : 'حضوری',
-                jalaliDateTime($sale->created_at),
-                (int) $sale->items_count,
-                number_format((float) $sale->total_price, 2),
-                number_format((float) $sale->discount, 2),
-                number_format((float) $sale->final_price, 2),
-                $this->paymentTypeLabels[$sale->payment_type] ?? $sale->payment_type,
-            ];
-        });
+        $rows = collect();
+
+        /*
+         * ردیف‌ها تکه‌تکه خوانده می‌شوند تا هم حافظه کمتر مصرف شود و هم لودر
+         * درصد واقعی (تعداد فاکتورهای خوانده‌شده از کل) را نشان دهد.
+         */
+        ProgressReporter::forRequest()->eachRow(
+            $query,
+            500,
+            function (Sale $sale) use ($rows) {
+                $rows->push([
+                    $sale->invoice_number,
+                    $sale->customer?->full_name ?? 'مشتری ناشناس',
+                    $sale->isOnline() ? 'آنلاین' : 'حضوری',
+                    jalaliDateTime($sale->created_at),
+                    (int) $sale->items_count,
+                    number_format((float) $sale->total_price, 2),
+                    number_format((float) $sale->discount, 2),
+                    number_format((float) $sale->final_price, 2),
+                    $this->paymentTypeLabels[$sale->payment_type] ?? $sale->payment_type,
+                ]);
+            },
+            'در حال خواندن فاکتورهای فروش…'
+        );
+
+        return $rows;
     }
 
     private function exportTotalsRow(): array

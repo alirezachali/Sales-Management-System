@@ -9,6 +9,7 @@ use App\Models\StockCount;
 use App\Models\StockCountItem;
 use App\Models\Warehouse;
 use App\Services\WarehouseService;
+use App\Support\Progress\ProgressReporter;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -132,13 +133,22 @@ class StockCountManager extends Component
             return;
         }
 
-        DB::transaction(function () {
+        $progress = ProgressReporter::forRequest();
+        $progress->begin('در حال ذخیره شمارش انبار…', count($this->counted));
+
+        $processed = 0;
+
+        DB::transaction(function () use ($progress, &$processed) {
             foreach ($this->counted as $productId => $qty) {
                 StockCountItem::where('stock_count_id', $this->countId)
                     ->where('product_id', $productId)
                     ->update(['counted_quantity' => max(0, (float) $qty)]);
+
+                $progress->step(++$processed);
             }
         });
+
+        $progress->finish('شمارش ذخیره شد');
 
         session()->flash('success', 'مقادیر شمارش ذخیره شد.');
     }
@@ -155,28 +165,44 @@ class StockCountManager extends Component
             return;
         }
 
-        DB::transaction(function () use ($count, $warehouseService) {
-            foreach ($count->items as $item) {
-                $product = Product::find($item->product_id);
+        // تعداد اقلام معلوم است؛ پس لودر می‌تواند درصد دقیق نشان دهد
+        $progress = ProgressReporter::forRequest();
+        $items = $count->items;
 
-                if (! $product) {
-                    continue;
+        $progress->begin('در حال نهایی‌سازی انبارگردانی…', $items->count());
+
+        try {
+            DB::transaction(function () use ($count, $warehouseService, $items, $progress) {
+                $processed = 0;
+
+                foreach ($items as $item) {
+                    $product = Product::find($item->product_id);
+
+                    if ($product) {
+                        $warehouseService->setWarehouseQuantity(
+                            $product,
+                            $count->warehouse_id,
+                            (float) $item->counted_quantity,
+                            'انبارگردانی '.$count->reference,
+                        );
+                    }
+
+                    $progress->step(++$processed);
                 }
 
-                $warehouseService->setWarehouseQuantity(
-                    $product,
-                    $count->warehouse_id,
-                    (float) $item->counted_quantity,
-                    'انبارگردانی '.$count->reference,
-                );
-            }
+                $count->update([
+                    'status' => 'finalized',
+                    'finalized_by' => auth()->id(),
+                    'finalized_at' => now(),
+                ]);
+            });
+        } catch (\Throwable $e) {
+            $progress->abort();
 
-            $count->update([
-                'status' => 'finalized',
-                'finalized_by' => auth()->id(),
-                'finalized_at' => now(),
-            ]);
-        });
+            throw $e;
+        }
+
+        $progress->finish('انبارگردانی نهایی شد');
 
         session()->flash('success', 'انبارگردانی نهایی و موجودی انبار اصلاح شد.');
         $this->showCountModal = false;

@@ -4,6 +4,7 @@ namespace App\Livewire\Reports;
 
 use App\Models\PurchaseInvoice;
 // use App\Models\StockMovement;
+use App\Support\Progress\ProgressReporter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Livewire\Component;
@@ -233,6 +234,8 @@ class PurchaseReport extends Component
         //     ->when($this->dateTo, fn ($q) => $q->whereDate('purchase_date', '<=', $this->dateTo));
 
         $movementQuery = StockMovement::query()
+            // بارگذاری یک‌جای کالا و کاربر تا هنگام ساخت ردیف‌ها کوئری اضافه زده نشود
+            ->with(['product:id,name', 'user:id,name'])
             ->when($this->dateFrom, fn($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
             ->when($this->dateTo, fn($q) => $q->whereDate('created_at', '<=', $this->dateTo));
 
@@ -242,8 +245,8 @@ class PurchaseReport extends Component
             $movementQuery->where('type', 'sale');
         }
 
-        // $invoices = $invoiceQuery->get();
-        $movements = $movementQuery->get();
+        // ترتیب مشخص لازمه‌ی پیمایش تکه‌تکه (lazy) است
+        $movementQuery->orderBy('id');
 
         $records = collect();
 
@@ -260,7 +263,8 @@ class PurchaseReport extends Component
         //     ]);
         // }
 
-        foreach ($movements as $movement) {
+        // خواندن تکه‌تکه + گزارش درصد واقعی به لودر
+        ProgressReporter::forRequest()->eachRow($movementQuery, 500, function ($movement) use ($records) {
             $records->push([
                 'type' => $movement->type,
                 'description' => $movement->description,
@@ -271,7 +275,7 @@ class PurchaseReport extends Component
                 'payment_method' => null,
                 'user_name' => $movement->user?->name ?? '',
             ]);
-        }
+        }, 'در حال خواندن گردش انبار…');
 
         return $records->sortByDesc(fn($r) => strtotime(str_replace('/', '-', $r['date'])))->values();
     }
