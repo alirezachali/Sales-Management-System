@@ -2,6 +2,7 @@
 
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 
 if (! function_exists('setting')) {
@@ -36,11 +37,11 @@ if (! function_exists('storeLogo')) {
     {
         $path = setting('store_logo');
 
-        if ($path) {
+        if ($path && Storage::disk('public')->exists($path)) {
             return asset('storage/'.$path);
         }
 
-        return asset('images/default-logo.png');
+        return asset('images/default-logo.svg');
     }
 }
 
@@ -50,11 +51,11 @@ if (! function_exists('storeFavicon')) {
     {
         $path = setting('store_favicon');
 
-        if ($path) {
+        if ($path && Storage::disk('public')->exists($path)) {
             return asset('storage/'.$path);
         }
 
-        return asset('images/default-favicon.ico');
+        return asset('images/default-favicon.svg');
     }
 }
 

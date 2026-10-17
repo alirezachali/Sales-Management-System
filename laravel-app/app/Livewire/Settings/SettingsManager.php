@@ -8,6 +8,7 @@ use App\Alerts\AlertStore;
 use App\Models\AlertService;
 use App\Models\Setting;
 use App\Support\Progress\ProgressReporter;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -468,6 +469,10 @@ class SettingsManager extends Component
 
             Setting::updateOrCreate(['key' => 'store_favicon'], ['value' => $path]);
         }
+
+        // کش تنظیمات در helper setting() برای ۵ دقیقه نگه داشته می‌شود؛
+        // بدون پاک کردن آن، لوگو/فاوآیکن جدید تا انقضای کش نمایش داده نمی‌شود.
+        Cache::forget('all-settings');
 
         $this->reset(['store_logo', 'store_favicon']);
 

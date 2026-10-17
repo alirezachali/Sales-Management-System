@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="لوگوی پیش‌فرض فروشگاه">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff9500"/>
+      <stop offset="1" stop-color="#ff6a00"/>
+    </linearGradient>
+  </defs>
+  <rect width="240" height="240" rx="56" fill="url(#bg)"/>
+  <path d="M88 84h64a10 10 0 0 1 10 9.6l6 62a10 10 0 0 1-10 10.4H82a10 10 0 0 1-10-10.4l6-62A10 10 0 0 1 88 84Z" fill="#fff" opacity=".95"/>
+  <path d="M104 104V76a16 16 0 0 1 32 0v28" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="120" cy="132" r="12" fill="#ff7a00"/>
+</svg>
