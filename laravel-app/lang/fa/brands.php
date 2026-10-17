@@ -43,7 +43,7 @@ return [
      'create_modal_title' => 'افزودن برند جدید',
      'name_label' => 'نام برند',
      'description_label' => 'توضیحات',
-     'logo_label' => 'مسیر/لینک لوگو',
+     'logo_label' => 'لوگو برند',
      'suppliers_label' => 'تامین کنندگان این برند',
      'supplier_empty' => 'هیچ تامین کننده فعالی ثبت نشده',
      'supplier_roll' => 'می‌تونی چند تامین‌کننده رو همزمان انتخاب کنی',

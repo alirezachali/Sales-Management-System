@@ -43,7 +43,7 @@ return [
     'create_modal_title' => 'Add New Brand',
     'name_label' => 'Brand Name',
     'description_label' => 'Description',
-    'logo_label' => 'Path/Link Logo',
+    'logo_label' => 'Brand Logo',
     'suppliers_label' => 'Suppliers of Brand',
     'supplier_empty' => 'No active suppliers registered',
     'supplier_roll' => 'You can select multiple suppliers at the same time',
