@@ -258,3 +258,49 @@
 
     </nav>
 </aside>
+
+{{--
+    منوی فعال همیشه دیده شود: بعد از رفتن به هر صفحه (حتی منوهای انتهای سایدبار)،
+    سایدبار خودش را تا جایی اسکرول می‌کند که آیتم فعال در دید باشد و لازم نباشد
+    دستی اسکرول کنیم. اگر آیتم فعال از قبل در دید باشد، چیزی جابه‌جا نمی‌شود.
+--}}
+<script>
+    (function () {
+        function revealActiveSidebarItem() {
+            var sidebar = document.getElementById('sidebar');
+            var link = sidebar && sidebar.querySelector('.sidebar-link.active');
+
+            if (!link) {
+                return;
+            }
+
+            var sidebarRect = sidebar.getBoundingClientRect();
+            var linkRect = link.getBoundingClientRect();
+            var pad = 12; // فاصله‌ی امن تا لبه‌های سایدبار
+
+            if (linkRect.top < sidebarRect.top + pad) {
+                // آیتم فعال بالای دید است → کمی به پایین اسکرول کن
+                sidebar.scrollTop += linkRect.top - sidebarRect.top - pad;
+            } else if (linkRect.bottom > sidebarRect.bottom - pad) {
+                // آیتم فعال پایین‌تر از دید است → تا رسیدنش به دید اسکرول کن
+                sidebar.scrollTop += linkRect.bottom - sidebarRect.bottom + pad;
+            }
+        }
+
+        // بعد از رندر نهایی (و آماده شدن فونت‌ها) اجرا شود
+        function schedule() {
+            requestAnimationFrame(function () {
+                requestAnimationFrame(revealActiveSidebarItem);
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', schedule);
+        } else {
+            schedule();
+        }
+
+        // در ناوبری بدون بارگذاری مجدد (Livewire navigate) هم اجرا شود
+        document.addEventListener('livewire:navigated', schedule);
+    })();
+</script>
