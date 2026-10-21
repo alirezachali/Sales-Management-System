@@ -49,13 +49,21 @@ class BarcodeService
         return $barcode;
     }
 
-    public function render(string $barcode): string
+    /**
+     * رندر بارکد به‌صورت SVG.
+     *
+     * عرض هر ماژول و ارتفاع قابل تنظیم است تا بتوان بارکد را روی
+     * کاغذ حرارتی ۸۰ میلی‌متری در عرض قابل چاپ جا داد.
+     */
+    public function render(string $barcode, int $widthFactor = 2, int $height = 40): string
     {
         $generator = new BarcodeGeneratorSVG();
 
         return $generator->getBarcode(
             $barcode,
-            $generator::TYPE_CODE_128
+            $generator::TYPE_CODE_128,
+            $widthFactor,
+            $height
         );
     }
 }

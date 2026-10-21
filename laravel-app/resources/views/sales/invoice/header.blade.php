@@ -4,12 +4,11 @@
             alt="{{ $settings['store_name'] ?? 'فروشگاه' }}">
     @endif
 
-    <div class="store-name">{{ $settings['store_name'] ?? 'فروشگاه' }}</div>
-    <div class="store-divider"></div>
+    <div class="store-name">{{ $settings['store_name'] ?: 'فروشگاه' }}</div>
 
     <div class="store-meta">
         @if (!empty($settings['phone']) && ($settings['print_phone'] ?? 0))
-            <div>{{ $settings['phone'] }}</div>
+            <div>تلفن: {{ $settings['phone'] }}</div>
         @endif
 
         @if (!empty($settings['address']) && ($settings['print_address'] ?? 0))
@@ -18,30 +17,39 @@
     </div>
 </div>
 
-<div class="center">
-    <span class="doc-badge">فاکتور فروش</span>
-</div>
+<div class="divider"></div>
 
-<div class="meta-grid">
-    <div class="cell">
-        <span class="label">شماره فاکتور</span>
-        <span class="value">{{ $sale->invoice_number }}</span>
-    </div>
+<div class="doc-type">فاکتور فروش</div>
 
-    <div class="cell">
-        <span class="label">صندوق‌دار</span>
-        <span class="value">{{ $sale->user->name ?? '-' }}</span>
-    </div>
+<table class="meta-table">
+    <tr>
+        <td class="k">شماره فاکتور</td>
+        <td class="v">{{ $sale->invoice_number }}</td>
+    </tr>
+
+    <tr>
+        <td class="k">صندوق‌دار</td>
+        <td class="v">{{ $sale->user->name ?? '-' }}</td>
+    </tr>
+
+    @if (!empty($sale->customer))
+        <tr>
+            <td class="k">مشتری</td>
+            <td class="v">{{ $sale->customer->full_name ?? '-' }}</td>
+        </tr>
+    @endif
 
     @if ($settings['print_datetime'] ?? 0)
-        <div class="cell">
-            <span class="label">تاریخ</span>
-            <span class="value">{{ jalaliDate($sale->created_at) }}</span>
-        </div>
+        <tr>
+            <td class="k">تاریخ</td>
+            <td class="v">{{ jalaliDate($sale->created_at) }}</td>
+        </tr>
 
-        <div class="cell">
-            <span class="label">ساعت</span>
-            <span class="value">{{ jalaliTime($sale->created_at) }}</span>
-        </div>
+        <tr>
+            <td class="k">ساعت</td>
+            <td class="v">{{ jalaliTime($sale->created_at) }}</td>
+        </tr>
     @endif
-</div>
+</table>
+
+<div class="divider"></div>

@@ -6,18 +6,20 @@
             <th class="item-index">#</th>
             <th class="col-name">کالا</th>
             <th class="col-detail">تعداد × مبلغ</th>
-            <th class="col-total">کل</th>
+            <th class="col-total">مبلغ</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($sale->items as $item)
+            @php
+                $qty = (float) $item->quantity;
+                $qtyText = rtrim(rtrim(number_format($qty, 2, '.', ','), '0'), '.');
+            @endphp
             <tr>
                 <td class="item-index">{{ $loop->iteration }}</td>
-                <td class="col-name">{{ $item->product->name }}</td>
-                <td class="col-detail">
-                    {{ number_format($item->quantity, 0) }} × {{ number_format($item->unit_price) }}
-                </td>
-                <td class="col-total">{{ number_format($item->line_total) }}</td>
+                <td class="col-name">{{ $item->product?->name ?? 'کالای حذف‌شده' }}</td>
+                <td class="col-detail">{{ $qtyText }} × {{ number_format((float) $item->unit_price) }}</td>
+                <td class="col-total">{{ number_format((float) $item->line_total) }}</td>
             </tr>
         @endforeach
     </tbody>

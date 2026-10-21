@@ -1,33 +1,63 @@
 <style>
-    @php $paperSize = ($settings['paper_size'] ?? '80') === '58' ? '58mm' : '80mm'; @endphp
+    @php
+        /*
+        |------------------------------------------------------------------
+        | عرض کاغذ حرارتی:
+        | کاغذ ۸۰ میلی‌متری در عمل ۷۲ میلی‌متر ناحیه قابل چاپ دارد و کاغذ
+        | ۵۸ میلی‌متری حدود ۴۸ میلی‌متر. اگر عرض محتوا ۸۰ میلی‌متر باشد،
+        | پرینتر لبه‌های چپ و راست فیش را می‌برد (مشکل قبلی).
+        |------------------------------------------------------------------
+        */
+        $is58 = ($settings['paper_size'] ?? '80') === '58';
+        $paperWidth = $is58 ? '58mm' : '80mm';
+        $printWidth = $is58 ? '48mm' : '72mm';
+        $baseFont = $is58 ? '10.5px' : '12px';
+    @endphp
 
     @page {
-        size: {{ $paperSize }} auto;
+        size: {{ $paperWidth }} auto;
         margin: 0;
     }
 
     * {
         box-sizing: border-box;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
     }
 
     html,
     body {
-        margin: 0 auto;
-        padding: 4mm;
-        width: {{ $paperSize }};
+        margin: 0;
+        padding: 0;
+        background: #fff;
     }
 
     body {
+        /* عرض دقیقاً برابر ناحیه قابل چاپ، نه عرض اسمی کاغذ */
+        width: {{ $printWidth }};
+        margin: 0 auto;
         direction: rtl;
-        font-family: Tahoma, sans-serif;
-        font-size: 12px;
-        color: #111;
+        color: #000;
+        font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+        font-size: {{ $baseFont }};
+        line-height: 1.5;
+        /* حروف فارسی نباید letter-spacing بگیرند (اتصال حروف می‌شکند) */
+        letter-spacing: normal;
+        word-spacing: normal;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* روی کاغذ حرارتی هر رنگ غیرمشکی خاکستری محو می‌شود؛ همه‌چیز مشکی. */
+    .receipt,
+    .receipt * {
+        color: #000 !important;
     }
 
     .receipt {
         width: 100%;
+        padding: 0;
+    }
+
+    .receipt + .receipt {
+        margin-top: 6mm;
     }
 
     .center {
@@ -41,146 +71,125 @@
     /* ---------- Header ---------- */
     .store {
         text-align: center;
-        padding: 2px 0 10px;
+        padding-bottom: 2mm;
     }
 
     .store .logo {
-        max-width: 110px;
-        max-height: 70px;
-        margin-bottom: 6px;
+        display: block;
+        max-width: 22mm;
+        max-height: 14mm;
+        margin: 0 auto 1.5mm;
+        filter: grayscale(100%);
     }
 
     .store-name {
-        font-size: 17px;
+        font-size: {{ $is58 ? '13px' : '15px' }};
         font-weight: bold;
-        letter-spacing: .5px;
-    }
-
-    .store-divider {
-        width: 26px;
-        height: 3px;
-        background: #111;
-        border-radius: 2px;
-        margin: 6px auto;
+        line-height: 1.35;
+        word-break: break-word;
     }
 
     .store-meta {
-        font-size: 10px;
-        color: #555;
-        line-height: 1.8;
+        font-size: {{ $is58 ? '9.5px' : '10px' }};
+        line-height: 1.6;
+        margin-top: 1mm;
+        word-break: break-word;
     }
 
-    .doc-badge {
-        display: inline-block;
-        border: 1.5px solid #111;
-        border-radius: 4px;
-        padding: 2px 14px;
-        font-size: 10.5px;
+    .divider {
+        border-top: 1px dashed #000;
+        margin: 2mm 0;
+    }
+
+    .divider-solid {
+        border-top: 1px solid #000;
+        margin: 2mm 0;
+    }
+
+    .doc-type {
+        text-align: center;
         font-weight: bold;
-        letter-spacing: 1px;
-        margin-bottom: 10px;
+        font-size: {{ $is58 ? '11px' : '12px' }};
+        padding: 1mm 0 2mm;
     }
 
-    .meta-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        border: 1px solid #111;
-        border-radius: 6px;
-        overflow: hidden;
-        margin-bottom: 14px;
+    /* ---------- Invoice meta ---------- */
+    .meta-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2mm;
     }
 
-    .meta-grid .cell {
-        padding: 5px 8px;
+    .meta-table td {
+        padding: .8mm 0;
+        vertical-align: top;
     }
 
-    .meta-grid .cell:nth-child(odd) {
-        border-inline-start: 1px solid #ddd;
+    .meta-table .k {
+        width: 32%;
+        font-size: {{ $is58 ? '9.5px' : '10px' }};
     }
 
-    .meta-grid .cell:nth-child(n+3) {
-        border-top: 1px solid #ddd;
-    }
-
-    .meta-grid .label {
-        font-size: 9px;
-        color: #777;
-        display: block;
-        margin-bottom: 2px;
-    }
-
-    .meta-grid .value {
-        font-size: 11.5px;
+    .meta-table .v {
         font-weight: bold;
+        font-size: {{ $is58 ? '10.5px' : '11.5px' }};
+        text-align: left;
+        word-break: break-word;
     }
 
     /* ---------- Section title ---------- */
     .section-title {
-        background: #111;
-        color: #fff;
         text-align: center;
-        font-size: 11.5px;
         font-weight: bold;
-        letter-spacing: 1px;
-        padding: 5px 0;
-        border-radius: 6px;
-        margin-bottom: 8px;
+        font-size: {{ $is58 ? '10.5px' : '11.5px' }};
+        padding: 1mm 0;
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+        margin-bottom: 1.5mm;
     }
 
     /* ---------- Items table ---------- */
     .items-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 11px;
-        margin-bottom: 14px;
+        table-layout: fixed;
+        font-size: {{ $is58 ? '9.5px' : '10.5px' }};
+        margin-bottom: 2mm;
     }
 
     .items-table thead th {
-        background: #111;
-        color: #fff;
         font-weight: bold;
-        font-size: 10px;
-        letter-spacing: .5px;
-        padding: 5px 4px;
+        font-size: {{ $is58 ? '9px' : '10px' }};
+        padding: .8mm 0;
         text-align: right;
-    }
-
-    .items-table thead th:first-child {
-        border-start-start-radius: 5px;
-    }
-
-    .items-table thead th:last-child {
-        border-start-end-radius: 5px;
+        border-bottom: 1px dashed #000;
+        border-top: none;
+        background: none;
     }
 
     .items-table tbody td {
-        padding: 6px 4px;
-        border-bottom: 1px solid #e2e2e2;
+        padding: 1mm 0;
+        border-bottom: 1px dotted #000;
         vertical-align: top;
-        line-height: 1.5;
-    }
-
-    .items-table tbody tr:nth-child(even) {
-        background: #f4f4f4;
+        line-height: 1.45;
+        word-break: break-word;
+        overflow-wrap: anywhere;
     }
 
     .items-table .item-index {
         width: 7%;
-        font-size: 9px;
-        color: #999;
         text-align: center;
     }
 
     .items-table .col-name {
-        width: 38%;
+        width: 45%;
         font-weight: bold;
+        padding-inline-end: 1.5mm;
     }
 
     .items-table .col-detail {
-        width: 33%;
+        width: 26%;
         text-align: center;
-        color: #444;
-        font-size: 10px;
         white-space: nowrap;
     }
 
@@ -191,108 +200,203 @@
         white-space: nowrap;
     }
 
+    .items-table thead .col-total {
+        text-align: left;
+    }
+
     /* ---------- Totals ---------- */
     .totals {
-        border-top: 2px solid #111;
-        padding-top: 8px;
-        margin-bottom: 14px;
+        border-top: 1px solid #000;
+        padding-top: 1.5mm;
+        margin-bottom: 2mm;
     }
 
     .totals .trow {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        font-size: 11.5px;
-        padding: 4px 2px;
-        color: #222;
+        align-items: baseline;
+        gap: 2mm;
+        font-size: {{ $is58 ? '10px' : '11px' }};
+        padding: .8mm 0;
+    }
+
+    .totals .trow .tlabel {
+        word-break: break-word;
     }
 
     .totals .trow .tval {
         font-weight: bold;
-    }
-
-    .totals .trow.discount .tval {
-        color: #444;
-    }
-
-    .totals .trow.discount .tval::before {
-        content: "- ";
+        white-space: nowrap;
+        text-align: left;
     }
 
     .pay-method {
-        display: inline-block;
-        border: 1px solid #111;
-        border-radius: 20px;
-        padding: 1px 10px;
-        font-size: 10px;
         font-weight: bold;
+        white-space: nowrap;
     }
 
     .grand-total {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        background: #111;
-        color: #fff;
-        border-radius: 6px;
-        padding: 9px 10px;
-        margin-top: 6px;
+        align-items: baseline;
+        gap: 2mm;
+        font-weight: bold;
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+        padding: 1.5mm 0;
+        margin-top: 1.5mm;
     }
 
     .grand-total .glabel {
-        font-size: 11.5px;
-        font-weight: bold;
-        letter-spacing: .5px;
+        font-size: {{ $is58 ? '11px' : '12px' }};
     }
 
     .grand-total .gvalue {
-        font-size: 14.5px;
-        font-weight: bold;
+        font-size: {{ $is58 ? '13px' : '15px' }};
+        white-space: nowrap;
+        text-align: left;
     }
 
     .grand-total .gunit {
         font-size: 9px;
-        opacity: .75;
-        margin-inline-start: 3px;
+        font-weight: normal;
+        margin-inline-start: 1mm;
     }
 
     /* ---------- Footer ---------- */
-    .foot-divider {
-        border-top: 1px dashed #999;
-        margin: 12px 0 8px;
-    }
-
     .footer {
         text-align: center;
-        font-size: 10px;
-        color: #555;
-        line-height: 1.9;
+        font-size: {{ $is58 ? '9.5px' : '10px' }};
+        line-height: 1.7;
     }
 
     .footer .note {
         font-weight: bold;
-        color: #222;
+        margin-top: .5mm;
     }
 
     .footer .site {
-        font-size: 10.5px;
         font-weight: bold;
-        color: #111;
-        letter-spacing: .5px;
+        margin-top: .5mm;
+        word-break: break-word;
     }
 
+    .footer .thanks {
+        margin-bottom: 1mm;
+    }
+
+    .copy-badge {
+        text-align: center;
+        font-size: 9.5px;
+        border: 1px solid #000;
+        border-radius: 1mm;
+        padding: 0 2mm;
+        display: inline-block;
+        margin-bottom: 1mm;
+    }
+
+    .doc-codes {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1mm;
+        margin-top: 2mm;
+    }
+
+    .doc-codes .barcode svg,
+    .doc-codes .qrcode svg {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .doc-codes .barcode {
+        width: 44mm;
+        max-width: 100%;
+    }
+
+    .doc-codes .qrcode {
+        width: {{ $is58 ? '18mm' : '22mm' }};
+    }
+
+    .doc-codes .caption {
+        font-size: 8.5px;
+        text-align: center;
+        word-break: break-word;
+    }
+
+    /* ---------- Screen preview ---------- */
     @media screen {
         body {
+            width: auto;
             background: #e9e9e9;
-            padding: 20px;
+            padding: 16px;
         }
 
         .receipt {
             background: #fff;
-            padding: 15px;
-            margin: auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, .15);
+            width: {{ $printWidth }};
+            margin: 0 auto;
+            padding: 4mm 3mm;
+            border-radius: 4px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .18);
+        }
+
+        .receipt + .receipt {
+            margin-top: 16px;
+        }
+
+        .print-toolbar {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 0 auto 14px;
+            max-width: {{ $printWidth }};
+        }
+
+        .print-toolbar .btn {
+            flex: 1;
+            padding: 8px 10px;
+            font-size: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid #333;
+            background: #fff;
+        }
+
+        .print-toolbar .btn-primary {
+            background: #111;
+            color: #fff;
+            border-color: #111;
+        }
+    }
+
+    /* ---------- Print ---------- */
+    @media print {
+        body {
+            background: #fff;
+            padding: 0;
+            margin: 0 auto;
+        }
+
+        .print-toolbar {
+            display: none !important;
+        }
+
+        .receipt {
+            box-shadow: none;
+            border-radius: 0;
+            padding: 0;
+            margin: 0 auto;
+        }
+
+        .totals,
+        .grand-total,
+        .footer,
+        .meta-table,
+        .store {
+            page-break-inside: avoid;
+            break-inside: avoid;
         }
     }
 </style>

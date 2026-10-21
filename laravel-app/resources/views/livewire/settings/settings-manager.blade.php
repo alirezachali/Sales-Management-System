@@ -417,19 +417,30 @@
                                             <option value="58">58 میلی‌متر</option>
                                             <option value="80">80 میلی‌متر</option>
                                         </select>
+                                        <small class="text-muted">
+                                            عرض محتوا خودکار روی ناحیه قابل چاپ تنظیم می‌شود (۷۲ میلی‌متر برای
+                                            کاغذ ۸۰).
+                                        </small>
                                     </div>
 
                                     <div class="col-md-4">
                                         <label class="form-label">تعداد نسخه چاپ</label>
-                                        <input type="number" class="form-control" wire:model="data.print_copies">
+                                        <input type="number" class="form-control" min="1" max="10"
+                                            wire:model="data.print_copies">
+                                        <small class="text-muted">هر نسخه با برچسب «نسخه ۱ از ۲» چاپ می‌شود.</small>
                                     </div>
 
                                     <div class="col-md-4">
-                                        <label class="form-label">چاپ خودکار</label>
-                                        <select class="form-select" wire:model="data.auto_print">
-                                            <option value="1">فعال</option>
-                                            <option value="0">غیرفعال</option>
-                                        </select>
+                                        <div class="form-check form-switch mt-4">
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="data.auto_print" id="auto_print">
+                                            <label class="form-check-label" for="auto_print">
+                                                چاپ خودکار پس از باز شدن فیش
+                                            </label>
+                                        </div>
+                                        <small class="text-muted">
+                                            اگر غیرفعال باشد، دکمه «چاپ» نمایش داده می‌شود.
+                                        </small>
                                     </div>
 
                                 </div>
@@ -467,6 +478,14 @@
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox"
                                                 wire:model="data.print_barcode" id="print_barcode">
+                                            <label class="form-check-label" for="print_barcode">چاپ بارکد شماره فاکتور</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mt-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox"
+                                                wire:model="data.print_qrcode" id="print_qrcode">
                                             <label class="form-check-label" for="print_qrcode">چاپ کیوآر کد در فاکتور فروش</label>
                                         </div>
                                     </div>
